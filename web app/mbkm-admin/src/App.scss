@@ -1,0 +1,28 @@
+@use 'variables';
+
+body {
+  font-family: 'Lato Regular', serif;
+}
+
+.App {
+  text-align: center;
+  background-color: #222B31;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: #222B31;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #191C1F;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar:horizontal{
+  height: 4px;
+}
+::-webkit-scrollbar-thumb:horizontal{
+  background: lightgray;
+  border-radius: 10px;
+}
