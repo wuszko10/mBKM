@@ -1,35 +1,24 @@
-import React from 'react';
-import type {PropsWithChildren} from 'react';
-import styles from './style/stylesApp';
+import React from "react";
+import styles from "./style/stylesApp";
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+    SafeAreaView
+} from "react-native";
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
-import { NavigationContainer } from '@react-navigation/native';
-import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
-import { createStackNavigator } from '@react-navigation/stack';
-import Home from './screens/Home';
-import Cart from './screens/Cart';
-import Tickets from './screens/Tickets';
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import Home from "./screens/Home";
+import Cart from "./screens/Cart";
+import Tickets from "./screens/Tickets";
+import Profile from "./screens/Profile.tsx";
+import Wallet from "./screens/Wallet.tsx";
+import Login from "./screens/Login.tsx";
+import Welcome from "./screens/Welcome.tsx";
+import Register from "./screens/Register.tsx";
+import { AuthProvider,useAuth } from "./components/AuthContext.tsx";
 
-/*type SectionProps = PropsWithChildren<{
-  title: string;
-}>;*/
 
-/*type RootStackParamList = {
+type RootStackParamList = {
   Home: undefined;
   Wallet: undefined;
   Tickets: undefined;
@@ -37,30 +26,58 @@ import Tickets from './screens/Tickets';
   Cart: undefined;
   Login: undefined;
   Register: undefined;
-};*/
+  Welcome: undefined;
+    UserPanel: undefined;
+};
 
-//const Stack = createStackNavigator<RootStackParamList>();
+
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator<RootStackParamList>();
+
+function UserPanel() {
+  return(
+      <Tab.Navigator>
+        <Tab.Screen name="Home" component={Home} options={{ headerShown: false,tabBarLabel: "Start" }} />
+        <Tab.Screen name="Wallet" component={Wallet}
+                    options={{ headerShown: false,tabBarLabel: "Wallet" }} />
+        <Tab.Screen name="Cart" component={Cart} options={{ headerShown: false,tabBarLabel: "Cart" }} />
+        <Tab.Screen name="Tickets" component={Tickets}
+                    options={{ headerShown: false,tabBarLabel: "Tickets" }} />
+        <Tab.Screen name="Profile" component={Profile}
+                    options={{ headerShown: false,tabBarLabel: "Profile" }} />
+      </Tab.Navigator>
+  );
+}
 
 function MainApp() {
-  return(
-    <NavigationContainer>
-      <Tab.Navigator>
-        <Tab.Screen name="Home" component={Home} options={{headerShown: false, tabBarLabel: 'Start'}}/>
-        <Tab.Screen name="Cart" component={Cart} options={{headerShown: false, tabBarLabel: 'Cart'}}/>
-        <Tab.Screen name="Tickets" component={Tickets} options={{headerShown: false, tabBarLabel: 'Tickets'}}/>
-      </Tab.Navigator>
-    </NavigationContainer>
-  );
+    const { token } = useAuth();
+
+    return (
+        <NavigationContainer>
+            <Stack.Navigator>
+                {!token ? (
+                    <>
+                        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
+                        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                        <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+                    </>
+                ) : (
+                    <Stack.Screen name="UserPanel" component={UserPanel} options={{ headerShown: false }} />
+                )}
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 }
 
 function App(): React.JSX.Element {
 
-  return (
-    <SafeAreaView style={styles.container}>
-      <MainApp/>
-    </SafeAreaView>
-  );
+    return (
+        <SafeAreaView style={styles.container}>
+            <AuthProvider>
+                <MainApp />
+            </AuthProvider>
+        </SafeAreaView>
+    );
 }
 
 export default App;
