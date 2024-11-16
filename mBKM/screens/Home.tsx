@@ -1,5 +1,5 @@
 import React from 'react';
-import { Text,TouchableOpacity,View } from "react-native";
+import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../style/stylesApp.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
@@ -24,7 +24,7 @@ const Home = () => {
     }
 
     return (
-        <View>
+        <View style={stylesApp.container}>
             <Text style={stylesApp.h2}>HOME</Text>
 
             <View style={stylesApp.separator}/>
@@ -35,5 +35,9 @@ const Home = () => {
         </View>
     )
 };
+
+const localStyles = StyleSheet.create({
+
+});
 
 export default Home;

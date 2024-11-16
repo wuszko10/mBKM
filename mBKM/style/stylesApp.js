@@ -5,18 +5,9 @@ export default StyleSheet.create({
 
     container: {
         flex: 1,
+        backgroundColor: colors.appWhite,
     },
 
-
-
-
-    welcomeContainer: {
-        flex: 1,
-        display: 'flex',
-        backgroundColor: colors.appBg,
-        padding: dimensions.appPadding,
-        justifyContent: 'flex-end',
-    },
 
     loginRegisterContainer: {
         flex: 1,
@@ -39,6 +30,8 @@ export default StyleSheet.create({
         display: 'flex',
         gap: dimensions.itemGap,
     },
+
+
 
     /*
 
@@ -91,6 +84,13 @@ export default StyleSheet.create({
         fontWeight: 'bold',
     },
 
+    h3: {
+        color: colors.textColorBlack,
+        textAlign: 'center',
+        fontSize: dimensions.hugeTextSize,
+        fontWeight: 'bold',
+    },
+
     whiteNormalCenterText: {
         color: colors.appWhite,
         textAlign: 'center',
@@ -118,6 +118,13 @@ export default StyleSheet.create({
 
     boldText: {
         fontWeight: 'bold',
+    },
+
+    inputError: {
+        color: 'red',
+        fontSize: dimensions.smallTextSize,
+        textAlign: 'center',
+        marginTop: 4,
     },
 
     /*
@@ -172,6 +179,21 @@ export default StyleSheet.create({
 
     highlightText: {
         color: colors.appFirstColor,
+    },
+
+    flatlist: {
+        gap: dimensions.itemGap,
+        paddingBottom: dimensions.appNormalPadding,
+        paddingLeft: dimensions.appNormalPadding,
+        paddingRight: dimensions.appNormalPadding,
+    },
+
+    flatlistItem: {
+        marginLeft: 2,
+        padding: 15,
+        marginVertical: 5,
+        backgroundColor: colors.appThirdColor,
+        borderRadius: 10
     },
 
 });

@@ -1,8 +1,9 @@
 import React from "react";
-import { Text,TouchableOpacity,View } from "react-native";
+import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../style/stylesApp.js";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
+import { colors,dimensions } from "../style/styleValues.js";
 
 type RootStackPramList = {
     Welcome: undefined;
@@ -24,7 +25,7 @@ const Welcome = () => {
     }
 
     return (
-        <View style={stylesApp.welcomeContainer}>
+        <View style={localStyles.welcomeContainer}>
             <Text style={stylesApp.h1}>mBKM</Text>
 
             <View style={stylesApp.bigSeparator}/>
@@ -41,5 +42,15 @@ const Welcome = () => {
         </View>
     );
 };
+
+const localStyles = StyleSheet.create({
+    welcomeContainer: {
+        flex: 1,
+        display: 'flex',
+        backgroundColor: colors.appBg,
+        padding: dimensions.appPadding,
+        justifyContent: 'flex-end',
+    },
+});
 
 export default Welcome;

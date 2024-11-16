@@ -1,5 +1,6 @@
 export const dimensions = {
   appPadding: 35,
+  appNormalPadding: 15,
 
   smallTextSize: 12,
   normalTextSize: 14,
