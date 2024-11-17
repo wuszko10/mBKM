@@ -3,49 +3,22 @@ import { FlatList,SafeAreaView,ScrollView,StyleSheet,Text,TouchableOpacity,View 
 import stylesApp from "../style/stylesApp.js";
 import { colors,dimensions } from "../style/styleValues.js";
 import LinearGradient from 'react-native-linear-gradient';
-import { TransactionData } from "../repositories/interfaces.tsx";
-
-const transactions = [
-    {
-        transactionId: "TXN001",
-        userId: "USR001",
-        amount: 25.50,
-        date: "2024-11-01T10:30:00Z"
-    },
-    {
-        transactionId: "TXN002",
-        userId: "USR002",
-        amount: 15.75,
-        date: "2024-11-02T12:45:00Z"
-    },
-    {
-        transactionId: "TXN003",
-        userId: "USR003",
-        amount: 40.00,
-        date: "2024-11-03T14:20:00Z"
-    },
-    {
-        transactionId: "TXN004",
-        userId: "USR001",
-        amount: 30.00,
-        date: "2024-11-04T09:10:00Z"
-    },
-    {
-        transactionId: "TXN002",
-        userId: "USR002",
-        amount: 15.75,
-        date: "2024-11-02T12:45:00Z"
-    },
-    {
-        transactionId: "TXN003",
-        userId: "USR003",
-        amount: 40.00,
-        date: "2024-11-03T14:20:00Z"
-    },
-];
+import { Ticket,TransactionData } from "../repositories/interfaces.tsx";
+import { transactions } from "../repositories/Data.tsx";
+import { useNavigation } from "@react-navigation/native";
+import { StackNavigationProp } from "@react-navigation/stack";
 
 
+type RootStackParamList = {
+    Home: undefined;
+    Wallet: undefined;
+    TopUpScreen: undefined;
+};
+
+type NavigationProp = StackNavigationProp<RootStackParamList, 'Wallet'>;
 const Wallet = () => {
+
+    const navigation = useNavigation<NavigationProp>();
 
     const renderItem= ({item} : {item: TransactionData}) => {
 
@@ -68,7 +41,7 @@ const Wallet = () => {
                     <Text style={localStyles.balanceText}>100,00 zł</Text>
                 </View>
 
-                <TouchableOpacity>
+                <TouchableOpacity onPress={() => (navigation.navigate('TopUpScreen'))}>
                     <Text>Doładuj</Text>
                 </TouchableOpacity>
             </View>
