@@ -3,11 +3,13 @@
 $primary-color: #002B44;
 $secondary-color:#FFA515;
 $light-gray: #F0F2F4;
+$light-blue: #E0E9F2;
 $black: #000;
 $border: #ECECEC;
 $red: #D63636;
 $green: #0FC57C;
 $yellow: $secondary-color;
+$gray: #A2A2A2;
 
 /*dimentions*/
 
@@ -16,12 +18,14 @@ $normalTextSize: 14px;
 $largeTextSize: 20px;
 $hugeTextSize: 27px;
 
-$buttonRadius: 15px;
+$borderRadius: 15px;
 $buttonPadding: 10px;
 $buttonInsidePadding: 3px;
 
 $itemMargin: 15px;
 $itemPadding: 10px;
+
+$appPadding: 20px;
 
 /*fonts*/
 

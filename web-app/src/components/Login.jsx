@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, {useState} from 'react';
 import './style.scss'
-import { Link, useNavigate } from "react-router-dom";
+import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
-import { toast } from 'react-toastify';
+import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 const Login = () => {
@@ -24,6 +24,7 @@ const Login = () => {
     };
 
     const [errors, setErrors] = useState({});
+
     function handleChangeRoute() {
         navigate('/');
         window.location.reload();
@@ -41,7 +42,7 @@ const Login = () => {
         }
 
         axios
-            .post( URI + 'user/auth', {
+            .post(URI + 'user/auth', {
                 login: formData.login,
                 password: formData.password
             })
@@ -59,7 +60,7 @@ const Login = () => {
                 toast.error('Błąd logowania', {
                     position: 'top-right',
                     theme: "colored",
-                  });
+                });
 
                 setFormData({
                     login: '',
@@ -69,16 +70,16 @@ const Login = () => {
     };
 
     return (
-        <div className="login-box">
-            <div className="login-container">
-                <h2>Zaloguj się</h2>
-                    <form className="form-global">
-                        <input type="text" id="login" name="login" placeholder="Login" value={formData.email} onChange={handleInputChange} />
-                        <input type="password" id="password" name="password" placeholder="Hasło" value={formData.email} onChange={handleInputChange} />
-                        <button type="submit" onClick={handleLogin} >Zaloguj się</button>
-                    </form>
-                <p>Nie masz jeszcze konta? <Link to="/signup" className="login-link-text-gray">Zarejestruj się</Link></p>
-            </div>
+        <div className="login-container">
+            <h2>Zaloguj się</h2>
+            <form className="form-global">
+                <input type="text" id="login" name="login" placeholder="Login" value={formData.email}
+                       onChange={handleInputChange}/>
+                <input type="password" id="password" name="password" placeholder="Hasło" value={formData.email}
+                       onChange={handleInputChange}/>
+                <button type="submit" onClick={handleLogin}>Zaloguj się</button>
+            </form>
+            <p>Nie masz jeszcze konta? <Link to="/signup" className="login-link-text-blue">Zarejestruj się</Link></p>
         </div>
     );
 };

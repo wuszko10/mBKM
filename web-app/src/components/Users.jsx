@@ -3,7 +3,7 @@ import './style.scss'
 //import {FaPlus} from "react-icons/fa";
 import {useNavigate} from "react-router-dom";
 
-const Main = () => {
+const Users = () => {
 
     const navigate = useNavigate();
     const [isLoggedIn, setIsLoggedIn] = useState(false);
@@ -22,24 +22,16 @@ const Main = () => {
     return (
         <div className="main-box">
             <section className="sectionGrid">
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
+                <h2>Users</h2>
+                <h2>Users</h2>
+                <h2>Users</h2>
+                <h2>Users</h2>
+                <h2>Users</h2>
+                <h2>Users</h2>
+                <h2>Users</h2>
             </section>
         </div>
     );
 };
 
-export default Main;
+export default Users;

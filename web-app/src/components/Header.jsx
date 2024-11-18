@@ -1,14 +1,14 @@
 //import logo from './images/logo-white-black.png'
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import './style.scss'
 //import { FaSearch } from 'react-icons/fa';
-import { Link } from "react-router-dom";
+import {Link} from "react-router-dom";
 
 const Header = () => {
 
     const [isLoggedIn, setIsLoggedIn] = useState(false);
 
-    useEffect(() => {        
+    useEffect(() => {
         const token = localStorage.getItem('token');
         if (token) {
             setIsLoggedIn(true);
@@ -22,16 +22,26 @@ const Header = () => {
     };
 
     return (
-        <header className="header">
-            <div className="header-box">
+        <header className="header-box">
 
+            <div >
                 <div className="logo">
                     <Link to="/">
                         <p>LOGO</p>
                     </Link>
                 </div>
 
-                <div className="login">
+                <div className="header-menu">
+                    <ul>
+                        <li><Link to="/tickets">Bilety</Link></li>
+                        <li><Link to="/transactions">Historia transakcji</Link></li>
+                        <li><Link to="/users">Użytkownicy</Link></li>
+                    </ul>
+                </div>
+            </div>
+
+            <div className="header-footer">
+                <div >
                     {isLoggedIn ? (
                         <button onClick={handleLogout} className="login-btn">
                             Wyloguj się
@@ -42,7 +52,10 @@ const Header = () => {
                         </Link>
                     )}
                 </div>
+                <hr />
+                <p>mBKM <br />Wiktor Uszko © 2024/2025</p>
             </div>
+
 
         </header>
     );
