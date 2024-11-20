@@ -1,11 +1,9 @@
 import React, {useState} from 'react';
 import './style.scss'
-import { IoClose } from "react-icons/io5";
 import {useNavigate} from "react-router-dom";
 import {users} from "./data";
 import {ColumnDef} from "@tanstack/react-table";
 import DynamicTable from "./DynamicTable";
-import Modal from 'react-modal';
 import GlobalPopup from "./GlobalPopup";
 import {LuPlusCircle} from "react-icons/lu";
 

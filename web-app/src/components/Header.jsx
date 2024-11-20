@@ -1,7 +1,5 @@
-//import logo from './images/logo-white-black.png'
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import './style.scss'
-//import { FaSearch } from 'react-icons/fa';
 import {Link, NavLink, useNavigate} from "react-router-dom";
 import { PiNavigationArrowFill} from "react-icons/pi";
 

@@ -236,18 +236,12 @@ a {
 .header-menu a {
     font-family: "Montserrat SemiBold", serif;
     color: white;
-    padding: 10px 15px;
+    padding: 10px 30px;
     background-color: transparent;
     border-radius: $borderRadius;
 }
 
 .header-menu a:hover{
-    color: $primary-color;
-    background-color: white;
-}
-
-
-.header-menu a .active, .header-menu a:hover {
     color: $primary-color;
     background-color: white;
 }

@@ -1,12 +1,9 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './style.scss'
-//import {FaPlus} from "react-icons/fa";
 import {Link, useNavigate} from "react-router-dom";
-import {tickets, transactions} from "./data";
+import {tickets} from "./data";
 import {ColumnDef} from "@tanstack/react-table";
 import DynamicTable from "./DynamicTable";
-import {IoClose} from "react-icons/io5";
-import Modal from "react-modal";
 import GlobalPopup from "./GlobalPopup";
 import {FaReceipt} from "react-icons/fa";
 import {LuPlusCircle} from "react-icons/lu";

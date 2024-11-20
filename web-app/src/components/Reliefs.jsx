@@ -1,11 +1,10 @@
-import React, {useEffect, useState} from 'react';
+import React, {useState} from 'react';
 import './style.scss'
 import {useNavigate} from "react-router-dom";
-import {discounts, tickets, transactions} from "./data";
+import {discounts} from "./data";
 import {ColumnDef} from "@tanstack/react-table";
 import DynamicTable from "./DynamicTable";
 import GlobalPopup from "./GlobalPopup";
-import {FaReceipt} from "react-icons/fa";
 import {LuPlusCircle} from "react-icons/lu";
 
 const Reliefs = () => {

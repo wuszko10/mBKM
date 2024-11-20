@@ -1,12 +1,12 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import {tickets} from "./data";
+import {discounts} from "./data";
 
 const ReliefDetails = () => {
-    const { id } = useParams(); // Pobieranie id z URL
-    const ticket = tickets.find(t => t.id === parseInt(id));
+    const { id } = useParams();
+    const relief = discounts.find(t => t.id === parseInt(id));
 
-    if (!ticket) {
+    if (!relief) {
         return <div>Bilet nie znaleziony.</div>;
     }
 
@@ -15,22 +15,10 @@ const ReliefDetails = () => {
             <h2>Szczegóły biletu</h2>
             <div className="ticket-details">
                 <div className="ticket-detail">
-                    <strong>Typ biletu:</strong> {ticket.ticketType === 'jednorazowy' ? 'Jednorazowy' : 'Okresowy'}
+                    <strong>Typ biletu:</strong> {relief.name}
                 </div>
                 <div className="ticket-detail">
-                    <strong>Okres:</strong> {ticket.period ? `${ticket.period} dni` : 'Brak okresu'}
-                </div>
-                <div className="ticket-detail">
-                    <strong>Liczba linii:</strong> {ticket.lines === 'wszystkie' ? 'Wszystkie linie' : `${ticket.lines} linie`}
-                </div>
-                <div className="ticket-detail">
-                    <strong>Cena:</strong> {ticket.price} PLN
-                </div>
-                <div className="ticket-detail">
-                    <strong>Data rozpoczęcia oferty:</strong> {ticket.offerStartDate}
-                </div>
-                <div className="ticket-detail">
-                    <strong>Data zakończenia oferty:</strong> {ticket.offerEndDate}
+                    <strong>Okres:</strong> {relief.percentage}
                 </div>
             </div>
             <button onClick={() => window.history.back()} className="back-button">Wróć</button>
