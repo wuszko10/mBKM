@@ -2,61 +2,79 @@
 import React, {useEffect, useState} from 'react';
 import './style.scss'
 //import { FaSearch } from 'react-icons/fa';
-import {Link} from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
+import { PiNavigationArrowFill} from "react-icons/pi";
 
 const Header = () => {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
 
-    useEffect(() => {
-        const token = localStorage.getItem('token');
-        if (token) {
-            setIsLoggedIn(true);
-        }
-    }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        setIsLoggedIn(false);
+        navigate("/");
         window.location.reload();
     };
 
     return (
         <header className="header-box">
-
-            <div >
-                <div className="logo">
+            <div className="header-content">
+                <div className="column-div">
                     <Link to="/">
-                        <p>LOGO</p>
+                        <div className="logo">
+                            <PiNavigationArrowFill className="logo-icon"/>
+                            <h1>mBKM</h1>
+                        </div>
                     </Link>
+
+                    <div className="header-menu">
+
+                        <NavLink
+                            style={({isActive}) => {
+                                return {
+                                    color: isActive ? "#002B44" : "white",
+                                    backgroundColor: isActive ? "white" : "transparent",
+                                };
+                            }}
+                            to="/">Start</NavLink>
+
+                        <NavLink
+                            style={({isActive}) => {
+                                return {
+                                    color: isActive ? "#002B44" : "white",
+                                    backgroundColor: isActive ? "white" : "transparent",
+                                };
+                            }}
+                            to="/tickets">Bilety</NavLink>
+
+                        <NavLink
+                            style={({isActive}) => {
+                                return {
+                                    color: isActive ? "#002B44" : "white",
+                                    backgroundColor: isActive ? "white" : "transparent",
+                                };
+                            }}
+                            to="/transactions">Transakcje</NavLink>
+
+                        <NavLink
+                            style={({isActive}) => {
+                                return {
+                                    color: isActive ? "#002B44" : "white",
+                                    backgroundColor: isActive ? "white" : "transparent",
+                                };
+                            }}
+                            to="/users">Użytkownicy</NavLink>
+                    </div>
                 </div>
 
-                <div className="header-menu">
-                    <ul>
-                        <li><Link to="/tickets">Bilety</Link></li>
-                        <li><Link to="/transactions">Historia transakcji</Link></li>
-                        <li><Link to="/users">Użytkownicy</Link></li>
-                    </ul>
-                </div>
-            </div>
-
-            <div className="header-footer">
-                <div >
-                    {isLoggedIn ? (
+                <div className="header-footer">
+                    <div>
                         <button onClick={handleLogout} className="login-btn">
                             Wyloguj się
                         </button>
-                    ) : (
-                        <Link to="/signin" className="login-btn">
-                            Zaloguj się
-                        </Link>
-                    )}
+                    </div>
                 </div>
-                <hr />
-                <p>mBKM <br />Wiktor Uszko © 2024/2025</p>
             </div>
-
-
         </header>
     );
 };

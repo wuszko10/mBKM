@@ -10,6 +10,13 @@ import {ToastContainer} from 'react-toastify';
 import Tickets from "./components/Tickets";
 import Transactions from "./components/Transactions";
 import Users from "./components/Users";
+import TransactionDetails from "./components/TransactionDetails";
+import UserDetails from "./components/UserDetails";
+import React from "react";
+import TicketDetails from "./components/TicketDetails";
+import Reliefs from "./components/Reliefs";
+import ReliefDetails from "./components/ReliefDetails";
+import NotFound from "./components/NotFound";
 
 function App() {
     return (
@@ -20,15 +27,21 @@ function App() {
                         <Header/>
                     </div>
                     <div className="content">
-
                         <Routes>
                             <Route path="/" element={<Main/>}/>
                             <Route path="/tickets" element={<Tickets/>}/>
+                            <Route path="/ticket/:id" element={<TicketDetails/>}/>
+                            <Route path="/reliefs" element={<Reliefs/>}/>
+                            <Route path="/relief/:id" element={<ReliefDetails/>}/>
                             <Route path="/transactions" element={<Transactions/>}/>
+                            <Route path="/transaction/:id" element={<TransactionDetails />} />
                             <Route path="/users" element={<Users/>}/>
+                            <Route path="/user/:id" element={<UserDetails/>}/>
+                            <Route path="*" element={<NotFound />} />
                         </Routes>
+                        <hr />
+                        <Footer />
                     </div>
-
                 </div>
             ):(
                 <div className="LoginRegister">
@@ -36,6 +49,7 @@ function App() {
                         <Route path="/" element={<Login/>}/>
                         <Route path="/signin" element={<Login/>}/>
                         <Route path="/signup" element={<Register/>}/>
+                        <Route path="*" element={<NotFound />} />
                     </Routes>
                 </div>
             )}

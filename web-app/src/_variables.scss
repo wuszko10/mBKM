@@ -9,7 +9,8 @@ $border: #ECECEC;
 $red: #D63636;
 $green: #0FC57C;
 $yellow: $secondary-color;
-$gray: #A2A2A2;
+$gray: #D6D6D6;
+$placeholder-gray: #979797;
 
 /*dimentions*/
 
@@ -19,6 +20,7 @@ $largeTextSize: 20px;
 $hugeTextSize: 27px;
 
 $borderRadius: 15px;
+$borderRadiusSmall: 10px;
 $buttonPadding: 10px;
 $buttonInsidePadding: 3px;
 
@@ -26,6 +28,8 @@ $itemMargin: 15px;
 $itemPadding: 10px;
 
 $appPadding: 20px;
+
+$gap: 15px;
 
 /*fonts*/
 

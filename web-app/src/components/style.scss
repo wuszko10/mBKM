@@ -1,21 +1,154 @@
 @import '../variables';
 
 
-h2 {
+h1 {
     font-family: "Montserrat ExtraBold", serif;
     font-size: 50px;
+    margin: 0;
+    color: white;
+    text-decoration: none;
+}
+
+h2 {
+    font-family: "Montserrat Bold", serif;
+    font-size: 40px;
     margin: 0;
     color: black;
 }
 
-.main-box {
-    max-width: 100%;
-    padding: 0;
-    display: flex;
+h3 {
+    font-family: "Montserrat Bold", serif;
+    font-size: 25px;
+    margin: 0;
+    color: black;
 }
 
-.sectionGrid {
+a {
+    text-decoration: none;
+}
+
+.column-div, .logo {
+    flex-direction: column;
+    align-items: center;
+}
+
+
+.main-box {
+    max-width: 100%;
+    padding: 30px 0;
+    margin: 0 auto;
+    flex-direction: column;
+    flex: 1;
+}
+
+.content-box, .content-box-table {
+    flex-direction: column;
+    gap: $gap;
+    width: 1400px;
+}
+
+.content-box-table {
+    padding-top: 30px;
+}
+
+.search-input {
+    border: 1px solid $gray;
+    padding: 15px 20px;
+    border-radius: $borderRadiusSmall;
+    color: black;
+    font-size: 14px;
+}
+
+.search-input::placeholder {
+    color: $placeholder-gray;
+}
+
+.header-with-button {
+    align-items: center;
+    justify-content: space-between;
+}
+
+.global-button {
     display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    color: gray;
+    font-size: 15px;
+    font-family: "Montserrat SemiBold", serif;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-width: 0;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-content: center;
+    gap: 5px;
+}
+
+.popup-box {
+    display: block;
+    background: $light-blue;
+    border-radius: $borderRadius;
+    width: auto;
+    max-width: 70%;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+    position: relative;
+    text-align: right;
+}
+
+.popup-container {
+    flex: 1;
+    flex-direction: column;
+    align-items: center;
+    gap: 50px;
+    margin-top: -55px;
+    padding: 60px;
+}
+
+.popup-header {
+    width: 100%;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.popup-overlay {
+    background-color: rgba(0, 0, 0, 0.8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    justify-content: center;
+    align-items: center;
+}
+
+/** ICONS */
+
+.close-icon {
+    margin-top: 20px;
+    margin-right: 20px;
+    color: $gray;
+    font-size: 30px;
+    cursor: pointer;
+    z-index: 1;
+}
+
+.close-icon:hover {
+    color: $primary-color;
+}
+
+.logo-icon, .logo-icon-login {
+    color: white;
+    font-size: 50px;
+}
+
+.logo-icon-login {
+    font-size: 250px;
+}
+
+/** JESZCZE NIE WIEM CO TO JEST ***/
+
+
+.sectionGrid {
     flex-direction: column;
     position: relative;
     gap: 50px;
@@ -35,14 +168,19 @@ h2 {
 }
 
 .movie-grid-box{
-    display: flex;
     flex-direction: column;
     gap: 40px;
 }
 
 .pagination {
-    display: flex;
     justify-content: center;
+    align-items: center;
+    gap: $gap;
+}
+
+.pagination p {
+    font-size: 15px;
+    font-family: "Montserrat SemiBold", serif;
 }
 
 .pagination button {
@@ -59,13 +197,12 @@ h2 {
 }
 
 .pagination button.active {
-    background-color: #FF424F;
-    color: white;
+    color: $primary-color;
 }
 
 .pagination button:hover {
-    background-color: #FF424F;
-    color: white;
+    color: $primary-color;
+    text-decoration: underline;
 }
 
 
@@ -73,14 +210,19 @@ h2 {
 
 
 .header-box {
-    flex-grow: 1;
-    display: flex;
+    display: block;
+    width: 100%;
+    padding: 40px;
+}
+
+.header-content{
+    height: 100%;
     flex-direction: column;
-    margin: 0 auto;
-    padding: $appPadding;
     justify-content: space-between;
-    align-items: center;
-    height: 96%;
+}
+
+.logo {
+    padding-top: 30px;
 }
 
 .logo img {
@@ -88,24 +230,40 @@ h2 {
 }
 
 .header-menu {
-    text-align: center;
+    width: 85%;
 }
 
-.header-menu ul {
-    list-style-type: none;
-    margin: 0;
-    padding: 0;
+.header-menu a {
+    font-family: "Montserrat SemiBold", serif;
+    color: white;
+    padding: 10px 15px;
+    background-color: transparent;
+    border-radius: $borderRadius;
 }
 
-.header-menu  ul li {
-    display: block; /* Wyświetlamy elementy w poziomie */
+.header-menu a:hover{
+    color: $primary-color;
+    background-color: white;
+}
+
+
+.header-menu a .active, .header-menu a:hover {
+    color: $primary-color;
+    background-color: white;
+}
+
+.header-menu {
+    flex-direction: column;
+    text-align: left;
+    margin-top: 70px;
+    gap: 10px;
 }
 
 .login-btn {
     background-color: $primary-color;
     color: #fff;
     font-size: 15px;
-    font-family: "Montserrat Regular", serif;
+    font-family: "Montserrat", serif;
     text-transform: uppercase;
     text-decoration: none;
     padding: 16px 30px;
@@ -126,42 +284,121 @@ h2 {
     width: 100%;
 }
 
+/* ########## table ############*/
+
+.content-table {
+    width: 100%;
+    overflow-x: auto;
+    gap: $gap;
+}
+
+.content-table button {
+    background-color: transparent;
+    border: none;
+    font-family: "Lato Regular", serif;
+    font-size: 15px;
+    padding: 5px 10px;
+    cursor: pointer;
+    border-radius: $borderRadiusSmall;
+
+}
+
+.content-table button:hover {
+    text-decoration: underline;
+}
+
+table {
+    width: 100%;
+    border-collapse: collapse;  /* Eliminuje przestrzenie między komórkami */
+    border-radius: $borderRadius;
+}
+
+th, td {
+    padding: 8px;
+    text-align: left;
+}
+
+th {
+    background-color: $primary-color;  /* Kolor tła nagłówka */
+    color: white;
+}
+
+tr:nth-child(even) {
+    background-color: $light-blue;  /* Tło dla co drugiego wiersza */
+}
+
+tr:nth-child(odd) {
+    background-color: transparent;  /* Tło dla pozostałych wierszy */
+}
+
+td {
+    border-left: none;
+    border-right: none;
+}
+
+/*
+table tr:first-child th:first-child {
+    border-top-left-radius: $borderRadius;
+}
+
+table tr:first-child th:last-child {
+    border-top-right-radius: $borderRadius;
+}
+
+
+table tr:last-child td:first-child {
+    border-bottom-left-radius: $borderRadius;
+}
+
+
+table tr:last-child td:last-child {
+    border-bottom-right-radius: $borderRadius;
+}*/
+
 
 
 /* ########### footer ############# */
 
-.footer {
-    background-color: #191C1F;
-}
-
 .footer-txt {
-    color: white;
+    color: $placeholder-gray;
+    font-size: 15px;
 }
 
-.footer-box {
+footer {
     display: flex;
-    max-width: 1300px;
     justify-content: center;
-    margin: 0 auto;
+    align-items: center;
     padding:  10px 20px;
 }
 
 /* ########### login/register ############# */
 
+.logo-login {
+    align-items: center;
+    padding-right: 50px;
+    padding-bottom: 30px;
+}
+
+.logo-login h1 {
+    font-size: 100px;
+}
+
 .login-box {
     height: 100vh;
+    width: 100%;
+    margin: 0 auto;
     justify-content: center;
     align-items: center;
+    background-color: $primary-color;
+    gap: 15%;
 }
 
 .login-container {
     text-align: center;
-    display: flex;
     width: fit-content;
     height: fit-content;
     align-items: center;
     justify-content: center;
-    margin: 0 auto;
     padding: 50px;
     border-radius: 20px;
     flex-direction: column;
@@ -183,27 +420,37 @@ h2 {
     row-gap: 15px;
 }
 
-.form-global input {
-    min-width: 350px;
+.form-global input, .form-global select {
     background-color: #fff;
     color: black;
     font-size: 17px;
-    padding: 15px 17px;
     font-family: 'Lato Regular', serif;
     outline: none;
     border: none;
     border-radius: $borderRadius;
 }
 
+.form-global input {
+    width: 400px;
+    padding: 15px 17px;
+}
+
+.form-global select {
+    width: 435px;
+    padding: 15px 20px;
+}
+
+
 .form-global input::placeholder {
     color: $gray;
 }
+
 
 .form-global button {
     background-color: $primary-color;
     color: #fff;
     font-size: 15px;
-    font-family: "Montserrat Regular", serif;
+    font-family: "Montserrat", serif;
     text-transform: uppercase;
     text-decoration: none;
     padding: 17px 50px;
@@ -220,8 +467,7 @@ h2 {
 }
 
 .form-global textarea{
-    min-width: 250px;
-    background-color: red;
+    min-width: 350px;
     color: $gray;
     margin-bottom: -2px;
     font-size: 15px;
@@ -232,17 +478,6 @@ h2 {
     border-radius: 5px;
 }
 
-.form-global select {
-    background-color: #00000000;
-    color: white;
-    margin-bottom: -2px;
-    font-size: 15px;
-    padding: 9px 13px;
-    font-family: 'Lato Regular', serif;
-    outline: none;
-    border: #ffffff80 1px solid;
-    border-radius: 5px;
-}
 
 .form-global option {
     color: #222B31;
@@ -262,260 +497,4 @@ h2 {
 
 .login-link-text-blue:hover {
     text-decoration: underline;
-}
-
-
-/* ########### movie Details ############# */
-
-.movie-box {
-    gap: 50px;
-    align-items: center;
-}
-
-.movie-box-first-column{
-    min-width: 40%;
-}
-
-.movie-box-second-column{
-    display: flex;
-    flex-direction: column;
-    min-width: 60%;
-    text-align: left;
-    padding-top: 50px;
-    row-gap: 20px;
-}
-
-.movie-box-second-column h2{
-    font-family: "Montserrat ExtraBold", serif;
-    font-size: 50px;
-    margin: 0;
-}
-
-.movie-box-second-column h3{
-    font-family: "Montserrat Regular", serif;
-    font-size: 20px;
-    margin: 0;
-    color: gray;
-}
-
-.movie-box-second-column p{
-    font-family: "Lato Regular", serif;
-    font-size: 17px;
-    margin: 0;
-    color: white;
-    line-height: 1.6;
-    letter-spacing: 0.01em;
-}
-
-.movie-box-second-column table {
-    color: white;
-}
-
-.movie-box-detail-row {
-    display: flex;
-}
-
-.Flex {
-    display: flex;
-    list-style: none;
-    margin: 0;
-    padding: 0;
-}
-
-.Flex-item {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    color: gray;
-}
-
-.Flex-item:not(:last-child)::after {
-    content: "";
-    border: 1px solid gray;
-    height: 15px;
-    margin: 0 15px;
-}
-
-.Flex-item:last-child::after {
-    content: none;
-}
-
-
-/* ########### add/delete movie ############# */
-
-
-.add-movie-box{
-    justify-content: center;
-    min-height: 68vh;
-}
-
-.add-movie-container {
-    display: flex;
-    flex-direction: column;
-    gap: 30px;
-    justify-content: center;
-}
-
-.form-add-movie {
-    display: flex;
-}
-
-.form-right-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 20px;
-}
-
-.form-left-column > * {
-    width: 900px;
-}
-
-.form-left-column{
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background-color: #ffffff20;
-    border-radius: 15px;
-    padding: 40px;
-    row-gap: 20px;
-}
-
-.form-left-column p {
-    margin: 0;
-    font-family: "Montserrat SemiBold", serif;
-    font-size: 20px;
-    color: white;
-}
-
-.form-left-column button {
-    width: 200px;
-}
-
-.custom-file-upload {
-    display: inline-block;
-    padding: 12px 17px;
-    cursor: pointer;
-    background-color: #FF424F;
-    color: #fff;
-    border-radius: 5px;
-    font-size: 16px;
-}
-
-.custom-file-upload:hover {
-    background-color: white;
-    color: #FF424F;
-}
-
-.plus-icon {
-    margin-right: 8px;
-}
-
-.video-preview {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    background-color: #ffffff20;
-    width: 800px;
-    height: 450px;
-    border-radius: 15px;
-}
-
-.video-preview p {
-    color: white;
-}
-
-#videoPreview {
-    border-radius: 15px;
-}
-
-.show-more-button {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-.show-more-button button {
-    width: 120px;
-    height: 120px;
-    border-radius: 100px;
-    font-size: 15px;
-    font-family: 'Montserrat SemiBold', serif;
-    background-color: lightgray;
-}
-
-.show-more-button button:hover {
-    cursor: pointer;
-    background-color: white;
-}
-
-.add-movie-button {
-    position: fixed;
-    bottom: 30px;
-    right: 30px;
-    background-color: #FF424F; /* Kolor tła przycisku (możesz dostosować) */
-    color: #fff; /* Kolor ikony (możesz dostosować) */
-    width: 70px;
-    height: 70px;
-    border-radius: 50%; /* Ustaw zaokrąglone krawędzie dla efektu okrągłego przycisku */
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 20px;
-}
-
-.add-movie-button:hover {
-    background-color: white;
-    color: #FF424F;
-    cursor: pointer;
-}
-
-/* ########### search result ############# */
-
-.search-result-container {
-    display: flex;
-    flex-direction: column;
-    justify-items: center;
-    justify-content: center;
-    gap: 30px;
-    min-height: 68vh;
-}
-
-.search-result-container ul {
-    list-style: none;
-    color: white;
-}
-
-.search-result-container ul li {
-    text-align: left;
-    margin: 15px 0;
-}
-
-.link-element-item {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-    padding: 25px;
-    background-color: #ffffff25;
-    border-radius: 15px;
-    cursor: pointer;
-}
-
-.link-element-item h4{
-    font-size: 25px;
-    color: white;
-    font-family: "Montserrat SemiBold", serif;
-    margin: 0;
-    padding: 0;
-}
-
-.link-element-item:hover h4{
-    text-decoration: underline;
-}
-
-#no-results {
-    font-size: 25px;
-    color: white;
-    font-family: "Montserrat SemiBold", serif;
 }

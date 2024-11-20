@@ -4,6 +4,7 @@ import {Link, useNavigate} from "react-router-dom";
 import axios from "axios";
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
+import {PiNavigationArrowFill} from "react-icons/pi";
 
 const Login = () => {
 
@@ -70,17 +71,23 @@ const Login = () => {
     };
 
     return (
-        <div className="login-container">
-            <h2>Zaloguj się</h2>
-            <form className="form-global">
-                <input type="text" id="login" name="login" placeholder="Login" value={formData.email}
-                       onChange={handleInputChange}/>
-                <input type="password" id="password" name="password" placeholder="Hasło" value={formData.email}
-                       onChange={handleInputChange}/>
-                <button type="submit" onClick={handleLogin}>Zaloguj się</button>
-            </form>
-            <p>Nie masz jeszcze konta? <Link to="/signup" className="login-link-text-blue">Zarejestruj się</Link></p>
+        <div className="login-box">
+            <div className="logo logo-login">
+                <PiNavigationArrowFill className="logo-icon-login"/>
+                <h1>mBKM</h1>
+            </div>
+            <div className="login-container">
+                <h2>Zaloguj się</h2>
+                <form className="form-global">
+                    <input type="text" id="login" name="login" placeholder="Login" value={formData.email}
+                           onChange={handleInputChange}/>
+                    <input type="password" id="password" name="password" placeholder="Hasło" value={formData.email}
+                           onChange={handleInputChange}/>
+                    <button type="submit" onClick={handleLogin}>Zaloguj się</button>
+                </form>
+            </div>
         </div>
+
     );
 };
 
