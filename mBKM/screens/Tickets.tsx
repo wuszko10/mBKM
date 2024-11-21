@@ -3,13 +3,16 @@ import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "rea
 import stylesApp from "../style/stylesApp.js";
 import { tickets } from "../repositories/Data.tsx";
 import { colors,dimensions } from "../style/styleValues.js";
-import { Ticket,TicketsPurchased } from "../repositories/interfaces.tsx";
+import { TicketsPurchased } from "../repositories/interfaces.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import Header from "../components/Header.tsx";
+import Entypo from "react-native-vector-icons/Entypo";
 
 type RootStackParamList = {
     Tickets: undefined;
     Home: undefined;
+    Purchase: undefined;
     TicketDetails: {selectedTicket: TicketsPurchased};
 };
 
@@ -28,7 +31,7 @@ const Tickets = () => {
         return (
             <TouchableOpacity onPress={() => handleTicketDetails(item)}>
                 <View style={stylesApp.flatlistItem}>
-                    <Text style={localStyles.text}>Numer biletu: {item.number}</Text>
+                    <Text style={localStyles.text}>Numer biletu: <Text style={stylesApp.boldText}>{item.number}</Text></Text>
                     <Text style={localStyles.text}>Cena: {item.finalPrice.toFixed(2)} zł</Text>
                     <Text style={localStyles.text}>Date: {new Date(item.purchaseDate).toLocaleString()}</Text>
                 </View>
@@ -39,7 +42,12 @@ const Tickets = () => {
     return (
         <SafeAreaView style={stylesApp.container}>
 
-            <Text>Moje bilety</Text>
+            <Header title="Moje bilety" />
+
+            <TouchableOpacity onPress={() => navigation.navigate('Purchase')} style={localStyles.addButton}>
+                <Entypo name="plus" size={35} style={localStyles.icon} />
+                <Text style={{color: colors.appFirstColor, fontSize: 14}}>Kup bilet</Text>
+            </TouchableOpacity>
 
             <FlatList
                 style={stylesApp.flatlist}
@@ -84,6 +92,24 @@ const localStyles = StyleSheet.create({
     },
     text: {
         fontSize: 16
+    },
+    addButton: {
+        flexDirection: "row",
+        alignItems: "center",
+        gap: 8,
+        position: "absolute",
+        backgroundColor: '#D6F49D',
+        borderRadius: 100,
+        paddingRight: 15,
+        bottom: 20,
+        right: 20,
+        zIndex: 10,
+    },
+    icon: {
+        color: colors.appWhite,
+        backgroundColor: colors.appFirstColor,
+        padding: 5,
+        borderRadius: 100,
     }
 });
 

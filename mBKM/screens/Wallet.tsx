@@ -7,6 +7,8 @@ import { Ticket,TransactionData } from "../repositories/interfaces.tsx";
 import { transactions } from "../repositories/Data.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import Icon from "react-native-vector-icons/FontAwesome";
+import Header from "../components/Header.tsx";
 
 
 type RootStackParamList = {
@@ -34,8 +36,10 @@ const Wallet = () => {
     return (
 
         <SafeAreaView style={stylesApp.container}>
-            <View style={localStyles.balanceContainer}>
+            <Header title="Portfel"/>
 
+
+            <View style={localStyles.balanceContainer}>
                 <View>
                     <Text>Stan konta:</Text>
                     <Text style={localStyles.balanceText}>100,00 zł</Text>
@@ -45,8 +49,6 @@ const Wallet = () => {
                     <Text>Doładuj</Text>
                 </TouchableOpacity>
             </View>
-
-            <View style={stylesApp.separator} />
 
             <View style={localStyles.transactionContainer}>
                 <Text style={stylesApp.h3}>Wpłaty</Text>
@@ -69,9 +71,6 @@ const localStyles = StyleSheet.create({
         justifyContent: 'space-between',
         alignItems: 'center',
         padding: 20,
-        marginTop: 30,
-        marginRight: dimensions.appNormalPadding,
-        marginLeft: dimensions.appNormalPadding,
         backgroundColor: colors.appBg,
         borderRadius: dimensions.inputRadius,
     },
@@ -83,7 +82,8 @@ const localStyles = StyleSheet.create({
     },
 
     transactionContainer: {
-        padding: dimensions.appNormalPadding,
+        marginTop: dimensions.appNormalPadding,
+        paddingLeft: 15,
     },
 
     item: {
@@ -93,6 +93,7 @@ const localStyles = StyleSheet.create({
         backgroundColor: colors.appThirdColor,
         borderRadius: 10
     },
+
     text: {
         fontSize: 16
     }

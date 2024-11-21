@@ -3,6 +3,8 @@ import { SafeAreaView,Text } from "react-native";
 import { Ticket,TicketsPurchased } from "../repositories/interfaces.tsx";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation,useRoute } from "@react-navigation/native";
+import Header from "../components/Header.tsx";
+import stylesApp from "../style/stylesApp.js";
 
 type RootStackParamList = {
     TicketDetails: {selectedTicket: Ticket};
@@ -22,7 +24,8 @@ const TicketDetails = () => {
     const {selectedTicket} = route.params as RouteParams;
 
     return (
-        <SafeAreaView>
+        <SafeAreaView style={stylesApp.container}>
+            <Header title={"Bilet "+selectedTicket.number}/>
             <Text>Numer biletu: {selectedTicket.number}</Text>
             <Text>Cena: {selectedTicket.finalPrice.toFixed(2)} zł</Text>
             <Text>Data zakupu: {new Date(selectedTicket.purchaseDate).toLocaleString()}</Text>

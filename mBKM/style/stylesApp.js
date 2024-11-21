@@ -3,11 +3,25 @@ import { colors, dimensions } from "./styleValues";
 
 export default StyleSheet.create({
 
-    container: {
+    appContainer: {
         flex: 1,
         backgroundColor: colors.appWhite,
     },
 
+    container: {
+        flex: 1,
+        backgroundColor: colors.appWhite,
+        paddingTop: 30,
+        paddingLeft: 15,
+        paddingRight: 15,
+        paddingBottom: 10,
+        gap: dimensions.itemGap,
+    },
+
+    contentBox: {
+        flexDirection: "column",
+        gap: dimensions.itemGap,
+    },
 
     loginRegisterContainer: {
         flex: 1,
@@ -31,6 +45,21 @@ export default StyleSheet.create({
         gap: dimensions.itemGap,
     },
 
+    tabBarStyle: {
+        minHeight: 60,
+        bottom: 0,
+        left: 0,
+        right: 0,
+        shadowColor: '#000',
+        shadowOpacity: 0.5,
+        shadowRadius: 5,
+        elevation: 5,
+        backgroundColor: colors.appWhite,
+    },
+
+    tabBarItemStyle: {
+        margin: 3,
+    },
 
 
     /*
@@ -51,7 +80,8 @@ export default StyleSheet.create({
     mainButton: {
         backgroundColor: colors.appFirstColor,
         borderRadius: dimensions.buttonRadius,
-        padding: dimensions.buttonPadding,
+        paddingVertical: dimensions.buttonPadding,
+        paddingHorizontal: 50,
     },
 
     secondButton: {
@@ -84,11 +114,26 @@ export default StyleSheet.create({
         fontWeight: 'bold',
     },
 
+    h2Header: {
+        color: colors.textColorBlack,
+        textAlign: 'left',
+        fontSize: 30,
+        fontWeight: 'bold',
+    },
+
     h3: {
         color: colors.textColorBlack,
-        textAlign: 'center',
+        textAlign: 'left',
         fontSize: dimensions.hugeTextSize,
         fontWeight: 'bold',
+    },
+
+    normalH3: {
+        color: colors.textColorBlack,
+        textAlign: 'left',
+        fontSize: dimensions.largeTextSize,
+        fontWeight: '600',
+        paddingLeft: 10,
     },
 
     whiteNormalCenterText: {
@@ -183,9 +228,6 @@ export default StyleSheet.create({
 
     flatlist: {
         gap: dimensions.itemGap,
-        paddingBottom: dimensions.appNormalPadding,
-        paddingLeft: dimensions.appNormalPadding,
-        paddingRight: dimensions.appNormalPadding,
     },
 
     flatlistItem: {
@@ -193,7 +235,7 @@ export default StyleSheet.create({
         padding: 15,
         marginVertical: 5,
         backgroundColor: colors.appThirdColor,
-        borderRadius: 10
+        borderRadius: dimensions.radius,
     },
 
 });

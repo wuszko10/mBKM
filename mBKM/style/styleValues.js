@@ -14,6 +14,7 @@ export const dimensions = {
   itemMargin: 15,
   itemPadding: 10,
 
+  radius: 15,
   inputRadius: 30,
   inputPadding: 20,
   inputHigh: 50,
@@ -33,15 +34,15 @@ export const dimensions = {
 };
 
 export const colors = {
-
-
   appBg: '#E0E9F2',
   appFirstColor: '#002B44',  // dark grey     | buttonsInactive
   appSecColor: '#FFA515',    // pink          | buttonsActive, highlights
-  appThirdColor: '#ECECEC',  // light grey    | inputOutlines
+  appThirdColor: '#F0F2F4',  // light grey    | inputOutlines
   appWhite: '#FFFFFF',       // white
   textColorWhite: 'white',
   textColorBlack: 'black',
   textColorGray: '#696969',
-
+  gray: '#D6D6D6',
+  placeholderGray: '#979797',
+  lightBlue: '#E0E9F2',
 };

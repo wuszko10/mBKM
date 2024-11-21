@@ -1,155 +1,76 @@
-import React,{ useMemo,useState } from "react";
-import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
-import { colors } from "../style/styleValues.js";
-import DropDownPicker from 'react-native-dropdown-picker';
-import { Ticket } from "../repositories/interfaces.tsx";
-import { useNavigation } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { discounts,ticketsData } from "../repositories/Data.tsx";
-
-type RootStackParamList = {
-    Purchase: undefined;
-    SummaryPurchaseScreen: {selectedTicket: Ticket, selectedDiscount: string, finalPrice: number};
-};
-
-type NavigationProp = StackNavigationProp<RootStackParamList, 'SummaryPurchaseScreen'>;
+import React from "react";
+import { SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
+import { colors,dimensions } from "../style/styleValues.js";
+import Header from "../components/Header.tsx";
+import stylesApp from "../style/stylesApp.js";
+import TicketSelector from "../components/TicketSelector.tsx";
+import DateSelector from "../components/DateSelector.tsx";
+import TicketAndReliefTypeSelector from "../components/TicketAndReliefTypeSelector.tsx";
+import { usePurchaseLogic } from "../components/hooks/usePurchaseLogic.tsx";
 
 const Purchase = () => {
 
-    const navigation = useNavigation<NavigationProp>();
-
-    const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
-    const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
-    const [openDiscountPicker, setOpenDiscountPicker] = useState(false);
-    const [selectedDiscount, setSelectedDiscount] = useState<string | null>(null);
-    const [finalPrice, setFinalPrice] = useState<number | null>(null);
-    const [singleTicket, setSingleTicket] = useState(false);
-    const [seasonTicket, setSeasonTicket] = useState(false);
-
-
-    function handleSingleTicket(){
-        setSingleTicket(!singleTicket);
-        if(seasonTicket){
-            setSeasonTicket(!seasonTicket);
-        }
-        setSelectedDiscount(null);
-        setFinalPrice(null);
-        setOpenDiscountPicker(false);
-    }
-
-    function handleSeasonTicket() {
-        setSeasonTicket(!seasonTicket);
-        if(singleTicket){
-            setSingleTicket(!singleTicket);
-        }
-        setSelectedDiscount(null);
-        setFinalPrice(null);
-        setOpenDiscountPicker(false);
-    }
-
-    const filteredTickets = ticketsData.filter((ticket) => {
-        if (singleTicket && ticket.type === 'jednorazowy') {
-            return true;
-        }
-        if (seasonTicket && ticket.type === 'okresowy') {
-            return true;
-        }
-        return false;
-    });
-
-    const filteredDiscounts = discounts
-        .filter(discount => (singleTicket && discount.type === "jednorazowy") || (seasonTicket && discount.type === "okresowy"))
-        .map(discount => ({
-            label: discount.name+" ("+discount.discountPercentage+"%)",
-            value: discount._id
-        }));
-
-    const calculateFinalPrice = () => {
-        if (selectedTicket && selectedDiscount) {
-            const selectedDiscountData = discounts.find(discount => discount._id === selectedDiscount);
-            if (selectedDiscountData) {
-                const discountFactor = selectedDiscountData.discountPercentage / 100;
-                const discountedPrice = selectedTicket.price * discountFactor;
-                setFinalPrice(discountedPrice);
-            }
-        }
-    };
-
-    const handleTicketSelect = (ticket: Ticket) => {
-        setSelectedTicket(ticket);
-        setSelectedTicketId(ticket._id);
-        setOpenDiscountPicker(false);
-    };
-
-    const handleSummaryPurchase = () => {
-        if (selectedTicket && selectedDiscount && finalPrice !== null) {
-            navigation.navigate('SummaryPurchaseScreen', {
-                selectedTicket,
-                selectedDiscount,
-                finalPrice
-            });
-        } else {
-            console.log('Brak wystarczających danych do podsumowania transakcji.');
-        }
-    };
+    const {
+        setSelectedTicket,
+        selectedTicketId,
+        setSelectedTicketId,
+        selectedDiscount,
+        setSelectedDiscount,
+        finalPrice,
+        setFinalPrice,
+        singleTicket,
+        seasonTicket,
+        selectedDate,
+        setSelectedDate,
+        showDate,
+        setShowDate,
+        handleSingleTicket,
+        handleSeasonTicket,
+        handleSummaryPurchase,
+        calculateFinalPrice,
+    } = usePurchaseLogic();
 
     return (
-        <SafeAreaView>
-            <Text>Kup bilet</Text>
+        <SafeAreaView style={stylesApp.container}>
 
-            <View>
-                <Text>Wybierz rodzaj biletu</Text>
-                <View>
-                    <TouchableOpacity onPress={handleSingleTicket} style={singleTicket ? localStyle.ticketActiveItem : localStyle.ticketItem}>
-                        <Text>Bilet jednorazowy</Text>
-                    </TouchableOpacity>
-                    <TouchableOpacity onPress={handleSeasonTicket} style={seasonTicket ? localStyle.ticketActiveItem : localStyle.ticketItem}>
-                        <Text>Bilet okresowy</Text>
-                    </TouchableOpacity>
-                </View>
+            <Header title="Kup bilet"/>
+
+            <View style={stylesApp.contentBox}>
+
+                <TicketSelector
+                    singleTicket={singleTicket}
+                    seasonTicket={seasonTicket}
+                    handleSingleTicket={handleSingleTicket}
+                    handleSeasonTicket={handleSeasonTicket}
+                />
 
                 {singleTicket || seasonTicket ?(
-                    <View>
-                        <FlatList
-                            data={filteredTickets}
-                            keyExtractor={(item) => item._id}
-                            renderItem={({ item }) => (
-                                <TouchableOpacity onPress={() => handleTicketSelect(item)} style={[
-                                        localStyle.item,
-                                    selectedTicketId === item._id && localStyle.selectedItem
-                                    ]}>
-                                    <Text style={localStyle.itemText}>Bilet {item.type}</Text>
-                                    <Text style={localStyle.itemText}>Linie: {item.lines}</Text>
-                                    {item.period != null ? (<Text style={localStyle.itemText}>Okres: {item.period}{item.type === "jednorazowy" ? "-minutowy" : "-miesięczny"}</Text>) : null}
-                                    <Text style={localStyle.itemText}>Cena biletu normalnego: {item.price} PLN</Text>
-                                </TouchableOpacity>
-                            )}
-                        />
-
-                        <DropDownPicker
-                            open={openDiscountPicker}
-                            value={selectedDiscount}
-                            items={filteredDiscounts}
-                            setOpen={setOpenDiscountPicker}
-                            setValue={setSelectedDiscount}
-                            placeholder="Wybierz ulgę"
-                            style={localStyle.dropdown}
-                            dropDownContainerStyle={localStyle.dropdownContainer}
-                            onChangeValue={calculateFinalPrice}
-                        />
-                    </View>
+                    <TicketAndReliefTypeSelector
+                        setSelectedTicket={setSelectedTicket}
+                        selectedTicketId={selectedTicketId}
+                        setSelectedTicketId={setSelectedTicketId}
+                        selectedDiscount={selectedDiscount}
+                        setSelectedDiscount={setSelectedDiscount}
+                        singleTicket={singleTicket}
+                        seasonTicket={seasonTicket}
+                        setFinalPrice={setFinalPrice}
+                        calculateFinalPrice={calculateFinalPrice}
+                    />
                 ): null}
 
-            </View>
-            {finalPrice !== null && (
-                <View>
-                    <Text>Cena końcowa: {finalPrice.toFixed(2)} PLN</Text>
+                {seasonTicket ? (
+                    <DateSelector showDate={showDate} setShowDate={setShowDate} selectedDate={selectedDate} setSelectedDate={setSelectedDate} calculateFinalPrice={calculateFinalPrice}/>
 
-                    {/* Przycisk do przejścia do podsumowania transakcji */}
-                    <TouchableOpacity
-                        onPress={handleSummaryPurchase}
-                    >
-                        <Text>Podsumowanie transakcji</Text>
+                ) : null}
+
+            </View>
+
+            {finalPrice !== null && (
+                <View style={localStyle.summaryBox}>
+                    <Text style={localStyle.finalPrice}>Cena końcowa: <Text style={stylesApp.boldText}>{finalPrice.toFixed(2)} zł</Text></Text>
+
+                    <TouchableOpacity onPress={handleSummaryPurchase}  style={stylesApp.mainButton}>
+                        <Text style={stylesApp.whiteBoldCenterText}>Podsumowanie transakcji</Text>
                     </TouchableOpacity>
                 </View>
             )}
@@ -160,31 +81,23 @@ const Purchase = () => {
 
 const localStyle = StyleSheet.create({
     ticketItem: {
-        backgroundColor: colors.appThirdColor,
+        flex: 1,
+        alignItems: "center",
+        paddingVertical: 15,
+        borderRadius: dimensions.radius,
     },
 
-    ticketActiveItem: {
-        backgroundColor: colors.appBg,
+    summaryBox:{
+        marginTop: 45,
+        bottom: 10,
+        alignItems: "center",
+        gap: 12,
     },
-    item: {
-        padding: 10,
-        backgroundColor: '#f0f0f0',
-        marginVertical: 5,
-        borderRadius: 5,
-    },
-    selectedItem: {
-        backgroundColor: '#b0e0ff',
-    },
-    itemText: {
-        fontSize: 16,
-    },
-    dropdown: {
-        marginVertical: 10,
-        backgroundColor: '#f0f0f0',
-    },
-    dropdownContainer: {
-        backgroundColor: '#f0f0f0',
-    },
+    finalPrice: {
+        color: colors.textColorBlack,
+        fontSize: dimensions.largeTextSize,
+    }
+
 });
 
 export default Purchase;
