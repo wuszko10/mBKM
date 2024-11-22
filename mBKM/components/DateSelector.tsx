@@ -8,10 +8,9 @@ type DateSelectorProps = {
     setShowDate: React.Dispatch<React.SetStateAction<boolean>>;
     selectedDate: Date;
     setSelectedDate: React.Dispatch<React.SetStateAction<Date>>;
-    calculateFinalPrice: () => void;
 };
 const DateSelector: React.FC<DateSelectorProps> = (
-    {showDate, setShowDate, selectedDate, setSelectedDate, calculateFinalPrice}
+    {showDate, setShowDate, selectedDate, setSelectedDate}
 ) => {
 
     const [showPicker, setShowPicker] = useState(false);
@@ -27,7 +26,6 @@ const DateSelector: React.FC<DateSelectorProps> = (
         setSelectedDate(currentDate);
         setShowPicker(false);
         setShowDate(true);
-        calculateFinalPrice();
     };
 
     const showMode = (currentMode: any) => {

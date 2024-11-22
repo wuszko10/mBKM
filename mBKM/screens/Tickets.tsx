@@ -1,7 +1,7 @@
 import React from 'react';
 import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../style/stylesApp.js";
-import { tickets } from "../repositories/Data.tsx";
+import { tickets,ticketsData } from "../repositories/Data.tsx";
 import { colors,dimensions } from "../style/styleValues.js";
 import { TicketsPurchased } from "../repositories/interfaces.tsx";
 import { useNavigation } from "@react-navigation/native";
@@ -26,14 +26,23 @@ const Tickets = () => {
         navigation.navigate('TicketDetails', {selectedTicket: item});
     }
 
+    function getTicketInfo(ticketTypeId: number) {
+        return ticketsData.find(type => type._id === ticketTypeId);
+    }
+
     const renderItem= ({item} : {item: TicketsPurchased}) => {
 
         return (
             <TouchableOpacity onPress={() => handleTicketDetails(item)}>
                 <View style={stylesApp.flatlistItem}>
+                    {getTicketInfo(item.ticketTypeId) && (
+                        <Text style={localStyles.text}>
+                            Bilet {getTicketInfo(item.ticketTypeId)?.type} na {getTicketInfo(item.ticketTypeId)?.lines} linię
+                        </Text>
+                    )}
                     <Text style={localStyles.text}>Numer biletu: <Text style={stylesApp.boldText}>{item.number}</Text></Text>
                     <Text style={localStyles.text}>Cena: {item.finalPrice.toFixed(2)} zł</Text>
-                    <Text style={localStyles.text}>Date: {new Date(item.purchaseDate).toLocaleString()}</Text>
+                    <Text style={localStyles.text}>Date zakupu: {new Date(item.purchaseDate).toLocaleString()}</Text>
                 </View>
             </TouchableOpacity>
         )

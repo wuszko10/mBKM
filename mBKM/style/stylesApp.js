@@ -1,10 +1,15 @@
 import { StyleSheet } from "react-native";
 import { colors, dimensions } from "./styleValues";
+import { colorOpacity } from "twrnc/dist/esm/resolve/color";
 
 export default StyleSheet.create({
 
     appContainer: {
         flex: 1,
+        backgroundColor: colors.appWhite,
+    },
+
+    scrollContainer: {
         backgroundColor: colors.appWhite,
     },
 
@@ -165,6 +170,11 @@ export default StyleSheet.create({
         fontWeight: 'bold',
     },
 
+    itemText: {
+        fontSize: 16,
+        color: colors.textColorBlack,
+    },
+
     inputError: {
         color: 'red',
         fontSize: dimensions.smallTextSize,
@@ -238,4 +248,40 @@ export default StyleSheet.create({
         borderRadius: dimensions.radius,
     },
 
+
+    dropdown: {
+        backgroundColor: colors.appThirdColor,
+        borderWidth: 0,
+        borderRadius: dimensions.radius,
+        zIndex: 10,
+    },
+    dropdownContainer: {
+        backgroundColor: colors.lightBlue,
+        borderWidth: 0,
+        marginTop: 4,
+        padding: 5,
+    },
+    summaryBox:{
+        marginVertical: 45,
+        bottom: 10,
+        alignItems: "center",
+        gap: 12,
+    },
+    finalPrice: {
+        color: colors.textColorBlack,
+        fontSize: dimensions.largeTextSize,
+    },
+    ticketBox: {
+        backgroundColor: colors.appThirdColor,
+        borderRadius: dimensions.radius,
+        gap: dimensions.appNormalPadding+10,
+        flexDirection: "row",
+        alignItems: "center"
+    },
+    ticketIcon: {
+        padding: dimensions.appNormalPadding,
+        color: colors.appWhite,
+        backgroundColor: colors.appFirstColor,
+        borderRadius: dimensions.radius,
+    }
 });

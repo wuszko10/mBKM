@@ -6,7 +6,7 @@ export interface TransactionData {
 }
 
 export interface Ticket {
-    _id: string;
+    _id: number;
     type: string;
     lines: string;
     period?: number;
@@ -17,8 +17,9 @@ export interface TicketsPurchased {
     _id: number;
     userId: number;
     number: string;
-    ticketTypeId: string;
-    status: 'zakupiony' | 'skasowany' | 'nieważny';
+    ticketTypeId: number;
+    status: 'zakupiony' | 'skasowany' | 'ważny' | 'nieważny';
+    lineId: number,
     discountId: string;
     purchaseDate: string;
     startDate: string | null;

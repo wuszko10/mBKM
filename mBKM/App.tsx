@@ -24,6 +24,7 @@ import Mci from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from "./style/styleValues.js";
 import stylesApp from "./style/stylesApp";
 import Purchase from "./screens/Purchase.tsx";
+import SelectingPurchaseConfiguration from "./screens/SelectingPurchaseConfiguration.tsx";
 
 
 type RootStackParamList = {
@@ -36,6 +37,7 @@ type RootStackParamList = {
     Register: undefined;
     Welcome: undefined;
     UserPanel: undefined;
+    SelectingPurchaseConfiguration: undefined;
     SummaryPurchaseScreen: undefined;
     TicketDetails: undefined;
     TopUpScreen: undefined;
@@ -92,11 +94,12 @@ function MainApp() {
                 ):(
                     <>
                         <Stack.Screen name="UserPanel" component={UserPanel} options={{ headerShown: false }} />
-                        <Stack.Screen name="SummaryPurchaseScreen" component={SummaryPurchaseScreen}
-                                      options={{ headerShown: false }} />
                         <Stack.Screen name="TicketDetails" component={TicketDetails} options={{ headerShown: false }} />
                         <Stack.Screen name="TopUpScreen" component={TopUpScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="Purchase" component={Purchase} options={{ headerShown: false }} />
+                        <Stack.Screen name="SelectingPurchaseConfiguration" component={SelectingPurchaseConfiguration} options={{ headerShown: false }} />
+                        <Stack.Screen name="SummaryPurchaseScreen" component={SummaryPurchaseScreen}
+                                      options={{ headerShown: false }} />
                     </>
                 )}
             </Stack.Navigator>
