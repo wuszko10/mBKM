@@ -3,7 +3,7 @@ import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "rea
 import { colors,dimensions } from "../style/styleValues.js";
 import stylesApp from "../style/stylesApp.js";
 import DropDownPicker from "react-native-dropdown-picker";
-import { discounts,lines,ticketsData } from "../repositories/Data.tsx";
+import { reliefs,lines,ticketsData } from "../repositories/Data.tsx";
 import { Ticket } from "../repositories/interfaces.tsx";
 
 type TicketAndReliefTypeSelectorProps = {

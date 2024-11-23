@@ -44,7 +44,7 @@ const Profile = () => {
                                    value={email}
                                    onChangeText={setEmail}
                                    autoCapitalize="none"
-                                   placeholderTextColor={colors.textColorGray}
+                                   placeholderTextColor={colors.gray}
                         />
 
                         <View style={[stylesApp.input,tw`flex flex-row items-center justify-between`]}>
@@ -54,7 +54,7 @@ const Profile = () => {
                                 value={password}
                                 autoCapitalize="none"
                                 secureTextEntry={showPassword}
-                                placeholderTextColor={colors.textColorGray}
+                                placeholderTextColor={colors.gray}
                                 onChangeText={(text) => setPassword(text)}
                             />
 
@@ -75,7 +75,7 @@ const Profile = () => {
                                    value={firstName}
                                    onChangeText={setFirstName}
                                    autoCapitalize="none"
-                                   placeholderTextColor={colors.textColorGray}
+                                   placeholderTextColor={colors.gray}
                         />
 
                         <TextInput style={stylesApp.input}
@@ -83,7 +83,7 @@ const Profile = () => {
                                    value={lastName}
                                    onChangeText={setLastName}
                                    autoCapitalize="none"
-                                   placeholderTextColor={colors.textColorGray}
+                                   placeholderTextColor={colors.gray}
                         />
 
                         <TextInput style={stylesApp.input}
@@ -92,7 +92,7 @@ const Profile = () => {
                                    onChangeText={setPesel}
                                    autoCapitalize="none"
                                    keyboardType="numeric"
-                                   placeholderTextColor={colors.textColorGray}
+                                   placeholderTextColor={colors.gray}
                         />
 
 
@@ -104,7 +104,7 @@ const Profile = () => {
                                    value={streetName}
                                    onChangeText={setStreetName}
                                    autoCapitalize="none"
-                                   placeholderTextColor={colors.textColorGray}
+                                   placeholderTextColor={colors.gray}
                         />
 
                         <TextInput style={stylesApp.input}
@@ -112,7 +112,7 @@ const Profile = () => {
                                    value={streetNumber}
                                    onChangeText={setStreetNumber}
                                    autoCapitalize="none"
-                                   placeholderTextColor={colors.textColorGray}
+                                   placeholderTextColor={colors.gray}
                         />
 
                         <TextInput style={stylesApp.input}
@@ -120,7 +120,7 @@ const Profile = () => {
                                    value={apartmentNumber}
                                    onChangeText={setApartmentNumber}
                                    autoCapitalize="none"
-                                   placeholderTextColor={colors.textColorGray}
+                                   placeholderTextColor={colors.gray}
                         />
 
                         <TextInput style={stylesApp.input}
@@ -128,7 +128,7 @@ const Profile = () => {
                                    value={postalCode}
                                    onChangeText={setPostalCode}
                                    autoCapitalize="none"
-                                   placeholderTextColor={colors.textColorGray}
+                                   placeholderTextColor={colors.gray}
                         />
 
                         <TextInput style={stylesApp.input}
@@ -136,7 +136,7 @@ const Profile = () => {
                                    value={town}
                                    onChangeText={setTown}
                                    autoCapitalize="none"
-                                   placeholderTextColor={colors.textColorGray}
+                                   placeholderTextColor={colors.gray}
                         />
 
                         <TextInput style={stylesApp.input}
@@ -144,7 +144,7 @@ const Profile = () => {
                                    value={phoneNumber}
                                    onChangeText={setPhoneNumber}
                                    autoCapitalize="none"
-                                   placeholderTextColor={colors.textColorGray}
+                                   placeholderTextColor={colors.gray}
                         />
                     </View>
                 </ScrollView>

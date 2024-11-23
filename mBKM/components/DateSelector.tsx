@@ -38,7 +38,7 @@ const DateSelector: React.FC<DateSelectorProps> = (
 
             <TouchableOpacity onPress={() => showMode('date')} style={localStyle.dateButton}>
                 { showDate ? (
-                    <Text>{selectedDate.toLocaleString()}</Text>
+                    <Text>{selectedDate.toLocaleDateString()}</Text>
                 ) : (
                     <Text>Wybierz datę</Text>
                 )}
@@ -50,7 +50,7 @@ const DateSelector: React.FC<DateSelectorProps> = (
                     testID="dateTimePicker"
                     value={selectedDate}
                     mode={mode}
-                    is24Hour={true}
+                    is24Hour={false}
                     minimumDate={new Date()}
                     onChange={onChange}
                 />

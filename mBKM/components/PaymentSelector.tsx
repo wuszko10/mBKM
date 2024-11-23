@@ -1,13 +1,58 @@
-import { Text,View } from "react-native";
+import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
+import { colors,dimensions } from "../style/styleValues.js";
+import Entypo from "react-native-vector-icons/Entypo";
+import React from "react";
+import { PaymentMethod } from "../repositories/interfaces.tsx";
 
-const PaymentSelector = () => {
+
+type PaymentSelectorProps = {
+    paymentMethodId: number;
+    setPaymentMethodId: React.Dispatch<React.SetStateAction<number>>;
+    methods: PaymentMethod[];
+};
+const PaymentSelector: React.FC<PaymentSelectorProps> = (
+    {
+        paymentMethodId,
+        setPaymentMethodId,
+        methods
+    }) => {
+
+    const handlePaymentMethod = (id: number) => {
+        setPaymentMethodId(id);
+    }
+
     return (
-        <View>
-            <Text>
-                Rodzaje płaności
-            </Text>
+        <View style={localStyle.box}>
+
+            {methods.map(method => (
+                <TouchableOpacity key={method.id} style={localStyle.methodBox} onPress={() => handlePaymentMethod(method.id)}>
+                    <Entypo name={method.icon} size={24} style={ paymentMethodId === method.id ? {color: colors.textColorBlack} : {color: colors.darkGray }} />
+                    <Text style={ paymentMethodId === method.id ? {color: colors.textColorBlack} : {color: colors.darkGray }}>{method.label}</Text>
+                </TouchableOpacity>
+            ))}
+
         </View>
     )
 }
+
+const localStyle = StyleSheet.create({
+    box: {
+        flex: 0.7,
+        flexDirection: "row",
+        flexWrap: "wrap",
+        gap: 10,
+    },
+    methodBox: {
+        flexGrow: 0.5,
+        flexShrink: 0.5,
+        flexBasis: 100,
+        height: 80,
+        gap: 4,
+        borderRadius: dimensions.radius,
+        alignItems: "center",
+        justifyContent: "center",
+        backgroundColor: colors.appThirdColor,
+    },
+})
 
 export default PaymentSelector;

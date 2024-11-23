@@ -27,9 +27,20 @@ export interface TicketsPurchased {
     finalPrice: number;
 }
 
-export interface Discount {
+export interface Reliefs {
     _id: string;
     name: string;
     type: string;
     discountPercentage: number;
+}
+
+export interface PaymentMethod {
+    id: number;
+    icon: string;
+    label: string;
+}
+
+export interface Line {
+    _id: number;
+    line: string;
 }

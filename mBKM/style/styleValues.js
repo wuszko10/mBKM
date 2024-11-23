@@ -41,7 +41,7 @@ export const colors = {
   appWhite: '#FFFFFF',       // white
   textColorWhite: 'white',
   textColorBlack: 'black',
-  textColorGray: '#696969',
+  darkGray: '#6E6F70',
   gray: '#D6D6D6',
   placeholderGray: '#979797',
   lightBlue: '#E0E9F2',

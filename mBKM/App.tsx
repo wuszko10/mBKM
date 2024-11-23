@@ -25,6 +25,7 @@ import { colors } from "./style/styleValues.js";
 import stylesApp from "./style/stylesApp";
 import Purchase from "./screens/Purchase.tsx";
 import SelectingPurchaseConfiguration from "./screens/SelectingPurchaseConfiguration.tsx";
+import PaymentScreen from "./screens/PaymentScreen.tsx";
 
 
 type RootStackParamList = {
@@ -41,6 +42,7 @@ type RootStackParamList = {
     SummaryPurchaseScreen: undefined;
     TicketDetails: undefined;
     TopUpScreen: undefined;
+    PaymentScreen: undefined;
 };
 
 
@@ -98,8 +100,8 @@ function MainApp() {
                         <Stack.Screen name="TopUpScreen" component={TopUpScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="Purchase" component={Purchase} options={{ headerShown: false }} />
                         <Stack.Screen name="SelectingPurchaseConfiguration" component={SelectingPurchaseConfiguration} options={{ headerShown: false }} />
-                        <Stack.Screen name="SummaryPurchaseScreen" component={SummaryPurchaseScreen}
-                                      options={{ headerShown: false }} />
+                        <Stack.Screen name="SummaryPurchaseScreen" component={SummaryPurchaseScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="PaymentScreen" component={PaymentScreen} options={{ headerShown: false }} />
                     </>
                 )}
             </Stack.Navigator>

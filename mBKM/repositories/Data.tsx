@@ -1,4 +1,4 @@
-import { Ticket,TicketsPurchased } from "./interfaces.tsx";
+import { Line,PaymentMethod,Reliefs,Ticket,TicketsPurchased,TransactionData } from "./interfaces.tsx";
 
 export const ticketsData: Ticket[] = [
     {
@@ -44,7 +44,7 @@ export const ticketsData: Ticket[] = [
     }
 ];
 
-export const discounts = [
+export const reliefs: Reliefs[] = [
     {
         _id: "discount_id_1",
         name: "normalny",
@@ -77,7 +77,7 @@ export const discounts = [
     }
 ];
 
-export const transactions = [
+export const transactions: TransactionData[] = [
     {
         transactionId: "TXN001",
         userId: "USR001",
@@ -145,7 +145,7 @@ export const tickets: TicketsPurchased[] = [
     }
 ];
 
-export const lines = [
+export const lines: Line[] = [
     {
         _id: 405201,
         line: 'wszystkie',
@@ -170,4 +170,10 @@ export const lines = [
         _id: 986785,
         line: 'A67',
     },
-]
+];
+
+export const paymentMethods: PaymentMethod[] = [
+    { id: 1, icon: 'wallet', label: 'Portfel' },
+    { id: 2, icon: 'credit-card', label: 'Karta' },
+    { id: 3, icon: 'credit', label: 'Online' },
+];

@@ -28,6 +28,12 @@ export default StyleSheet.create({
         gap: dimensions.itemGap,
     },
 
+    rowContainer: {
+        flexDirection: "row",
+        gap: 20,
+        alignItems: "center",
+    },
+
     loginRegisterContainer: {
         flex: 1,
         display: 'flex',
@@ -283,5 +289,50 @@ export default StyleSheet.create({
         color: colors.appWhite,
         backgroundColor: colors.appFirstColor,
         borderRadius: dimensions.radius,
-    }
+    },
+
+    paymentContainer: {
+        flex: 1,
+        justifyContent:"center",
+        alignItems: "center",
+        paddingHorizontal: dimensions.appPadding,
+        backgroundColor: colors.appWhite,
+        gap: 30,
+    },
+
+    paymentBox: {
+        flexDirection: "column",
+        gap: dimensions.itemGap,
+        alignSelf: "stretch",
+    },
+
+    popupContainer: {
+        flex: 1,
+        justifyContent:"center",
+        alignItems: "center",
+        backgroundColor: colors.appFirstColor,
+        gap: 30,
+        paddingHorizontal: dimensions.appPadding,
+    },
+
+    popupText: {
+        textAlign: "center",
+        fontSize: dimensions.largeTextSize,
+        fontWeight: "bold",
+        color: colors.appWhite,
+    },
+
+    popupBtn: {
+        flex: 1,
+        backgroundColor: colors.appWhite,
+        borderRadius: dimensions.radius,
+        paddingVertical: 10,
+    },
+
+    whiteButton: {
+        backgroundColor: colors.appWhite,
+        borderRadius: dimensions.radius,
+        paddingVertical: 10,
+        paddingHorizontal: dimensions.appPadding,
+    },
 });

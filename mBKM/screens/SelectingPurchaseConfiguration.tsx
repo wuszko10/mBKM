@@ -3,7 +3,7 @@ import { SafeAreaView,Text,TouchableOpacity,View } from "react-native";
 import Header from "../components/Header.tsx";
 import stylesApp from "../style/stylesApp.js";
 import DateSelector from "../components/DateSelector.tsx";
-import { discounts,lines } from "../repositories/Data.tsx";
+import { reliefs,lines } from "../repositories/Data.tsx";
 import DropdownSelector from "../components/DropdownSelector.tsx";
 import { Ticket } from "../repositories/interfaces.tsx";
 import { useNavigation,useRoute } from "@react-navigation/native";
@@ -51,7 +51,7 @@ const SelectingPurchaseConfiguration = () => {
         setShowDate(false);
     }
 
-    const filteredDiscounts = discounts
+    const filteredDiscounts = reliefs
         .filter(discount => (singleTicket && discount.type === "jednorazowy") || (seasonTicket && discount.type === "okresowy"))
         .map(discount => ({
             label: discount.name+" ("+discount.discountPercentage+"%)",
@@ -67,7 +67,7 @@ const SelectingPurchaseConfiguration = () => {
 
     const finalSummary = () => {
         if (selectedTicket && selectedRelief) {
-            const selectedDiscountData = discounts.find(discount => discount._id === selectedRelief);
+            const selectedDiscountData = reliefs.find(discount => discount._id === selectedRelief);
             if (selectedDiscountData) {
                 const discountFactor = selectedDiscountData.discountPercentage / 100;
                 const discountedPrice = selectedTicket.price * discountFactor;
@@ -76,10 +76,9 @@ const SelectingPurchaseConfiguration = () => {
         }
     }
 
-    console.log(selectedTicket.lines);
     const handleSummaryPurchase = () => {
-        if (!showDate && selectedRelief && selectedLines) {
-            if (selectedTicket.lines === "1" && selectedRelief && selectedLines) {
+        if (!showDate && selectedRelief) {
+            if (selectedTicket.lines === "1" && selectedLines) {
                 navigation.navigate("SummaryPurchaseScreen",{
                     selectedTicket: selectedTicket,
                     selectedLines: selectedLines || 0,
