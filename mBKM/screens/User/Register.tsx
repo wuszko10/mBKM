@@ -1,7 +1,7 @@
 import React,{ useState } from "react";
 import { ScrollView,Text,TextInput,TouchableOpacity,View } from "react-native";
-import stylesApp from "../style/stylesApp.js";
-import { colors } from "../style/styleValues.js";
+import stylesApp from "../../style/stylesApp.js";
+import { colors } from "../../style/styleValues.js";
 import tw from "twrnc";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";

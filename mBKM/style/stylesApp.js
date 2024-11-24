@@ -188,6 +188,10 @@ export default StyleSheet.create({
         marginTop: 4,
     },
 
+    blackText: {
+        color: colors.textColorBlack
+    },
+
     /*
 
 

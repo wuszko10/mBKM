@@ -1,9 +1,9 @@
 import React from "react";
 import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
-import stylesApp from "../style/stylesApp.js";
+import stylesApp from "../../style/stylesApp.js";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import { colors,dimensions } from "../style/styleValues.js";
+import { colors,dimensions } from "../../style/styleValues.js";
 
 type RootStackPramList = {
     Welcome: undefined;

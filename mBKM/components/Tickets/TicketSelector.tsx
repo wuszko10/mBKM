@@ -1,6 +1,6 @@
 import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
-import stylesApp from "../style/stylesApp.js";
-import { colors,dimensions } from "../style/styleValues.js";
+import stylesApp from "../../style/stylesApp.js";
+import { colors,dimensions } from "../../style/styleValues.js";
 import React from "react";
 
 type TicketSelectorProps = {

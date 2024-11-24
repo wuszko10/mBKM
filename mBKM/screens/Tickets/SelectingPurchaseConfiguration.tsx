@@ -1,11 +1,11 @@
 import React,{ useEffect,useState } from "react";
 import { SafeAreaView,Text,TouchableOpacity,View } from "react-native";
-import Header from "../components/Header.tsx";
-import stylesApp from "../style/stylesApp.js";
-import DateSelector from "../components/DateSelector.tsx";
-import { reliefs,lines } from "../repositories/Data.tsx";
-import DropdownSelector from "../components/DropdownSelector.tsx";
-import { Ticket } from "../repositories/interfaces.tsx";
+import Header from "../../components/Global/Header.tsx";
+import stylesApp from "../../style/stylesApp.js";
+import DateSelector from "../../components/Tickets/DateSelector.tsx";
+import { reliefs,lines } from "../../repositories/Data.tsx";
+import DropdownSelector from "../../components/Tickets/DropdownSelector.tsx";
+import { Ticket } from "../../repositories/interfaces.tsx";
 import { useNavigation,useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
@@ -21,12 +21,15 @@ type RootStackParamList = {
     Purchase: undefined;
     SelectingPurchaseConfiguration: undefined;
     Home: undefined;
-    SummaryPurchaseScreen: {
-        selectedTicket: Ticket,
-        selectedLines?: number,
-        selectedRelief: string,
-        selectedDate?: string,
-        finalPrice: number
+    PaymentStack: {
+        screen: 'SummaryPurchaseScreen',
+        params: {
+            selectedTicket: Ticket,
+            selectedLines?: number,
+            selectedRelief: string,
+            selectedDate?: string,
+            finalPrice: number
+        }
     };
 };
 
@@ -79,38 +82,52 @@ const SelectingPurchaseConfiguration = () => {
     const handleSummaryPurchase = () => {
         if (!showDate && selectedRelief) {
             if (selectedTicket.lines === "1" && selectedLines) {
-                navigation.navigate("SummaryPurchaseScreen",{
-                    selectedTicket: selectedTicket,
-                    selectedLines: selectedLines || 0,
-                    selectedRelief: selectedRelief || "",
-                    finalPrice: finalPrice,
+                navigation.navigate('PaymentStack', {
+                    screen: 'SummaryPurchaseScreen',
+                    params: {
+                        selectedTicket: selectedTicket,
+                        selectedLines: selectedLines || 0,
+                        selectedRelief: selectedRelief || "",
+                        finalPrice: finalPrice,
+                    }
                 });
             } else {
                 let lineNumber = lineObj?._id;
-                navigation.navigate("SummaryPurchaseScreen",{
-                    selectedTicket: selectedTicket,
-                    selectedLines: lineNumber || 0,
-                    selectedRelief: selectedRelief || "",
-                    finalPrice: finalPrice,
+                navigation.navigate('PaymentStack', {
+                    screen: 'SummaryPurchaseScreen',
+                    params: {
+                        selectedTicket: selectedTicket,
+                        selectedLines: lineNumber || 0,
+                        selectedRelief: selectedRelief || "",
+                        finalPrice: finalPrice,
+                    },
+
                 });
             }
         } else if ( showDate && selectedRelief) {
             if (selectedTicket.lines === "1" && selectedLines) {
-                navigation.navigate("SummaryPurchaseScreen",{
-                    selectedTicket: selectedTicket,
-                    selectedLines: selectedLines || 0,
-                    selectedRelief: selectedRelief || "",
-                    selectedDate: selectedDate.toISOString(),
-                    finalPrice: finalPrice,
+                navigation.navigate('PaymentStack', {
+                    screen: 'SummaryPurchaseScreen',
+                    params: {
+                        selectedTicket: selectedTicket,
+                        selectedLines: selectedLines || 0,
+                        selectedRelief: selectedRelief || "",
+                        selectedDate: selectedDate.toISOString(),
+                        finalPrice: finalPrice,
+                    },
+
                 });
             } else {
                 let lineNumber = lineObj?._id;
-                navigation.navigate("SummaryPurchaseScreen",{
-                    selectedTicket: selectedTicket,
-                    selectedLines: lineNumber || 0,
-                    selectedRelief: selectedRelief || "",
-                    selectedDate: selectedDate.toISOString(),
-                    finalPrice: finalPrice,
+                navigation.navigate('PaymentStack', {
+                    screen: 'SummaryPurchaseScreen',
+                    params: {
+                        selectedTicket: selectedTicket,
+                        selectedLines: lineNumber || 0,
+                        selectedRelief: selectedRelief || "",
+                        selectedDate: selectedDate.toISOString(),
+                        finalPrice: finalPrice,
+                    }
                 });
             }
         } else {

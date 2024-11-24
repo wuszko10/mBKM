@@ -1,10 +1,10 @@
 import React,{ SetStateAction,useState } from "react";
 import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
-import { colors,dimensions } from "../style/styleValues.js";
-import stylesApp from "../style/stylesApp.js";
+import { colors,dimensions } from "../../style/styleValues.js";
+import stylesApp from "../../style/stylesApp.js";
 import DropDownPicker from "react-native-dropdown-picker";
-import { reliefs,lines,ticketsData } from "../repositories/Data.tsx";
-import { Ticket } from "../repositories/interfaces.tsx";
+import { reliefs,lines,ticketsData } from "../../repositories/Data.tsx";
+import { Ticket } from "../../repositories/interfaces.tsx";
 
 type TicketAndReliefTypeSelectorProps = {
     setSelectedTicket: React.Dispatch<SetStateAction<Ticket | null>>;

@@ -1,14 +1,14 @@
 import React from 'react';
 import { FlatList,SafeAreaView,ScrollView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
-import stylesApp from "../style/stylesApp.js";
-import { colors,dimensions } from "../style/styleValues.js";
+import stylesApp from "../../style/stylesApp.js";
+import { colors,dimensions } from "../../style/styleValues.js";
 import LinearGradient from 'react-native-linear-gradient';
-import { Ticket,TransactionData } from "../repositories/interfaces.tsx";
-import { transactions } from "../repositories/Data.tsx";
+import { Ticket,TopUpTransaction } from "../../repositories/interfaces.tsx";
+import { topUpTransactions } from "../../repositories/Data.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/FontAwesome";
-import Header from "../components/Header.tsx";
+import Header from "../../components/Global/Header.tsx";
 
 
 type RootStackParamList = {
@@ -22,7 +22,7 @@ const Wallet = () => {
 
     const navigation = useNavigation<NavigationProp>();
 
-    const renderItem= ({item} : {item: TransactionData}) => {
+    const renderItem= ({item} : {item: TopUpTransaction}) => {
 
         return (
             <View style={stylesApp.flatlistItem}>
@@ -41,12 +41,12 @@ const Wallet = () => {
 
             <View style={localStyles.balanceContainer}>
                 <View>
-                    <Text>Stan konta:</Text>
+                    <Text style={{color: colors.textColorBlack}}>Stan konta:</Text>
                     <Text style={localStyles.balanceText}>100,00 zł</Text>
                 </View>
 
                 <TouchableOpacity onPress={() => (navigation.navigate('TopUpScreen'))}>
-                    <Text>Doładuj</Text>
+                    <Text style={{color: colors.textColorBlack}}>Doładuj</Text>
                 </TouchableOpacity>
             </View>
 
@@ -56,7 +56,7 @@ const Wallet = () => {
 
                 <FlatList
                     style={stylesApp.flatlist}
-                    data={transactions}
+                    data={topUpTransactions}
                     renderItem={renderItem}
                 />
 
@@ -95,7 +95,8 @@ const localStyles = StyleSheet.create({
     },
 
     text: {
-        fontSize: 16
+        fontSize: 16,
+        color: colors.textColorBlack,
     }
 });
 

@@ -1,7 +1,7 @@
 import { Modal,Text,TouchableOpacity,View } from "react-native";
 import React from "react";
-import stylesApp from "../style/stylesApp.js";
-import { colors } from "../style/styleValues.js";
+import stylesApp from "../../style/stylesApp.js";
+import { colors } from "../../style/styleValues.js";
 
 type PopupProps = {
     showPopup: boolean;

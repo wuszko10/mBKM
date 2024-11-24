@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useEffect } from "react";
 import styles from "./style/stylesApp";
 import {
     SafeAreaView
@@ -7,25 +7,26 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import Home from "./screens/Home";
-import Tickets from "./screens/Tickets";
-import Profile from "./screens/Profile.tsx";
-import Wallet from "./screens/Wallet.tsx";
-import Login from "./screens/Login.tsx";
-import Welcome from "./screens/Welcome.tsx";
-import Register from "./screens/Register.tsx";
-import { AuthProvider,useAuth } from "./components/AuthContext.tsx";
-import SummaryPurchaseScreen from "./screens/SummaryPurchaseScreen.tsx";
-import TicketDetails from "./screens/TicketDetails.tsx";
-import TopUpScreen from "./screens/TopUpScreen.tsx";
+import Home from "./screens/Home/Home.tsx";
+import Tickets from "./screens/Tickets/Tickets.tsx";
+import Profile from "./screens/User/Profile.tsx";
+import Wallet from "./screens/Wallet/Wallet.tsx";
+import Login from "./screens/User/Login.tsx";
+import Welcome from "./screens/Global/Welcome.tsx";
+import Register from "./screens/User/Register.tsx";
+import { AuthProvider,useAuth } from "./components/Global/AuthContext.tsx";
+import SummaryPurchaseScreen from "./screens/Tickets/SummaryPurchaseScreen.tsx";
+import TicketDetails from "./screens/Tickets/TicketDetails.tsx";
+import TopUpScreen from "./screens/Wallet/TopUpScreen.tsx";
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Mci from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from "./style/styleValues.js";
 import stylesApp from "./style/stylesApp";
-import Purchase from "./screens/Purchase.tsx";
-import SelectingPurchaseConfiguration from "./screens/SelectingPurchaseConfiguration.tsx";
-import PaymentScreen from "./screens/PaymentScreen.tsx";
+import Purchase from "./screens/Tickets/Purchase.tsx";
+import SelectingPurchaseConfiguration from "./screens/Tickets/SelectingPurchaseConfiguration.tsx";
+import PaymentScreen from "./screens/Global/PaymentScreen.tsx";
+import ValidateTicket from "./screens/Tickets/ValidateTicket.tsx";
 
 
 type RootStackParamList = {
@@ -43,11 +44,23 @@ type RootStackParamList = {
     TicketDetails: undefined;
     TopUpScreen: undefined;
     PaymentScreen: undefined;
+    PaymentStack: undefined;
 };
-
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator<RootStackParamList>();
+const Payment = createStackNavigator();
+
+function PaymentStack() {
+    return (
+        <Payment.Navigator>
+            <Payment.Screen name="Purchase" component={Purchase} options={{ headerShown: false }} />
+            <Payment.Screen name="SelectingPurchaseConfiguration" component={SelectingPurchaseConfiguration} options={{ headerShown: false }} />
+            <Payment.Screen name="SummaryPurchaseScreen" component={SummaryPurchaseScreen} options={{ headerShown: false }} />
+            <Payment.Screen name="PaymentScreen" component={PaymentScreen} options={{ headerShown: false }} />
+        </Payment.Navigator>
+    )
+}
 
 function UserPanel() {
 
@@ -98,10 +111,8 @@ function MainApp() {
                         <Stack.Screen name="UserPanel" component={UserPanel} options={{ headerShown: false }} />
                         <Stack.Screen name="TicketDetails" component={TicketDetails} options={{ headerShown: false }} />
                         <Stack.Screen name="TopUpScreen" component={TopUpScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="Purchase" component={Purchase} options={{ headerShown: false }} />
-                        <Stack.Screen name="SelectingPurchaseConfiguration" component={SelectingPurchaseConfiguration} options={{ headerShown: false }} />
-                        <Stack.Screen name="SummaryPurchaseScreen" component={SummaryPurchaseScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="PaymentScreen" component={PaymentScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="PaymentStack" component={PaymentStack} options={{ headerShown: false }} />
+                        <Stack.Screen name="ValidateTicket" component={ValidateTicket} options={{ headerShown: false }} />
                     </>
                 )}
             </Stack.Navigator>

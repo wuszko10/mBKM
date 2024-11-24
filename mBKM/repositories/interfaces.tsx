@@ -1,4 +1,4 @@
-export interface TransactionData {
+export interface TopUpTransaction {
     transactionId: string;
     userId: string;
     amount: number;
@@ -13,7 +13,7 @@ export interface Ticket {
     price: number;
 }
 
-export interface TicketsPurchased {
+export interface TicketOrderTransaction {
     _id: number;
     userId: number;
     number: string;
@@ -27,7 +27,7 @@ export interface TicketsPurchased {
     finalPrice: number;
 }
 
-export interface Reliefs {
+export interface Relief {
     _id: string;
     name: string;
     type: string;
@@ -44,3 +44,16 @@ export interface Line {
     _id: number;
     line: string;
 }
+
+export interface BusStop {
+    _id: number;
+    name: string;
+    latitude: number;
+    longitude: number;
+}
+
+export interface Location {
+    latitude: number;
+    longitude: number;
+}
+

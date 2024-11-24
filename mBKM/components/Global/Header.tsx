@@ -1,8 +1,8 @@
 import React from 'react';
 import { View,Text,TouchableOpacity,StyleSheet } from "react-native";
 import Icon from 'react-native-vector-icons/FontAwesome';
-import stylesApp from '../style/stylesApp'; // Adjust the import path if needed
-import { colors,dimensions } from "../style/styleValues";
+import stylesApp from '../../style/stylesApp.js'; // Adjust the import path if needed
+import { colors,dimensions } from "../../style/styleValues.js";
 import { useNavigation } from "@react-navigation/native";
 
 interface HeaderProps {

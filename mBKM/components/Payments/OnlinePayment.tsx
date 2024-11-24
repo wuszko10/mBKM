@@ -1,17 +1,19 @@
 import React,{ useState } from "react";
 import { View,TextInput,Text,TouchableOpacity } from "react-native";
-import stylesApp from "../style/stylesApp.js";
-import { colors,dimensions } from "../style/styleValues.js";
+import stylesApp from "../../style/stylesApp.js";
+import { colors,dimensions } from "../../style/styleValues.js";
 import { NavigationProp } from "@react-navigation/native";
-import PaymentPopup from "./PaymentPopup.tsx";
+import ProcessingPopup from "../Global/ProcessingPopup.tsx";
 
 type OnlinePaymentProps = {
+    transactionId: number,
     paymentNumber: number,
     transactionAmount: number;
     navigation: NavigationProp<any>;
 }
 
 const OnlinePayment: React.FC<OnlinePaymentProps> = ({
+                                                         transactionId,
                                                          paymentNumber,
                                                          transactionAmount,
                                                          navigation
@@ -98,7 +100,7 @@ const OnlinePayment: React.FC<OnlinePaymentProps> = ({
             </TouchableOpacity>
 
             { showPopup && (
-                <PaymentPopup
+                <ProcessingPopup
                     showPopup={showPopup}
                     setShowPopup={setShowPopup}
                     isProcessing={isProcessing}

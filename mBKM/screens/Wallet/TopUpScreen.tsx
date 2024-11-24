@@ -1,6 +1,6 @@
 import React,{ useState } from "react";
 import { SafeAreaView,Text,TextInput,TouchableOpacity,View } from "react-native";
-import { Ticket } from "../repositories/interfaces.tsx";
+import { Ticket } from "../../repositories/interfaces.tsx";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 

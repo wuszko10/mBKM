@@ -1,19 +1,22 @@
 import React from 'react';
 import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
-import stylesApp from "../style/stylesApp.js";
-import { tickets,ticketsData } from "../repositories/Data.tsx";
-import { colors,dimensions } from "../style/styleValues.js";
-import { TicketsPurchased } from "../repositories/interfaces.tsx";
+import stylesApp from "../../style/stylesApp.js";
+import { ticketOrderTransactions,ticketsData } from "../../repositories/Data.tsx";
+import { colors,dimensions } from "../../style/styleValues.js";
+import { TicketOrderTransaction } from "../../repositories/interfaces.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import Header from "../components/Header.tsx";
+import Header from "../../components/Global/Header.tsx";
 import Entypo from "react-native-vector-icons/Entypo";
 
 type RootStackParamList = {
     Tickets: undefined;
     Home: undefined;
     Purchase: undefined;
-    TicketDetails: {selectedTicket: TicketsPurchased};
+    TicketDetails: {selectedTransaction: TicketOrderTransaction};
+    PaymentStack: {
+        screen: 'Purchase',
+    }
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Tickets'>;
@@ -22,15 +25,15 @@ const Tickets = () => {
 
     const navigation = useNavigation<NavigationProp>();
 
-    function handleTicketDetails(item: TicketsPurchased) {
-        navigation.navigate('TicketDetails', {selectedTicket: item});
+    function handleTicketDetails(item: TicketOrderTransaction) {
+        navigation.navigate('TicketDetails', {selectedTransaction: item});
     }
 
     function getTicketInfo(ticketTypeId: number) {
         return ticketsData.find(type => type._id === ticketTypeId);
     }
 
-    const renderItem= ({item} : {item: TicketsPurchased}) => {
+    const renderItem= ({item} : {item: TicketOrderTransaction}) => {
 
         return (
             <TouchableOpacity onPress={() => handleTicketDetails(item)}>
@@ -53,14 +56,14 @@ const Tickets = () => {
 
             <Header title="Moje bilety" />
 
-            <TouchableOpacity onPress={() => navigation.navigate('Purchase')} style={localStyles.addButton}>
+            <TouchableOpacity onPress={() => navigation.navigate('PaymentStack', {screen: 'Purchase'})} style={localStyles.addButton}>
                 <Entypo name="plus" size={35} style={localStyles.icon} />
                 <Text style={{color: colors.appFirstColor, fontSize: 14}}>Kup bilet</Text>
             </TouchableOpacity>
 
             <FlatList
                 style={stylesApp.flatlist}
-                data={tickets}
+                data={ticketOrderTransactions}
                 renderItem={renderItem}
                 keyExtractor={(item) => item.number}
             />
@@ -100,7 +103,8 @@ const localStyles = StyleSheet.create({
         borderRadius: 10
     },
     text: {
-        fontSize: 16
+        fontSize: 16,
+        color: colors.textColorBlack,
     },
     addButton: {
         flexDirection: "row",

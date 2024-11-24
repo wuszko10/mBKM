@@ -1,7 +1,7 @@
 import DropDownPicker from "react-native-dropdown-picker";
 import React,{ useState } from "react";
 import { View } from "react-native";
-import stylesApp from "../style/stylesApp.js";
+import stylesApp from "../../style/stylesApp.js";
 
 type ReliefSelectorProps = {
     selectedValue: any;

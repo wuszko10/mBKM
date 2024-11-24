@@ -2,19 +2,27 @@ import React,{ useEffect,useState } from "react";
 import { SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import { useNavigation,useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { PaymentMethod,Ticket } from "../repositories/interfaces.tsx";
-import { reliefs,lines,paymentMethods } from "../repositories/Data.tsx";
-import stylesApp from "../style/stylesApp.js";
-import Header from "../components/Header.tsx";
-import { colors,dimensions } from "../style/styleValues.js";
-import PaymentSelector from "../components/PaymentSelector.tsx";
+import { PaymentMethod,Ticket,TicketOrderTransaction } from "../../repositories/interfaces.tsx";
+import { reliefs,lines,paymentMethods } from "../../repositories/Data.tsx";
+import stylesApp from "../../style/stylesApp.js";
+import Header from "../../components/Global/Header.tsx";
+import { colors,dimensions } from "../../style/styleValues.js";
+import PaymentSelector from "../../components/Payments/PaymentSelector.tsx";
 
 type RootStackParamList = {
     Purchase: undefined;
     SummaryPurchaseScreen: undefined;
     Home: undefined;
     Tickets: undefined;
-    PaymentScreen: {orderNumber: number, paymentMethodId: number, transactionAmount: number};
+    ValidateTicket: undefined;
+    PaymentStack: {
+        screen: 'PaymentScreen',
+        params: {
+            ticketOrderTransactionId: number,
+            paymentMethodId: number,
+            transactionAmount: number
+        }
+    };
 };
 
 type RouteParams = {
@@ -44,11 +52,14 @@ const SummaryPurchaseScreen = () => {
 
     const handleBuyTicket = () => {
         if (paymentMethodId) {
-            const orderNumber = Math.floor(Math.random() * 10000);
-            navigation.navigate('PaymentScreen', {
-                orderNumber,
-                paymentMethodId,
-                transactionAmount: finalPrice,
+            const ticketOrderTransactionId = Math.floor(Math.random() * 10000);
+            navigation.navigate( 'PaymentStack', {
+                screen: 'PaymentScreen',
+                params: {
+                    ticketOrderTransactionId,
+                    paymentMethodId,
+                    transactionAmount: finalPrice,
+                }
             })
         } else {
             console.log("Wybierz metodę płatności")
@@ -114,7 +125,7 @@ const localStyle = StyleSheet.create({
     textRight: {
         textAlign: "right",
         fontSize: 15,
-
+        color: colors.darkGray,
     },
     textLeft: {
         color: colors.textColorBlack,

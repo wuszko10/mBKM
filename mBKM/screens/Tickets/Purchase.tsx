@@ -1,21 +1,23 @@
 import React,{ useState } from "react";
 import { SafeAreaView,ScrollView,Text,TouchableOpacity,View } from "react-native";
-import Header from "../components/Header.tsx";
-import stylesApp from "../style/stylesApp.js";
-import TicketSelector from "../components/TicketSelector.tsx";
-import TicketTypeSelector from "../components/TicketTypeSelector.tsx";
-import { Ticket,TicketsPurchased } from "../repositories/interfaces.tsx";
+import Header from "../../components/Global/Header.tsx";
+import stylesApp from "../../style/stylesApp.js";
+import TicketSelector from "../../components/Tickets/TicketSelector.tsx";
+import TicketTypeSelector from "../../components/Tickets/TicketTypeSelector.tsx";
+import { Ticket,TicketOrderTransaction } from "../../repositories/interfaces.tsx";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import SelectingPurchaseConfiguration from "./SelectingPurchaseConfiguration.tsx";
 
 type RootStackParamList = {
     Purchase: undefined;
-    SelectingPurchaseConfiguration: {
-        selectedTicket: Ticket,
-        singleTicket: boolean,
-        seasonTicket: boolean,
-        numberSelectedLines: string,
+    PaymentStack: {
+        screen: 'SelectingPurchaseConfiguration',
+        params: {
+            selectedTicket: Ticket,
+            singleTicket: boolean,
+            seasonTicket: boolean,
+            numberSelectedLines: string,
+        }
     };
     Home: undefined;
 };
@@ -62,11 +64,14 @@ const Purchase = () => {
 
     const handlePurchase= () => {
         if (selectedTicket !== null && selectedTicketId) {
-            navigation.navigate('SelectingPurchaseConfiguration',{
-                selectedTicket,
-                singleTicket,
-                seasonTicket,
-                numberSelectedLines,
+            navigation.navigate( 'PaymentStack', {
+                screen: 'SelectingPurchaseConfiguration',
+                params: {
+                    selectedTicket,
+                    singleTicket,
+                    seasonTicket,
+                    numberSelectedLines,
+                }
             })
             resetTicket();
             resetData();

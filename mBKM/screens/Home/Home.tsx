@@ -1,10 +1,10 @@
 import React from 'react';
 import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
-import stylesApp from "../style/stylesApp.js";
+import stylesApp from "../../style/stylesApp.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "../components/AuthContext.tsx";
+import { useAuth } from "../../components/Global/AuthContext.tsx";
 
 type RootStackPramList = {
     Welcome: undefined;

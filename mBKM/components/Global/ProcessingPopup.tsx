@@ -1,7 +1,7 @@
 import { ActivityIndicator,Modal,Text,TouchableOpacity,View } from "react-native";
 import React from "react";
-import stylesApp from "../style/stylesApp.js";
-import { colors } from "../style/styleValues.js";
+import stylesApp from "../../style/stylesApp.js";
+import { colors } from "../../style/styleValues.js";
 import { NavigationProp } from "@react-navigation/native";
 
 type PaymentPopupProps = {
@@ -10,13 +10,15 @@ type PaymentPopupProps = {
     isProcessing: boolean;
     cancelText: string;
     navigation: NavigationProp<any>;
+    cancelAction?: () => void;
 }
-const PaymentPopup: React.FC<PaymentPopupProps> = ({
+const ProcessingPopup: React.FC<PaymentPopupProps> = ({
     showPopup,
     setShowPopup,
     isProcessing ,
     cancelText,
     navigation,
+    cancelAction
 }) => {
 
     const hidePopup = () => {
@@ -38,7 +40,7 @@ const PaymentPopup: React.FC<PaymentPopupProps> = ({
                 ) : (
                     <View style={{gap: 20}}>
                         <Text style={stylesApp.whiteNormalCenterText}>{cancelText}</Text>
-                        <TouchableOpacity onPress={hidePopup} style={stylesApp.whiteButton}>
+                        <TouchableOpacity onPress={cancelAction ? cancelAction : hidePopup} style={stylesApp.whiteButton}>
                             <Text style={[stylesApp.popupText,{ color: colors.appFirstColor }]}>Zakończ</Text>
                         </TouchableOpacity>
                     </View>
@@ -48,4 +50,4 @@ const PaymentPopup: React.FC<PaymentPopupProps> = ({
         </Modal>
     );
 };
-export default PaymentPopup;
+export default ProcessingPopup;

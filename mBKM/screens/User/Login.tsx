@@ -1,14 +1,15 @@
 import React,{ useState } from "react";
 import { Text,TextInput,TouchableOpacity,View } from "react-native";
-import stylesApp from "../style/stylesApp.js";
+import stylesApp from "../../style/stylesApp.js";
 import Icon from "react-native-vector-icons/FontAwesome";
 import tw from "twrnc";
-import { colors } from "../style/styleValues.js";
+import { colors } from "../../style/styleValues.js";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useAuth } from "../components/AuthContext.tsx";
+import { useAuth } from "../../components/Global/AuthContext.tsx";
+import { SERVER_URL } from "../../repositories/variables.tsx";
 
 type RootStackPramList = {
     Welcome: undefined;
@@ -38,7 +39,7 @@ const Login = () => {
         }
 
         try {
-            const response = await axios.post('http://10.0.2.2:3001/api/user/auth', {
+            const response = await axios.post(SERVER_URL+'user/auth', {
                 login: username,
                 password: password
             });
@@ -74,7 +75,7 @@ const Login = () => {
                            value={username}
                            onChangeText={setUsername}
                            autoCapitalize="none"
-                           placeholderTextColor={colors.textColorGray}
+                           placeholderTextColor={colors.gray}
                 />
 
                 <View style={[stylesApp.input,tw`flex flex-row items-center justify-between`]}>
@@ -84,7 +85,7 @@ const Login = () => {
                         value={password}
                         autoCapitalize="none"
                         secureTextEntry={showPassword}
-                        placeholderTextColor={colors.textColorGray}
+                        placeholderTextColor={colors.gray}
                         onChangeText={(text) => setPassword(text)}
                     />
 

@@ -1,29 +1,60 @@
 import React,{ useEffect,useState } from "react";
 import { View,Text,Button,TouchableOpacity } from "react-native";
-import Popup from "./Popup.tsx";
+import Popup from "../Global/Popup.tsx";
 import { NavigationProp,useNavigation } from "@react-navigation/native";
-import stylesApp from "../style/stylesApp.js";
-import { colors } from "../style/styleValues.js";
-import PaymentPopup from "./PaymentPopup.tsx";
+import stylesApp from "../../style/stylesApp.js";
+import { colors } from "../../style/styleValues.js";
+import ProcessingPopup from "../Global/ProcessingPopup.tsx";
+import { useCheckLocation } from "../Global/CheckLocation.tsx";
+import { LOCATION_TIMEOUT } from "../../repositories/variables.tsx";
 
 interface WalletPaymentProps {
+    transactionId: number;
     transactionAmount: number;
-    navigation: NavigationProp<any>;
+    navigation: NavigationProp<any>
 }
-const WalletPayment: React.FC<WalletPaymentProps> = ({ transactionAmount, navigation }) => {
 
+
+const WalletPayment: React.FC<WalletPaymentProps> = ({ transactionId, transactionAmount, navigation }) => {
     const [balance, setBalance] = useState(0);
     const [showPopup, setShowPopup] = useState(false);
+    const [popupText, setPopupText] = useState("");
     const [showPaymentPopup, setShowPaymentPopup] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [paymentPopupText, setPaymentPopupText] = useState("");
 
+    const [remainingTime, setRemainingTime] = useState(LOCATION_TIMEOUT);
+    const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
+
+    const isInRange = useCheckLocation();
 
     const checkAccountBalance = () => {
-        setBalance(0);
+        setBalance(10);
 
     };
 
+
+    useEffect(() => {
+        const interval = setInterval(() => {
+            setRemainingTime((prevTime) => {
+                if (prevTime <= 1000) {
+                    clearInterval(interval);
+                    return 0;
+                }
+                if (isInRange) {
+                    console.log("Tutaj 0000");
+                    clearInterval(interval);
+                    return prevTime;
+                }
+                return prevTime - 500;
+            });
+        }, 500);
+
+        return () => clearInterval(interval);
+    }, [isInRange]);
+
+
+    console.log(timer+" | isinrange"+isInRange);
     const closePopup = () => {
         setShowPopup(false);
         console.log("Transakcja niepowiodła się.")
@@ -31,16 +62,18 @@ const WalletPayment: React.FC<WalletPaymentProps> = ({ transactionAmount, naviga
     }
 
     const confirmBalancePopup = () => {
-        navigation.navigate('UserPanel', { screen: 'Wallet'});
-    }
-
-    useEffect( () => {
-        if (balance < transactionAmount) {
-            setShowPopup(true);
-        } else {
-            setShowPopup(false)
+        if (isInRange) {
+            navigation.reset({
+                index: 1, // Index odpowiada pozycji ekranu w nowym stosie.
+                routes: [
+                    { name: 'UserPanel', params: { screen: 'Tickets' } },
+                    { name: 'ValidateTicket', params: { transactionId: transactionId } }
+                ],
+            });
+        } else  {
+            navigation.goBack();
         }
-    }, [balance])
+    }
 
     useEffect(() => {
         checkAccountBalance();
@@ -73,31 +106,30 @@ const WalletPayment: React.FC<WalletPaymentProps> = ({ transactionAmount, naviga
             console.log('Wystąpił błąd. Spróbuj ponownie.');
         }*/
 
+
         setIsProcessing(true);
         setShowPaymentPopup(true);
-        setTimeout(() => {
+        if (isInRange) {
+            setTimeout( () => {
+                    setIsProcessing(false);
+                    setPopupText("Czy chcesz skasować bilet?");
+                    setShowPopup(true);
+                    setShowPaymentPopup(false);
+
+                }, 2000
+            )
+        } else {
             setIsProcessing(false);
             setPaymentPopupText("Transakcja zakończona pomyślne!")
-        },2000);
-    };
-
-    const checkLocationAndConfirmTicket = () => {
-        const isAtStop = true;
-        if (isAtStop) {
-            console.log('Czy chcesz skasować bilet?');
-            /*if (confirmation) {
-                console.log('Bilet skasowany!');
-            }*/
-        } else {
-            console.log('Nie jesteś przy przystanku. Bilet nie może być skasowany.');
         }
     };
 
     const handleWalletPayment = () => {
-        if (balance && balance >= transactionAmount) {
+        if (balance && (balance >= transactionAmount)) {
             processWalletPayment(transactionAmount).then();
         } else {
-            console.log('Brak wystarczających środków. Czy chcesz doładować portfel?');
+            setPopupText("Brak wystarczających środków. Czy chcesz doładować portfel?");
+            setShowPopup(true);
         }
     };
 
@@ -112,7 +144,7 @@ const WalletPayment: React.FC<WalletPaymentProps> = ({ transactionAmount, naviga
             {showPopup && (
                 <Popup
                     showPopup={showPopup}
-                    message={"Brak wystarczających środków. Czy chcesz doładować portfel?"}
+                    message={popupText}
                     confirmationText={"Tak"}
                     cancelText={"Nie"}
                     confirmationAction={confirmBalancePopup}
@@ -121,7 +153,7 @@ const WalletPayment: React.FC<WalletPaymentProps> = ({ transactionAmount, naviga
             )}
 
             { showPaymentPopup && (
-                <PaymentPopup
+                <ProcessingPopup
                     showPopup={showPaymentPopup}
                     setShowPopup={setShowPaymentPopup}
                     isProcessing={isProcessing}

@@ -1,4 +1,4 @@
-import { Line,PaymentMethod,Reliefs,Ticket,TicketsPurchased,TransactionData } from "./interfaces.tsx";
+import { BusStop,Line,PaymentMethod,Relief,Ticket,TicketOrderTransaction,TopUpTransaction } from "./interfaces.tsx";
 
 export const ticketsData: Ticket[] = [
     {
@@ -44,7 +44,7 @@ export const ticketsData: Ticket[] = [
     }
 ];
 
-export const reliefs: Reliefs[] = [
+export const reliefs: Relief[] = [
     {
         _id: "discount_id_1",
         name: "normalny",
@@ -77,7 +77,7 @@ export const reliefs: Reliefs[] = [
     }
 ];
 
-export const transactions: TransactionData[] = [
+export const topUpTransactions: TopUpTransaction[] = [
     {
         transactionId: "TXN001",
         userId: "USR001",
@@ -116,7 +116,7 @@ export const transactions: TransactionData[] = [
     },
 ];
 
-export const tickets: TicketsPurchased[] = [
+export const ticketOrderTransactions: TicketOrderTransaction[] = [
     {
         _id: 3512345,
         userId: 4444,
@@ -176,4 +176,32 @@ export const paymentMethods: PaymentMethod[] = [
     { id: 1, icon: 'wallet', label: 'Portfel' },
     { id: 2, icon: 'credit-card', label: 'Karta' },
     { id: 3, icon: 'credit', label: 'Online' },
+];
+
+export const busStopLocations: BusStop[] = [
+    {
+        _id: 1,
+        name: "Przystanek A",
+        latitude: 52.2296756,
+        longitude: 21.0122287
+    },
+    {
+        _id: 2,
+        name: "Przystanek B",
+        latitude: 52.2306756,
+        longitude: 21.0132287
+    },
+    {
+        _id: 3,
+        name: "Przystanek C",
+        latitude: 49.970354313543424,
+        longitude: 20.908495856572674
+    },
+    {
+        _id: 4,
+        name: "Przystanek DDD",
+        latitude: 49.970145569507004,
+        longitude: 20.908485127736906
+    }
+
 ];

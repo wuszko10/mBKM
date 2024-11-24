@@ -1,10 +1,10 @@
 import React,{ useState } from "react";
 import { SafeAreaView,ScrollView,Text,TextInput,TouchableOpacity,View } from "react-native";
-import stylesApp from "../style/stylesApp.js";
-import { colors } from "../style/styleValues.js";
+import stylesApp from "../../style/stylesApp.js";
+import { colors } from "../../style/styleValues.js";
 import tw from "twrnc";
 import Icon from "react-native-vector-icons/FontAwesome";
-import Header from "../components/Header.tsx";
+import Header from "../../components/Global/Header.tsx";
 
 const Profile = () => {
 

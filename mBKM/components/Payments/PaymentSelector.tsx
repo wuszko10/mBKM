@@ -1,8 +1,8 @@
 import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
-import { colors,dimensions } from "../style/styleValues.js";
+import { colors,dimensions } from "../../style/styleValues.js";
 import Entypo from "react-native-vector-icons/Entypo";
 import React from "react";
-import { PaymentMethod } from "../repositories/interfaces.tsx";
+import { PaymentMethod } from "../../repositories/interfaces.tsx";
 
 
 type PaymentSelectorProps = {
