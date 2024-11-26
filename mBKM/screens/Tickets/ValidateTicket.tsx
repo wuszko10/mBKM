@@ -47,7 +47,6 @@ const ValidateTicket = () => {
 
     // let remainingTime = LOCATION_TIMEOUT;
     const [remainingTime, setRemainingTime] = useState(10000);
-    const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
 
 
@@ -80,19 +79,12 @@ const ValidateTicket = () => {
             setLocation(true);
             setShowPopup(true);
             setLoading(false);
-            console.log("Tutaj 111");
         } else {
             setLoading(false);
             setLocation(false);
             setShowPopupBadRequest(true);
-            console.log("Tutaj 222");
         }
     }
-
-    // useEffect(() => {
-    //     startTimer();
-    // },[isInRange]);
-
 
 
     const confirmationPopupAction = () => {
@@ -104,18 +96,13 @@ const ValidateTicket = () => {
                 setIsProcessing(false);
             }, 3000)
             setShowPopup(false);
-            console.log("Ponowne sprawdzanie");
         } else {
 
         }
-
     }
     const cancelPopupAction = () => {
         navigation.goBack();
     }
-
-    console.log(isInRange);
-
 
     return (
         <SafeAreaView style={stylesApp.popupContainer}>
@@ -124,10 +111,8 @@ const ValidateTicket = () => {
                     (location && isConfirm)?(
                         <ProcessingPopup
                             showPopup={showPaymentPopup}
-                            setShowPopup={setShowPaymentPopup}
                             isProcessing={isProcessing}
                             cancelText={"Bilet skasowany"}
-                            navigation={navigation}
                             cancelAction={cancelPopupAction}
                         />
                     ) : (location && !isConfirm) ? (
@@ -152,14 +137,7 @@ const ValidateTicket = () => {
                 )
             }
         </SafeAreaView>
-
-
     );
 };
 
 export default ValidateTicket;
-
-
-/*
-
- */

@@ -10,14 +10,11 @@ import { useNavigation } from "@react-navigation/native";
 
 type RootStackParamList = {
     Purchase: undefined;
-    PaymentStack: {
-        screen: 'SelectingPurchaseConfiguration',
-        params: {
-            selectedTicket: Ticket,
-            singleTicket: boolean,
-            seasonTicket: boolean,
-            numberSelectedLines: string,
-        }
+    SelectingPurchaseConfiguration: {
+        selectedTicket: Ticket,
+        singleTicket: boolean,
+        seasonTicket: boolean,
+        numberSelectedLines: string,
     };
     Home: undefined;
 };
@@ -64,14 +61,11 @@ const Purchase = () => {
 
     const handlePurchase= () => {
         if (selectedTicket !== null && selectedTicketId) {
-            navigation.navigate( 'PaymentStack', {
-                screen: 'SelectingPurchaseConfiguration',
-                params: {
-                    selectedTicket,
-                    singleTicket,
-                    seasonTicket,
-                    numberSelectedLines,
-                }
+            navigation.navigate('SelectingPurchaseConfiguration',{
+                selectedTicket,
+                singleTicket,
+                seasonTicket,
+                numberSelectedLines,
             })
             resetTicket();
             resetData();
@@ -103,7 +97,6 @@ const Purchase = () => {
                                 setSelectedTicketId={setSelectedTicketId}
                                 singleTicket={singleTicket}
                                 seasonTicket={seasonTicket}
-                                numberSelectedLines={numberSelectedLines}
                                 setNumberSelectedLines={setNumberSelectedLines}
                             />
 

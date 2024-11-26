@@ -4,7 +4,7 @@ import stylesApp from "../../style/stylesApp.js";
 import { ticketOrderTransactions,ticketsData } from "../../repositories/Data.tsx";
 import { colors,dimensions } from "../../style/styleValues.js";
 import { TicketOrderTransaction } from "../../repositories/interfaces.tsx";
-import { useNavigation } from "@react-navigation/native";
+import { useNavigation,useNavigationState } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Header from "../../components/Global/Header.tsx";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -14,9 +14,6 @@ type RootStackParamList = {
     Home: undefined;
     Purchase: undefined;
     TicketDetails: {selectedTransaction: TicketOrderTransaction};
-    PaymentStack: {
-        screen: 'Purchase',
-    }
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'Tickets'>;
@@ -24,6 +21,8 @@ type NavigationProp = StackNavigationProp<RootStackParamList, 'Tickets'>;
 const Tickets = () => {
 
     const navigation = useNavigation<NavigationProp>();
+    const navigationState = useNavigationState(state => state);
+    console.log('Navigation State:', navigationState);
 
     function handleTicketDetails(item: TicketOrderTransaction) {
         navigation.navigate('TicketDetails', {selectedTransaction: item});
@@ -56,7 +55,7 @@ const Tickets = () => {
 
             <Header title="Moje bilety" />
 
-            <TouchableOpacity onPress={() => navigation.navigate('PaymentStack', {screen: 'Purchase'})} style={localStyles.addButton}>
+            <TouchableOpacity onPress={() => navigation.navigate('Purchase')} style={localStyles.addButton}>
                 <Entypo name="plus" size={35} style={localStyles.icon} />
                 <Text style={{color: colors.appFirstColor, fontSize: 14}}>Kup bilet</Text>
             </TouchableOpacity>

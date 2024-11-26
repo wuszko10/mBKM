@@ -15,14 +15,7 @@ type RootStackParamList = {
     Home: undefined;
     Tickets: undefined;
     ValidateTicket: undefined;
-    PaymentStack: {
-        screen: 'PaymentScreen',
-        params: {
-            ticketOrderTransactionId: number,
-            paymentMethodId: number,
-            transactionAmount: number
-        }
-    };
+    PaymentScreen: {ticketOrderTransactionId: number, paymentMethodId: number, transactionAmount: number};
 };
 
 type RouteParams = {
@@ -50,16 +43,14 @@ const SummaryPurchaseScreen = () => {
             return selectedTicket.type === "jednorazowy" ? method.label === "Portfel" :  method.label !== "Portfel";
         });
 
+
     const handleBuyTicket = () => {
         if (paymentMethodId) {
             const ticketOrderTransactionId = Math.floor(Math.random() * 10000);
-            navigation.navigate( 'PaymentStack', {
-                screen: 'PaymentScreen',
-                params: {
-                    ticketOrderTransactionId,
-                    paymentMethodId,
-                    transactionAmount: finalPrice,
-                }
+            navigation.navigate('PaymentScreen', {
+                ticketOrderTransactionId,
+                paymentMethodId,
+                transactionAmount: finalPrice,
             })
         } else {
             console.log("Wybierz metodę płatności")

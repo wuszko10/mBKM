@@ -21,15 +21,12 @@ type RootStackParamList = {
     Purchase: undefined;
     SelectingPurchaseConfiguration: undefined;
     Home: undefined;
-    PaymentStack: {
-        screen: 'SummaryPurchaseScreen',
-        params: {
-            selectedTicket: Ticket,
-            selectedLines?: number,
-            selectedRelief: string,
-            selectedDate?: string,
-            finalPrice: number
-        }
+    SummaryPurchaseScreen: {
+        selectedTicket: Ticket,
+        selectedLines?: number,
+        selectedRelief: string,
+        selectedDate?: string,
+        finalPrice: number
     };
 };
 
@@ -46,13 +43,6 @@ const SelectingPurchaseConfiguration = () => {
     const [selectedLines, setSelectedLines] = useState<number | null>(null);
     const [lineText, setLineText] = useState("");
     const lineObj = lines.find(line => line.line === "wszystkie")
-
-    function resetData() {
-        setSelectedRelief(null);
-        setSelectedLines(null);
-        setFinalPrice(0);
-        setShowDate(false);
-    }
 
     const filteredDiscounts = reliefs
         .filter(discount => (singleTicket && discount.type === "jednorazowy") || (seasonTicket && discount.type === "okresowy"))
@@ -82,58 +72,45 @@ const SelectingPurchaseConfiguration = () => {
     const handleSummaryPurchase = () => {
         if (!showDate && selectedRelief) {
             if (selectedTicket.lines === "1" && selectedLines) {
-                navigation.navigate('PaymentStack', {
-                    screen: 'SummaryPurchaseScreen',
-                    params: {
-                        selectedTicket: selectedTicket,
-                        selectedLines: selectedLines || 0,
-                        selectedRelief: selectedRelief || "",
-                        finalPrice: finalPrice,
-                    }
+                navigation.navigate("SummaryPurchaseScreen",{
+                    selectedTicket: selectedTicket,
+                    selectedLines: selectedLines || 0,
+                    selectedRelief: selectedRelief || "",
+                    finalPrice: finalPrice,
                 });
             } else {
                 let lineNumber = lineObj?._id;
-                navigation.navigate('PaymentStack', {
-                    screen: 'SummaryPurchaseScreen',
-                    params: {
-                        selectedTicket: selectedTicket,
-                        selectedLines: lineNumber || 0,
-                        selectedRelief: selectedRelief || "",
-                        finalPrice: finalPrice,
-                    },
-
+                navigation.navigate("SummaryPurchaseScreen",{
+                    selectedTicket: selectedTicket,
+                    selectedLines: lineNumber || 0,
+                    selectedRelief: selectedRelief || "",
+                    finalPrice: finalPrice,
                 });
             }
         } else if ( showDate && selectedRelief) {
             if (selectedTicket.lines === "1" && selectedLines) {
-                navigation.navigate('PaymentStack', {
-                    screen: 'SummaryPurchaseScreen',
-                    params: {
-                        selectedTicket: selectedTicket,
-                        selectedLines: selectedLines || 0,
-                        selectedRelief: selectedRelief || "",
-                        selectedDate: selectedDate.toISOString(),
-                        finalPrice: finalPrice,
-                    },
-
+                navigation.navigate("SummaryPurchaseScreen",{
+                    selectedTicket: selectedTicket,
+                    selectedLines: selectedLines || 0,
+                    selectedRelief: selectedRelief || "",
+                    selectedDate: selectedDate.toISOString(),
+                    finalPrice: finalPrice,
                 });
             } else {
                 let lineNumber = lineObj?._id;
-                navigation.navigate('PaymentStack', {
-                    screen: 'SummaryPurchaseScreen',
-                    params: {
-                        selectedTicket: selectedTicket,
-                        selectedLines: lineNumber || 0,
-                        selectedRelief: selectedRelief || "",
-                        selectedDate: selectedDate.toISOString(),
-                        finalPrice: finalPrice,
-                    }
+                navigation.navigate("SummaryPurchaseScreen",{
+                    selectedTicket: selectedTicket,
+                    selectedLines: lineNumber || 0,
+                    selectedRelief: selectedRelief || "",
+                    selectedDate: selectedDate.toISOString(),
+                    finalPrice: finalPrice,
                 });
             }
         } else {
             console.log("Uzupełnij wszystkie pola");
         }
     };
+
 
     useEffect (() => {
         if (selectedTicket.lines === "1") {

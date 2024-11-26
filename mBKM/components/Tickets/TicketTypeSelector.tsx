@@ -12,34 +12,24 @@ type TicketAndReliefTypeSelectorProps = {
     setSelectedTicketId: React.Dispatch<React.SetStateAction<number | null>>;
     singleTicket: boolean;
     seasonTicket: boolean;
-    numberSelectedLines: string | null;
     setNumberSelectedLines: React.Dispatch<React.SetStateAction<string>>;
 };
-const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (
-    {
-        setSelectedTicket,
-        selectedTicketId,
-        setSelectedTicketId,
-        singleTicket,
-        seasonTicket,
-        numberSelectedLines,
-        setNumberSelectedLines,
-    }) => {
+const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) => {
 
 
     const filteredTickets = ticketsData.filter((ticket) => {
-        if (singleTicket && ticket.type === 'jednorazowy') {
+        if (props.singleTicket && ticket.type === 'jednorazowy') {
             return true;
-        } else if (seasonTicket && ticket.type === 'okresowy') {
+        } else if (props.seasonTicket && ticket.type === 'okresowy') {
             return true;
         }
         return false;
     });
 
     const handleTicketSelect = (ticket: Ticket) => {
-        setSelectedTicket(ticket);
-        setSelectedTicketId(ticket._id);
-        setNumberSelectedLines(ticket.lines);
+        props.setSelectedTicket(ticket);
+        props.setSelectedTicketId(ticket._id);
+        props.setNumberSelectedLines(ticket.lines);
 
     };
 
@@ -52,7 +42,7 @@ const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => handleTicketSelect(item)} style={[
                         stylesApp.flatlistItem,
-                        selectedTicketId === item._id && localStyle.selectedItem
+                        props.selectedTicketId === item._id && localStyle.selectedItem
                     ]}>
                         <Text style={stylesApp.itemText}>Bilet <Text style={stylesApp.boldText}>{item.type}</Text></Text>
                         <Text style={stylesApp.itemText}>Linie: <Text style={stylesApp.boldText}>{item.lines}</Text></Text>
@@ -61,11 +51,8 @@ const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (
                     </TouchableOpacity>
                 )}
             />
-
-
         </SafeAreaView>
     )
-
 }
 
 const localStyle = StyleSheet.create({
@@ -75,15 +62,5 @@ const localStyle = StyleSheet.create({
 
 
 })
-
 export default TicketTypeSelector
 
-
-/*
-<View style={localStyle.summaryBox}>
-                <TouchableOpacity onPress={handleSummaryPurchase}  style={stylesApp.mainButton}>
-                    <Text style={stylesApp.whiteBoldCenterText}>Podsumowanie transakcji</Text>
-                </TouchableOpacity>
-            </View>
-
- */

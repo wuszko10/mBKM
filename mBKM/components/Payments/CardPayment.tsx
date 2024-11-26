@@ -1,6 +1,6 @@
 import React,{ useState } from "react";
 import { View,TextInput,Button,Text,TouchableOpacity,StyleSheet } from "react-native";
-import { NavigationProp } from "@react-navigation/native";
+import { NavigationProp,useNavigation } from "@react-navigation/native";
 import ProcessingPopup from "../Global/ProcessingPopup.tsx";
 import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
@@ -9,16 +9,19 @@ type CardPaymentProps = {
     transactionId: number,
     paymentNumber: number,
     transactionAmount: number;
-    navigation: NavigationProp<any>;
+    cancelPopup: () => void;
 }
 
+type RootStackParamList = {
+    Home: undefined;
+    Tickets: undefined;
+    UserPanel: {screen: 'Tickets'};
+};
 
-const CardPayment: React.FC<CardPaymentProps> = ({
-    transactionId,
-    paymentNumber,
-    transactionAmount,
-    navigation
-                     }) => {
+type NavigationPropType = NavigationProp<RootStackParamList>;
+
+
+const CardPayment: React.FC<CardPaymentProps> = (props) => {
 
     const [cardNumber, setCardNumber] = useState<string>('');
     const [expiryDate, setExpiryDate] = useState<string>('');
@@ -63,12 +66,13 @@ const CardPayment: React.FC<CardPaymentProps> = ({
     };
 
     const handleCardPayment = () => {
-        if (paymentNumber && transactionAmount && cardNumber && expiryDate && cvv) {
+        if (props.paymentNumber && props.transactionAmount && cardNumber && expiryDate && cvv) {
             processCardPayment(cardNumber,expiryDate,cvv).then();
         } else {
             console.log('Proszę wprowadzić poprawne dane karty.');
         }
     };
+
 
     return (
         <View style={stylesApp.paymentBox}>
@@ -120,10 +124,9 @@ const CardPayment: React.FC<CardPaymentProps> = ({
             { showPopup && (
                 <ProcessingPopup
                     showPopup={showPopup}
-                    setShowPopup={setShowPopup}
                     isProcessing={isProcessing}
                     cancelText={popupText}
-                    navigation={navigation} />
+                    cancelAction={props.cancelPopup} />
             )}
         </View>
     );

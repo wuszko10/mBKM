@@ -11,11 +11,13 @@ import { LOCATION_TIMEOUT } from "../../repositories/variables.tsx";
 interface WalletPaymentProps {
     transactionId: number;
     transactionAmount: number;
-    navigation: NavigationProp<any>
+    confirmValidateTicketPopup: () => void;
+    confirmWalletPopup: () => void;
+    closePopup: () => void;
 }
 
 
-const WalletPayment: React.FC<WalletPaymentProps> = ({ transactionId, transactionAmount, navigation }) => {
+const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
     const [balance, setBalance] = useState(0);
     const [showPopup, setShowPopup] = useState(false);
     const [popupText, setPopupText] = useState("");
@@ -23,57 +25,42 @@ const WalletPayment: React.FC<WalletPaymentProps> = ({ transactionId, transactio
     const [isProcessing, setIsProcessing] = useState(false);
     const [paymentPopupText, setPaymentPopupText] = useState("");
 
+    const [walletStatus, setWalletStatus] = useState(false);
+
     const [remainingTime, setRemainingTime] = useState(LOCATION_TIMEOUT);
     const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
     const isInRange = useCheckLocation();
 
+    // const isInRange = true;
+
     const checkAccountBalance = () => {
         setBalance(10);
-
     };
 
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            setRemainingTime((prevTime) => {
-                if (prevTime <= 1000) {
-                    clearInterval(interval);
-                    return 0;
-                }
-                if (isInRange) {
-                    console.log("Tutaj 0000");
-                    clearInterval(interval);
-                    return prevTime;
-                }
-                return prevTime - 500;
-            });
-        }, 500);
+    // useEffect(() => {
+    //     const interval = setInterval(() => {
+    //         setRemainingTime((prevTime) => {
+    //             if (prevTime <= 1000) {
+    //                 clearInterval(interval);
+    //                 return 0;
+    //             }
+    //             if (isInRange) {
+    //                 console.log("Tutaj 0000");
+    //                 clearInterval(interval);
+    //                 return prevTime;
+    //             }
+    //             return prevTime - 500;
+    //         });
+    //     }, 500);
+    //
+    //     return () => clearInterval(interval);
+    // }, [isInRange]);
 
-        return () => clearInterval(interval);
-    }, [isInRange]);
 
+    // console.log(timer+" | isinrange"+isInRange);
 
-    console.log(timer+" | isinrange"+isInRange);
-    const closePopup = () => {
-        setShowPopup(false);
-        console.log("Transakcja niepowiodła się.")
-        navigation.navigate('UserPanel', { screen: 'Tickets'});
-    }
-
-    const confirmBalancePopup = () => {
-        if (isInRange) {
-            navigation.reset({
-                index: 1, // Index odpowiada pozycji ekranu w nowym stosie.
-                routes: [
-                    { name: 'UserPanel', params: { screen: 'Tickets' } },
-                    { name: 'ValidateTicket', params: { transactionId: transactionId } }
-                ],
-            });
-        } else  {
-            navigation.goBack();
-        }
-    }
 
     useEffect(() => {
         checkAccountBalance();
@@ -125,9 +112,11 @@ const WalletPayment: React.FC<WalletPaymentProps> = ({ transactionId, transactio
     };
 
     const handleWalletPayment = () => {
-        if (balance && (balance >= transactionAmount)) {
-            processWalletPayment(transactionAmount).then();
+        if (balance && (balance >= props.transactionAmount)) {
+            processWalletPayment(props.transactionAmount).then();
+            setWalletStatus(true);
         } else {
+            setWalletStatus(false);
             setPopupText("Brak wystarczających środków. Czy chcesz doładować portfel?");
             setShowPopup(true);
         }
@@ -147,18 +136,17 @@ const WalletPayment: React.FC<WalletPaymentProps> = ({ transactionId, transactio
                     message={popupText}
                     confirmationText={"Tak"}
                     cancelText={"Nie"}
-                    confirmationAction={confirmBalancePopup}
-                    cancelAction={closePopup}
+                    confirmationAction={ walletStatus ? props.confirmValidateTicketPopup : props.confirmWalletPopup}
+                    cancelAction={props.closePopup}
                 />
             )}
 
             { showPaymentPopup && (
                 <ProcessingPopup
                     showPopup={showPaymentPopup}
-                    setShowPopup={setShowPaymentPopup}
                     isProcessing={isProcessing}
                     cancelText={paymentPopupText}
-                    navigation={navigation} />
+                    cancelAction={props.closePopup}/>
             )}
         </View>
     );

@@ -2,22 +2,16 @@ import React,{ useState } from "react";
 import { View,TextInput,Text,TouchableOpacity } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
-import { NavigationProp } from "@react-navigation/native";
 import ProcessingPopup from "../Global/ProcessingPopup.tsx";
 
 type OnlinePaymentProps = {
     transactionId: number,
     paymentNumber: number,
     transactionAmount: number;
-    navigation: NavigationProp<any>;
+    cancelAction: () => void;
 }
 
-const OnlinePayment: React.FC<OnlinePaymentProps> = ({
-                                                         transactionId,
-                                                         paymentNumber,
-                                                         transactionAmount,
-                                                         navigation
-                                                     }) => {
+const OnlinePayment: React.FC<OnlinePaymentProps> = (props) => {
 
     const [code, setCode] = useState<string>()
     const [showPopup, setShowPopup] = useState(false);
@@ -67,14 +61,12 @@ const OnlinePayment: React.FC<OnlinePaymentProps> = ({
 
 
     const handleOnlinePayment = () => {
-        if (paymentNumber && transactionAmount && code) {
-            processOnlinePayment(paymentNumber,transactionAmount, code).then();
+        if (props.paymentNumber && props.transactionAmount && code) {
+            processOnlinePayment(props.paymentNumber,props.transactionAmount, code).then();
         } else {
             console.log('Proszę wprowadzić poprawne dane transakcji.');
         }
     };
-
-
 
 
     return (
@@ -102,10 +94,10 @@ const OnlinePayment: React.FC<OnlinePaymentProps> = ({
             { showPopup && (
                 <ProcessingPopup
                     showPopup={showPopup}
-                    setShowPopup={setShowPopup}
                     isProcessing={isProcessing}
                     cancelText={popupText}
-                    navigation={navigation} />
+                    cancelAction={props.cancelAction}
+                />
             )}
         </View>
     );

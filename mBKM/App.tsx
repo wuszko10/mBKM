@@ -48,19 +48,8 @@ type RootStackParamList = {
 };
 
 const Tab = createBottomTabNavigator();
-const Stack = createStackNavigator<RootStackParamList>();
-const Payment = createStackNavigator();
+const Stack = createStackNavigator();
 
-function PaymentStack() {
-    return (
-        <Payment.Navigator>
-            <Payment.Screen name="Purchase" component={Purchase} options={{ headerShown: false }} />
-            <Payment.Screen name="SelectingPurchaseConfiguration" component={SelectingPurchaseConfiguration} options={{ headerShown: false }} />
-            <Payment.Screen name="SummaryPurchaseScreen" component={SummaryPurchaseScreen} options={{ headerShown: false }} />
-            <Payment.Screen name="PaymentScreen" component={PaymentScreen} options={{ headerShown: false }} />
-        </Payment.Navigator>
-    )
-}
 
 function UserPanel() {
 
@@ -111,7 +100,10 @@ function MainApp() {
                         <Stack.Screen name="UserPanel" component={UserPanel} options={{ headerShown: false }} />
                         <Stack.Screen name="TicketDetails" component={TicketDetails} options={{ headerShown: false }} />
                         <Stack.Screen name="TopUpScreen" component={TopUpScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="PaymentStack" component={PaymentStack} options={{ headerShown: false }} />
+                        <Stack.Screen name="Purchase" component={Purchase} options={{ headerShown: false }} />
+                        <Stack.Screen name="SelectingPurchaseConfiguration" component={SelectingPurchaseConfiguration} options={{ headerShown: false }} />
+                        <Stack.Screen name="SummaryPurchaseScreen" component={SummaryPurchaseScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="PaymentScreen" component={PaymentScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="ValidateTicket" component={ValidateTicket} options={{ headerShown: false }} />
                     </>
                 )}

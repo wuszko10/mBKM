@@ -3,9 +3,9 @@ import { busStopLocations } from "../../repositories/Data.tsx";
 import GetLocation from "react-native-get-location";
 import { calculateDistance } from "../../repositories/geofence.tsx";
 import { useEffect,useState } from "react";
-import { LOCATION_TIMEOUT } from "../../repositories/variables.tsx";
+import { DISTANCE,LOCATION_TIMEOUT } from "../../repositories/variables.tsx";
 
-const distanceThreshold = 30;
+const distanceThreshold = DISTANCE;
 const checkIfInRange = (userLocation: Location, stops: BusStop[]) => {
 
     return stops.some((stop:BusStop) => {

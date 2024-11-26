@@ -1,8 +1,8 @@
 import React from "react";
-import { SafeAreaView,Text,View } from "react-native";
+import { SafeAreaView,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { paymentMethods } from "../../repositories/Data.tsx";
-import { useNavigation,useRoute } from "@react-navigation/native";
+import { CommonActions,useNavigation,useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import WalletPayment from "../../components/Payments/WalletPayment.tsx";
 import CardPayment from "../../components/Payments/CardPayment.tsx";
@@ -16,22 +16,52 @@ type RouteParams = {
 
 type RootStackParamList = {
     Home: undefined;
-    UserPanel: {screen: 'Tickets'| 'Wallet'};
+    UserPanel: {screen: 'Tickets' | 'Wallet'};
     PaymentScreen: undefined;
-    ValidateTickets: {transactionId: number};
+    ValidateTicket: {transactionId: number};
     Wallet: undefined;
+
 };
 
 type NavigationProp = StackNavigationProp<RootStackParamList, 'PaymentScreen'>;
 const PaymentScreen = () => {
 
-    const navigation = useNavigation<NavigationProp>();
+    const navigation = useNavigation<NavigationProp>()
+
     const route = useRoute();
     const {ticketOrderTransactionId, paymentMethodId, transactionAmount} = route.params as RouteParams;
     const paymentNumber = Math.floor(Math.random() * 10000);
-
-
     const selectedPaymentMethod = paymentMethods.find(method => method.id === paymentMethodId);
+
+    const confirmValidateTicketPopup = () => {
+        navigation.dispatch( (state) => {
+            const userPanelIndex = state.routes.findIndex(route => route.name === "UserPanel");
+
+            return CommonActions.reset({
+                index: userPanelIndex !== -1 ? userPanelIndex : 0,
+                routes: [
+                    { name: 'UserPanel', state: { routes: [{ name: 'Tickets' }] } },
+                    { name: 'ValidateTicket', params: { transactionId: ticketOrderTransactionId } },
+                ],
+            });
+        });
+    }
+
+    const confirmWalletPopup = () => {
+        navigation.dispatch( (state) => {
+            const userPanelIndex = state.routes.findIndex(route => route.name === "UserPanel");
+
+            return CommonActions.reset({
+                index: userPanelIndex !== -1 ? userPanelIndex : 0,
+                routes: [
+                    { name: 'UserPanel', state: { routes: [{ name: 'Wallet' }] } },
+                ],
+            });
+        });
+    }
+    const closePopup = () => {
+        navigation.popTo('UserPanel', {screen: 'Tickets'});
+    }
 
     return (
         <SafeAreaView style={stylesApp.popupContainer}>
@@ -45,7 +75,9 @@ const PaymentScreen = () => {
                 <WalletPayment
                     transactionId={ticketOrderTransactionId}
                     transactionAmount={transactionAmount}
-                    navigation={navigation}
+                    confirmValidateTicketPopup={confirmValidateTicketPopup}
+                    confirmWalletPopup={confirmWalletPopup}
+                    closePopup={closePopup}
                 />
             )}
 
@@ -54,7 +86,7 @@ const PaymentScreen = () => {
                     transactionId={ticketOrderTransactionId}
                     paymentNumber={paymentNumber}
                     transactionAmount={transactionAmount}
-                    navigation={navigation}
+                    cancelPopup={closePopup}
                 />
             )}
 
@@ -63,11 +95,16 @@ const PaymentScreen = () => {
                     transactionId={ticketOrderTransactionId}
                     paymentNumber={paymentNumber}
                     transactionAmount={transactionAmount}
-                    navigation={navigation}
+                    cancelAction={closePopup}
                 />
             )}
+
         </SafeAreaView>
     );
 };
 
 export default PaymentScreen;
+
+/*
+
+ */
