@@ -45,4 +45,6 @@ export const colors = {
   gray: '#D6D6D6',
   placeholderGray: '#979797',
   lightBlue: '#E0E9F2',
+  bgGreen: '#83F1AF',
+  greenText: '#00923A',
 };

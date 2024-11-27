@@ -47,6 +47,11 @@ export default StyleSheet.create({
         height: dimensions.separator,
     },
 
+    divider: {
+        borderBottomWidth: 1,
+        borderColor: colors.appThirdColor,
+    },
+
     bigSeparator: {
         height: 240,
     },
@@ -120,7 +125,7 @@ export default StyleSheet.create({
 
     h2: {
         color: colors.textColorBlack,
-        textAlign: 'center',
+        textAlign: 'left',
         fontSize: 40,
         fontWeight: 'bold',
     },
@@ -189,7 +194,7 @@ export default StyleSheet.create({
     },
 
     blackText: {
-        color: colors.textColorBlack
+        color: colors.textColorBlack,
     },
 
     /*
@@ -215,7 +220,7 @@ export default StyleSheet.create({
 
     inputText: {
         width: '90%',
-        color: colors.textColorGray,
+        color: colors.darkGray,
         fontSize: dimensions.smallTextSize,
         padding: 0,
     },
@@ -232,12 +237,12 @@ export default StyleSheet.create({
 
     icon: {
         fontSize: dimensions.iconSize,
-        color:colors.textColorGray,
+        color:colors.darkGray,
 
     },
 
     lr_bottomText: {
-        color: colors.textColorGray,
+        color: colors.gray,
         textAlign: 'center',
         fontSize: dimensions.smallTextSize,
     },
@@ -257,6 +262,7 @@ export default StyleSheet.create({
         backgroundColor: colors.appThirdColor,
         borderRadius: dimensions.radius,
     },
+
 
 
     dropdown: {

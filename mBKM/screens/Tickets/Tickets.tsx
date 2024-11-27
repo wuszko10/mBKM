@@ -21,25 +21,21 @@ type NavigationProp = StackNavigationProp<RootStackParamList, 'Tickets'>;
 const Tickets = () => {
 
     const navigation = useNavigation<NavigationProp>();
-    const navigationState = useNavigationState(state => state);
-    console.log('Navigation State:', navigationState);
 
     function handleTicketDetails(item: TicketOrderTransaction) {
         navigation.navigate('TicketDetails', {selectedTransaction: item});
     }
 
-    function getTicketInfo(ticketTypeId: number) {
-        return ticketsData.find(type => type._id === ticketTypeId);
-    }
-
     const renderItem= ({item} : {item: TicketOrderTransaction}) => {
+
+        const typeId = ticketsData.find(type => type._id === item.ticketTypeId);
 
         return (
             <TouchableOpacity onPress={() => handleTicketDetails(item)}>
                 <View style={stylesApp.flatlistItem}>
-                    {getTicketInfo(item.ticketTypeId) && (
+                    {typeId && (
                         <Text style={localStyles.text}>
-                            Bilet {getTicketInfo(item.ticketTypeId)?.type} na {getTicketInfo(item.ticketTypeId)?.lines} linię
+                            Bilet {typeId?.type} na {typeId?.lines} linię
                         </Text>
                     )}
                     <Text style={localStyles.text}>Numer biletu: <Text style={stylesApp.boldText}>{item.number}</Text></Text>

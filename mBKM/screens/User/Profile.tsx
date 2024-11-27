@@ -5,6 +5,18 @@ import { colors } from "../../style/styleValues.js";
 import tw from "twrnc";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Header from "../../components/Global/Header.tsx";
+import { useNavigation } from "@react-navigation/native";
+import { useAuth } from "../../components/Global/AuthContext.tsx";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { StackNavigationProp } from "@react-navigation/stack";
+
+
+type RootStackPramList = {
+    Welcome: undefined;
+    UserPanel: undefined;
+}
+
+type NavigationProp = StackNavigationProp<RootStackPramList>
 
 const Profile = () => {
 
@@ -25,6 +37,15 @@ const Profile = () => {
 
     function togglePassword() {
         setShowPassword(!showPassword);
+    }
+
+    const navigation = useNavigation<NavigationProp>();
+    const { setToken } = useAuth();
+
+    async function handleLogout() {
+        await AsyncStorage.removeItem('token');
+        setToken('');
+        navigation.navigate('Welcome');
     }
 
     return (
@@ -148,6 +169,11 @@ const Profile = () => {
                         />
                     </View>
                 </ScrollView>
+
+
+                <TouchableOpacity onPress={handleLogout} style={stylesApp.mainButton}>
+                    <Text style={stylesApp.whiteBoldCenterText}>Wyloguj się</Text>
+                </TouchableOpacity>
             </View>
         </SafeAreaView>
     )
