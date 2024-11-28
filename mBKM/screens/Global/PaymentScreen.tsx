@@ -9,7 +9,7 @@ import CardPayment from "../../components/Payments/CardPayment.tsx";
 import OnlinePayment from "../../components/Payments/OnlinePayment.tsx";
 
 type RouteParams = {
-    ticketOrderTransactionId: number,
+    transactionId: number,
     paymentMethodId: number,
     transactionAmount: number,
 }
@@ -29,7 +29,7 @@ const PaymentScreen = () => {
     const navigation = useNavigation<NavigationProp>()
 
     const route = useRoute();
-    const {ticketOrderTransactionId, paymentMethodId, transactionAmount} = route.params as RouteParams;
+    const {transactionId, paymentMethodId, transactionAmount} = route.params as RouteParams;
     const paymentNumber = Math.floor(Math.random() * 10000);
     const selectedPaymentMethod = paymentMethods.find(method => method.id === paymentMethodId);
 
@@ -41,7 +41,7 @@ const PaymentScreen = () => {
                 index: userPanelIndex !== -1 ? userPanelIndex : 0,
                 routes: [
                     { name: 'UserPanel', state: { routes: [{ name: 'Tickets' }] } },
-                    { name: 'ValidateTicket', params: { transactionId: ticketOrderTransactionId } },
+                    { name: 'ValidateTicket', params: { transactionId: transactionId } },
                 ],
             });
         });
@@ -65,7 +65,7 @@ const PaymentScreen = () => {
 
     return (
         <SafeAreaView style={stylesApp.popupContainer}>
-            <Text style={stylesApp.popupText}>Transakcja nr: {ticketOrderTransactionId}</Text>
+            <Text style={stylesApp.popupText}>Transakcja nr: {transactionId}</Text>
 
             <View style={{gap: 5}}>
                 <Text style={stylesApp.whiteNormalCenterText}>Metoda płatności: {selectedPaymentMethod?.label}</Text>
@@ -73,7 +73,7 @@ const PaymentScreen = () => {
             </View>
             {selectedPaymentMethod?.label === 'Portfel' && (
                 <WalletPayment
-                    transactionId={ticketOrderTransactionId}
+                    transactionId={transactionId}
                     transactionAmount={transactionAmount}
                     confirmValidateTicketPopup={confirmValidateTicketPopup}
                     confirmWalletPopup={confirmWalletPopup}
@@ -83,7 +83,7 @@ const PaymentScreen = () => {
 
             {selectedPaymentMethod?.label === 'Karta' && (
                 <CardPayment
-                    transactionId={ticketOrderTransactionId}
+                    transactionId={transactionId}
                     paymentNumber={paymentNumber}
                     transactionAmount={transactionAmount}
                     cancelPopup={closePopup}
@@ -92,7 +92,7 @@ const PaymentScreen = () => {
 
             {selectedPaymentMethod?.label === 'Online' && (
                 <OnlinePayment
-                    transactionId={ticketOrderTransactionId}
+                    transactionId={transactionId}
                     paymentNumber={paymentNumber}
                     transactionAmount={transactionAmount}
                     cancelAction={closePopup}

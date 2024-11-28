@@ -5,6 +5,22 @@ export interface TopUpTransaction {
     date: string;
 }
 
+export interface User {
+    id: number;
+    email: string;
+    password: string;
+    firstname: string;
+    lastname: string;
+    PESEL: string;
+    streetName?: string;
+    streetNumber: string;
+    apartmentNumber?: string;
+    postalCode: string;
+    postal: string;
+    town: string;
+    phoneNumber:string;
+}
+
 export interface Ticket {
     _id: number;
     type: string;

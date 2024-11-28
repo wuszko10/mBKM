@@ -208,7 +208,7 @@ export default StyleSheet.create({
 
     input: {
         height: dimensions.inputHigh,
-        backgroundColor: colors.appWhite,
+        backgroundColor: colors.appThirdColor,
         color: colors.appFirstColor,
         borderWidth: 1,
         fontSize: dimensions.smallTextSize,

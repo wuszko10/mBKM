@@ -15,7 +15,7 @@ type RootStackParamList = {
     Home: undefined;
     Tickets: undefined;
     ValidateTicket: undefined;
-    PaymentScreen: {ticketOrderTransactionId: number, paymentMethodId: number, transactionAmount: number};
+    PaymentScreen: {transactionId: number, paymentMethodId: number, transactionAmount: number};
 };
 
 type RouteParams = {
@@ -48,7 +48,7 @@ const SummaryPurchaseScreen = () => {
         if (paymentMethodId) {
             const ticketOrderTransactionId = Math.floor(Math.random() * 10000);
             navigation.navigate('PaymentScreen', {
-                ticketOrderTransactionId,
+                transactionId: ticketOrderTransactionId,
                 paymentMethodId,
                 transactionAmount: finalPrice,
             })

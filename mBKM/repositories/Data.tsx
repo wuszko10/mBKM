@@ -1,4 +1,13 @@
-import { BusStop,Line,PaymentMethod,Relief,Ticket,TicketOrderTransaction,TopUpTransaction } from "./interfaces.tsx";
+import {
+    BusStop,
+    Line,
+    PaymentMethod,
+    Relief,
+    Ticket,
+    TicketOrderTransaction,
+    TopUpTransaction,
+    User
+} from "./interfaces.tsx";
 
 export const ticketsData: Ticket[] = [
     {
@@ -134,7 +143,7 @@ export const ticketOrderTransactions: TicketOrderTransaction[] = [
         _id: 478,
         userId: 76,
         number: "b05476x",
-        ticketTypeId: 40001,
+        ticketTypeId: 40002,
         status: "zakupiony",
         discountId: "discount_id_1",
         lineId: 405201,
@@ -244,3 +253,20 @@ export const busStopLocations: BusStop[] = [
     }
 
 ];
+
+export const userData: User = {
+    id: 1,
+    email: "jan.kowalski@example.com",
+    password: "SecurePassword123", // Przykładowe hasło (powinno być zaszyfrowane w prawdziwej aplikacji)
+    firstname: "Jan",
+    lastname: "Kowalski",
+    PESEL: "90010112345", // Przykładowy, poprawny PESEL
+    streetName: "Mickiewicza",
+    streetNumber: "15",
+    apartmentNumber: "4B",
+    postalCode: "00-950",
+    postal: "Warszawa",
+    town: "Warszawa",
+    phoneNumber: "+48123456789" // Polski numer w międzynarodowym formacie
+};
+

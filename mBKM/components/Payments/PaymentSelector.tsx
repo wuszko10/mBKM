@@ -37,7 +37,6 @@ const PaymentSelector: React.FC<PaymentSelectorProps> = (
 
 const localStyle = StyleSheet.create({
     box: {
-        flex: 0.7,
         flexDirection: "row",
         flexWrap: "wrap",
         gap: 10,

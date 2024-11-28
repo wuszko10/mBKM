@@ -9,6 +9,7 @@ import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Header from "../../components/Global/Header.tsx";
+import Mci from "react-native-vector-icons/MaterialCommunityIcons";
 
 
 type RootStackParamList = {
@@ -45,7 +46,8 @@ const Wallet = () => {
                     <Text style={localStyles.balanceText}>100,00 zł</Text>
                 </View>
 
-                <TouchableOpacity onPress={() => (navigation.navigate('TopUpScreen'))}>
+                <TouchableOpacity style={localStyles.topUpBox} onPress={() => (navigation.navigate('TopUpScreen'))}>
+                    <Mci name="wallet-plus-outline" size={24} style={{color: colors.appFirstColor}}/>
                     <Text style={{color: colors.textColorBlack}}>Doładuj</Text>
                 </TouchableOpacity>
             </View>
@@ -97,7 +99,13 @@ const localStyles = StyleSheet.create({
     text: {
         fontSize: 16,
         color: colors.textColorBlack,
-    }
+    },
+    topUpBox: {
+        alignItems: "center",
+        gap: 5,
+        paddingHorizontal: 10,
+        paddingVertical: 5,
+    },
 });
 
 export default Wallet;

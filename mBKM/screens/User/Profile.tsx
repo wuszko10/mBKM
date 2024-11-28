@@ -1,5 +1,5 @@
 import React,{ useState } from "react";
-import { SafeAreaView,ScrollView,Text,TextInput,TouchableOpacity,View } from "react-native";
+import { SafeAreaView,ScrollView,StyleSheet,Text,TextInput,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
 import tw from "twrnc";
@@ -9,6 +9,11 @@ import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../components/Global/AuthContext.tsx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { userData } from "../../repositories/Data.tsx";
+import Mci from "react-native-vector-icons/MaterialCommunityIcons";
+import EditDataPopup from "../../components/User/EditDataPopup.tsx";
+import ChangePasswordPopup from "../../components/User/ChangePasswordPopup.tsx";
+import changePasswordPopup from "../../components/User/ChangePasswordPopup.tsx";
 
 
 type RootStackPramList = {
@@ -28,155 +33,123 @@ const Profile = () => {
     const [streetNumber,setStreetNumber] = useState("");
     const [apartmentNumber,setApartmentNumber] = useState("");
     const [postalCode,setPostalCode] = useState("");
+    const [postal,setPostal] = useState("");
     const [town,setTown] = useState("");
     const [phoneNumber,setPhoneNumber] = useState("");
 
     const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
-    const [showPassword,setShowPassword] = useState(true);
 
-    function togglePassword() {
-        setShowPassword(!showPassword);
-    }
+    const [moreInfo,setMoreInfo] = useState(false);
+    const [changeData,setChangeData] = useState(false);
+    const [changePassword,setChangePassword] = useState(false);
+
+
+    const userLocalData = {
+        firstName,
+        lastName,
+        pesel,
+        streetName,
+        streetNumber,
+        apartmentNumber,
+        postalCode,
+        postal,
+        town,
+        phoneNumber,
+        email,
+        password
+    };
 
     const navigation = useNavigation<NavigationProp>();
     const { setToken } = useAuth();
 
     async function handleLogout() {
-        await AsyncStorage.removeItem('token');
-        setToken('');
-        navigation.navigate('Welcome');
+        await AsyncStorage.removeItem("token");
+        setToken("");
+        navigation.navigate("Welcome");
     }
 
     return (
-        <SafeAreaView style={stylesApp.container}>
+        <SafeAreaView style={[stylesApp.container,{ gap: 5 }]}>
+            <Header title="Mój profil" />
 
-            <Header title="Mój profil"/>
+            <Text style={[stylesApp.normalH3,{ fontSize: 18 }]}>Dane konta</Text>
 
-            <View style={[{backgroundColor: 'red'}]}>
+            <View style={stylesApp.flatlistItem}>
+                <Text style={stylesApp.blackText}>{userData.firstname} {userData.lastname}</Text>
+                <Text style={stylesApp.blackText}>{userData.phoneNumber}</Text>
+                <Text style={stylesApp.blackText}>{userData.email}</Text>
 
-                <ScrollView>
-                    <View style={stylesApp.gapContainer}>
-
-                        <Text style={stylesApp.h3}>Dane logowania</Text>
-
-                        <TextInput style={stylesApp.input}
-                                   placeholder="email"
-                                   value={email}
-                                   onChangeText={setEmail}
-                                   autoCapitalize="none"
-                                   placeholderTextColor={colors.gray}
-                        />
-
-                        <View style={[stylesApp.input,tw`flex flex-row items-center justify-between`]}>
-                            <TextInput
-                                style={stylesApp.inputText}
-                                placeholder="Hasło"
-                                value={password}
-                                autoCapitalize="none"
-                                secureTextEntry={showPassword}
-                                placeholderTextColor={colors.gray}
-                                onChangeText={(text) => setPassword(text)}
-                            />
-
-                            <TouchableOpacity onPress={togglePassword}>
-                                {showPassword?(
-                                    <Icon name="eye" style={stylesApp.icon} />
-                                ):(
-                                    <Icon name="eye-slash" style={stylesApp.icon} />
-                                )}
-                            </TouchableOpacity>
-                        </View>
-
-
-                        <Text style={stylesApp.h3}>Dane osobowe</Text>
-
-                        <TextInput style={stylesApp.input}
-                                   placeholder="Imię"
-                                   value={firstName}
-                                   onChangeText={setFirstName}
-                                   autoCapitalize="none"
-                                   placeholderTextColor={colors.gray}
-                        />
-
-                        <TextInput style={stylesApp.input}
-                                   placeholder="Nazwisko"
-                                   value={lastName}
-                                   onChangeText={setLastName}
-                                   autoCapitalize="none"
-                                   placeholderTextColor={colors.gray}
-                        />
-
-                        <TextInput style={stylesApp.input}
-                                   placeholder="PESEL"
-                                   value={pesel}
-                                   onChangeText={setPesel}
-                                   autoCapitalize="none"
-                                   keyboardType="numeric"
-                                   placeholderTextColor={colors.gray}
-                        />
-
-
-
-                        <Text style={stylesApp.h3}>Dane kontaktowe</Text>
-
-                        <TextInput style={stylesApp.input}
-                                   placeholder="Ulica"
-                                   value={streetName}
-                                   onChangeText={setStreetName}
-                                   autoCapitalize="none"
-                                   placeholderTextColor={colors.gray}
-                        />
-
-                        <TextInput style={stylesApp.input}
-                                   placeholder="Numer domu"
-                                   value={streetNumber}
-                                   onChangeText={setStreetNumber}
-                                   autoCapitalize="none"
-                                   placeholderTextColor={colors.gray}
-                        />
-
-                        <TextInput style={stylesApp.input}
-                                   placeholder="Numer mieszkania"
-                                   value={apartmentNumber}
-                                   onChangeText={setApartmentNumber}
-                                   autoCapitalize="none"
-                                   placeholderTextColor={colors.gray}
-                        />
-
-                        <TextInput style={stylesApp.input}
-                                   placeholder="Kod pocztowy"
-                                   value={postalCode}
-                                   onChangeText={setPostalCode}
-                                   autoCapitalize="none"
-                                   placeholderTextColor={colors.gray}
-                        />
-
-                        <TextInput style={stylesApp.input}
-                                   placeholder="Miejscowość"
-                                   value={town}
-                                   onChangeText={setTown}
-                                   autoCapitalize="none"
-                                   placeholderTextColor={colors.gray}
-                        />
-
-                        <TextInput style={stylesApp.input}
-                                   placeholder="Numer telefonu"
-                                   value={phoneNumber}
-                                   onChangeText={setPhoneNumber}
-                                   autoCapitalize="none"
-                                   placeholderTextColor={colors.gray}
-                        />
+                {moreInfo && (
+                    <View style={{ marginTop: 10 }}>
+                        <Text style={stylesApp.blackText}>PESEL: {userData.PESEL}</Text>
+                        <Text
+                            style={stylesApp.blackText}>Ulica: {userData?.streetName?userData?.streetName:userData.town} {userData.streetNumber} {userData?.apartmentNumber?("/" + userData?.apartmentNumber):""}</Text>
+                        <Text style={stylesApp.blackText}>Poczta: {userData.postalCode}, {userData.town}</Text>
                     </View>
-                </ScrollView>
+                )}
 
-
-                <TouchableOpacity onPress={handleLogout} style={stylesApp.mainButton}>
-                    <Text style={stylesApp.whiteBoldCenterText}>Wyloguj się</Text>
+                <TouchableOpacity onPress={() => setMoreInfo(!moreInfo)} style={{ alignItems: "center",marginTop: 10 }}>
+                    <Text style={{ color: colors.darkGray }}>Więcej informacji</Text>
                 </TouchableOpacity>
             </View>
+
+            <View style={stylesApp.separator}/>
+
+            <Text style={[stylesApp.normalH3,{ fontSize: 18 }]}>Ustawienia konta</Text>
+
+            <View>
+                <TouchableOpacity onPress={() => setChangeData(!changeData)} style={localStyle.changeButton}>
+                    <Text style={stylesApp.blackText}>Zmień dane</Text>
+                    <Mci name="chevron-right" size={24} />
+                </TouchableOpacity>
+
+                <TouchableOpacity onPress={() => setChangePassword(!changePassword)} style={localStyle.changeButton}>
+                    <Text style={stylesApp.blackText}>Zmień hasło</Text>
+                    <Mci name="chevron-right" size={24} />
+                </TouchableOpacity>
+            </View>
+
+
+            <EditDataPopup
+                showPopup={changeData}
+                setShowPopup={setChangeData}
+                userData={userLocalData}
+                setFirstName={setFirstName}
+                setLastName={setLastName}
+                setStreetName={setStreetName}
+                setStreetNumber={setStreetNumber}
+                setApartmentNumber={setApartmentNumber}
+                setPostalCode={setPostalCode}
+                setPostal={setPostal}
+                setTown={setTown}
+                setPhoneNumber={setPhoneNumber}
+                setEmail={setEmail}
+            />
+
+            <ChangePasswordPopup
+                showPopup={changePassword}
+                setShowPopup={setChangePassword}
+                password={password}
+                setPassword={setPassword}
+            />
+
+            <View style={stylesApp.separator}/>
+
+            <TouchableOpacity onPress={handleLogout} style={stylesApp.mainButton}>
+                <Text style={stylesApp.whiteBoldCenterText}>Wyloguj się</Text>
+            </TouchableOpacity>
         </SafeAreaView>
-    )
+    );
 };
+
+const localStyle = StyleSheet.create({
+    changeButton: {
+        ...stylesApp.flatlistItem,
+        flexDirection: "row",
+        alignItems: "center",
+        justifyContent: "space-between"
+    }
+});
 
 export default Profile;
