@@ -42,7 +42,10 @@ const Transactions = () => {
         <div className="main-box">
             <div className="content-box">
                 <h2>Transakcje</h2>
-                <DynamicTable data={data} columns={columns} />
+                <div className="table-conteiner">
+                    <DynamicTable data={data} columns={columns} />
+                </div>
+
             </div>
 
         </div>
