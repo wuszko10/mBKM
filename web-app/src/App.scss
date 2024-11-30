@@ -1,0 +1,67 @@
+@import 'variables';
+
+body {
+  font-family: 'Lato Regular', serif;
+}
+
+#root {
+  display: block;
+}
+
+div {
+  display: flex;
+  flex-direction: row;
+}
+
+.content hr {
+  width: 100%;
+  border: 1px solid $light-gray;
+}
+
+.App {
+  margin: 0;
+  padding: 0;
+  height: 100vh;
+}
+
+.LoginRegister {
+  height: 100vh;
+  justify-content: center;
+  align-items: center;
+  margin: 0;
+  padding: 0;
+}
+
+.menu {
+  flex: 0 0 350px;
+  background-color: $primary-color;
+  height: 100vh;
+  position: sticky;
+  top: 0;
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+
+.content {
+  flex: 1 1;
+  flex-direction: column;
+  padding: $appPadding;
+  overflow-y: auto;
+}
+
+::-webkit-scrollbar {
+  width: 10px;
+  background-color: $light-gray;
+}
+
+::-webkit-scrollbar-thumb {
+  background: $light-blue;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar:horizontal{
+  height: 4px;
+}
+::-webkit-scrollbar-thumb:horizontal{
+  background: lightgray;
+  border-radius: 10px;
+}
