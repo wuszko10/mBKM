@@ -28,11 +28,12 @@ function create(context) {
 
   async function createNewOrUpdate(userData) {
     const user = await UserDAO.createNewOrUpdate(userData);
-    if (userData.pesel) {
+    if ( await userData.pesel) {
       const hashedPesel = hashString(userData.pesel);
       userData.pesel = hashedPesel;
-    } else if (await userData.password) {
-      return await PasswordDAO.createOrUpdate({userId: user.id, password: hashString(userData.password)});
+      if (await userData.password) {
+        return await PasswordDAO.createOrUpdate({userId: user.id, password: hashString(userData.password)});
+      }
     } else {
       return user;
     }
