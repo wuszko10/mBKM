@@ -1,49 +1,78 @@
-//import logo from './images/logo-white-black.png'
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import './style.scss'
-//import { FaSearch } from 'react-icons/fa';
-import { Link } from "react-router-dom";
+import {Link, NavLink, useNavigate} from "react-router-dom";
+import { PiNavigationArrowFill} from "react-icons/pi";
 
 const Header = () => {
 
-    const [isLoggedIn, setIsLoggedIn] = useState(false);
+    const navigate = useNavigate();
 
-    useEffect(() => {        
-        const token = localStorage.getItem('token');
-        if (token) {
-            setIsLoggedIn(true);
-        }
-    }, []);
 
     const handleLogout = () => {
         localStorage.removeItem('token');
-        setIsLoggedIn(false);
+        navigate("/");
         window.location.reload();
     };
 
     return (
-        <header className="header">
-            <div className="header-box">
-
-                <div className="logo">
+        <header className="header-box">
+            <div className="header-content">
+                <div className="column-div">
                     <Link to="/">
-                        <p>LOGO</p>
+                        <div className="logo">
+                            <PiNavigationArrowFill className="logo-icon"/>
+                            <h1>mBKM</h1>
+                        </div>
                     </Link>
+
+                    <div className="header-menu">
+
+                        <NavLink
+                            style={({isActive}) => {
+                                return {
+                                    color: isActive ? "#002B44" : "white",
+                                    backgroundColor: isActive ? "white" : "transparent",
+                                };
+                            }}
+                            to="/">Start</NavLink>
+
+                        <NavLink
+                            style={({isActive}) => {
+                                return {
+                                    color: isActive ? "#002B44" : "white",
+                                    backgroundColor: isActive ? "white" : "transparent",
+                                };
+                            }}
+                            to="/tickets">Bilety</NavLink>
+
+                        <NavLink
+                            style={({isActive}) => {
+                                return {
+                                    color: isActive ? "#002B44" : "white",
+                                    backgroundColor: isActive ? "white" : "transparent",
+                                };
+                            }}
+                            to="/transactions">Transakcje</NavLink>
+
+                        <NavLink
+                            style={({isActive}) => {
+                                return {
+                                    color: isActive ? "#002B44" : "white",
+                                    backgroundColor: isActive ? "white" : "transparent",
+                                };
+                            }}
+                            to="/users">Użytkownicy</NavLink>
+                    </div>
                 </div>
 
-                <div className="login">
-                    {isLoggedIn ? (
+                <div className="header-footer">
+                    <div>
                         <button onClick={handleLogout} className="login-btn">
                             Wyloguj się
                         </button>
-                    ) : (
-                        <Link to="/signin" className="login-btn">
-                            Zaloguj się
-                        </Link>
-                    )}
+                    </div>
                 </div>
             </div>
-
         </header>
     );
 };
