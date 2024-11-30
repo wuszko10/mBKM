@@ -1,118 +1,126 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React,{ useEffect } from "react";
+import styles from "./style/stylesApp";
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
-  StyleSheet,
-  Text,
-  useColorScheme,
-  View,
-} from 'react-native';
+    SafeAreaView
+} from "react-native";
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+import { NavigationContainer } from "@react-navigation/native";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createStackNavigator } from "@react-navigation/stack";
+import Home from "./screens/Home/Home.tsx";
+import Tickets from "./screens/Tickets/Tickets.tsx";
+import Profile from "./screens/User/Profile.tsx";
+import Wallet from "./screens/Wallet/Wallet.tsx";
+import Login from "./screens/User/Login.tsx";
+import Welcome from "./screens/Global/Welcome.tsx";
+import Register from "./screens/User/Register.tsx";
+import { AuthProvider,useAuth } from "./components/Global/AuthContext.tsx";
+import SummaryPurchaseScreen from "./screens/Tickets/SummaryPurchaseScreen.tsx";
+import TicketDetails from "./screens/Tickets/TicketDetails.tsx";
+import TopUpScreen from "./screens/Wallet/TopUpScreen.tsx";
+import Entypo from 'react-native-vector-icons/Entypo';
+import Icon from 'react-native-vector-icons/FontAwesome';
+import Mci from 'react-native-vector-icons/MaterialCommunityIcons';
+import { colors } from "./style/styleValues.js";
+import stylesApp from "./style/stylesApp";
+import Purchase from "./screens/Tickets/Purchase.tsx";
+import SelectingPurchaseConfiguration from "./screens/Tickets/SelectingPurchaseConfiguration.tsx";
+import PaymentScreen from "./screens/Global/PaymentScreen.tsx";
+import ValidateTicket from "./screens/Tickets/ValidateTicket.tsx";
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-  return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
-    </View>
-  );
+type RootStackParamList = {
+    Home: undefined;
+    Wallet: undefined;
+    Tickets: undefined;
+    ValidateTicket: undefined;
+    Purchase: undefined;
+    Login: undefined;
+    Register: undefined;
+    Welcome: undefined;
+    UserPanel: undefined;
+    SelectingPurchaseConfiguration: undefined;
+    SummaryPurchaseScreen: undefined;
+    TicketDetails: undefined;
+    TopUpScreen: undefined;
+    PaymentScreen: undefined;
+    PaymentStack: undefined;
+};
+
+const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator();
+
+
+function UserPanel() {
+
+    const renderHomeBarIcon = ({ focused }: { focused: boolean }) => (
+        <Entypo name="home" size={24} color={focused?colors.appFirstColor:colors.gray} />
+    );
+
+    const renderWalletBarIcon = ({ focused }: { focused: boolean }) => (
+        <Entypo name="wallet" size={24} color={focused?colors.appFirstColor:colors.gray} />
+    );
+    const renderUserBarIcon = ({ focused }: { focused: boolean }) => (
+        <Icon name="user" size={24} color={focused?colors.appFirstColor:colors.gray} />
+    );
+    const renderTicketBarIcon = ({ focused }: { focused: boolean }) => (
+        <Mci name="ticket-confirmation" size={24} color={focused?colors.appFirstColor:colors.gray} />
+    );
+
+    return (
+        <Tab.Navigator screenOptions={({route})=> ({
+            tabBarStyle: stylesApp.tabBarStyle,
+            tabBarItemStyle: stylesApp.tabBarItemStyle,
+        })}>
+            <Tab.Screen name="Home" component={Home} options={{ headerShown: false,tabBarLabel: "Start", tabBarIcon: renderHomeBarIcon }} />
+            <Tab.Screen name="Wallet" component={Wallet}
+                        options={{ headerShown: false,tabBarLabel: "Wallet", tabBarIcon: renderWalletBarIcon }} />
+            <Tab.Screen name="Tickets" component={Tickets}
+                        options={{ headerShown: false,tabBarLabel: "Tickets", tabBarIcon:renderTicketBarIcon }} />
+            <Tab.Screen name="Profile" component={Profile}
+                        options={{ headerShown: false,tabBarLabel: "Profile", tabBarIcon: renderUserBarIcon }} />
+        </Tab.Navigator>
+    );
+}
+
+function MainApp() {
+    const { token } = useAuth();
+
+    return (
+        <NavigationContainer>
+            <Stack.Navigator>
+                {!token?(
+                    <>
+                        <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
+                        <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
+                        <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+                    </>
+                ):(
+                    <>
+                        <Stack.Screen name="UserPanel" component={UserPanel} options={{ headerShown: false }} />
+                        <Stack.Screen name="TicketDetails" component={TicketDetails} options={{ headerShown: false }} />
+                        <Stack.Screen name="TopUpScreen" component={TopUpScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="Purchase" component={Purchase} options={{ headerShown: false }} />
+                        <Stack.Screen name="SelectingPurchaseConfiguration" component={SelectingPurchaseConfiguration} options={{ headerShown: false }} />
+                        <Stack.Screen name="SummaryPurchaseScreen" component={SummaryPurchaseScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="PaymentScreen" component={PaymentScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="ValidateTicket" component={ValidateTicket} options={{ headerShown: false }} />
+                    </>
+                )}
+            </Stack.Navigator>
+        </NavigationContainer>
+    );
 }
 
 function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
 
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
+    return (
+        <SafeAreaView style={styles.appContainer}>
+            <AuthProvider>
+                <MainApp />
+            </AuthProvider>
+        </SafeAreaView>
+    );
 }
-
-const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
-  },
-  sectionTitle: {
-    fontSize: 24,
-    fontWeight: '600',
-  },
-  sectionDescription: {
-    marginTop: 8,
-    fontSize: 18,
-    fontWeight: '400',
-  },
-  highlight: {
-    fontWeight: '700',
-  },
-});
 
 export default App;
