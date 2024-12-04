@@ -1,10 +1,10 @@
 import business from '../business/business.container';
 import applicationException from '../service/applicationException';
 import admin from '../middleware/admin';
-import auth from '../middleware/auth';
+import authToken from '../middleware/authToken';
 
 const userEndpoint = (router) => {
-    router.post('/api/user/auth', async (request, response, next) => {
+    router.post('/api/user/auth', async (request, response) => {
         try {
             let result = await business.getUserManager(request).authenticate(request.body.login, request.body.password);
             response.status(200).send(result);
@@ -13,7 +13,7 @@ const userEndpoint = (router) => {
         }
     });
 
-    router.post('/api/user/create', async (request, response, next) => {
+    router.post('/api/user/create', async (request, response) => {
         try {
             const result = await business.getUserManager(request).createNewOrUpdate(request.body);
             response.status(200).send(result);
@@ -22,7 +22,7 @@ const userEndpoint = (router) => {
         }
     });
 
-    router.delete('/api/user/logout/:userId', auth, async (request, response, next) => {
+    router.delete('/api/user/logout/:userId', authToken, async (request, response) => {
         try {
             let result = await business.getUserManager(request).removeHashSession(request.body.userId);
             response.status(200).send(result);

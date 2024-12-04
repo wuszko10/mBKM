@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import {users} from './data';
+import {users} from '../../assets/data';
 
 const TransactionDetails = () => {
     const { id } = useParams();

@@ -30,6 +30,8 @@ $itemPadding: 10px;
 $appPadding: 20px;
 
 $gap: 15px;
+$smallGap: 10px;
+$bigGap: 20px;
 
 /*fonts*/
 
@@ -37,35 +39,35 @@ $gap: 15px;
     font-family: 'Montserrat ExtraBold';
     font-style: normal;
     font-weight: 800;
-    src: url('./fonts/montserrat/Montserrat-ExtraBold.ttf') format('truetype');
+    src: url('../assets/fonts/montserrat/Montserrat-ExtraBold.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Montserrat SemiBold';
     font-style: normal;
     font-weight: 600;
-    src: url('./fonts/montserrat/Montserrat-SemiBold.ttf') format('truetype');
+    src: url('../assets/fonts/montserrat/Montserrat-SemiBold.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Montserrat Bold';
     font-style: normal;
     font-weight: 700;
-    src: url('./fonts/montserrat/Montserrat-Bold.ttf') format('truetype');
+    src: url('../assets/fonts/montserrat/Montserrat-Bold.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Montserrat';
     font-style: normal;
     font-weight: 400;
-    src: url('./fonts/montserrat/Montserrat-Regular.ttf') format('truetype');
+    src: url('../assets/fonts/montserrat/Montserrat-Regular.ttf') format('truetype');
 }
 
 @font-face {
     font-family: 'Lato Regular';
     font-style: normal;
     font-weight: 400;
-    src: local("Lato Regular"), url('./fonts/lato/Lato-Regular.ttf') format('truetype');
+    src: local("Lato Regular"), url('../assets/fonts/lato/Lato-Regular.ttf') format('truetype');
 }
 
 /*

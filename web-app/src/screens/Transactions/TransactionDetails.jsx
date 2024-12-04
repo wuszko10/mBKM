@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import { transactions } from './data';
+import { transactions } from '../../assets/data';
 
 const TransactionDetails = () => {
     const { id } = useParams(); // Pobieranie id transakcji z parametru URL

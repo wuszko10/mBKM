@@ -1,7 +1,7 @@
 import React from 'react';
-import './style.scss';
-import DynamicTable from "./DynamicTable";
-import {transactions} from "./data";
+import '../../styles/style.scss';
+import DynamicTable from "../../components/Table/DynamicTable";
+import {transactions} from "../../assets/data";
 import {ColumnDef} from "@tanstack/react-table";
 import {useNavigate} from "react-router-dom";
 const Transactions = () => {

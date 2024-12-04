@@ -28,24 +28,29 @@ const GlobalPopup = ({
                         switch (field.type) {
                             case "select":
                                 return (
-                                    <select
-                                        key={field.name}
-                                        id={field.name}
-                                        name={field.name}
-                                        value={formData[field.name] || ""}
-                                        onChange={handleInputChange}
-                                    >
-                                        {field.options?.map((option) => (
-                                            <option key={option.value} value={option.value}>
-                                                {option.label}
+                                    <label key={field.name} htmlFor={field.name}>
+                                        {field.label}
+                                        <select
+                                            id={field.name}
+                                            name={field.name}
+                                            value={formData[field.name] || ""}
+                                            onChange={handleInputChange}
+                                        >
+                                            <option value="" disabled>
+                                                Wybierz opcję
                                             </option>
-                                        ))}
-
-                                    </select>
+                                            {field.options?.map((option) => (
+                                                <option key={option.value} value={option.value}>
+                                                    {option.label}
+                                                </option>
+                                            ))}
+                                        </select>
+                                    </label>
                                 );
                             case "checkbox":
                                 return (
                                     <label key={field.name}>
+                                        {field.label}
                                         <input
                                             type="checkbox"
                                             id={field.name}
@@ -65,15 +70,17 @@ const GlobalPopup = ({
                                 );
                             default:
                                 return (
-                                    <input
-                                        key={field.name}
-                                        type={field.type || "text"}
-                                        id={field.name}
-                                        name={field.name}
-                                        placeholder={field.placeholder}
-                                        value={formData[field.name] || ""}
-                                        onChange={handleInputChange}
-                                    />
+                                    <label key={field.name} htmlFor={field.name}>
+                                        {field.label}
+                                        <input
+                                            type={field.type || "text"}
+                                            id={field.name}
+                                            name={field.name}
+                                            placeholder={field.placeholder}
+                                            value={formData[field.name] || ""}
+                                            onChange={handleInputChange}
+                                        />
+                                    </label>
                                 );
                         }
                     })}

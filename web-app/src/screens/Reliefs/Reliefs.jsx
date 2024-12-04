@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
-import './style.scss'
+import '../../styles/style.scss'
 import {useNavigate} from "react-router-dom";
-import {discounts} from "./data";
+import {discounts} from "../../assets/data";
 import {ColumnDef} from "@tanstack/react-table";
-import DynamicTable from "./DynamicTable";
-import GlobalPopup from "./GlobalPopup";
+import DynamicTable from "../../components/Table/DynamicTable";
+import GlobalPopup from "../../components/Popup/GlobalPopup";
 import {LuPlusCircle} from "react-icons/lu";
 
 const Reliefs = () => {

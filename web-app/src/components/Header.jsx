@@ -1,5 +1,5 @@
 import React from 'react';
-import './style.scss'
+import '../styles/style.scss'
 import {Link, NavLink, useNavigate} from "react-router-dom";
 import { PiNavigationArrowFill} from "react-icons/pi";
 

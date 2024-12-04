@@ -1,4 +1,4 @@
-@import '../variables';
+@import '../styles/variables';
 
 
 h1 {
@@ -39,6 +39,15 @@ a {
     padding: 30px 0;
     margin: 0 auto;
     flex: 1;
+}
+
+.notFound-Box{
+    display: flex;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+    gap: 50px
 }
 
 .content-box {
@@ -425,7 +434,7 @@ footer {
     display: flex;
     flex-direction: column;
     align-items: center;
-    row-gap: 15px;
+    row-gap: $bigGap;
 }
 
 .form-global input, .form-global select {
@@ -448,13 +457,20 @@ footer {
     padding: 15px 20px;
 }
 
+.form-global label {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    gap: 3px;
+}
+
 
 .form-global input::placeholder {
     color: $gray;
 }
 
 
-.form-global button {
+.form-global button, .not-found-button {
     background-color: $primary-color;
     color: #fff;
     font-size: 15px;

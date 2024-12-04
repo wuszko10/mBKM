@@ -1,5 +1,5 @@
 import React, {useState} from 'react';
-import './style.scss'
+import '../../styles/style.scss'
 import {useNavigate} from "react-router-dom";
 import axios from "axios";
 import {toast} from 'react-toastify';

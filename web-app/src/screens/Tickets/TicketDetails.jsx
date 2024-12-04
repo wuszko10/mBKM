@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import {tickets} from "./data";
+import {tickets} from "../../assets/data";
 
 const TicketDetails = () => {
     const { id } = useParams(); // Pobieranie id z URL

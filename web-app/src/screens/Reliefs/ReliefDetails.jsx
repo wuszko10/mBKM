@@ -1,6 +1,6 @@
 import React from 'react';
 import { useParams } from 'react-router-dom';
-import {discounts} from "./data";
+import {discounts} from "../../assets/data";
 
 const ReliefDetails = () => {
     const { id } = useParams();
