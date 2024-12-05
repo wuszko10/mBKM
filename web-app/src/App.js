@@ -22,9 +22,10 @@ import {MetadataProvider} from "./context/metadataContext";
 
 function App() {
     return (
-        <Router>
-            { (!isExpired(localStorage.getItem('token'))) ? (
-                <MetadataProvider>
+        <MetadataProvider>
+            <Router>
+                {(!isExpired(localStorage.getItem('token'))) ? (
+
                     <div className="App">
                         <div className="menu">
                             <Header/>
@@ -37,28 +38,29 @@ function App() {
                                 <Route path="/reliefs" element={<Reliefs/>}/>
                                 <Route path="/relief/:id" element={<ReliefDetails/>}/>
                                 <Route path="/transactions" element={<Transactions/>}/>
-                                <Route path="/transaction/:id" element={<TransactionDetails />} />
+                                <Route path="/transaction/:id" element={<TransactionDetails/>}/>
                                 <Route path="/users" element={<Users/>}/>
                                 <Route path="/user/:id" element={<UserDetails/>}/>
-                                <Route path="*" element={<NotFound />} />
+                                <Route path="*" element={<NotFound/>}/>
                             </Routes>
-                            <hr />
-                            <Footer />
+                            <hr/>
+                            <Footer/>
                         </div>
                     </div>
-                </MetadataProvider>
-            ):(
-                <div className="LoginRegister">
-                    <Routes>
-                        <Route path="/" element={<Login/>}/>
-                        <Route path="/signin" element={<Login/>}/>
-                        <Route path="/signup" element={<Register/>}/>
-                        <Route path="*" element={<NotFound />} />
-                    </Routes>
-                </div>
-            )}
-            <ToastContainer/>
-        </Router>
+
+                ) : (
+                    <div className="LoginRegister">
+                        <Routes>
+                            <Route path="/" element={<Login/>}/>
+                            <Route path="/signin" element={<Login/>}/>
+                            <Route path="/signup" element={<Register/>}/>
+                            <Route path="*" element={<NotFound/>}/>
+                        </Routes>
+                    </div>
+                )}
+                <ToastContainer/>
+            </Router>
+        </MetadataProvider>
 
     );
 }

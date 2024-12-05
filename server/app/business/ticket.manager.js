@@ -1,7 +1,5 @@
-import TicketDAO from '../DAO/ticketDAO';
+import TicketDAO, {TicketModel} from '../DAO/ticketDAO';
 import applicationException from '../service/applicationException';
-import UserDAO from "../DAO/userDAO";
-import PasswordDAO from "../DAO/passwordDAO";
 
 function create(context) {
 
@@ -11,16 +9,26 @@ function create(context) {
     } catch (error) {
       throw applicationException.new(applicationException.NOT_FOUND, 'Error while creating or updating tickets');
     }
-
   }
-
   async function getAllTickets() {
+
     try {
       return await TicketDAO.getAllTickets();
     } catch (error) {
-      throw applicationException.new(applicationException.NOT_FOUND, 'Error while getting tickets');
+      throw applicationException.new(applicationException.NOT_FOUND, `Tickets not found`);
     }
   }
+
+  async function getAndSearchTicket({ page = 1, pageSize = 1, searchQuery = '', cache }) {
+
+    try {
+      return await TicketDAO.getAndSearchTicket(page, pageSize,searchQuery,cache);
+    } catch (error) {
+      throw applicationException.new(applicationException.NOT_FOUND, `Tickets not found`);
+    }
+  }
+
+
 
   async function getById(ticketId) {
     try {
@@ -42,6 +50,7 @@ function create(context) {
   return {
     createNewOrUpdateTicket: createNewOrUpdateTicket,
     getAllTickets,
+    getAndSearchTicket,
     getById,
     removeById,
   };

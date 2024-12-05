@@ -1,7 +1,6 @@
 import React, {useState} from 'react';
 import '../../styles/style.scss'
 import {Link, useNavigate} from "react-router-dom";
-import {tickets} from "../../assets/data";
 import DynamicTable from "../../components/Table/DynamicTable";
 import GlobalPopup from "../../components/Popup/GlobalPopup";
 import {FaReceipt} from "react-icons/fa";
@@ -11,7 +10,6 @@ import {useTickets} from "../../hooks/useTickets";
 import {getTicketsTableColumns} from "../../components/Table/TableColumns";
 import {getCreateTicketFormFields} from "../../components/Popup/PopupFields";
 import {addTicket} from "../../services/ticketService";
-import {toast} from "react-toastify";
 
 const Tickets = () => {
 
@@ -26,14 +24,24 @@ const Tickets = () => {
         offerStartDate: '',
     }
 
-    // const { tickets, loading } = useTickets();
+    const { metadata } = useMetadata();
+
+    const {
+        tickets,
+        loading,
+        page,
+        pageSize,
+        totalPages,
+        setPage,
+        setPageSize,
+        setSearchQuery,
+    } = useTickets();
+
     const [formData, setFormData] = useState(initialFormData);
 
 
-    const { metadata } = useMetadata();
-
-
-    const data = React.useMemo(() => tickets, []);
+    const data = React.useMemo(() => tickets, [tickets]
+    );
     const columns = getTicketsTableColumns(navigate);
     const formFields = getCreateTicketFormFields(metadata);
 
@@ -57,21 +65,17 @@ const Tickets = () => {
             return;
         }
 
+        console.log(formData);
+
         await addTicket(formData);
-
-        // console.log(formData);
-
-        // window.location.reload();
-
-
-        // console.log(formData);
 
         setFormData(initialFormData);
         handleClose();
+        window.location.reload();
     }
 
 
-    // if (loading) return <p>Ładowanie...</p>;
+
 
     return (
         <div className="main-box">
@@ -86,7 +90,17 @@ const Tickets = () => {
                 </div>
 
 
-                <DynamicTable data={data} columns={columns} />
+                <DynamicTable
+                    data={data}
+                    columns={columns}
+                    onFilterChange={setSearchQuery}
+                    pageIndex={page - 1}
+                    pageSize={pageSize}
+                    totalPages={totalPages}
+                    onPageChange={(newPage) => setPage(newPage + 1)}
+                    onPageSizeChange={setPageSize}
+                    loading={loading}
+                />
 
                 <p>* – ważność biletów okresowych wyrażona jest w miesiącach, a biletów jednorazowych – w minutach</p>
             </div>

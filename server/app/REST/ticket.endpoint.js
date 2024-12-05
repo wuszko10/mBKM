@@ -13,6 +13,17 @@ const TicketEndpoint = (router) => {
         }
     })
 
+    router.get('/api/tickets/table', authToken, async (req, res, next) => {
+        const { page = 1, pageSize = 10, searchQuery } = req.query;
+        const cache = req.app.locals.cache;
+        try {
+            const tickets = await business.getTicketManager(req).getAndSearchTicket({ page, pageSize, searchQuery, cache });
+            res.status(200).json(tickets);
+        } catch (error) {
+            next(error);
+        }
+    })
+
     router.get('/api/ticket/:id', authToken, async (req, res, next) => {
         try {
             const ticket = await business.getTicketManager(req).getById(req.params.id);
@@ -28,7 +39,6 @@ const TicketEndpoint = (router) => {
             res.status(201).json(ticket);
         } catch (error) {
             next(error);
-            console.log ("error is here");
         }
     });
 

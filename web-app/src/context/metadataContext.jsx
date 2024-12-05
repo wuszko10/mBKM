@@ -11,11 +11,11 @@ export const MetadataProvider = ({ children }) => {
         reliefTypes: [],
     });
 
-    const URI = process.env.REACT_APP_API_URL;
+    const token = localStorage.getItem('token');
 
     useEffect(() => {
+        const URI = process.env.REACT_APP_API_URL;
 
-        const token = localStorage.getItem('token');
 
         const fetchMetadata = async () => {
 
@@ -36,7 +36,7 @@ export const MetadataProvider = ({ children }) => {
 
         fetchMetadata();
 
-    }, [URI]);
+    }, [token]);
 
     return (
         <MetadataContext.Provider value={{metadata, setMetadata}}>
@@ -46,11 +46,6 @@ export const MetadataProvider = ({ children }) => {
 };
 
 export const useMetadata = () => {
-    const [metadata, setMetadata] = useState({
-        ticketTypes: [],
-        ticketPeriods: [],
-        ticketLines: [],
-    });
     const context = useContext(MetadataContext);
     if (!context) {
         throw new Error('useMetadata must be used within a MetadataProvider');

@@ -1,4 +1,4 @@
 require('dotenv').config();
 require('dotenv').config({ path: '.env.local' });
-require('babel-core/register');
+require('@babel/register');
 require('./app/app');
