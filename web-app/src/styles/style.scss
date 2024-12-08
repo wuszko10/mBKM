@@ -32,6 +32,21 @@ a {
     align-items: center;
 }
 
+.row-div {
+    flex-direction: row;
+    align-items: start;
+}
+
+.detailsBox {
+    flex-direction: column;
+    align-items: start;
+}
+
+.detailsBox p {
+    color: $black;
+    line-height: 1.9;
+}
+
 
 .main-box {
     display: block;
@@ -345,7 +360,7 @@ tr:nth-child(even) {
 }
 
 tr:nth-child(odd) {
-    background-color: transparent;  /* Tło dla pozostałych wierszy */
+    background-color: $tableRowSecondBg;  /* Tło dla pozostałych wierszy */
 }
 
 td {

@@ -19,7 +19,7 @@ function create(context) {
     }
   }
 
-  async function getAndSearchTicket({ page = 1, pageSize = 1, searchQuery = '', cache }) {
+  async function getAndSearchTicket(page, pageSize, searchQuery, cache) {
 
     try {
       return await TicketDAO.getAndSearchTicket(page, pageSize,searchQuery,cache);

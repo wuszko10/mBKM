@@ -2,52 +2,53 @@ import authToken from '../middleware/authToken';
 import business from '../business/business.container';
 import authUserRole from "../middleware/authUserRole";
 import admin from "../middleware/admin";
+import applicationException from "../service/applicationException";
 const TicketEndpoint = (router) => {
 
-    router.get('/api/tickets', authToken, async (req, res, next) => {
+    router.get('/api/tickets', authToken, async (req, res) => {
         try {
-            const tickets = await business.getTicketManager(req).getAllTickets();
+            const tickets = await business.getTicketManager().getAllTickets();
             res.status(200).json(tickets);
         } catch (error) {
-            next(error);
+            applicationException.errorHandler(error, res);
         }
     })
 
-    router.get('/api/tickets/table', authToken, async (req, res, next) => {
+    router.get('/api/tickets/table', authToken, async (req, res) => {
         const { page = 1, pageSize = 10, searchQuery } = req.query;
         const cache = req.app.locals.cache;
         try {
-            const tickets = await business.getTicketManager(req).getAndSearchTicket({ page, pageSize, searchQuery, cache });
+            const tickets = await business.getTicketManager().getAndSearchTicket(page, pageSize, searchQuery, cache);
             res.status(200).json(tickets);
         } catch (error) {
-            next(error);
+            applicationException.errorHandler(error, res);
         }
     })
 
-    router.get('/api/ticket/:id', authToken, async (req, res, next) => {
+    router.get('/api/ticket/:id', async (req, res) => {
         try {
-            const ticket = await business.getTicketManager(req).getById(req.params.id);
+            const ticket = await business.getTicketManager().getById(req.params.id);
             res.status(200).json(ticket);
         } catch (error) {
-            next(error);
+            applicationException.errorHandler(error, res);
         }
     });
 
-    router.post('/api/ticket', admin, async (req, res, next) => {
+    router.post('/api/ticket', admin, async (req, res) => {
         try {
-            const ticket = await business.getTicketManager(req).createNewOrUpdateTicket(req.body);
+            const ticket = await business.getTicketManager().createNewOrUpdateTicket(req.body);
             res.status(201).json(ticket);
         } catch (error) {
-            next(error);
+            applicationException.errorHandler(error, res);
         }
     });
 
-    router.delete('/api/ticket/:id', admin, async (req, res, next) => {
+    router.delete('/api/ticket/:id', admin, async (req, res) => {
         try {
-            const result = await business.getTicketManager(req).removeById(req.params.id);
+            const result = await business.getTicketManager().removeById(req.params.id);
             res.status(200).json(result);
         } catch (error) {
-            next(error);
+            applicationException.errorHandler(error, res);
         }
     });
 };

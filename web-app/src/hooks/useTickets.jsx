@@ -9,20 +9,22 @@ export const useTickets = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [totalPages, setTotalPages] = useState(0);
 
-    useEffect(() => {
-
+    const refreshTickets = () => {
         fetchTickets(page, pageSize, searchQuery)
-            .then((data) => {
-                setTickets(data.data);
-                setTotalPages(data.totalPages || 0);
-            })
-            .catch((error) => {
-                console.error("Failed to fetch tickets", error);
-            })
-            .finally(() => {
-                setLoading(false);
-            });
+                .then((data) => {
+                    setTickets(data.data);
+                    setTotalPages(data.totalPages || 0);
+                })
+                .catch((error) => {
+                    console.error("Failed to fetch tickets", error);
+                })
+                .finally(() => {
+                    setLoading(false);
+                });
+    };
 
+    useEffect(() => {
+        refreshTickets();
     }, [page, pageSize, searchQuery]);
 
     return {
@@ -34,5 +36,6 @@ export const useTickets = () => {
         setPage,
         setPageSize,
         setSearchQuery,
+        refreshTickets,
     };
 };

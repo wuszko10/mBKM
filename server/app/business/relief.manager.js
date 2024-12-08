@@ -9,9 +9,9 @@ import ReliefDAO from "../DAO/reliefDAO";
 function create(context) {
 
 
-  async function createNewOrUpdateRelief(req, reliefData) {
+  async function createNewOrUpdateRelief(reliefData) {
     try {
-      return await ReliefDAO.createNewOrUpdateRelief(req, reliefData);
+      return await ReliefDAO.createNewOrUpdateRelief(reliefData);
     } catch (error) {
       throw applicationException.new(applicationException.BAD_REQUEST, 'Error while creating or updating relief');
     }
@@ -25,11 +25,19 @@ function create(context) {
     }
   }
 
+  async function getAndSearchRelief(page, pageSize, searchQuery, cache) {
+    try {
+      return await ReliefDAO.getAndSearchRelief(page, pageSize, searchQuery,cache);
+    } catch (error) {
+      throw applicationException.new(applicationException.NOT_FOUND, `Reliefs not found`);
+    }
+  }
+
   async function getAllReliefs() {
     try {
       return await ReliefDAO.getReliefByName(name);
     } catch (error) {
-      throw applicationException.new(applicationException.UNAUTHORIZED, 'Error while getting reliefs');
+      throw applicationException.new(applicationException.NOT_FOUND, 'Error while getting reliefs');
     }
   }
 
@@ -53,6 +61,7 @@ function create(context) {
   return {
     createNewOrUpdateRelief:createNewOrUpdateRelief,
     getReliefByName:getReliefByName,
+    getAndSearchRelief: getAndSearchRelief,
     getAllReliefs:getAllReliefs,
     getReliefById:getReliefById,
     removeReliefById:removeReliefById

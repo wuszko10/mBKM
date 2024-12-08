@@ -2,7 +2,8 @@ import React from "react";
 import Modal from "react-modal";
 import { IoClose } from "react-icons/io5";
 
-const GlobalPopup = ({
+Modal.setAppElement('#root');
+const GlobalPopupForm = ({
                        isOpen,
                        onClose,
                        title,
@@ -12,6 +13,9 @@ const GlobalPopup = ({
                        formFields,
                        submitButtonText,
                    }) => {
+
+
+
     return (
         <Modal
             isOpen={isOpen}
@@ -91,4 +95,4 @@ const GlobalPopup = ({
     );
 };
 
-export default GlobalPopup;
+export default GlobalPopupForm;

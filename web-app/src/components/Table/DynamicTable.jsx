@@ -11,6 +11,7 @@ const DynamicTable = ({
                           data,
                           columns,
                           onFilterChange,
+                          enableFilters = true,
                           pageIndex,
                           pageSize,
                           totalPages,
@@ -25,22 +26,28 @@ const DynamicTable = ({
         state: {
             pagination: {pageIndex, pageSize},
         },
-        manualPagination: true, // Obsługa paginacji po stronie serwera
-        pageCount: totalPages, // Liczba stron
+        manualPagination: true,
+        pageCount: totalPages,
         getCoreRowModel: getCoreRowModel(),
     });
 
     const [filter, setFilter] = useState('');
 
-    const debouncedSearch = debounce((value) => {
-        onFilterChange(value);
-    }, 500);
+    const debouncedSearch = React.useCallback(
+        debounce((value) => {
+            onFilterChange(value);
+        }, 500),
+        [onFilterChange]
+    );
 
-    const handleChange = (e) => {
-        const value = e.target.value;
-        setFilter(value);
-        debouncedSearch(value);  // Wywołanie debounced function
-    };
+    const handleChange = React.useCallback(
+        (e) => {
+            const value = e.target.value;
+            setFilter(value);
+            debouncedSearch(value);
+        },
+        [debouncedSearch]
+    )
 
     return (
         <div className="content-box-table">
@@ -67,17 +74,24 @@ const DynamicTable = ({
                         </thead>
 
                         <tbody>
-                        {table.getRowModel().rows.map((row) => (
-                            <tr key={row.id}>
-                                {row.getVisibleCells().map((cell) => (
-                                    <td key={cell.id}>
-                                        {flexRender(cell.column.columnDef.cell, cell.getContext())}
-                                    </td>
-                                ))}
+                        {table.getRowModel().rows.length > 0 ? (
+                            table.getRowModel().rows.map((row) => (
+                                <tr key={row.id}>
+                                    {row.getVisibleCells().map((cell) => (
+                                        <td key={cell.id}>
+                                            {flexRender(cell.column.columnDef.cell, cell.getContext())}
+                                        </td>
+                                    ))}
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan={table.getHeaderGroups()[0]?.headers.length || 1}>
+                                    Brak danych do wyświetlenia
+                                </td>
                             </tr>
-                        ))}
+                        )}
                         </tbody>
-
 
                     </table>
                 ) : (

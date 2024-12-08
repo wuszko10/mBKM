@@ -1,21 +1,18 @@
 import React, {useState} from 'react';
 import '../../styles/style.scss'
-import {Link, useNavigate} from "react-router-dom";
+import {Link} from "react-router-dom";
 import DynamicTable from "../../components/Table/DynamicTable";
-import GlobalPopup from "../../components/Popup/GlobalPopup";
+import GlobalPopupForm from "../../components/Popup/GlobalPopupForm";
 import {FaReceipt} from "react-icons/fa";
 import {LuPlusCircle} from "react-icons/lu";
-import {useMetadata} from "../../context/metadataContext";
 import {useTickets} from "../../hooks/useTickets";
 import {getTicketsTableColumns} from "../../components/Table/TableColumns";
-import {getCreateTicketFormFields} from "../../components/Popup/PopupFields";
-import {addTicket} from "../../services/ticketService";
+import {getCreateTicketFormFields, getEditTicketFormFields} from "../../components/Popup/PopupFields";
+import {addTicket, deleteTicket, editTicket} from "../../services/ticketService";
 
 const Tickets = () => {
 
-    const navigate = useNavigate();
     const [show, setShow] = useState(false);
-
     const initialFormData = {
         type: '',
         lines: '',
@@ -23,8 +20,12 @@ const Tickets = () => {
         price: '',
         offerStartDate: '',
     }
+    const [formData, setFormData] = useState(initialFormData);
+    const [buttonText, setButtonText] = useState('');
+    const [formFields, setFormFields] = useState([]);
+    const [editTicketId, setEditTicketId] = useState();
 
-    const { metadata } = useMetadata();
+    const metadata = JSON.parse(localStorage.getItem('metadata'));
 
     const {
         tickets,
@@ -35,18 +36,12 @@ const Tickets = () => {
         setPage,
         setPageSize,
         setSearchQuery,
+        refreshTickets,
     } = useTickets();
 
-    const [formData, setFormData] = useState(initialFormData);
-
-
-    const data = React.useMemo(() => tickets, [tickets]
-    );
-    const columns = getTicketsTableColumns(navigate);
-    const formFields = getCreateTicketFormFields(metadata);
-
-    const handleClose = () => setShow(false);
-    const handleShow = () => setShow(true);
+    const data = React.useMemo(() => {
+        return tickets.length > 0 ? tickets : [];
+    }, [tickets]);
 
     const handleInputChange = (event) => {
         setFormData({
@@ -54,6 +49,35 @@ const Tickets = () => {
             [event.target.name]: event.target.value,
         });
     };
+
+    const handleClose = () => setShow(false);
+    const handleShowCreateForm = () => {
+        setFormFields(getCreateTicketFormFields(metadata));
+        setButtonText("Utwórz");
+        setShow(true);
+    };
+
+    function handleShowEditForm(id) {
+
+        const ticket = tickets.find(ticket => ticket._id === id);
+
+        let date = ticket.offerStartDate && Date.parse(ticket.offerStartDate) ?
+            new Date(ticket.offerStartDate).toISOString().split("T")[0] : '';
+
+        setFormData({
+            type: ticket.type,
+            lines: ticket.lines,
+            period: ticket.period,
+            price: ticket.price,
+            offerStartDate: date,
+            offerEndDate: '',
+        });
+
+        setEditTicketId(id);
+        setFormFields(getEditTicketFormFields(metadata));
+        setButtonText("Aktualizuj");
+        setShow(true);
+    }
 
     async function handleCreate(event) {
         event.preventDefault();
@@ -65,16 +89,31 @@ const Tickets = () => {
             return;
         }
 
-        console.log(formData);
-
         await addTicket(formData);
 
         setFormData(initialFormData);
         handleClose();
-        window.location.reload();
+        await refreshTickets();
     }
 
+    async function handleEdit(event) {
+        event.preventDefault();
 
+        console.log (formData);
+
+        await editTicket(editTicketId, formData);
+
+        setFormData(initialFormData);
+        handleClose();
+        await refreshTickets();
+    }
+
+    async function  handleRemove(id) {
+        await deleteTicket(id);
+        await refreshTickets();
+    }
+
+    const columns = getTicketsTableColumns(handleShowEditForm, handleRemove);
 
 
     return (
@@ -84,7 +123,7 @@ const Tickets = () => {
                     <h2>Bilety</h2>
                     <div>
                         <Link to={"/reliefs"} className="global-button"><FaReceipt />Ulgi</Link>
-                        <button className="global-button" onClick={handleShow}><LuPlusCircle />Dodaj rodzaj biletu</button>
+                        <button className="global-button" onClick={handleShowCreateForm}><LuPlusCircle />Dodaj rodzaj biletu</button>
                     </div>
 
                 </div>
@@ -105,15 +144,15 @@ const Tickets = () => {
                 <p>* – ważność biletów okresowych wyrażona jest w miesiącach, a biletów jednorazowych – w minutach</p>
             </div>
 
-            <GlobalPopup
+            <GlobalPopupForm
                 isOpen={show}
                 onClose={handleClose}
                 title="Utwórz nowy typ biletu"
                 formData={formData}
                 handleInputChange={handleInputChange}
-                onSubmit={handleCreate}
+                onSubmit={ !editTicketId ? handleCreate : handleEdit}
                 formFields={formFields}
-                submitButtonText="Utwórz"
+                submitButtonText={buttonText}
             />
         </div>
     );

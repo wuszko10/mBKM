@@ -3,6 +3,7 @@ import TokenDAO from '../DAO/tokenDAO';
 import UserDAO from '../DAO/userDAO';
 import applicationException from '../service/applicationException';
 import sha1 from 'sha1';
+import BusStopDAO from "../DAO/BusStopDAO";
 
 function create(context) {
 
@@ -22,21 +23,24 @@ function create(context) {
     return getToken(token);
   }
 
+  async function getAllUsers(page, pageSize, searchQuery) {
+    try {
+      return await UserDAO.getAndSearch(page, pageSize, searchQuery);
+    } catch (error) {
+      throw applicationException.new(applicationException.NOT_FOUND, 'Error while getting users');
+    }
+  }
+
   function getToken(token) {
     return {token: token.value};
   }
 
   async function createNewOrUpdate(userData) {
     const user = await UserDAO.createNewOrUpdate(userData);
-    if ( await userData.pesel) {
-      const hashedPesel = hashString(userData.pesel);
-      userData.pesel = hashedPesel;
-      if (await userData.password) {
-        return await PasswordDAO.createOrUpdate({userId: user.id, password: hashString(userData.password)});
-      }
-    } else {
-      return user;
+    if (await userData.password) {
+      return await PasswordDAO.createOrUpdate({userId: user.id, password: hashString(userData.password)});
     }
+    return user;
   }
 
   async function removeHashSession(userId) {
@@ -45,6 +49,7 @@ function create(context) {
 
   return {
     authenticate: authenticate,
+    getAllUsers: getAllUsers,
     createNewOrUpdate: createNewOrUpdate,
     removeHashSession: removeHashSession
   };

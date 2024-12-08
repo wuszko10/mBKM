@@ -55,14 +55,11 @@ function createNewOrUpdateTicket(ticket) {
 // }
 
 
-async function getAndSearchTicket(page, pageSize, searchQuery, cache ) {
+async function getAndSearchTicket(page, pageSize, searchQuery, cache) {
 
     const ticketTypes = cache.get("ticketTypes");
     const ticketPeriods = cache.get("ticketPeriods");
     const ticketLines = cache.get("ticketLines");
-
-    console.log("Search query:", searchQuery);
-
 
     let typeIds = [];
     let periodIds = [];

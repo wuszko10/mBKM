@@ -6,48 +6,59 @@ import authUserRole from "../middleware/authUserRole";
 
 const ReliefEndpoint = (router) => {
 
-    router.get('/api/reliefs', authToken, async (req, res, next) => {
+    router.get('/api/reliefs', authToken, async (req, res) => {
         try {
-            const reliefs = await business.getReliefManager().getAllReliefs();
+            let reliefs = await business.getReliefManager(req).getAllReliefs();
             res.status(200).json(reliefs);
         } catch (error) {
-            next(error);
+            applicationException.errorHandler(error, res);
         }
     })
 
-    router.get('/api/relief/:id', authToken, async (req, res, next) => {
+    router.get('/api/relief/:id', authToken, async (req, res) => {
         try {
-            const relief = await business.getReliefManager().getReliefById(req.params.id);
+            const relief = await business.getReliefManager(req).getReliefById(req.params.id);
             res.status(200).json(relief);
         } catch (error) {
-            next(error);
+            applicationException.errorHandler(error, res);
         }
     });
 
-    router.get('/api/relief/:name', authToken, async (req, res, next) => {
+    router.get('/api/reliefs/table', authToken, async (req, res) => {
+        const { page = 1, pageSize = 10, searchQuery } = req.query;
+        const cache = req.app.locals.cache;
+        try {
+            const tickets = await business.getReliefManager().getAndSearchRelief(page, pageSize, searchQuery, cache);
+            res.status(200).json(tickets);
+        } catch (error) {
+            applicationException.errorHandler(error, res);
+        }
+    })
+
+    router.get('/api/relief/:name', authToken, async (req, res) => {
         try {
             const relief = await business.getReliefManager().getReliefById(req.params.name);
             res.status(200).json(relief);
         } catch (error) {
-            next(error);
+            applicationException.errorHandler(error, res);
         }
     });
 
-    router.post('/api/relief', authToken, authUserRole('admin'), async (req, res, next) => {
+    router.post('/api/relief', authToken, authUserRole('admin'), async (req, res) => {
         try {
             const relief = await business.getReliefManager().createNewOrUpdateRelief(req.body);
             res.status(201).json(relief);
         } catch (error) {
-            next(error);
+            applicationException.errorHandler(error, res);
         }
     });
 
-    router.delete('/api/relief/:id', authToken, authUserRole('admin'), async (req, res, next) => {
+    router.delete('/api/relief/:id', authToken, authUserRole('admin'), async (req, res) => {
         try {
             const result = await business.getReliefManager().removeReliefById(req.params.id);
             res.status(200).json(result);
         } catch (error) {
-            next(error);
+            applicationException.errorHandler(error, res);
         }
     });
 };

@@ -1,23 +1,44 @@
 import React, {useState} from 'react';
 import '../../styles/style.scss'
 import {useNavigate} from "react-router-dom";
-import {users} from "../../assets/data";
-import {ColumnDef} from "@tanstack/react-table";
 import DynamicTable from "../../components/Table/DynamicTable";
-import GlobalPopup from "../../components/Popup/GlobalPopup";
+import GlobalPopupForm from "../../components/Popup/GlobalPopupForm";
 import {LuPlusCircle} from "react-icons/lu";
+import {getUsersColumns} from "../../components/Table/TableColumns";
+import {getCreateUserFormFields} from "../../components/Popup/PopupFields";
+import {useUsers} from "../../hooks/useUsers";
+import {addUser} from "../../services/userService";
 
 const Users = () => {
 
     const navigate = useNavigate();
+    const columns = getUsersColumns(navigate);
 
     const [show, setShow] = useState(false);
-    const [formData, setFormData] = useState({
+    const initialFormData = {
         firstName: '',
         lastName: '',
         email: '',
-        password: '',
-    });
+        pesel: '',
+    }
+    const [formData, setFormData] = useState(initialFormData);
+
+    const {
+        users,
+        loading,
+        page,
+        pageSize,
+        totalPages,
+        setPage,
+        setPageSize,
+        setSearchQuery,
+    } = useUsers();
+
+    const formFields = getCreateUserFormFields();
+
+    const data = React.useMemo(() => {
+        return users.length > 0 ? users : [];
+    }, [users]);
 
     const handleInputChange = (event) => {
         setFormData({
@@ -25,56 +46,23 @@ const Users = () => {
             [event.target.name]: event.target.value,
         });
     };
-    function afterOpenModal() {
-    }
     const handleShow = () => setShow(true);
     const handleClose = () => setShow(false);
 
-    const data = React.useMemo(() => users, []);
-    const columns: ColumnDef<typeof data[0]>[] = [
-        {
-            accessorKey: 'id',
-            header: 'ID',
-        },
-        {
-            accessorKey: 'username',
-            header: 'Nazwa użytkownika',
-        },
-        {
-            accessorKey: 'firstName',
-            header: 'Imię',
-        },
-        {
-            accessorKey: 'lastName',
-            header: 'Nazwisko',
-        },
-        {
-            accessorKey: 'email',
-            header: 'Email',
-        },
-        {
-            header: 'Szczegóły',
-            cell: ({ row }) => (
-                <button onClick={() => navigate(`/user/${row.original.id}`)}>Zobacz szczegóły</button>
-            ),
-        },
-    ];
+    async function handleRegister(event) {
+        event.preventDefault();
 
-    const formFields = [
-        { name: "firstName", placeholder: "Imię" },
-        { name: "lastName", placeholder: "Nazwisko" },
-        { name: "email", placeholder: "Email" },
-        { name: "password", placeholder: "Hasło", type: "password" },
-    ];
+        const allFieldsFilled = Object.values(formData).every((value) => value !== "");
 
-    function handleRegister() {
-        setFormData({
-            firstName: '',
-            lastName: '',
-            email: '',
-            password: '',
-        });
+        if (!allFieldsFilled) {
+            alert("Proszę wypełnić wszystkie pola.");
+            return;
+        }
+        await addUser(formData);
+
+        setFormData(initialFormData);
         handleClose();
+        window.location.reload();
     }
 
     return (
@@ -85,10 +73,20 @@ const Users = () => {
                     <button className="global-button" onClick={handleShow}><LuPlusCircle />Dodaj użytkownika</button>
                 </div>
 
-                <DynamicTable data={data} columns={columns} />
+                <DynamicTable
+                    data={data}
+                    columns={columns}
+                    onFilterChange={setSearchQuery}
+                    pageIndex={page - 1}
+                    pageSize={pageSize}
+                    totalPages={totalPages}
+                    onPageChange={(newPage) => setPage(newPage + 1)}
+                    onPageSizeChange={setPageSize}
+                    loading={loading}
+                />
             </div>
 
-            <GlobalPopup
+            <GlobalPopupForm
                 isOpen={show}
                 onClose={handleClose}
                 title="Dodaj użytkownika"

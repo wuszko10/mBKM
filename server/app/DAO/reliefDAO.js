@@ -4,12 +4,11 @@ import Promise from 'bluebird';
 import applicationException from '../service/applicationException';
 import mongoConverter from '../service/mongoConverter';
 import uniqueValidator from 'mongoose-unique-validator';
-import metadataService from "../service/metadataService";
 
 const reliefSchema = new mongoose.Schema({
     name: {type: String, required: true, unique: true},
-    type: {type: Number, required: true},
-    discountPercentage: {type: Number, required: true},
+    type: {type: mongoose.Schema.Types.ObjectId, ref: 'reliefType', required: true},
+    percentage: {type: Number, required: true},
 }, {
     collection: 'relief'
 });
@@ -47,6 +46,56 @@ async function getReliefByName(name) {
     throw applicationException.new(applicationException.NOT_FOUND, 'Relief not found');
 }
 
+async function getAndSearchRelief(page, pageSize, searchQuery, cache ) {
+
+    const reliefTypes = cache.get("reliefTypes");
+
+    let reliefTypeIds = [];
+
+    if (searchQuery) {
+        const lowerCaseSearchQuery = searchQuery.toLowerCase();
+
+        reliefTypeIds = reliefTypes.filter(t => t.label.toLowerCase().includes(lowerCaseSearchQuery)).map(t => t.id);
+    }
+
+    const searchCriteria = searchQuery
+        ? {
+            $or: [
+                { name: { $regex: searchQuery.toLowerCase(), $options: 'i' } },
+                { type: { $in: reliefTypeIds } },
+            ],
+        }
+        : {};
+
+    try {
+        const totalRecords = await ReliefModel.countDocuments(searchCriteria);
+
+        const reliefs = await ReliefModel.find(searchCriteria)
+            .skip((page - 1) * pageSize)
+            .limit(pageSize);
+
+        const reliefsArray = Array.isArray(reliefs) ? reliefs : [];
+
+        const transformedReliefs = reliefsArray.map(relief => {
+            const reliefObj = relief.toObject();
+            return {
+                ...reliefObj,
+                typeName: reliefTypes.find(t => t.id === relief.type.toString())?.label,
+            };
+        });
+
+        return {
+            data: transformedReliefs,
+            page,
+            pageSize,
+            totalPages: Math.ceil(totalRecords / pageSize),
+            totalRecords,
+        };
+    } catch (error) {
+        throw applicationException.new(applicationException.BAD_REQUEST, 'Error while getting reliefs');
+    }
+}
+
 async function getAllReliefs() {
     const result = await ReliefModel.find();
     if (result) {
@@ -70,6 +119,7 @@ async function removeReliefById(id) {
 export default {
     createNewOrUpdateRelief: createNewOrUpdateRelief,
     getReliefByName: getReliefByName,
+    getAndSearchRelief: getAndSearchRelief,
     getAllReliefs: getAllReliefs,
     getReliefById: getReliefById,
     removeReliefById: removeReliefById,

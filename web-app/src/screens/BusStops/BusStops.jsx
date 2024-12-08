@@ -4,18 +4,18 @@ import {useNavigate} from "react-router-dom";
 import DynamicTable from "../../components/Table/DynamicTable";
 import GlobalPopupForm from "../../components/Popup/GlobalPopupForm";
 import {LuPlusCircle} from "react-icons/lu";
-import {getReliefColumns} from "../../components/Table/TableColumns";
-import {useReliefs} from "../../hooks/useReliefs";
-import {addRelief} from "../../services/reliefService";
-import {getCreateReliefFormFields} from "../../components/Popup/PopupFields";
+import {getStopsColumns} from "../../components/Table/TableColumns";
+import {getCreateBusStopFormFields} from "../../components/Popup/PopupFields";
+import {useStops} from "../../hooks/useStops";
+import {addBusStop} from "../../services/stopService";
 
-const Reliefs = () => {
+const BusStops = () => {
 
     const navigate = useNavigate();
-    const columns = getReliefColumns(navigate);
+    const columns = getStopsColumns(navigate);
 
     const {
-        reliefs,
+        stops,
         loading,
         page,
         pageSize,
@@ -23,27 +23,22 @@ const Reliefs = () => {
         setPage,
         setPageSize,
         setSearchQuery,
-    } = useReliefs();
-
-
+    } = useStops();
 
 
     const [show, setShow] = useState(false);
 
     const initialFormData = {
         name: '',
-        type: '',
-        percentage: '',
+        longitude: '',
+        latitude: '',
     }
-
-    const metadata = JSON.parse(localStorage.getItem('metadata'));
 
     const [formData, setFormData] = useState(initialFormData);
 
     const data = React.useMemo(() => {
-        return reliefs.length > 0 ? reliefs : [];
-    }, [reliefs]);
-
+        return stops.length > 0 ? stops : [];
+    }, [stops]);
 
     const handleClose = () => {
         setFormData(initialFormData);
@@ -59,7 +54,7 @@ const Reliefs = () => {
         });
     };
 
-    const formFields = getCreateReliefFormFields(metadata);
+    const formFields = getCreateBusStopFormFields();
 
     async function handleCreate(event) {
         event.preventDefault();
@@ -75,7 +70,7 @@ const Reliefs = () => {
 
         console.log(formData);
 
-        await addRelief(formData);
+        await addBusStop(formData);
 
         setSearchQuery("");
         setFormData(initialFormData);
@@ -87,8 +82,8 @@ const Reliefs = () => {
         <div className="main-box">
             <div className="content-box">
                 <div className="header-with-button">
-                    <h2>Ulgi</h2>
-                    <button className="global-button" onClick={handleShow}><LuPlusCircle />Dodaj ulgę</button>
+                    <h2>Przystanki</h2>
+                    <button className="global-button" onClick={handleShow}><LuPlusCircle />Dodaj przystanek</button>
 
                 </div>
 
@@ -109,15 +104,15 @@ const Reliefs = () => {
             <GlobalPopupForm
                 isOpen={show}
                 onClose={handleClose}
-                title="Utwórz nowy typ ulgi"
+                title="Utwórz nowy przystanek"
                 formData={formData}
                 handleInputChange={handleInputChange}
                 onSubmit={handleCreate}
                 formFields={formFields}
-                submitButtonText="Dodaj ulgę"
+                submitButtonText="Dodaj przystanek"
             />
         </div>
     );
 };
 
-export default Reliefs;
+export default BusStops;

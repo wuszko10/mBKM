@@ -4,6 +4,7 @@ import Promise from 'bluebird';
 import applicationException from '../service/applicationException';
 import mongoConverter from '../service/mongoConverter';
 import uniqueValidator from 'mongoose-unique-validator';
+import sha1 from "sha1";
 
 
 const userRole = {
@@ -14,10 +15,11 @@ const userRole = {
 const userRoles = [userRole.admin, userRole.user];
 
 const userSchema = new mongoose.Schema({
+  firstName: { type: String, required: true },
+  lastName: { type: String, required: true },
   email: { type: String, required: true, unique: true },
-  name: { type: String, required: true, unique: true },
-  pesel: { type: String, required: true },
-  role: { type: String, enum: userRoles, default: userRole.admin, required: false },
+  pesel: { type: Number, required: true, unique: true  },
+  role: { type: String, enum: userRoles, default: userRole.user, required: false },
   active: { type: Boolean, default: true, required: false },
   isAdmin: { type: Boolean, default: false, required: false }
 }, {
@@ -48,8 +50,47 @@ function createNewOrUpdate(user) {
   });
 }
 
-async function getByEmailOrName(name) {
-  const result = await UserModel.findOne({ $or: [{ email: name }, { name: name }] });
+async function getByEmailOrName(email) {
+  const result = await UserModel.findOne({email: email});
+  if (result) {
+    return mongoConverter(result);
+  }
+  throw applicationException.new(applicationException.NOT_FOUND, 'User not found');
+}
+
+async function getAndSearch(page, pageSize, searchQuery) {
+
+  const searchCriteria = searchQuery
+      ? {
+        $or: [
+          { name: { $regex: searchQuery, $options: 'i' } },
+          { email: { $regex: searchQuery, $options: 'i' } },
+          { pesel: { $regex: searchQuery, $options: 'i' }},
+        ],
+      }
+      : {};
+
+  try {
+    const totalRecords = await UserModel.countDocuments(searchCriteria);
+
+    const stops = await UserModel.find(searchCriteria)
+        .skip((page - 1) * pageSize)
+        .limit(pageSize);
+
+    return {
+      data: stops,
+      page,
+      pageSize,
+      totalPages: Math.ceil(totalRecords / pageSize),
+      totalRecords,
+    };
+  } catch (error) {
+    throw applicationException.new(applicationException.BAD_REQUEST, 'Error while getting users');
+  }
+}
+
+async function getAll() {
+  const result = await UserModel.find();
   if (result) {
     return mongoConverter(result);
   }
@@ -72,7 +113,9 @@ export default {
   createNewOrUpdate: createNewOrUpdate,
   getByEmailOrName: getByEmailOrName,
   get: get,
+  getAndSearch: getAndSearch,
   removeById: removeById,
+  getAll: getAll,
 
   userRole: userRole,
   model: UserModel

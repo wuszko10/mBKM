@@ -52,6 +52,15 @@ const Header = () => {
                                     backgroundColor: isActive ? "white" : "transparent",
                                 };
                             }}
+                            to="/stops">Przystanki</NavLink>
+
+                        <NavLink
+                            style={({isActive}) => {
+                                return {
+                                    color: isActive ? "#002B44" : "white",
+                                    backgroundColor: isActive ? "white" : "transparent",
+                                };
+                            }}
                             to="/transactions">Transakcje</NavLink>
 
                         <NavLink
