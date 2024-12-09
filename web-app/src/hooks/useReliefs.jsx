@@ -11,7 +11,7 @@ export const useReliefs = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [totalPages, setTotalPages] = useState(0);
 
-    useEffect(() => {
+    const refreshReliefs = () => {
         fetchReliefs(page, pageSize, searchQuery)
             .then((data) => {
                 setReliefs(data.data);
@@ -27,6 +27,10 @@ export const useReliefs = () => {
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    useEffect(() => {
+        refreshReliefs();
     }, [page, pageSize, searchQuery]);
 
     return {
@@ -38,5 +42,6 @@ export const useReliefs = () => {
         setPage,
         setPageSize,
         setSearchQuery,
+        refreshReliefs,
     };
 };

@@ -1,4 +1,4 @@
-export const getCreateTicketFormFields = (metadata) => {
+export const getTicketFormFields = (metadata) => {
     return [
         {
             name: "type",
@@ -38,21 +38,15 @@ export const getCreateTicketFormFields = (metadata) => {
             label: "Data wprowadzenia oferty",
             type: "date",
         },
-    ];
-};
-
-export const getEditTicketFormFields = (metadata) => {
-    return [
-        ...getCreateTicketFormFields(metadata),
         {
             name: "offerEndDate",
             label: "Data zakończenia oferty (nieobowiązkowe)",
             type: "date",
         },
-    ]
-}
+    ];
+};
 
-export const getCreateReliefFormFields = (metadata) => {
+export const getReliefFormFields = (metadata) => {
     return [
         {
             name: "name",
@@ -78,7 +72,7 @@ export const getCreateReliefFormFields = (metadata) => {
     ];
 };
 
-export const getCreateBusStopFormFields = () => {
+export const getBusStopFormFields = () => {
     return [
         {
             name: "name",

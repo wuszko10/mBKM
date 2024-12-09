@@ -27,9 +27,13 @@ app.locals.cache = cache;
 
 app.use(loadMetadataMiddleware);
 
-mongoose.connect(config.databaseUrl, { useNewUrlParser: true })
-  .then(() => console.info('Connect with database established'))
-  .catch(error => console.error('Database connection error:', error));
+
+mongoose
+    .connect(config.databaseUrl, {
+        useNewUrlParser: true
+    })
+    .then(() => console.info('Connect with database established'))
+    .catch(error => console.error('Database connection error:', error));
 
 process.on('SIGINT', () => {
     mongoose.connection.close(function () {

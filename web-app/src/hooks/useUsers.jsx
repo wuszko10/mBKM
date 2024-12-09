@@ -1,6 +1,4 @@
 import { useState, useEffect } from 'react';
-import { fetchTickets } from '../services/ticketService';
-import {fetchReliefs} from "../services/reliefService";
 import {toast} from "react-toastify";
 import {fetchUsers} from "../services/userService";
 
@@ -12,13 +10,13 @@ export const useUsers = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [totalPages, setTotalPages] = useState(0);
 
-    useEffect(() => {
+    const refreshUsers = () => {
         fetchUsers(page, pageSize, searchQuery)
             .then((data) => {
                 setUsers(data.data);
                 setTotalPages(data.totalPages || 0);
             })
-            .catch((error) => {
+            .catch(() => {
                 setUsers([]);
                 toast.error('Brak danych w bazie', {
                     position: 'top-right',
@@ -28,6 +26,10 @@ export const useUsers = () => {
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    useEffect(() => {
+        refreshUsers();
     }, [page, pageSize, searchQuery]);
 
     return {
@@ -39,5 +41,6 @@ export const useUsers = () => {
         setPage,
         setPageSize,
         setSearchQuery,
+        refreshUsers,
     };
 };

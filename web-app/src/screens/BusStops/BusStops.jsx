@@ -1,18 +1,13 @@
 import React, {useState} from 'react';
 import '../../styles/style.scss'
-import {useNavigate} from "react-router-dom";
 import DynamicTable from "../../components/Table/DynamicTable";
-import GlobalPopupForm from "../../components/Popup/GlobalPopupForm";
 import {LuPlusCircle} from "react-icons/lu";
 import {getStopsColumns} from "../../components/Table/TableColumns";
-import {getCreateBusStopFormFields} from "../../components/Popup/PopupFields";
 import {useStops} from "../../hooks/useStops";
-import {addBusStop} from "../../services/stopService";
+import BusStopPopupForm from "../../components/Popup/components/BusStopPopupForm";
+import {deleteBusStop} from "../../services/stopService";
 
 const BusStops = () => {
-
-    const navigate = useNavigate();
-    const columns = getStopsColumns(navigate);
 
     const {
         stops,
@@ -23,67 +18,53 @@ const BusStops = () => {
         setPage,
         setPageSize,
         setSearchQuery,
+        refreshStops,
     } = useStops();
 
 
     const [show, setShow] = useState(false);
+    const [selectedBusStop, setSelectedBusStop] = useState({});
+    const [title, setTitle] = useState('');
+    const [buttonText, setButtonText] = useState('');
 
-    const initialFormData = {
-        name: '',
-        longitude: '',
-        latitude: '',
-    }
-
-    const [formData, setFormData] = useState(initialFormData);
 
     const data = React.useMemo(() => {
         return stops.length > 0 ? stops : [];
     }, [stops]);
 
-    const handleClose = () => {
-        setFormData(initialFormData);
-        setSearchQuery("");
-        setShow(false)
-    };
-    const handleShow = () => setShow(true);
-
-    const handleInputChange = (event) => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value,
-        });
+    const handleShowCreateForm = () => {
+        setTitle('Dodaj nowy przystanek');
+        setButtonText("Utwórz");
+        setShow(true);
     };
 
-    const formFields = getCreateBusStopFormFields();
-
-    async function handleCreate(event) {
-        event.preventDefault();
-
-        console.log(formData);
-
-        const allFieldsFilled = Object.values(formData).every((value) => value !== "");
-
-        if (!allFieldsFilled) {
-            alert("Proszę wypełnić wszystkie pola.");
-            return;
-        }
-
-        console.log(formData);
-
-        await addBusStop(formData);
-
-        setSearchQuery("");
-        setFormData(initialFormData);
-        handleClose();
-        window.location.reload();
+    function handleShowEditForm(id) {
+        let busStop = stops.find(busStop => busStop._id === id);
+        setSelectedBusStop(busStop);
+        setTitle('Aktualizuj przystanek');
+        setButtonText("Aktualizuj");
+        setShow(true);
     }
+
+
+    async function  handleRemove(id) {
+
+        const confirmDelete = window.confirm('Czy na pewno chcesz usunąć ten przystanek?');
+
+        if (confirmDelete) {
+            await deleteBusStop(id);
+            await refreshStops();
+        }
+    }
+
+    const columns = getStopsColumns(handleShowEditForm, handleRemove);
 
     return (
         <div className="main-box">
             <div className="content-box">
                 <div className="header-with-button">
                     <h2>Przystanki</h2>
-                    <button className="global-button" onClick={handleShow}><LuPlusCircle />Dodaj przystanek</button>
+                    <button className="global-button" onClick={handleShowCreateForm}><LuPlusCircle />Dodaj przystanek</button>
 
                 </div>
 
@@ -101,15 +82,13 @@ const BusStops = () => {
 
             </div>
 
-            <GlobalPopupForm
-                isOpen={show}
-                onClose={handleClose}
-                title="Utwórz nowy przystanek"
-                formData={formData}
-                handleInputChange={handleInputChange}
-                onSubmit={handleCreate}
-                formFields={formFields}
-                submitButtonText="Dodaj przystanek"
+            <BusStopPopupForm
+                show={show}
+                setShow={setShow}
+                stop={selectedBusStop}
+                titleForm={title}
+                buttonText={buttonText}
+                refreshTickets={refreshStops}
             />
         </div>
     );

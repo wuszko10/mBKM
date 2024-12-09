@@ -43,3 +43,50 @@ export const fetchStops = async (page, pageSize, searchQuery) => {
     });
     return response.data;
 };
+
+export const editBusStop = async (id, stopData) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post(URI + 'stop', {
+            id: id,
+            name: stopData.name,
+            longitude: stopData.longitude,
+            latitude: stopData.latitude,
+        }, {
+            headers: {
+                'authorization': `Bearer ${token}`,
+            }
+        });
+        toast.success('Zaktualizowano przystanek', {
+            position: 'top-right',
+            theme: "colored",
+        });
+        return response.data;
+    } catch (err) {
+        toast.error('Przystanek nie został zaktualizowany', {
+            position: 'top-right',
+            theme: "colored",
+        });
+    }
+};
+
+export const deleteBusStop = async (id) => {
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.delete(URI + `stop/${id}`, {
+            headers: {
+                'authorization': `Bearer ${token}`,
+            }
+        });
+        toast.success('Przystanek został usunięty', {
+            position: 'top-right',
+            theme: "colored",
+        });
+        return response.data;
+    } catch (err) {
+        toast.error('Przystanek nie został usunięty', {
+            position: 'top-right',
+            theme: "colored",
+        });
+    }
+};

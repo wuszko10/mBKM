@@ -5,9 +5,9 @@ const NotFound = () => {
     return (
         <div className="main-box notFound-Box" >
             <h1 style={{fontSize: "100px", color: "black"}}>404</h1>
-            <p>Oops! The page you're looking for doesn't exist.</p>
+            <p>Ups, wygląda na to, że nie mamy takiego adresu.</p>
             <Link to="/" className="not-found-button">
-                Go back to Home
+                Wróć na stronę główną
             </Link>
         </div>
     );

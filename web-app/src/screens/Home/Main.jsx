@@ -5,23 +5,11 @@ const Main = () => {
 
     return (
         <div className="main-box">
-            <section className="sectionGrid">
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-                <h2>DASHBOARD</h2>
-            </section>
+            <div className="content-box">
+                <div className="header-with-button">
+                    <h2>Witaj</h2>
+                </div>
+            </div>
         </div>
     );
 };

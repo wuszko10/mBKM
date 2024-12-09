@@ -12,7 +12,7 @@ export const useStops = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [totalPages, setTotalPages] = useState(0);
 
-    useEffect(() => {
+    const refreshStops = () => {
         fetchStops(page, pageSize, searchQuery)
             .then((data) => {
                 setStops(data.data);
@@ -28,6 +28,10 @@ export const useStops = () => {
             .finally(() => {
                 setLoading(false);
             });
+    }
+
+    useEffect(() => {
+        refreshStops();
     }, [page, pageSize, searchQuery]);
 
     return {
@@ -39,5 +43,6 @@ export const useStops = () => {
         setPage,
         setPageSize,
         setSearchQuery,
+        refreshStops,
     };
 };

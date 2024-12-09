@@ -4,9 +4,7 @@ import UserLayout from "./components/UserLayout";
 import Main from "./screens/Home/Main";
 import Tickets from "./screens/Tickets/Tickets";
 import Reliefs from "./screens/Reliefs/Reliefs";
-import ReliefDetails from "./screens/Reliefs/ReliefDetails";
 import BusStops from "./screens/BusStops/BusStops";
-import BusStopDetails from "./screens/BusStops/BusStopDetails";
 import TransactionDetails from "./screens/Users/UserDetails";
 import Transactions from "./screens/Transactions/Transactions";
 import Users from "./screens/Users/Users";
@@ -19,7 +17,7 @@ import {useEffect, useState} from "react";
 import axios from "axios";
 
 const AppRoutes = () => {
-    const token = localStorage.getItem('token');
+    let token = localStorage.getItem('token');
     const isAuthenticated = !isExpired(token);
 
     const [metadata, setMetadata] = useState({
@@ -57,9 +55,7 @@ const AppRoutes = () => {
                     <Route index element={<Main />} />
                     <Route path="tickets" element={<Tickets />} />
                     <Route path="reliefs" element={<Reliefs />} />
-                    <Route path="relief/:id" element={<ReliefDetails />} />
                     <Route path="stops" element={<BusStops />} />
-                    <Route path="stop/:id" element={<BusStopDetails />} />
                     <Route path="transactions" element={<Transactions />} />
                     <Route path="top-ups" element={<TopUps />} />
                     <Route path="transaction/:id" element={<TransactionDetails />} />
@@ -70,7 +66,7 @@ const AppRoutes = () => {
             ) : (
                 <Route path="/" element={<PublicLayout />}>
                     <Route path="/" element={<Login />} />
-                    <Route path="*" element={<Navigate to="/signin" />} />
+                    <Route path="*" element={<Navigate to="/" />} />
                 </Route>
             )}
         </Routes>

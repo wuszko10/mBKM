@@ -50,7 +50,7 @@ export const getTicketsTableColumns = (handleEdit, handleRemove) => [
     },
 ];
 
-export const getReliefColumns = (navigate) => [
+export const getReliefColumns = (handleEdit, handleRemove) => [
     {
         accessorKey: 'id',
         header: 'ID',
@@ -68,12 +68,15 @@ export const getReliefColumns = (navigate) => [
     {
         header: 'Szczegóły',
         cell: ({ row }) => (
-            <button onClick={() => navigate(`/relief/${row.original._id}`)}>Zobacz szczegóły</button>
+            <div className="row-div">
+                <button onClick={() => handleEdit(row.original._id)}>Edytuj</button>
+                <button onClick={() => handleRemove(row.original._id)}>Usuń</button>
+            </div>
         ),
     },
 ];
 
-export const getStopsColumns = (navigate) => [
+export const getStopsColumns = (handleEdit, handleRemove) => [
     {
         accessorKey: 'id',
         header: 'ID',
@@ -94,7 +97,10 @@ export const getStopsColumns = (navigate) => [
     {
         header: 'Szczegóły',
         cell: ({ row }) => (
-            <button onClick={() => navigate(`/relief/${row.original._id}`)}>Zobacz szczegóły</button>
+            <div className="row-div">
+                <button onClick={() => handleEdit(row.original._id)}>Edytuj</button>
+                <button onClick={() => handleRemove(row.original._id)}>Usuń</button>
+            </div>
         ),
     },
 ];

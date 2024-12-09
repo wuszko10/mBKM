@@ -87,35 +87,3 @@ const Header = () => {
 };
 
 export default Header;
-
-
-/*<div className="logo">
-                    <Link to="/">
-                        <img src={logo} alt="logo" />
-                    </Link>
-                </div>
-
-                <div className="search">
-                    <input
-                        type="text"
-                        placeholder="Wyszukaj film w naszej bazie..."
-                        value={searchTerm}
-                        onChange={handleInputChange}
-                        onKeyPress={handleKeyPress}
-                    />
-                    <button className="search-button" onClick={handleSearchButtonClick}>
-                        <FaSearch />
-                    </button>
-                </div>
-
-                <div className="login">
-                    {isLoggedIn ? (
-                        <button onClick={handleLogout} className="login-btn">
-                            Wyloguj się
-                        </button>
-                    ) : (
-                        <Link to="/signin" className="login-btn">
-                            Zaloguj się
-                        </Link>
-                    )}
-                </div>*/

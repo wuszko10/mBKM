@@ -4,15 +4,20 @@ import {useNavigate} from "react-router-dom";
 import DynamicTable from "../../components/Table/DynamicTable";
 import GlobalPopupForm from "../../components/Popup/GlobalPopupForm";
 import {LuPlusCircle} from "react-icons/lu";
-import {getReliefColumns} from "../../components/Table/TableColumns";
+import {getReliefColumns, getTicketsTableColumns} from "../../components/Table/TableColumns";
 import {useReliefs} from "../../hooks/useReliefs";
-import {addRelief} from "../../services/reliefService";
-import {getCreateReliefFormFields} from "../../components/Popup/PopupFields";
+import {addRelief, deleteRelief} from "../../services/reliefService";
+import {deleteTicket} from "../../services/ticketService";
+import ReliefPopupForm from "../../components/Popup/components/ReliefPopupForm";
 
 const Reliefs = () => {
 
-    const navigate = useNavigate();
-    const columns = getReliefColumns(navigate);
+
+
+    const [show, setShow] = useState(false);
+    const [selectedRelief, setSelectedRelief] = useState({});
+    const [title, setTitle] = useState('');
+    const [buttonText, setButtonText] = useState('');
 
     const {
         reliefs,
@@ -23,73 +28,48 @@ const Reliefs = () => {
         setPage,
         setPageSize,
         setSearchQuery,
+        refreshReliefs,
     } = useReliefs();
-
-
-
-
-    const [show, setShow] = useState(false);
-
-    const initialFormData = {
-        name: '',
-        type: '',
-        percentage: '',
-    }
-
-    const metadata = JSON.parse(localStorage.getItem('metadata'));
-
-    const [formData, setFormData] = useState(initialFormData);
 
     const data = React.useMemo(() => {
         return reliefs.length > 0 ? reliefs : [];
     }, [reliefs]);
 
 
-    const handleClose = () => {
-        setFormData(initialFormData);
-        setSearchQuery("");
-        setShow(false)
-    };
-    const handleShow = () => setShow(true);
-
-    const handleInputChange = (event) => {
-        setFormData({
-            ...formData,
-            [event.target.name]: event.target.value,
-        });
+    const handleShowCreateForm = () => {
+        setTitle('Dodaj nową ulgę');
+        setButtonText("Utwórz");
+        setShow(true);
     };
 
-    const formFields = getCreateReliefFormFields(metadata);
-
-    async function handleCreate(event) {
-        event.preventDefault();
-
-        console.log(formData);
-
-        const allFieldsFilled = Object.values(formData).every((value) => value !== "");
-
-        if (!allFieldsFilled) {
-            alert("Proszę wypełnić wszystkie pola.");
-            return;
-        }
-
-        console.log(formData);
-
-        await addRelief(formData);
-
-        setSearchQuery("");
-        setFormData(initialFormData);
-        handleClose();
-        window.location.reload();
+    function handleShowEditForm(id) {
+        let relief = reliefs.find(relief => relief._id === id);
+        setSelectedRelief(relief);
+        setTitle('Aktualizuj ulgę');
+        setButtonText("Aktualizuj");
+        setShow(true);
     }
+
+
+    async function  handleRemove(id) {
+
+        const confirmDelete = window.confirm('Czy na pewno chcesz usunąć tę ulgę?');
+
+        if (confirmDelete) {
+            await deleteRelief(id);
+            await refreshReliefs();
+        }
+    }
+
+
+    const columns = getReliefColumns(handleShowEditForm, handleRemove);
 
     return (
         <div className="main-box">
             <div className="content-box">
                 <div className="header-with-button">
                     <h2>Ulgi</h2>
-                    <button className="global-button" onClick={handleShow}><LuPlusCircle />Dodaj ulgę</button>
-
+                    <button className="global-button" onClick={handleShowCreateForm}><LuPlusCircle />Dodaj nową ulgę</button>
                 </div>
 
                 <DynamicTable
@@ -106,15 +86,13 @@ const Reliefs = () => {
 
             </div>
 
-            <GlobalPopupForm
-                isOpen={show}
-                onClose={handleClose}
-                title="Utwórz nowy typ ulgi"
-                formData={formData}
-                handleInputChange={handleInputChange}
-                onSubmit={handleCreate}
-                formFields={formFields}
-                submitButtonText="Dodaj ulgę"
+            <ReliefPopupForm
+                show={show}
+                setShow={setShow}
+                relief={selectedRelief}
+                titleForm={title}
+                buttonText={buttonText}
+                refreshTickets={refreshReliefs}
             />
         </div>
     );
