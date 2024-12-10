@@ -1,5 +1,5 @@
 import React,{ useEffect } from "react";
-import styles from "./style/stylesApp";
+import styles from "./src/style/stylesApp";
 import {
     SafeAreaView
 } from "react-native";
@@ -7,26 +7,26 @@ import {
 import { NavigationContainer } from "@react-navigation/native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
-import Home from "./screens/Home/Home.tsx";
-import Tickets from "./screens/Tickets/Tickets.tsx";
-import Profile from "./screens/User/Profile.tsx";
-import Wallet from "./screens/Wallet/Wallet.tsx";
-import Login from "./screens/User/Login.tsx";
-import Welcome from "./screens/Global/Welcome.tsx";
-import Register from "./screens/User/Register.tsx";
-import { AuthProvider,useAuth } from "./components/Global/AuthContext.tsx";
-import SummaryPurchaseScreen from "./screens/Tickets/SummaryPurchaseScreen.tsx";
-import TicketDetails from "./screens/Tickets/TicketDetails.tsx";
-import TopUpScreen from "./screens/Wallet/TopUpScreen.tsx";
+import Home from "./src/screens/Home/Home.tsx";
+import Tickets from "./src/screens/Tickets/Tickets.tsx";
+import Profile from "./src/screens/User/Profile.tsx";
+import Wallet from "./src/screens/Wallet/Wallet.tsx";
+import Login from "./src/screens/User/Login.tsx";
+import Welcome from "./src/screens/Global/Welcome.tsx";
+import Register from "./src/screens/User/Register.tsx";
+import { AuthProvider,useAuth } from "./src/components/Global/AuthContext.tsx";
+import SummaryPurchaseScreen from "./src/screens/Tickets/SummaryPurchaseScreen.tsx";
+import TicketDetails from "./src/screens/Tickets/TicketDetails.tsx";
+import TopUpScreen from "./src/screens/Wallet/TopUpScreen.tsx";
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Mci from 'react-native-vector-icons/MaterialCommunityIcons';
-import { colors } from "./style/styleValues.js";
-import stylesApp from "./style/stylesApp";
-import Purchase from "./screens/Tickets/Purchase.tsx";
-import SelectingPurchaseConfiguration from "./screens/Tickets/SelectingPurchaseConfiguration.tsx";
-import PaymentScreen from "./screens/Global/PaymentScreen.tsx";
-import ValidateTicket from "./screens/Tickets/ValidateTicket.tsx";
+import { colors } from "./src/style/styleValues.js";
+import stylesApp from "./src/style/stylesApp";
+import Purchase from "./src/screens/Tickets/Purchase.tsx";
+import SelectingPurchaseConfiguration from "./src/screens/Tickets/SelectingPurchaseConfiguration.tsx";
+import PaymentScreen from "./src/screens/Global/PaymentScreen.tsx";
+import ValidateTicket from "./src/screens/Tickets/ValidateTicket.tsx";
 
 
 type RootStackParamList = {

@@ -2,41 +2,29 @@ import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
 import React from "react";
+import {TicketSelectorProps} from "../../types/componentProps.tsx";
 
-type TicketSelectorProps = {
-    singleTicket: boolean;
-    seasonTicket: boolean;
-    handleSingleTicket: () => void;
-    handleSeasonTicket: () => void;
-};
-
-const TicketSelector: React.FC<TicketSelectorProps> = (
-    {
-        singleTicket,
-        seasonTicket,
-        handleSingleTicket,
-        handleSeasonTicket,
-    }) => {
+const TicketSelector: React.FC<TicketSelectorProps> = (props) => {
 
     return(
         <View style={stylesApp.contentBox}>
             <Text style={stylesApp.normalH3}>Wybierz rodzaj biletu</Text>
             <View style={localStyle.buttonBox}>
                 <TouchableOpacity
-                    onPress={handleSingleTicket}
+                    onPress={() => props.toggleTicketType('single')}
                     style={[
                         localStyle.ticketItem,
-                        singleTicket?{ backgroundColor: colors.appFirstColor }:{ backgroundColor: colors.appThirdColor }
+                        props.ticketType === 'single'?{ backgroundColor: colors.appFirstColor }:{ backgroundColor: colors.appThirdColor }
                     ]}>
-                    <Text style={singleTicket?{ color: colors.appWhite }:{ color: colors.textColorBlack }}>Bilet
+                    <Text style={props.ticketType === 'single'?{ color: colors.appWhite }:{ color: colors.textColorBlack }}>Bilet
                         jednorazowy</Text>
                 </TouchableOpacity>
                 <TouchableOpacity
-                    onPress={handleSeasonTicket} style={[
+                    onPress={() => props.toggleTicketType('season')} style={[
                     localStyle.ticketItem,
-                    seasonTicket?{ backgroundColor: colors.appFirstColor }:{ backgroundColor: colors.appThirdColor }
+                    props.ticketType === 'season'?{ backgroundColor: colors.appFirstColor }:{ backgroundColor: colors.appThirdColor }
                 ]}>
-                    <Text style={seasonTicket?{ color: colors.appWhite }:{ color: colors.textColorBlack }}>Bilet
+                    <Text style={props.ticketType === 'season'?{ color: colors.appWhite }:{ color: colors.textColorBlack }}>Bilet
                         okresowy</Text>
                 </TouchableOpacity>
             </View>

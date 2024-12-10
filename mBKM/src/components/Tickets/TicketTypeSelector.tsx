@@ -5,22 +5,16 @@ import stylesApp from "../../style/stylesApp.js";
 import DropDownPicker from "react-native-dropdown-picker";
 import { reliefs,lines,ticketsData } from "../../repositories/Data.tsx";
 import { Ticket } from "../../repositories/interfaces.tsx";
+import {TicketAndReliefTypeSelectorProps} from "../../types/componentProps.tsx";
 
-type TicketAndReliefTypeSelectorProps = {
-    setSelectedTicket: React.Dispatch<SetStateAction<Ticket | null>>;
-    selectedTicketId: number | null;
-    setSelectedTicketId: React.Dispatch<React.SetStateAction<number | null>>;
-    singleTicket: boolean;
-    seasonTicket: boolean;
-    setNumberSelectedLines: React.Dispatch<React.SetStateAction<string>>;
-};
+
 const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) => {
 
 
     const filteredTickets = ticketsData.filter((ticket) => {
-        if (props.singleTicket && ticket.type === 'jednorazowy') {
+        if (props.ticketType === 'single' && ticket.type === 'jednorazowy') {
             return true;
-        } else if (props.seasonTicket && ticket.type === 'okresowy') {
+        } else if (props.ticketType === 'season' && ticket.type === 'okresowy') {
             return true;
         }
         return false;
