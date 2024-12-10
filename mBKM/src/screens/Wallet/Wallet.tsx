@@ -3,7 +3,7 @@ import { FlatList,SafeAreaView,ScrollView,StyleSheet,Text,TouchableOpacity,View 
 import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
 import LinearGradient from 'react-native-linear-gradient';
-import { Ticket,TopUpTransaction } from "../../repositories/interfaces.tsx";
+import { Ticket,TopUpTransaction } from "../../interfaces/interfaces.tsx";
 import { topUpTransactions } from "../../repositories/Data.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";

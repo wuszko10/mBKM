@@ -1,6 +1,6 @@
 import React,{ useState } from "react";
 import { SafeAreaView,Text,TextInput,TouchableOpacity,View } from "react-native";
-import { PaymentMethod,Ticket } from "../../repositories/interfaces.tsx";
+import { PaymentMethod,Ticket } from "../../interfaces/interfaces.tsx";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import stylesApp from "../../style/stylesApp.js";

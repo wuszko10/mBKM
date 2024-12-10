@@ -21,6 +21,7 @@ const Purchase = () => {
         toggleTicketType,
         numberSelectedLines,
         setNumberSelectedLines,
+        ticketsData,
         resetData,
     } = usePurchaseLogic();
 
@@ -50,9 +51,10 @@ const Purchase = () => {
                         toggleTicketType={toggleTicketType}
                     />
 
-                    {ticketType && (
+                    { (ticketType && ticketsData ) ? (
                         <View>
                             <TicketTypeSelector
+                                ticketsData={ticketsData}
                                 setSelectedTicket={setSelectedTicket}
                                 selectedTicketId={selectedTicketId}
                                 setSelectedTicketId={setSelectedTicketId}
@@ -66,6 +68,10 @@ const Purchase = () => {
                                 </TouchableOpacity>
                             </View>
 
+                        </View>
+                    ) : (
+                        <View style={stylesApp.summaryBox}>
+                            <Text style={stylesApp.whiteBoldCenterText}>Brak biletów</Text>
                         </View>
                     )}
 

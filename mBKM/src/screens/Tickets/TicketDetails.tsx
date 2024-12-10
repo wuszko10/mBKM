@@ -1,6 +1,6 @@
 import React from "react";
 import { SafeAreaView,Text,TouchableOpacity } from "react-native";
-import { Ticket,TicketOrderTransaction } from "../../repositories/interfaces.tsx";
+import { Ticket,TicketOrderTransaction } from "../../interfaces/interfaces.tsx";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation,useRoute } from "@react-navigation/native";
 import Header from "../../components/Global/Header.tsx";

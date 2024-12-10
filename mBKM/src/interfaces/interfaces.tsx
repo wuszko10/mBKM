@@ -25,7 +25,7 @@ export interface Ticket {
     _id: number;
     type: string;
     lines: string;
-    period?: number;
+    period?: string;
     price: number;
 }
 
@@ -71,5 +71,18 @@ export interface BusStop {
 export interface Location {
     latitude: number;
     longitude: number;
+}
+
+export interface MetadataType {
+    _id: number;
+    name: string;
+    label: string;
+}
+
+export interface Metadata {
+    ticketType: MetadataType[];
+    ticketPeriod: MetadataType[];
+    ticketLine: MetadataType[];
+    reliefType: MetadataType[];
 }
 

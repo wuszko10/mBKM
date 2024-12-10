@@ -1,17 +1,13 @@
-import React,{ SetStateAction,useState } from "react";
-import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
-import { colors,dimensions } from "../../style/styleValues.js";
+import React from "react";
+import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
-import DropDownPicker from "react-native-dropdown-picker";
-import { reliefs,lines,ticketsData } from "../../repositories/Data.tsx";
-import { Ticket } from "../../repositories/interfaces.tsx";
+import { Ticket } from "../../interfaces/interfaces.tsx";
 import {TicketAndReliefTypeSelectorProps} from "../../types/componentProps.tsx";
 
 
 const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) => {
 
-
-    const filteredTickets = ticketsData.filter((ticket) => {
+    const filteredTickets = props.ticketsData.filter((ticket) => {
         if (props.ticketType === 'single' && ticket.type === 'jednorazowy') {
             return true;
         } else if (props.ticketType === 'season' && ticket.type === 'okresowy') {

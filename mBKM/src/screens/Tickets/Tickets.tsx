@@ -3,7 +3,7 @@ import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "rea
 import stylesApp from "../../style/stylesApp.js";
 import { ticketOrderTransactions,ticketsData } from "../../repositories/Data.tsx";
 import { colors,dimensions } from "../../style/styleValues.js";
-import { TicketOrderTransaction } from "../../repositories/interfaces.tsx";
+import { TicketOrderTransaction } from "../../interfaces/interfaces.tsx";
 import { useNavigation,useNavigationState } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Header from "../../components/Global/Header.tsx";

@@ -5,7 +5,7 @@ import stylesApp from "../../style/stylesApp.js";
 import DateSelector from "../../components/Tickets/DateSelector.tsx";
 import { reliefs,lines } from "../../repositories/Data.tsx";
 import DropdownSelector from "../../components/Tickets/DropdownSelector.tsx";
-import { Ticket } from "../../repositories/interfaces.tsx";
+import { Ticket } from "../../interfaces/interfaces.tsx";
 import { useNavigation,useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";

@@ -1,4 +1,4 @@
-import { BusStop,Location } from "../../repositories/interfaces.tsx";
+import { BusStop,Location } from "../../interfaces/interfaces.tsx";
 import { busStopLocations } from "../../repositories/Data.tsx";
 import GetLocation from "react-native-get-location";
 import { calculateDistance } from "../../repositories/geofence.tsx";

@@ -1,7 +1,7 @@
 import React,{ useEffect,useState } from "react";
 import { ActivityIndicator,SafeAreaView,Text,View } from "react-native";
 import { useNavigation,useRoute } from "@react-navigation/native";
-import { BusStop,Ticket } from "../../repositories/interfaces.tsx";
+import { BusStop,Ticket } from "../../interfaces/interfaces.tsx";
 import { StackNavigationProp } from "@react-navigation/stack";
 import GetLocation from 'react-native-get-location';
 import { busStopLocations } from "../../repositories/Data.tsx";

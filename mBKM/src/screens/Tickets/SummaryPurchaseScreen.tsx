@@ -2,7 +2,7 @@ import React,{ useEffect,useState } from "react";
 import { SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import { useNavigation,useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { PaymentMethod,Ticket,TicketOrderTransaction } from "../../repositories/interfaces.tsx";
+import { PaymentMethod,Ticket,TicketOrderTransaction } from "../../interfaces/interfaces.tsx";
 import { reliefs,lines,paymentMethods } from "../../repositories/Data.tsx";
 import stylesApp from "../../style/stylesApp.js";
 import Header from "../../components/Global/Header.tsx";

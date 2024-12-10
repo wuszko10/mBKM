@@ -1,7 +1,7 @@
 import React,{ useEffect } from "react";
 import styles from "./src/style/stylesApp";
 import {
-    SafeAreaView
+    SafeAreaView, Text
 } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -27,25 +27,8 @@ import Purchase from "./src/screens/Tickets/Purchase.tsx";
 import SelectingPurchaseConfiguration from "./src/screens/Tickets/SelectingPurchaseConfiguration.tsx";
 import PaymentScreen from "./src/screens/Global/PaymentScreen.tsx";
 import ValidateTicket from "./src/screens/Tickets/ValidateTicket.tsx";
+import {useAppData} from "./src/hooks/useAppData.tsx";
 
-
-type RootStackParamList = {
-    Home: undefined;
-    Wallet: undefined;
-    Tickets: undefined;
-    ValidateTicket: undefined;
-    Purchase: undefined;
-    Login: undefined;
-    Register: undefined;
-    Welcome: undefined;
-    UserPanel: undefined;
-    SelectingPurchaseConfiguration: undefined;
-    SummaryPurchaseScreen: undefined;
-    TicketDetails: undefined;
-    TopUpScreen: undefined;
-    PaymentScreen: undefined;
-    PaymentStack: undefined;
-};
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -68,7 +51,7 @@ function UserPanel() {
     );
 
     return (
-        <Tab.Navigator screenOptions={({route})=> ({
+        <Tab.Navigator screenOptions={()=> ({
             tabBarStyle: stylesApp.tabBarStyle,
             tabBarItemStyle: stylesApp.tabBarItemStyle,
         })}>
@@ -85,6 +68,20 @@ function UserPanel() {
 
 function MainApp() {
     const { token } = useAuth();
+
+    const {
+        metadataLoading,
+        ticketsLoading,
+        stopsLoading,
+        refreshAll } = useAppData();
+
+    useEffect(() => {
+        refreshAll();
+    }, [token]);
+
+    if (metadataLoading || ticketsLoading || stopsLoading) {
+        return <Text>Loading...</Text>;
+    }
 
     return (
         <NavigationContainer>

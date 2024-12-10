@@ -7,7 +7,7 @@ import {
     TicketOrderTransaction,
     TopUpTransaction,
     User
-} from "./interfaces.tsx";
+} from "../interfaces/interfaces.tsx";
 
 export const ticketsData: Ticket[] = [
     {

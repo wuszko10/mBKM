@@ -1,5 +1,5 @@
 import { NavigationProp as BaseNavigationProp } from '@react-navigation/native';
-import {Ticket} from "../repositories/interfaces.tsx";
+import {Ticket} from "../interfaces/interfaces.tsx";
 
 export type RootStackParamList = {
     Home: undefined;
