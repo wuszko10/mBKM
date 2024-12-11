@@ -15,6 +15,7 @@ import Login from "./screens/Home/Login";
 import TopUps from "./screens/Transactions/topUps";
 import {useEffect, useState} from "react";
 import axios from "axios";
+import Lines from "./screens/Lines/Lines";
 
 const AppRoutes = () => {
     let token = localStorage.getItem('token');
@@ -56,6 +57,7 @@ const AppRoutes = () => {
                     <Route path="tickets" element={<Tickets />} />
                     <Route path="reliefs" element={<Reliefs />} />
                     <Route path="stops" element={<BusStops />} />
+                    <Route path="lines" element={<Lines />} />
                     <Route path="transactions" element={<Transactions />} />
                     <Route path="top-ups" element={<TopUps />} />
                     <Route path="transaction/:id" element={<TransactionDetails />} />

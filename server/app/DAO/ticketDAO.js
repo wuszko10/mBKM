@@ -55,33 +55,8 @@ function createNewOrUpdateTicket(ticket) {
 // }
 
 
-async function getAndSearchTicket(page, pageSize, searchQuery, cache) {
 
-    const ticketTypes = cache.get("ticketTypes");
-    const ticketPeriods = cache.get("ticketPeriods");
-    const ticketLines = cache.get("ticketLines");
-
-    let typeIds = [];
-    let periodIds = [];
-    let lineIds = [];
-
-    if (searchQuery) {
-        const lowerCaseSearchQuery = searchQuery.toLowerCase();
-
-        typeIds = ticketTypes.filter(t => t.label.toLowerCase().includes(lowerCaseSearchQuery)).map(t => t.id);
-        periodIds = ticketPeriods.filter(p => p.label.toLowerCase().includes(lowerCaseSearchQuery)).map(p => p.id);
-        lineIds = ticketLines.filter(l => l.label.toLowerCase().includes(lowerCaseSearchQuery)).map(l => l.id);
-    }
-
-    const searchCriteria = searchQuery
-        ? {
-            $or: [
-                { type: { $in: typeIds } },
-                { lines: { $in: lineIds } },
-                { period: { $in: periodIds } },
-            ],
-        }
-        : {};
+async function getAndSearchTicket(page, pageSize, searchCriteria) {
 
     try {
         const totalRecords = await TicketModel.countDocuments(searchCriteria);
@@ -90,20 +65,8 @@ async function getAndSearchTicket(page, pageSize, searchQuery, cache) {
             .skip((page - 1) * pageSize)
             .limit(pageSize);
 
-        const ticketsArray = Array.isArray(tickets) ? tickets : [];
-
-        const transformedTickets = ticketsArray.map(ticket => {
-            const ticketObj = ticket.toObject();
-            return {
-                ...ticketObj,
-                typeName: ticketTypes.find(t => t.id === ticket.type.toString())?.label,
-                periodName: ticketPeriods.find(p => p.id === ticket.period.toString())?.label,
-                lineName: ticketLines.find(l => l.id === ticket.lines.toString())?.label,
-            };
-        });
-
         return {
-            data: transformedTickets,
+            data: tickets,
             page,
             pageSize,
             totalPages: Math.ceil(totalRecords / pageSize),
@@ -118,7 +81,7 @@ async function getAndSearchTicket(page, pageSize, searchQuery, cache) {
 async function getAllTickets() {
     const result = await TicketModel.find();
     if (result) {
-        return mongoConverter(result);
+        return result;
     }
     throw applicationException.new(applicationException.NOT_FOUND, 'No tickets in the database')
 }

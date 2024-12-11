@@ -2,15 +2,15 @@ import React, {useState} from 'react';
 import '../../styles/style.scss'
 import DynamicTable from "../../components/Table/DynamicTable";
 import {LuPlusCircle} from "react-icons/lu";
-import {getStopsColumns} from "../../components/Table/TableColumns";
-import {useStops} from "../../hooks/useStops";
-import BusStopPopupForm from "../../components/Popup/components/BusStopPopupForm";
-import {deleteBusStop} from "../../services/stop.service";
+import {getLinesColumns} from "../../components/Table/TableColumns";
+import LinePopupForm from "../../components/Popup/components/LinePopupForm";
+import {useLines} from "../../hooks/useLines";
+import {deleteLine} from "../../services/line.service";
 
-const BusStops = () => {
+const Lines = () => {
 
     const {
-        stops,
+        lines,
         loading,
         page,
         pageSize,
@@ -18,53 +18,53 @@ const BusStops = () => {
         setPage,
         setPageSize,
         setSearchQuery,
-        refreshStops,
-    } = useStops();
+        refreshLines,
+    } = useLines();
 
 
     const [show, setShow] = useState(false);
-    const [selectedBusStop, setSelectedBusStop] = useState({});
+    const [selectedLine, setSelectedLine] = useState({});
     const [title, setTitle] = useState('');
     const [buttonText, setButtonText] = useState('');
 
 
     const data = React.useMemo(() => {
-        return stops.length > 0 ? stops : [];
-    }, [stops]);
+        return lines.length > 0 ? lines : [];
+    }, [lines]);
 
     const handleShowCreateForm = () => {
-        setTitle('Dodaj nowy przystanek');
+        setTitle('Dodaj nową linię');
         setButtonText("Utwórz");
         setShow(true);
     };
 
     function handleShowEditForm(id) {
-        let busStop = stops.find(busStop => busStop._id === id);
-        setSelectedBusStop(busStop);
-        setTitle('Aktualizuj przystanek');
+        let line = lines.find(line => line._id === id);
+        setSelectedLine(line);
+        setTitle('Aktualizuj linię');
         setButtonText("Aktualizuj");
         setShow(true);
     }
 
 
-    async function  handleRemove(id) {
+    async function handleRemove(id) {
 
-        const confirmDelete = window.confirm('Czy na pewno chcesz usunąć ten przystanek?');
+        const confirmDelete = window.confirm('Czy na pewno chcesz usunąć tę linię?');
 
         if (confirmDelete) {
-            await deleteBusStop(id);
-            await refreshStops();
+            await deleteLine(id);
+            await refreshLines();
         }
     }
 
-    const columns = getStopsColumns(handleShowEditForm, handleRemove);
+    const columns = getLinesColumns(handleShowEditForm, handleRemove);
 
     return (
         <div className="main-box">
             <div className="content-box">
                 <div className="header-with-button">
-                    <h2>Przystanki</h2>
-                    <button className="global-button" onClick={handleShowCreateForm}><LuPlusCircle />Dodaj przystanek</button>
+                    <h2>Linie</h2>
+                    <button className="global-button" onClick={handleShowCreateForm}><LuPlusCircle />Dodaj linię</button>
 
                 </div>
 
@@ -82,16 +82,16 @@ const BusStops = () => {
 
             </div>
 
-            <BusStopPopupForm
+            <LinePopupForm
                 show={show}
                 setShow={setShow}
-                stop={selectedBusStop}
+                line={selectedLine}
                 titleForm={title}
                 buttonText={buttonText}
-                refreshTickets={refreshStops}
+                refreshLines={refreshLines}
             />
         </div>
     );
 };
 
-export default BusStops;
+export default Lines;

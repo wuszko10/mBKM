@@ -1,0 +1,59 @@
+import applicationException from '../service/applicationException';
+import LineDAO from "../DAO/lineDAO";
+
+function create(context) {
+
+
+  async function createNewOrUpdate(data) {
+    try {
+      return await LineDAO.createNewOrUpdate(data);
+    } catch (error) {
+      throw applicationException.new(applicationException.BAD_REQUEST, 'Error while creating or updating relief');
+    }
+  }
+
+  async function getAndSearch(page, pageSize, searchQuery) {
+    try {
+      return await LineDAO.getAndSearch(page, pageSize, searchQuery);
+    } catch (error) {
+      throw applicationException.new(applicationException.NOT_FOUND, `Lines not found`);
+    }
+  }
+
+  async function getAll() {
+    try {
+      return await LineDAO.getAll();
+    } catch (error) {
+      throw applicationException.new(applicationException.NOT_FOUND, 'Error while getting lines');
+    }
+  }
+
+  async function getById(id) {
+    try {
+      return await LineDAO.getById(id);
+    } catch (error) {
+      throw applicationException.new(applicationException.NOT_FOUND, `Line with ID ${id} not found`);
+    }
+  }
+
+  async function removeById(id) {
+    try {
+      await LineDAO.removeById(id);
+      return { message: `Line with ID ${id} successfully removed` };
+    } catch (error) {
+      throw applicationException.new(applicationException.NOT_FOUND, `Line with ID ${id} not found`);
+    }
+  }
+
+  return {
+    createNewOrUpdate:createNewOrUpdate,
+    getAndSearch:getAndSearch,
+    getAll: getAll,
+    getById:getById,
+    removeById:removeById
+  };
+}
+
+export default {
+  create: create
+};

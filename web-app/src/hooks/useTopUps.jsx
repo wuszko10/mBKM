@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {toast} from "react-toastify";
-import {fetchTopUps} from "../services/trasanctionService";
+import {fetchTopUps} from "../services/trasanction.service";
 
 export const useTopUps = () => {
     const [topUps, setTopUps] = useState([]);

@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react';
-import { fetchTickets } from '../services/ticketService';
+import { fetchTickets } from '../services/ticket.service';
 
 export const useTickets = () => {
     const [tickets, setTickets] = useState([]);

@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {toast} from "react-toastify";
-import {fetchUsers} from "../services/userService";
+import {fetchUsers} from "../services/user.service";
 
 export const useUsers = () => {
     const [users, setUsers] = useState([]);

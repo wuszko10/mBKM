@@ -1,10 +1,4 @@
-import PasswordDAO from '../DAO/passwordDAO';
-import TokenDAO from '../DAO/tokenDAO';
-import UserDAO from '../DAO/userDAO';
 import applicationException from '../service/applicationException';
-import sha1 from 'sha1';
-import TicketDAO from "../DAO/ticketDAO";
-import ReliefDAO from "../DAO/reliefDAO";
 import BusStopDAO from "../DAO/BusStopDAO";
 
 function create(context) {
@@ -14,7 +8,7 @@ function create(context) {
     try {
       return await BusStopDAO.createNewOrUpdate(data);
     } catch (error) {
-      throw applicationException.new(applicationException.BAD_REQUEST, 'Error while creating or updating relief');
+      throw applicationException.new(applicationException.BAD_REQUEST, 'Error while creating or updating bus stop');
     }
   }
 
@@ -22,7 +16,7 @@ function create(context) {
     try {
       return await BusStopDAO.getAndSearch(page, pageSize, searchQuery);
     } catch (error) {
-      throw applicationException.new(applicationException.NOT_FOUND, `Reliefs not found`);
+      throw applicationException.new(applicationException.NOT_FOUND, `Bus stops not found`);
     }
   }
 
@@ -30,7 +24,7 @@ function create(context) {
     try {
       return await BusStopDAO.getAll();
     } catch (error) {
-      throw applicationException.new(applicationException.NOT_FOUND, 'Error while getting reliefs');
+      throw applicationException.new(applicationException.NOT_FOUND, 'Error while getting bus stops');
     }
   }
 
@@ -38,16 +32,16 @@ function create(context) {
     try {
       return await BusStopDAO.getById(id);
     } catch (error) {
-      throw applicationException.new(applicationException.NOT_FOUND, `Relief with ID ${id} not found`);
+      throw applicationException.new(applicationException.NOT_FOUND, `Bus stop with ID ${id} not found`);
     }
   }
 
   async function removeById(id) {
     try {
       await BusStopDAO.removeById(id);
-      return { message: `Relief with ID ${id} successfully removed` };
+      return { message: `Bus stop with ID ${id} successfully removed` };
     } catch (error) {
-      throw applicationException.new(applicationException.NOT_FOUND, `Relief with ID ${id} not found`);
+      throw applicationException.new(applicationException.NOT_FOUND, `Bus stop with ID ${id} not found`);
     }
   }
 

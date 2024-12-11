@@ -1,34 +1,33 @@
 import GlobalPopupForm from "../GlobalPopupForm";
 import React, {useEffect, useState} from "react";
 import {
-    getBusStopFormFields
+    getBusStopFormFields, getLineFormFields
 } from "../PopupFields";
 import {addBusStop, editBusStop} from "../../../services/stop.service";
+import {addLine, editLine} from "../../../services/line.service";
 
-const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, refreshStops}) => {
+const LinePopupForm = ({show, setShow, line, titleForm, buttonText, refreshLines}) => {
 
     const initialFormData = {
+        number: '',
         name: '',
-        longitude: '',
-        latitude: '',
     }
 
     const [formData, setFormData] = useState(initialFormData);
-    const formFields = getBusStopFormFields();
+    const formFields = getLineFormFields();
 
     const loadData = () => {
 
-        if (!(stop === undefined)) {
+        if (!(line === undefined)) {
             setFormData({
-                name: stop.name,
-                longitude: stop.longitude,
-                latitude: stop.latitude,
+                number: line.number,
+                name: line.name,
             });
         }
 
     }
 
-    useEffect(loadData, [stop]);
+    useEffect(loadData, [line]);
 
     const handleClose = () => setShow(false);
     const handleInputChange = (event) => {
@@ -41,27 +40,31 @@ const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, refreshSt
     async function handleCreate(event) {
         event.preventDefault();
 
-        const allFieldsFilled = Object.values(formData).every((value) => value !== "");
+        const requiredFields = formFields
+            .filter((field) => field.required)
+            .map((field) => field.name);
+
+        const allFieldsFilled = requiredFields.every((field) => formData[field] !== "");
 
         if (!allFieldsFilled) {
             alert("Proszę wypełnić wszystkie pola.");
             return;
         }
 
-        await addBusStop(formData);
+        await addLine(formData);
 
         setFormData(initialFormData);
         handleClose();
-        await refreshStops();
+        await refreshLines();
     }
 
     async function handleEdit(event) {
         event.preventDefault();
 
-        await editBusStop(stop.id, formData);
+        await editLine(line.id, formData);
 
         handleClose();
-        await refreshStops();
+        await refreshLines();
     }
 
     return (
@@ -71,11 +74,11 @@ const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, refreshSt
             title={titleForm}
             formData={formData}
             handleInputChange={handleInputChange}
-            onSubmit={ !stop.id ? handleCreate : handleEdit}
+            onSubmit={ !line.id ? handleCreate : handleEdit}
             formFields={formFields}
             submitButtonText={buttonText}
         />
     );
 };
 
-export default BusStopPopupForm;
+export default LinePopupForm;

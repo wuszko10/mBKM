@@ -6,7 +6,7 @@ import {FaReceipt} from "react-icons/fa";
 import {LuPlusCircle} from "react-icons/lu";
 import {useTickets} from "../../hooks/useTickets";
 import {getTicketsTableColumns} from "../../components/Table/TableColumns";
-import {deleteTicket} from "../../services/ticketService";
+import {deleteTicket} from "../../services/ticket.service";
 import TicketPopupForm from "../../components/Popup/components/TicketPopupForm";
 
 const Tickets = () => {

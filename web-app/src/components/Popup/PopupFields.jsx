@@ -8,6 +8,7 @@ export const getTicketFormFields = (metadata) => {
                 label: type.label,
                 value: type.id,
             })),
+            required: true,
         },
         {
             name: "period",
@@ -17,6 +18,7 @@ export const getTicketFormFields = (metadata) => {
                 label: period.label,
                 value: period.id,
             })),
+            required: true,
         },
         {
             name: "lines",
@@ -26,22 +28,26 @@ export const getTicketFormFields = (metadata) => {
                 label: line.label,
                 value: line.id,
             })),
+            required: true,
         },
         {
             name: "price",
             label: "Podaj cenę biletu",
             type: "number",
             placeholder: "Cena w zł",
+            required: true,
         },
         {
             name: "offerStartDate",
             label: "Data wprowadzenia oferty",
             type: "date",
+            required: true,
         },
         {
             name: "offerEndDate",
             label: "Data zakończenia oferty (nieobowiązkowe)",
             type: "date",
+            required: false,
         },
     ];
 };
@@ -121,6 +127,25 @@ export const getCreateUserFormFields = () => {
             type: "number",
             placeholder: "PESEL",
         }
+    ];
+};
+
+export const getLineFormFields = () => {
+    return [
+        {
+            name: "number",
+            label: "Numer linii",
+            type: "input",
+            placeholder: "Numer linii",
+            required: true,
+        },
+        {
+            name: "name",
+            label: "Zwyczajowy numer/nazwa linii (nieobowiązkowe)",
+            type: "input",
+            placeholder: "Nazwa linii",
+            required: false,
+        },
     ];
 };
 

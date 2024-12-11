@@ -1,5 +1,9 @@
-import TicketDAO, {TicketModel} from '../DAO/ticketDAO';
+import TicketDAO from '../DAO/ticketDAO';
 import applicationException from '../service/applicationException';
+import {
+  getMetadataNames,
+  mappingIdsToNames
+} from "../service/ticketManager.service";
 
 function create(context) {
 
@@ -10,10 +14,16 @@ function create(context) {
       throw applicationException.new(applicationException.NOT_FOUND, 'Error while creating or updating tickets');
     }
   }
-  async function getAllTickets() {
+  async function getAllTickets(cache) {
+    const ticketTypes = cache.get("ticketTypes");
+    const ticketPeriods = cache.get("ticketPeriods");
+    const ticketLines = cache.get("ticketLines");
 
     try {
-      return await TicketDAO.getAllTickets();
+      const tickets = await TicketDAO.getAllTickets();
+
+      return getMetadataNames(tickets, ticketTypes, ticketPeriods, ticketLines);
+
     } catch (error) {
       throw applicationException.new(applicationException.NOT_FOUND, `Tickets not found`);
     }
@@ -21,14 +31,35 @@ function create(context) {
 
   async function getAndSearchTicket(page, pageSize, searchQuery, cache) {
 
+    const ticketTypes = cache.get("ticketTypes");
+    const ticketPeriods = cache.get("ticketPeriods");
+    const ticketLines = cache.get("ticketLines");
+
+    const searchCriteria = mappingIdsToNames(ticketTypes, ticketPeriods, ticketLines, searchQuery);
+
     try {
-      return await TicketDAO.getAndSearchTicket(page, pageSize,searchQuery,cache);
+
+      const {
+        data,
+          page,
+          pageSize,
+          totalPages,
+          totalRecords,
+      } = await TicketDAO.getAndSearchTicket(page, pageSize, searchCriteria)
+
+      const tickets = getMetadataNames(data, ticketTypes, ticketPeriods, ticketLines);
+
+      return {
+        data: tickets,
+        page,
+        pageSize,
+        totalPages,
+        totalRecords,
+      }
     } catch (error) {
       throw applicationException.new(applicationException.NOT_FOUND, `Tickets not found`);
     }
   }
-
-
 
   async function getById(ticketId) {
     try {
@@ -46,6 +77,7 @@ function create(context) {
       throw applicationException.new(applicationException.NOT_FOUND, `Ticket with ID ${ticketId} not found`);
     }
   }
+
 
   return {
     createNewOrUpdateTicket: createNewOrUpdateTicket,

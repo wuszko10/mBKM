@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
-import { fetchTickets } from '../services/ticketService';
-import {fetchReliefs} from "../services/reliefService";
+import { fetchTickets } from '../services/ticket.service';
+import {fetchReliefs} from "../services/relief.service";
 import {toast} from "react-toastify";
 
 export const useReliefs = () => {

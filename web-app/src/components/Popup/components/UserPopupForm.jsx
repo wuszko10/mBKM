@@ -3,8 +3,8 @@ import React, {useEffect, useState} from "react";
 import {
     getBusStopFormFields, getCreateUserFormFields
 } from "../PopupFields";
-import {addBusStop, editBusStop} from "../../../services/stopService";
-import {addUser} from "../../../services/userService";
+import {addBusStop, editBusStop} from "../../../services/stop.service";
+import {addUser} from "../../../services/user.service";
 
 const UserPopupForm = ({show, setShow, refreshUsers}) => {
 
@@ -45,7 +45,6 @@ const UserPopupForm = ({show, setShow, refreshUsers}) => {
 
     return (
         <GlobalPopupForm
-            id="edit-ticket-modal"
             isOpen={show}
             onClose={handleClose}
             title="Dodaj użytkownika"

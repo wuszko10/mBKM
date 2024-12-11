@@ -1,7 +1,7 @@
 import GlobalPopupForm from "../GlobalPopupForm";
 import React, {useEffect, useState} from "react";
 import {getTicketFormFields} from "../PopupFields";
-import {addTicket, editTicket} from "../../../services/ticketService";
+import {addTicket, editTicket} from "../../../services/ticket.service";
 
 const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, refreshTickets}) => {
 
@@ -50,7 +50,11 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, refreshT
     async function handleCreate(event) {
         event.preventDefault();
 
-        const allFieldsFilled = Object.values(formData).every((value) => value !== "");
+        const requiredFields = formFields
+            .filter((field) => field.required)
+            .map((field) => field.name);
+
+        const allFieldsFilled = requiredFields.every((field) => formData[field] !== "");
 
         if (!allFieldsFilled) {
             alert("Proszę wypełnić wszystkie pola.");
@@ -75,7 +79,6 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, refreshT
 
     return (
         <GlobalPopupForm
-            id="edit-ticket-modal"
             isOpen={show}
             onClose={handleClose}
             title={titleForm}

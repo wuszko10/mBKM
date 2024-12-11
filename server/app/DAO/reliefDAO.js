@@ -46,26 +46,7 @@ async function getReliefByName(name) {
     throw applicationException.new(applicationException.NOT_FOUND, 'Relief not found');
 }
 
-async function getAndSearchRelief(page, pageSize, searchQuery, cache ) {
-
-    const reliefTypes = cache.get("reliefTypes");
-
-    let reliefTypeIds = [];
-
-    if (searchQuery) {
-        const lowerCaseSearchQuery = searchQuery.toLowerCase();
-
-        reliefTypeIds = reliefTypes.filter(t => t.label.toLowerCase().includes(lowerCaseSearchQuery)).map(t => t.id);
-    }
-
-    const searchCriteria = searchQuery
-        ? {
-            $or: [
-                { name: { $regex: searchQuery.toLowerCase(), $options: 'i' } },
-                { type: { $in: reliefTypeIds } },
-            ],
-        }
-        : {};
+async function getAndSearchRelief(page, pageSize, searchCriteria ) {
 
     try {
         const totalRecords = await ReliefModel.countDocuments(searchCriteria);
@@ -74,18 +55,8 @@ async function getAndSearchRelief(page, pageSize, searchQuery, cache ) {
             .skip((page - 1) * pageSize)
             .limit(pageSize);
 
-        const reliefsArray = Array.isArray(reliefs) ? reliefs : [];
-
-        const transformedReliefs = reliefsArray.map(relief => {
-            const reliefObj = relief.toObject();
-            return {
-                ...reliefObj,
-                typeName: reliefTypes.find(t => t.id === relief.type.toString())?.label,
-            };
-        });
-
         return {
-            data: transformedReliefs,
+            data: reliefs,
             page,
             pageSize,
             totalPages: Math.ceil(totalRecords / pageSize),
@@ -99,7 +70,7 @@ async function getAndSearchRelief(page, pageSize, searchQuery, cache ) {
 async function getAllReliefs() {
     const result = await ReliefModel.find();
     if (result) {
-        return mongoConverter(result);
+        return result;
     }
     throw applicationException.new(applicationException.NOT_FOUND, 'No reliefs in the database');
 }

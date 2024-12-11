@@ -5,6 +5,7 @@ import reliefManager from "./relief.manager";
 import busStopManager from "./busStop.manager";
 import purchaseManager from "./purchase.manager";
 import topUpManager from "./topUp.manager";
+import lineManager from "./line.manager";
 
 
 function getter(manager, request) {
@@ -20,4 +21,5 @@ export default {
     getBusStopManager: getter(busStopManager),
     getPurchaseManager: getter(purchaseManager),
     getTopUpManager: getter(topUpManager),
+    getLineManager: getter(lineManager),
 };

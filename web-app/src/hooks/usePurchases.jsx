@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 import {toast} from "react-toastify";
-import {fetchPurchases} from "../services/trasanctionService";
+import {fetchPurchases} from "../services/trasanction.service";
 
 export const usePurchases = () => {
     const [purchases, setPurchases] = useState([]);

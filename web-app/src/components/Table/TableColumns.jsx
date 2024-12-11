@@ -7,15 +7,15 @@ export const getTicketsTableColumns = (handleEdit, handleRemove) => [
         cell: (info) => info.row.index + 1,
     },
     {
-        accessorKey: 'typeName',
+        accessorKey: 'typeLabel',
         header: 'Typ biletu',
     },
     {
-        accessorKey: 'periodName',
+        accessorKey: 'periodLabel',
         header: 'Ważność*',
     },
     {
-        accessorKey: 'lineName',
+        accessorKey: 'lineLabel',
         header: 'Ilość linii',
     },
     {
@@ -66,7 +66,7 @@ export const getReliefColumns = (handleEdit, handleRemove) => [
         cell: (info) => (info.getValue() + " %"),
     },
     {
-        header: 'Szczegóły',
+        header: ' ',
         cell: ({ row }) => (
             <div className="row-div">
                 <button onClick={() => handleEdit(row.original._id)}>Edytuj</button>
@@ -95,7 +95,7 @@ export const getStopsColumns = (handleEdit, handleRemove) => [
         header: 'Szerokość geograficzna',
     },
     {
-        header: 'Szczegóły',
+        header: ' ',
         cell: ({ row }) => (
             <div className="row-div">
                 <button onClick={() => handleEdit(row.original._id)}>Edytuj</button>
@@ -132,7 +132,7 @@ export const getUsersColumns = (navigate) => [
         }
     },
     {
-        header: 'Szczegóły',
+        header: ' ',
         cell: ({ row }) => (
             <button onClick={() => navigate(`/user/${row.original._id}`)}>Zobacz szczegóły</button>
         ),
@@ -165,7 +165,7 @@ export const getTransactionColumns = (navigate) => [
         header: 'Data zakupu',
     },
     {
-        header: 'Szczegóły',
+        header: ' ',
         cell: ({ row }) => (
             <button onClick={() => navigate(`/transaction/${row.original.id}`)}>Zobacz szczegóły</button>
         ),
@@ -197,4 +197,29 @@ export const getTopUpTransactionColumns = () => [
         accessorKey: 'method',
         header: 'Metoda',
     }
+];
+
+export const getLinesColumns = (handleEdit, handleRemove) => [
+    {
+        accessorKey: 'id',
+        header: 'ID',
+        cell: (info) => info.row.index + 1,
+    },
+    {
+        accessorKey: 'number',
+        header: 'Numer linii',
+    },
+    {
+        accessorKey: 'name',
+        header: 'Nazwa linii',
+    },
+    {
+        header: ' ',
+        cell: ({ row }) => (
+            <div className="row-div">
+                <button onClick={() => handleEdit(row.original._id)}>Edytuj</button>
+                <button onClick={() => handleRemove(row.original._id)}>Usuń</button>
+            </div>
+        ),
+    },
 ];

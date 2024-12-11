@@ -6,8 +6,9 @@ import applicationException from "../service/applicationException";
 const TicketEndpoint = (router) => {
 
     router.get('/api/tickets', authToken, async (req, res) => {
+        const cache = req.app.locals.cache;
         try {
-            const tickets = await business.getTicketManager().getAllTickets();
+            const tickets = await business.getTicketManager().getAllTickets(cache);
             res.status(200).json(tickets);
         } catch (error) {
             applicationException.errorHandler(error, res);

@@ -1,7 +1,7 @@
 import GlobalPopupForm from "../GlobalPopupForm";
 import React, {useEffect, useState} from "react";
 import {getReliefFormFields} from "../PopupFields";
-import {addRelief, editRelief} from "../../../services/reliefService";
+import {addRelief, editRelief} from "../../../services/relief.service";
 
 const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, refreshReliefs}) => {
 
@@ -65,7 +65,6 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, refreshR
 
     return (
         <GlobalPopupForm
-            id="edit-ticket-modal"
             isOpen={show}
             onClose={handleClose}
             title={titleForm}

@@ -1,10 +1,6 @@
-import PasswordDAO from '../DAO/passwordDAO';
-import TokenDAO from '../DAO/tokenDAO';
-import UserDAO from '../DAO/userDAO';
 import applicationException from '../service/applicationException';
-import sha1 from 'sha1';
-import TicketDAO from "../DAO/ticketDAO";
 import ReliefDAO from "../DAO/reliefDAO";
+import {getReliefTypesNames, reliefMappingIdsToNames} from "../service/reliefManager.service";
 
 function create(context) {
 
@@ -26,16 +22,38 @@ function create(context) {
   }
 
   async function getAndSearchRelief(page, pageSize, searchQuery, cache) {
+
+    const reliefTypes = cache.get("reliefTypes");
+    const searchCriteria = reliefMappingIdsToNames(reliefTypes, searchQuery);
+
     try {
-      return await ReliefDAO.getAndSearchRelief(page, pageSize, searchQuery,cache);
+      const {
+        data,
+        page,
+        pageSize,
+        totalPages,
+        totalRecords,
+      } = await ReliefDAO.getAndSearchRelief(page, pageSize, searchCriteria);
+      const reliefs = getReliefTypesNames(data, reliefTypes);
+      return {
+        data: reliefs,
+        page,
+        pageSize,
+        totalPages,
+        totalRecords,
+      }
     } catch (error) {
       throw applicationException.new(applicationException.NOT_FOUND, `Reliefs not found`);
     }
   }
 
-  async function getAllReliefs() {
+  async function getAllReliefs(cache) {
+
+    const reliefTypes = cache.get("reliefTypes");
+
     try {
-      return await ReliefDAO.getReliefByName(name);
+      const reliefs = await ReliefDAO.getAllReliefs();
+      return getReliefTypesNames(reliefs, reliefTypes);
     } catch (error) {
       throw applicationException.new(applicationException.NOT_FOUND, 'Error while getting reliefs');
     }

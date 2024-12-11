@@ -6,8 +6,8 @@ import GlobalPopupForm from "../../components/Popup/GlobalPopupForm";
 import {LuPlusCircle} from "react-icons/lu";
 import {getReliefColumns, getTicketsTableColumns} from "../../components/Table/TableColumns";
 import {useReliefs} from "../../hooks/useReliefs";
-import {addRelief, deleteRelief} from "../../services/reliefService";
-import {deleteTicket} from "../../services/ticketService";
+import {addRelief, deleteRelief} from "../../services/relief.service";
+import {deleteTicket} from "../../services/ticket.service";
 import ReliefPopupForm from "../../components/Popup/components/ReliefPopupForm";
 
 const Reliefs = () => {
