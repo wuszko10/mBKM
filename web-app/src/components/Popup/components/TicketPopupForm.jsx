@@ -71,7 +71,7 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, refreshT
     async function handleEdit(event) {
         event.preventDefault();
 
-        await editTicket(ticket.id, formData);
+        await editTicket(ticket._id, formData);
 
         handleClose();
         await refreshTickets();
@@ -84,7 +84,7 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, refreshT
             title={titleForm}
             formData={formData}
             handleInputChange={handleInputChange}
-            onSubmit={ !ticket.id ? handleCreate : handleEdit}
+            onSubmit={ !ticket._id ? handleCreate : handleEdit}
             formFields={formFields}
             submitButtonText={buttonText}
         />

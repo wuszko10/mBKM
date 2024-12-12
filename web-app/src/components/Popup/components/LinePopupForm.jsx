@@ -61,7 +61,7 @@ const LinePopupForm = ({show, setShow, line, titleForm, buttonText, refreshLines
     async function handleEdit(event) {
         event.preventDefault();
 
-        await editLine(line.id, formData);
+        await editLine(line._id, formData);
 
         handleClose();
         await refreshLines();
@@ -74,7 +74,7 @@ const LinePopupForm = ({show, setShow, line, titleForm, buttonText, refreshLines
             title={titleForm}
             formData={formData}
             handleInputChange={handleInputChange}
-            onSubmit={ !line.id ? handleCreate : handleEdit}
+            onSubmit={ !line._id ? handleCreate : handleEdit}
             formFields={formFields}
             submitButtonText={buttonText}
         />

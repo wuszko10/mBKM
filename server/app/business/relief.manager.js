@@ -24,7 +24,8 @@ function create(context) {
   async function getAndSearchRelief(page, pageSize, searchQuery, cache) {
 
     const reliefTypes = cache.get("reliefTypes");
-    const searchCriteria = reliefMappingIdsToNames(reliefTypes, searchQuery);
+    const ticketTypes = cache.get("ticketTypes");
+    const searchCriteria = reliefMappingIdsToNames(reliefTypes, ticketTypes, searchQuery);
 
     try {
       const {
@@ -34,7 +35,7 @@ function create(context) {
         totalPages,
         totalRecords,
       } = await ReliefDAO.getAndSearchRelief(page, pageSize, searchCriteria);
-      const reliefs = getReliefTypesNames(data, reliefTypes);
+      const reliefs = getReliefTypesNames(data, reliefTypes, ticketTypes);
       return {
         data: reliefs,
         page,
@@ -50,10 +51,11 @@ function create(context) {
   async function getAllReliefs(cache) {
 
     const reliefTypes = cache.get("reliefTypes");
+    const ticketTypes = cache.get("ticketTypes");
 
     try {
       const reliefs = await ReliefDAO.getAllReliefs();
-      return getReliefTypesNames(reliefs, reliefTypes);
+      return getReliefTypesNames(reliefs, reliefTypes, ticketTypes);
     } catch (error) {
       throw applicationException.new(applicationException.NOT_FOUND, 'Error while getting reliefs');
     }

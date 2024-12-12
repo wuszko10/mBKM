@@ -15,6 +15,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         const loadToken = async () => {
             try {
                 const savedToken = await AsyncStorage.getItem('token');
+
                 if (savedToken) {
                     setToken(savedToken);
                 }

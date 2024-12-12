@@ -5,10 +5,10 @@ import stylesApp from "../../style/stylesApp.js";
 import TicketSelector from "../../components/Tickets/TicketSelector.tsx";
 import TicketTypeSelector from "../../components/Tickets/TicketTypeSelector.tsx";
 import { useNavigation } from "@react-navigation/native";
-import {usePurchaseLogic} from "../../hooks/usePurchaseLogic.tsx";
+import {useTicketSelectionLogic} from "../../hooks/Purchase/useTicketSelectionLogic.tsx";
 import {NavigationProp} from "../../types/navigation.tsx";
 
-const Purchase = () => {
+const TicketSelection = () => {
 
     const navigation = useNavigation<NavigationProp>();
 
@@ -23,11 +23,11 @@ const Purchase = () => {
         setNumberSelectedLines,
         ticketsData,
         resetData,
-    } = usePurchaseLogic();
+    } = useTicketSelectionLogic();
 
-    const handlePurchase= () => {
+    const handleConfiguration= () => {
         if (selectedTicket !== null && selectedTicketId !== null) {
-            navigation.navigate('SelectingPurchaseConfiguration', {
+            navigation.navigate('TicketConfiguration', {
                 selectedTicket: selectedTicket,
                 ticketType: ticketType,
                 numberSelectedLines: numberSelectedLines,
@@ -63,7 +63,7 @@ const Purchase = () => {
                             />
 
                             <View style={stylesApp.summaryBox}>
-                                <TouchableOpacity onPress={handlePurchase} style={stylesApp.mainButton}>
+                                <TouchableOpacity onPress={handleConfiguration} style={stylesApp.mainButton}>
                                     <Text style={stylesApp.whiteBoldCenterText}>Kup bilet</Text>
                                 </TouchableOpacity>
                             </View>
@@ -84,4 +84,4 @@ const Purchase = () => {
 
 };
 
-export default Purchase;
+export default TicketSelection;

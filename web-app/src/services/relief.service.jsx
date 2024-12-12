@@ -8,6 +8,7 @@ export const addRelief = async (reliefData) => {
         const response = await axios.post(URI + 'relief', {
             name: reliefData.name,
             type: reliefData.type,
+            ticketType: reliefData.ticketType,
             percentage: reliefData.percentage,
         }, {
             headers: {
@@ -51,6 +52,7 @@ export const editRelief = async (id, reliefData) => {
             id: id,
             name: reliefData.name,
             type: reliefData.type,
+            ticketType: reliefData.ticketType,
             percentage: reliefData.percentage,
         }, {
             headers: {

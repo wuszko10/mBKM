@@ -2,7 +2,7 @@ import React,{ useEffect,useState } from "react";
 import { SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import { useNavigation,useRoute } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { PaymentMethod,Ticket,TicketOrderTransaction } from "../../interfaces/interfaces.tsx";
+import { PaymentMethod,Ticket,TicketOrderTransaction } from "../../types/interfaces.tsx";
 import { reliefs,lines,paymentMethods } from "../../repositories/Data.tsx";
 import stylesApp from "../../style/stylesApp.js";
 import Header from "../../components/Global/Header.tsx";
@@ -26,8 +26,8 @@ type RouteParams = {
     finalPrice: number;
 }
 
-type NavigationProp = StackNavigationProp<RootStackParamList, 'SummaryPurchaseScreen'>;
-const SummaryPurchaseScreen = () => {
+type NavigationProp = StackNavigationProp<RootStackParamList, 'TicketSummary'>;
+const TicketSummary = () => {
 
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute();
@@ -125,4 +125,4 @@ const localStyle = StyleSheet.create({
     }
 });
 
-export default SummaryPurchaseScreen;
+export default TicketSummary;

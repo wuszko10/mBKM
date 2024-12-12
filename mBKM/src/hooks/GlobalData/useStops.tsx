@@ -1,9 +1,11 @@
 import {useEffect, useState} from "react";
-import {fetchStops} from "../services/busStops.service.tsx";
+import {fetchStops} from "../../services/busStops.service.tsx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {BusStop} from "../interfaces/interfaces.tsx";
+import {BusStop} from "../../types/interfaces.tsx";
+import {useAuth} from "../../components/Global/AuthContext.tsx";
 
 export const useStops = () => {
+    const { token } = useAuth();
     const [stops, setStops] = useState<BusStop[]>();
     const [stopsLoading, setStopsLoading] = useState(true);
 
@@ -27,7 +29,8 @@ export const useStops = () => {
     }
 
     useEffect(() => {
-        refreshStops();
+        if (token)
+            refreshStops();
     }, []);
 
     return {

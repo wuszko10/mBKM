@@ -1,11 +1,11 @@
 import {useEffect, useState} from "react";
-import {Ticket} from "../interfaces/interfaces.tsx";
+import {Ticket} from "../../types/interfaces.tsx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
-export const usePurchaseLogic = () => {
+export const useTicketSelectionLogic = () => {
 
-    const [ticketsData, setTicketsData] = useState(null);
-    const [selectedTicket, setSelectedTicket] = useState(null);
+    const [ticketsData, setTicketsData] = useState<Ticket[] | null>(null);
+    const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
     const [selectedTicketId, setSelectedTicketId] = useState<number | null>(null);
     const [ticketType, setTicketType] = useState<'single' | 'season' | null>(null);
     const [numberSelectedLines, setNumberSelectedLines] = useState("");
@@ -13,7 +13,6 @@ export const usePurchaseLogic = () => {
 
     const getTickets = async () => {
         let ticketStr = await AsyncStorage.getItem('tickets');
-        console.log(ticketStr);
         if (ticketStr !== null) {
             setTicketsData(JSON.parse(ticketStr));
         }
@@ -32,6 +31,7 @@ export const usePurchaseLogic = () => {
         setTicketType(prev => (prev === type ? null : type));
         resetData();
     }
+
 
     return {
         selectedTicket,

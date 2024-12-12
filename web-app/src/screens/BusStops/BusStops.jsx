@@ -88,7 +88,7 @@ const BusStops = () => {
                 stop={selectedBusStop}
                 titleForm={title}
                 buttonText={buttonText}
-                refreshTickets={refreshStops}
+                refreshStops={refreshStops}
             />
         </div>
     );

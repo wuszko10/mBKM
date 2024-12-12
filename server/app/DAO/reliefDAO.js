@@ -6,8 +6,9 @@ import mongoConverter from '../service/mongoConverter';
 import uniqueValidator from 'mongoose-unique-validator';
 
 const reliefSchema = new mongoose.Schema({
-    name: {type: String, required: true, unique: true},
+    name: {type: String, required: true},
     type: {type: mongoose.Schema.Types.ObjectId, ref: 'reliefType', required: true},
+    ticketType: {type: mongoose.Schema.Types.ObjectId, ref: 'ticketType', required: true},
     percentage: {type: Number, required: true},
 }, {
     collection: 'relief'

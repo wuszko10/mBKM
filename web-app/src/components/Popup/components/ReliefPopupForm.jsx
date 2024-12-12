@@ -8,6 +8,7 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, refreshR
     const initialFormData = {
         name: '',
         type: '',
+        ticketType: '',
         percentage: '',
     }
 
@@ -21,6 +22,7 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, refreshR
             setFormData({
                 name: relief.name,
                 type: relief.type,
+                ticketType: relief.ticketType,
                 percentage: relief.percentage,
             });
         }
@@ -57,7 +59,7 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, refreshR
     async function handleEdit(event) {
         event.preventDefault();
 
-        await editRelief(relief.id, formData);
+        await editRelief(relief._id, formData);
 
         handleClose();
         await refreshReliefs();
@@ -70,7 +72,7 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, refreshR
             title={titleForm}
             formData={formData}
             handleInputChange={handleInputChange}
-            onSubmit={ !relief.id ? handleCreate : handleEdit}
+            onSubmit={ !relief._id ? handleCreate : handleEdit}
             formFields={formFields}
             submitButtonText={buttonText}
         />

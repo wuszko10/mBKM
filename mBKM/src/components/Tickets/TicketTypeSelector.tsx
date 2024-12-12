@@ -1,16 +1,17 @@
 import React from "react";
 import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
-import { Ticket } from "../../interfaces/interfaces.tsx";
+import { Ticket } from "../../types/interfaces.tsx";
 import {TicketAndReliefTypeSelectorProps} from "../../types/componentProps.tsx";
+import {SEASON_TICKET, SINGLE_TICKET} from "../../repositories/variables.tsx";
 
 
 const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) => {
 
     const filteredTickets = props.ticketsData.filter((ticket) => {
-        if (props.ticketType === 'single' && ticket.type === 'jednorazowy') {
+        if (props.ticketType === SINGLE_TICKET && ticket.typeName === SINGLE_TICKET) {
             return true;
-        } else if (props.ticketType === 'season' && ticket.type === 'okresowy') {
+        } else if (props.ticketType === SEASON_TICKET && ticket.typeName === SEASON_TICKET) {
             return true;
         }
         return false;
@@ -19,7 +20,7 @@ const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) =
     const handleTicketSelect = (ticket: Ticket) => {
         props.setSelectedTicket(ticket);
         props.setSelectedTicketId(ticket._id);
-        props.setNumberSelectedLines(ticket.lines);
+        props.setNumberSelectedLines(ticket.lineName);
 
     };
 
@@ -34,9 +35,9 @@ const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) =
                         stylesApp.flatlistItem,
                         props.selectedTicketId === item._id && localStyle.selectedItem
                     ]}>
-                        <Text style={stylesApp.itemText}>Bilet <Text style={stylesApp.boldText}>{item.type}</Text></Text>
-                        <Text style={stylesApp.itemText}>Linie: <Text style={stylesApp.boldText}>{item.lines}</Text></Text>
-                        {item.period != null ? (<Text style={stylesApp.itemText}>Okres: <Text style={stylesApp.boldText}>{item.period}{item.type === "jednorazowy" ? "-minutowy" : "-miesięczny"}</Text></Text>) : null}
+                        <Text style={stylesApp.itemText}>Bilet <Text style={stylesApp.boldText}>{item.typeLabel}</Text></Text>
+                        <Text style={stylesApp.itemText}>Linie: <Text style={stylesApp.boldText}>{item.lineLabel}</Text></Text>
+                        {item.period != null ? (<Text style={stylesApp.itemText}>Okres: <Text style={stylesApp.boldText}>{item.periodLabel}</Text></Text>) : null}
                         <Text style={stylesApp.itemText}>Cena biletu normalnego: <Text style={stylesApp.boldText}>{item.price.toFixed(2)} zł</Text></Text>
                     </TouchableOpacity>
                 )}

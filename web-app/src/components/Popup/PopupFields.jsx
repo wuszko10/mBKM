@@ -70,6 +70,15 @@ export const getReliefFormFields = (metadata) => {
             })),
         },
         {
+            name: "ticketType",
+            label: "Wybierz typ biletu",
+            type: "select",
+            options: metadata.ticketTypes.map((type) => ({
+                label: type.label,
+                value: type.id,
+            })),
+        },
+        {
             name: "percentage",
             label: "Odpłatność (w procentach)",
             type: "number",

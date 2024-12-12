@@ -1,9 +1,11 @@
 import {useEffect, useState} from "react";
-import {fetchMetadata} from "../services/metadata.service.tsx";
+import {fetchMetadata} from "../../services/metadata.service.tsx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import {Metadata} from "../interfaces/interfaces.tsx";
+import {Metadata} from "../../types/interfaces.tsx";
+import {useAuth} from "../../components/Global/AuthContext.tsx";
 
 export const useMetadata = () => {
+    const { token } = useAuth();
     const [metadata, setMetadata] = useState<Metadata>();
     const [metadataLoading, setMetadataLoading] = useState(true);
 
@@ -12,7 +14,10 @@ export const useMetadata = () => {
             .then(async (data) => {
                 setMetadata(data);
                 if (data)
-                    await AsyncStorage.setItem('metadata', JSON.stringify(data));
+                    await AsyncStorage.setItem('ticketTypes', JSON.stringify(data.ticketTypes));
+                    await AsyncStorage.setItem('ticketPeriods', JSON.stringify(data.ticketPeriods));
+                    await AsyncStorage.setItem('ticketLines', JSON.stringify(data.ticketLines));
+                    await AsyncStorage.setItem('reliefTypes', JSON.stringify(data.reliefTypes));
             })
             .catch((error) => {
                 console.error("Błąd pobierania metadanych | " + error);
@@ -27,7 +32,8 @@ export const useMetadata = () => {
     }
 
     useEffect(() => {
-        refreshMetadata();
+        if (token)
+            refreshMetadata();
     }, []);
 
     return {

@@ -4,19 +4,19 @@ import { View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 
 type ReliefSelectorProps = {
+    loading: boolean;
     selectedValue: any;
     setSelectedValue: React.Dispatch<React.SetStateAction<any>>;
     data: any;
-    onChangeValueFunction?: (value: any) => void;
     placeholder: string;
 };
 
 const DropdownSelector: React.FC<ReliefSelectorProps> = (
     {
+        loading,
         selectedValue,
         setSelectedValue,
         data,
-        onChangeValueFunction,
         placeholder,
     }) => {
 
@@ -25,6 +25,7 @@ const DropdownSelector: React.FC<ReliefSelectorProps> = (
     return (
         <View>
             <DropDownPicker
+                loading={loading}
                 open={openPicker}
                 value={selectedValue}
                 items={data}
@@ -33,7 +34,6 @@ const DropdownSelector: React.FC<ReliefSelectorProps> = (
                 placeholder={placeholder}
                 style={stylesApp.dropdown}
                 dropDownContainerStyle={stylesApp.dropdownContainer}
-                onChangeValue={onChangeValueFunction}
             />
         </View>
 

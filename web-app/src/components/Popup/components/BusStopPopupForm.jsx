@@ -58,7 +58,7 @@ const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, refreshSt
     async function handleEdit(event) {
         event.preventDefault();
 
-        await editBusStop(stop.id, formData);
+        await editBusStop(stop._id, formData);
 
         handleClose();
         await refreshStops();
@@ -71,7 +71,7 @@ const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, refreshSt
             title={titleForm}
             formData={formData}
             handleInputChange={handleInputChange}
-            onSubmit={ !stop.id ? handleCreate : handleEdit}
+            onSubmit={ !stop._id ? handleCreate : handleEdit}
             formFields={formFields}
             submitButtonText={buttonText}
         />

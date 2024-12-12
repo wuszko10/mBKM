@@ -10,7 +10,7 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import Foundation from 'react-native-vector-icons/Foundation';
 import Entypo from "react-native-vector-icons/Entypo";
 import { reliefs,ticketOrderTransactions,ticketsData } from "../../repositories/Data.tsx";
-import { TicketOrderTransaction } from "../../interfaces/interfaces.tsx";
+import { TicketOrderTransaction } from "../../types/interfaces.tsx";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
 import CountdownProgressBar from "../../components/Global/CountdownProgressBar.tsx";
 

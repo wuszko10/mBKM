@@ -61,7 +61,6 @@ const Reliefs = () => {
         }
     }
 
-
     const columns = getReliefColumns(handleShowEditForm, handleRemove);
 
     return (
@@ -92,7 +91,7 @@ const Reliefs = () => {
                 relief={selectedRelief}
                 titleForm={title}
                 buttonText={buttonText}
-                refreshTickets={refreshReliefs}
+                refreshReliefs={refreshReliefs}
             />
         </div>
     );

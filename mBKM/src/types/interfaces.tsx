@@ -27,6 +27,14 @@ export interface Ticket {
     lines: string;
     period?: string;
     price: number;
+    offerStartDate: string;
+    offerEndDate?: string;
+    typeName: string;
+    typeLabel: string;
+    periodName: string;
+    periodLabel: string;
+    lineName: string;
+    lineLabel: string;
 }
 
 export interface TicketOrderTransaction {
@@ -47,7 +55,12 @@ export interface Relief {
     _id: string;
     name: string;
     type: string;
+    ticketType: string;
     discountPercentage: number;
+    typeName: string;
+    typeLabel: string;
+    ticketTypeName: string;
+    ticketTypeLabel: string;
 }
 
 export interface PaymentMethod {
@@ -58,7 +71,8 @@ export interface PaymentMethod {
 
 export interface Line {
     _id: number;
-    line: string;
+    number: string;
+    name: string;
 }
 
 export interface BusStop {
@@ -80,9 +94,14 @@ export interface MetadataType {
 }
 
 export interface Metadata {
-    ticketType: MetadataType[];
-    ticketPeriod: MetadataType[];
-    ticketLine: MetadataType[];
-    reliefType: MetadataType[];
+    ticketTypes: MetadataType[];
+    ticketPeriods: MetadataType[];
+    ticketLines: MetadataType[];
+    reliefTypes: MetadataType[];
+}
+
+export interface FilterMapListType {
+    label: string;
+    value: string;
 }
 

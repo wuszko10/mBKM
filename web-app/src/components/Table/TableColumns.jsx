@@ -66,6 +66,14 @@ export const getReliefColumns = (handleEdit, handleRemove) => [
         cell: (info) => (info.getValue() + " %"),
     },
     {
+        accessorKey: 'typeLabel',
+        header: 'Typ ulgi',
+    },
+    {
+        accessorKey: 'ticketTypeLabel',
+        header: 'Typ biletu',
+    },
+    {
         header: ' ',
         cell: ({ row }) => (
             <div className="row-div">

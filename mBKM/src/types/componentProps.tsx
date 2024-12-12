@@ -1,5 +1,5 @@
 import React, {SetStateAction} from "react";
-import {Ticket} from "../interfaces/interfaces.tsx";
+import {Ticket} from "./interfaces.tsx";
 
 export type TicketSelectorProps = {
     ticketType: 'single' | 'season' | null;

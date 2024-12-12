@@ -1,7 +1,7 @@
 import React,{ useEffect } from "react";
 import styles from "./src/style/stylesApp";
 import {
-    SafeAreaView, Text
+    SafeAreaView
 } from "react-native";
 
 import { NavigationContainer } from "@react-navigation/native";
@@ -15,7 +15,7 @@ import Login from "./src/screens/User/Login.tsx";
 import Welcome from "./src/screens/Global/Welcome.tsx";
 import Register from "./src/screens/User/Register.tsx";
 import { AuthProvider,useAuth } from "./src/components/Global/AuthContext.tsx";
-import SummaryPurchaseScreen from "./src/screens/Tickets/SummaryPurchaseScreen.tsx";
+import TicketSummary from "./src/screens/Purchase/TicketSummary.tsx";
 import TicketDetails from "./src/screens/Tickets/TicketDetails.tsx";
 import TopUpScreen from "./src/screens/Wallet/TopUpScreen.tsx";
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -23,11 +23,12 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Mci from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from "./src/style/styleValues.js";
 import stylesApp from "./src/style/stylesApp";
-import Purchase from "./src/screens/Tickets/Purchase.tsx";
-import SelectingPurchaseConfiguration from "./src/screens/Tickets/SelectingPurchaseConfiguration.tsx";
+import TicketSelection from "./src/screens/Purchase/TicketSelection.tsx";
+import TicketConfiguration from "./src/screens/Purchase/TicketConfiguration.tsx";
 import PaymentScreen from "./src/screens/Global/PaymentScreen.tsx";
 import ValidateTicket from "./src/screens/Tickets/ValidateTicket.tsx";
-import {useAppData} from "./src/hooks/useAppData.tsx";
+import {useAppData} from "./src/hooks/GlobalData/useAppData.tsx";
+import {isExpired} from "react-jwt";
 
 
 const Tab = createBottomTabNavigator();
@@ -51,7 +52,8 @@ function UserPanel() {
     );
 
     return (
-        <Tab.Navigator screenOptions={()=> ({
+        <Tab.Navigator
+            screenOptions={()=> ({
             tabBarStyle: stylesApp.tabBarStyle,
             tabBarItemStyle: stylesApp.tabBarItemStyle,
         })}>
@@ -69,19 +71,13 @@ function UserPanel() {
 function MainApp() {
     const { token } = useAuth();
 
-    const {
-        metadataLoading,
-        ticketsLoading,
-        stopsLoading,
-        refreshAll } = useAppData();
+    const { refreshAll } = useAppData();
 
     useEffect(() => {
-        refreshAll();
+        if (token && !isExpired(token)) {
+            refreshAll();
+        }
     }, [token]);
-
-    if (metadataLoading || ticketsLoading || stopsLoading) {
-        return <Text>Loading...</Text>;
-    }
 
     return (
         <NavigationContainer>
@@ -97,9 +93,9 @@ function MainApp() {
                         <Stack.Screen name="UserPanel" component={UserPanel} options={{ headerShown: false }} />
                         <Stack.Screen name="TicketDetails" component={TicketDetails} options={{ headerShown: false }} />
                         <Stack.Screen name="TopUpScreen" component={TopUpScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="Purchase" component={Purchase} options={{ headerShown: false }} />
-                        <Stack.Screen name="SelectingPurchaseConfiguration" component={SelectingPurchaseConfiguration} options={{ headerShown: false }} />
-                        <Stack.Screen name="SummaryPurchaseScreen" component={SummaryPurchaseScreen} options={{ headerShown: false }} />
+                        <Stack.Screen name="TicketSelection" component={TicketSelection} options={{ headerShown: false }} />
+                        <Stack.Screen name="TicketConfiguration" component={TicketConfiguration} options={{ headerShown: false }} />
+                        <Stack.Screen name="TicketSummary" component={TicketSummary} options={{ headerShown: false }} />
                         <Stack.Screen name="PaymentScreen" component={PaymentScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="ValidateTicket" component={ValidateTicket} options={{ headerShown: false }} />
                     </>
