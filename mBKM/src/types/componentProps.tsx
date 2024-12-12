@@ -9,8 +9,7 @@ export type TicketSelectorProps = {
 export type TicketAndReliefTypeSelectorProps = {
     ticketsData: Ticket[];
     setSelectedTicket: React.Dispatch<SetStateAction<Ticket | null>>;
-    selectedTicketId: number | null;
-    setSelectedTicketId: React.Dispatch<React.SetStateAction<number | null>>;
+    selectedTicketId: string | null;
+    setSelectedTicketId: React.Dispatch<React.SetStateAction<string | null>>;
     ticketType: 'single' | 'season' | null;
-    setNumberSelectedLines: React.Dispatch<React.SetStateAction<string>>;
 };

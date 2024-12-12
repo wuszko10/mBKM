@@ -1,4 +1,4 @@
-import UserDAO from '../DAO/userDAO';
+import UserDAO from '../DAO/user/userDAO';
 import applicationException from '../service/applicationException';
 import TopUpDAO from "../DAO/topUpDAO";
 
@@ -9,7 +9,7 @@ function create(context) {
     try {
       return await TopUpDAO.createNewOrUpdateTopUp(data);
     } catch (error) {
-      throw applicationException.new(applicationException.BAD_REQUEST, 'Error while creating or updating relief');
+      throw applicationException.new(applicationException.BAD_REQUEST, 'Error while creating or updating top up');
     }
   }
 
@@ -20,7 +20,7 @@ function create(context) {
     try {
       return await TopUpDAO.getAndSearchTopUp(page, pageSize, searchQuery, users);
     } catch (error) {
-      throw applicationException.new(applicationException.NOT_FOUND, `Reliefs not found`);
+      throw applicationException.new(applicationException.NOT_FOUND, `Top ups not found`);
     }
   }
 
@@ -28,7 +28,7 @@ function create(context) {
     try {
       return await TopUpDAO.getTopUpsByUserId(id);
     } catch (error) {
-      throw applicationException.new(applicationException.NOT_FOUND, `Relief with ID ${id} not found`);
+      throw applicationException.new(applicationException.NOT_FOUND, `Top up with ID ${id} not found`);
     }
   }
 
@@ -36,7 +36,7 @@ function create(context) {
     try {
       return await TopUpDAO.getTopUp(id);
     } catch (error) {
-      throw applicationException.new(applicationException.NOT_FOUND, `Relief with ID ${id} not found`);
+      throw applicationException.new(applicationException.NOT_FOUND, `Top up with ID ${id} not found`);
     }
   }
 

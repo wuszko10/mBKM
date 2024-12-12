@@ -5,10 +5,10 @@ import stylesApp from "../../style/stylesApp.js";
 import TicketSelector from "../../components/Tickets/TicketSelector.tsx";
 import TicketTypeSelector from "../../components/Tickets/TicketTypeSelector.tsx";
 import { useNavigation } from "@react-navigation/native";
-import {useTicketSelectionLogic} from "../../hooks/Purchase/useTicketSelectionLogic.tsx";
+import {useBuyTicketSelectionLogic} from "../../hooks/BuyTicket/useBuyTicketSelectionLogic.tsx";
 import {NavigationProp} from "../../types/navigation.tsx";
 
-const TicketSelection = () => {
+const BuyTicketSelection = () => {
 
     const navigation = useNavigation<NavigationProp>();
 
@@ -19,18 +19,14 @@ const TicketSelection = () => {
         setSelectedTicketId,
         ticketType,
         toggleTicketType,
-        numberSelectedLines,
-        setNumberSelectedLines,
         ticketsData,
         resetData,
-    } = useTicketSelectionLogic();
+    } = useBuyTicketSelectionLogic();
 
     const handleConfiguration= () => {
         if (selectedTicket !== null && selectedTicketId !== null) {
-            navigation.navigate('TicketConfiguration', {
-                selectedTicket: selectedTicket,
-                ticketType: ticketType,
-                numberSelectedLines: numberSelectedLines,
+            navigation.navigate('BuyTicketConfiguration', {
+                selectedTicket: selectedTicket
             });
             resetData();
         } else {
@@ -59,7 +55,6 @@ const TicketSelection = () => {
                                 selectedTicketId={selectedTicketId}
                                 setSelectedTicketId={setSelectedTicketId}
                                 ticketType={ticketType}
-                                setNumberSelectedLines={setNumberSelectedLines}
                             />
 
                             <View style={stylesApp.summaryBox}>
@@ -84,4 +79,4 @@ const TicketSelection = () => {
 
 };
 
-export default TicketSelection;
+export default BuyTicketSelection;

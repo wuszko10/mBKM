@@ -1,0 +1,111 @@
+import {useEffect, useState} from "react";
+import {FilterMapListType, Line, Relief, Ticket} from "../../types/interfaces.tsx";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { ALL_LINES,DEFAULT_RELIEF,SEASON_TICKET,SINGLE_TICKET } from "../../../variables.tsx";
+import { storage } from "../../../App.tsx";
+
+export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
+
+    const [isLoading, setIsLoading] = useState(true);
+
+    const [showDate, setShowDate] = useState(false);
+    const [reliefs, setReliefs] = useState<Relief[]>();
+    const [reliefsData, setReliefsData] = useState<FilterMapListType[]>();
+    const [linesData, setLinesData] = useState<FilterMapListType[]>();
+    const [selectedRelief, setSelectedRelief] = useState<string | null>(null);
+    const [selectedLines, setSelectedLines] = useState<string | null>(null);
+    const [selectedDate, setSelectedDate] = useState(new(Date));
+    const [finalPrice, setFinalPrice] = useState(0);
+    const getReliefsAndLines = () => {
+
+        if(!isLoading) return;
+
+        // const reliefStr = await AsyncStorage.getItem('reliefs');
+        // const lineStr = await AsyncStorage.getItem('lines');
+        const reliefStr = storage.getString('reliefs');
+        const lineStr = storage.getString('lines');
+
+        if (reliefStr && lineStr) {
+            const parseRelief: Relief[] = JSON.parse(reliefStr);
+            const parseLines: Line[] = JSON.parse(lineStr);
+
+            const filteredReliefs = parseRelief
+                .filter(r =>
+                    selectedTicket.typeName === SINGLE_TICKET
+                        ? (r.ticketTypeName === SINGLE_TICKET || r.ticketTypeName === ALL_LINES)
+                        : (r.ticketTypeName === SEASON_TICKET || r.ticketTypeName === ALL_LINES))
+                .map(r => ({
+                    label: r.name+" ("+r.percentage+"%)",
+                    value: r._id,
+                    key: r.typeName,
+                }));
+
+            const filteredLines = parseLines
+                .filter(line =>
+                    selectedTicket.lineName === ALL_LINES
+                        ? line.number === ALL_LINES
+                        : line.number !== ALL_LINES
+                )
+                .map(line => ({
+                    label: line.name,
+                    value: line.id,
+                    key: line.number,
+                }));
+
+            setReliefsData(filteredReliefs);
+            setLinesData(filteredLines);
+            setReliefs(parseRelief);
+            setIsLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        getReliefsAndLines();
+    }, [isLoading]);
+
+    useEffect(() => {
+        if(reliefsData)
+        {
+            const defaultRelief = reliefsData.find(r => r.key === DEFAULT_RELIEF);
+            if (defaultRelief) {
+                setSelectedRelief(defaultRelief.value);
+            }
+        }
+
+        if(linesData){
+            const defaultLine = linesData.find(l => l.key === ALL_LINES)
+            if (defaultLine) {
+                setSelectedLines(defaultLine.value);
+            }
+        }
+    }, [reliefsData, linesData]);
+
+    useEffect(() => {
+        if (selectedRelief && reliefs) {
+            const selectedReliefData = reliefs.find(r => r._id === selectedRelief);
+            if (selectedReliefData) {
+                const discountFactor = selectedReliefData.percentage / 100;
+                setFinalPrice(selectedTicket.price * discountFactor);
+            }
+        }
+    }, [selectedRelief, reliefs]);
+
+
+
+
+    return {
+        showDate,
+        isLoading,
+        reliefs,
+        reliefsData,
+        linesData,
+        selectedDate,
+        selectedLines,
+        selectedRelief,
+        finalPrice,
+        setShowDate,
+        setSelectedDate,
+        setSelectedRelief,
+        setSelectedLines,
+    };
+}

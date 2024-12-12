@@ -35,7 +35,10 @@ const DateSelector: React.FC<DateSelectorProps> = (
     };
 
     return (
-        <View>
+        <View style={stylesApp.inputBox}>
+
+
+            <Text style={stylesApp.labelInputText}>Wybierz datę</Text>
 
             <TouchableOpacity onPress={() => showMode('date')} style={localStyle.dateButton}>
                 { showDate ? (

@@ -221,9 +221,9 @@ export const lines: Line[] = [
 ];
 
 export const paymentMethods: PaymentMethod[] = [
-    { id: 1, icon: 'wallet', label: 'Portfel' },
-    { id: 2, icon: 'credit-card', label: 'Karta' },
-    { id: 3, icon: 'credit', label: 'Online' },
+    { _id: "1", entypoIcon: 'wallet', label: 'Portfel', name: 'wallet' },
+    { _id: "2", entypoIcon: 'credit-card', label: 'Karta', name: 'card' },
+    { _id: "3", entypoIcon: 'credit', label: 'Online', name: 'online' },
 ];
 
 export const busStopLocations: BusStop[] = [

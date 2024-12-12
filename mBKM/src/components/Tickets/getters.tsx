@@ -1,6 +1,6 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {FilterMapListType, Line, Relief} from "../../types/interfaces.tsx";
-import {ALL_LINES, SEASON_TICKET, SINGLE_TICKET} from "../../repositories/variables.tsx";
+import {ALL_LINES, SEASON_TICKET, SINGLE_TICKET} from "../../../variables.tsx";
 
 export const getReliefsAndLines = async () => {
 

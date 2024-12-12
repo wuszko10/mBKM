@@ -1,5 +1,6 @@
 import React,{ createContext,useState,useContext,ReactNode,useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { storage } from "../../../App.tsx";
 
 interface AuthContextType {
     token: string | null;
@@ -14,7 +15,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     useEffect(() => {
         const loadToken = async () => {
             try {
-                const savedToken = await AsyncStorage.getItem('token');
+                // const savedToken = await AsyncStorage.getItem('token');
+                const savedToken = storage.getString('token');
 
                 if (savedToken) {
                     setToken(savedToken);

@@ -4,8 +4,7 @@ import stylesApp from "../../style/stylesApp.js";
 import { ticketOrderTransactions,ticketsData } from "../../repositories/Data.tsx";
 import { colors,dimensions } from "../../style/styleValues.js";
 import { TicketOrderTransaction } from "../../types/interfaces.tsx";
-import { useNavigation,useNavigationState } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { useNavigation } from "@react-navigation/native";
 import Header from "../../components/Global/Header.tsx";
 import Entypo from "react-native-vector-icons/Entypo";
 import {NavigationProp} from "../../types/navigation.tsx";
@@ -20,7 +19,7 @@ const Tickets = () => {
 
     const renderItem= ({item} : {item: TicketOrderTransaction}) => {
 
-        const typeId = ticketsData.find(type => type._id === item.ticketTypeId);
+        const typeId = ticketsData.find(type => type._id === String(item.ticketTypeId));
 
         return (
             <TouchableOpacity onPress={() => handleTicketDetails(item)}>
@@ -43,7 +42,7 @@ const Tickets = () => {
 
             <Header title="Moje bilety" />
 
-            <TouchableOpacity onPress={() => navigation.navigate('TicketSelection')} style={localStyles.addButton}>
+            <TouchableOpacity onPress={() => navigation.navigate('BuyTicketSelection')} style={localStyles.addButton}>
                 <Entypo name="plus" size={35} style={localStyles.icon} />
                 <Text style={{color: colors.appFirstColor, fontSize: 14}}>Kup bilet</Text>
             </TouchableOpacity>

@@ -7,8 +7,9 @@ import authUserRole from "../middleware/authUserRole";
 const ReliefEndpoint = (router) => {
 
     router.get('/api/reliefs', authToken, async (req, res) => {
+        const cache = req.app.locals.cache;
         try {
-            let reliefs = await business.getReliefManager(req).getAllReliefs();
+            let reliefs = await business.getReliefManager(req).getAllReliefs(cache);
             res.status(200).json(reliefs);
         } catch (error) {
             applicationException.errorHandler(error, res);

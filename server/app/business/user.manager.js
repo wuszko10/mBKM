@@ -1,9 +1,10 @@
-import PasswordDAO from '../DAO/passwordDAO';
-import TokenDAO from '../DAO/tokenDAO';
-import UserDAO from '../DAO/userDAO';
+import PasswordDAO from '../DAO/user/passwordDAO';
+import TokenDAO from '../DAO/user/tokenDAO';
+import UserDAO from '../DAO/user/userDAO';
 import applicationException from '../service/applicationException';
 import sha1 from 'sha1';
 import BusStopDAO from "../DAO/BusStopDAO";
+import WalletDAO from "../DAO/user/WalletDAO";
 
 function create(context) {
 
@@ -40,6 +41,7 @@ function create(context) {
     if (await userData.password) {
       return await PasswordDAO.createOrUpdate({userId: user.id, password: hashString(userData.password)});
     }
+    await WalletDAO.createNewOrUpdate({ userId: user.id, amount: 0 });
     return user;
   }
 

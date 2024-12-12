@@ -199,7 +199,8 @@ export default StyleSheet.create({
 
     labelInputText: {
         color: colors.textColorBlack,
-        paddingLeft: dimensions.inputPadding,
+        paddingLeft: 10,
+        fontSize: dimensions.smallTextSize,
     },
 
     /*
@@ -211,7 +212,7 @@ export default StyleSheet.create({
      */
 
     inputBox: {
-        gap: dimensions.itemGap,
+        gap: 5,
     },
 
     input: {

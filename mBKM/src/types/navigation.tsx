@@ -1,22 +1,21 @@
 import { NavigationProp as BaseNavigationProp } from '@react-navigation/native';
-import {Ticket, TicketOrderTransaction} from "./interfaces.tsx";
+import { Relief,Ticket,TicketOrderTransaction } from "./interfaces.tsx";
+import BuyTicketSummary from "../screens/BuyTicket/BuyTicketSummary/BuyTicketSummary.tsx";
 
 export type RootStackParamList = {
     Home: undefined;
     Tickets: undefined;
     TicketDetails: {selectedTransaction: TicketOrderTransaction};
-    TicketSelection: undefined;
-    TicketConfiguration: {
+    BuyTicketSelection: undefined;
+    BuyTicketConfiguration: {
         selectedTicket: Ticket | null;
-        ticketType: 'single' | 'season' | null;
-        numberSelectedLines: string;
     };
-    TicketSummary: {
+    BuyTicketSummary: {
         selectedTicket: Ticket,
-        selectedLines?: string,
-        selectedRelief: string,
+        selectedLines: string | null,
+        selectedRelief: Relief | undefined,
+        finalPrice: number,
         selectedDate?: string,
-        finalPrice: number
     };
     Profile: { userId: string };
 };

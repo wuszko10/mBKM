@@ -6,7 +6,7 @@ import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
 import ProcessingPopup from "../Global/ProcessingPopup.tsx";
 import { useCheckLocation } from "../Global/CheckLocation.tsx";
-import { LOCATION_TIMEOUT } from "../../repositories/variables.tsx";
+import { LOCATION_TIMEOUT } from "../../../variables.tsx";
 
 interface WalletPaymentProps {
     transactionId: number;

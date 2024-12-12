@@ -10,8 +10,10 @@ const MetadataEndpoint = (router) => {
         const ticketPeriods = cache.get("ticketPeriods");
         const ticketLines = cache.get("ticketLines");
         const reliefTypes = cache.get("reliefTypes");
+        const paymentMethods = cache.get("paymentMethods");
+        const statusTypes = cache.get("statusTypes");
 
-        if (!ticketTypes || !ticketPeriods || !ticketLines || !reliefTypes) {
+        if (!ticketTypes || !ticketPeriods || !ticketLines || !reliefTypes || !paymentMethods || !statusTypes) {
             return res.status(404).json({ message: 'One or more metadata are not found in cache.' });
         }
         res.setHeader('Content-Type', 'application/json');
@@ -19,7 +21,9 @@ const MetadataEndpoint = (router) => {
             ticketTypes,
             ticketPeriods,
             ticketLines,
-            reliefTypes
+            reliefTypes,
+            paymentMethods,
+            statusTypes
         });
     });
 }

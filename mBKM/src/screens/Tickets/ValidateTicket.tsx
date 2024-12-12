@@ -10,7 +10,7 @@ import { calculateDistance } from "../../repositories/geofence.tsx";
 import Popup from "../../components/Global/Popup.tsx";
 import ProcessingPopup from "../../components/Global/ProcessingPopup.tsx";
 import { useCheckLocation } from "../../components/Global/CheckLocation.tsx";
-import { LOCATION_TIMEOUT } from "../../repositories/variables.tsx";
+import { LOCATION_TIMEOUT } from "../../../variables.tsx";
 
 type RootStackParamList = {
     TicketDetails: undefined;

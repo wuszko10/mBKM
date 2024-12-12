@@ -3,7 +3,7 @@ import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity } from "react-na
 import stylesApp from "../../style/stylesApp.js";
 import { Ticket } from "../../types/interfaces.tsx";
 import {TicketAndReliefTypeSelectorProps} from "../../types/componentProps.tsx";
-import {SEASON_TICKET, SINGLE_TICKET} from "../../repositories/variables.tsx";
+import {SEASON_TICKET, SINGLE_TICKET} from "../../../variables.tsx";
 
 
 const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) => {
@@ -17,11 +17,11 @@ const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) =
         return false;
     });
 
+    console.log(filteredTickets);
+
     const handleTicketSelect = (ticket: Ticket) => {
         props.setSelectedTicket(ticket);
         props.setSelectedTicketId(ticket._id);
-        props.setNumberSelectedLines(ticket.lineName);
-
     };
 
     return (
@@ -29,7 +29,7 @@ const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) =
             <FlatList
                 scrollEnabled={false}
                 data={filteredTickets}
-                keyExtractor={(item) => String(item._id)}
+                keyExtractor={(item) => item._id}
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => handleTicketSelect(item)} style={[
                         stylesApp.flatlistItem,

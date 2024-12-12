@@ -9,7 +9,8 @@ import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../../components/Global/AuthContext.tsx";
-import { SERVER_URL } from "../../repositories/variables.tsx";
+import { SERVER_URL } from "../../../variables.tsx";
+import { storage } from "../../../App.tsx";
 
 type RootStackPramList = {
     Welcome: undefined;
@@ -44,8 +45,10 @@ const Login = () => {
                 password: password
             });
 
-            await AsyncStorage.setItem('token', response.data.token);
+            // await AsyncStorage.setItem('token', response.data.token);
+            storage.set('token', response.data.token);
             setToken(response.data.token);
+            console.log(response.data.token);
 
             handleChangeRoute();
         } catch (error) {

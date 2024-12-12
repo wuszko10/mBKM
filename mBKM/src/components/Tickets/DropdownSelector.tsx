@@ -1,10 +1,9 @@
 import DropDownPicker from "react-native-dropdown-picker";
 import React,{ useState } from "react";
-import { View } from "react-native";
+import { Text,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 
 type ReliefSelectorProps = {
-    loading: boolean;
     selectedValue: any;
     setSelectedValue: React.Dispatch<React.SetStateAction<any>>;
     data: any;
@@ -13,7 +12,6 @@ type ReliefSelectorProps = {
 
 const DropdownSelector: React.FC<ReliefSelectorProps> = (
     {
-        loading,
         selectedValue,
         setSelectedValue,
         data,
@@ -23,9 +21,9 @@ const DropdownSelector: React.FC<ReliefSelectorProps> = (
     const [openPicker, setOpenPicker] = useState(false);
 
     return (
-        <View>
+        <View style={stylesApp.inputBox}>
+            <Text style={stylesApp.labelInputText}>{placeholder}</Text>
             <DropDownPicker
-                loading={loading}
                 open={openPicker}
                 value={selectedValue}
                 items={data}

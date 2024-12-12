@@ -22,7 +22,7 @@ export interface User {
 }
 
 export interface Ticket {
-    _id: number;
+    _id: string;
     type: string;
     lines: string;
     period?: string;
@@ -56,21 +56,15 @@ export interface Relief {
     name: string;
     type: string;
     ticketType: string;
-    discountPercentage: number;
+    percentage: number;
     typeName: string;
     typeLabel: string;
     ticketTypeName: string;
     ticketTypeLabel: string;
 }
 
-export interface PaymentMethod {
-    id: number;
-    icon: string;
-    label: string;
-}
-
 export interface Line {
-    _id: number;
+    id: string;
     number: string;
     name: string;
 }
@@ -93,15 +87,24 @@ export interface MetadataType {
     label: string;
 }
 
+export interface PaymentMethod {
+    _id: string,
+    name: string,
+    label: string,
+    entypoIcon: string,
+}
+
 export interface Metadata {
     ticketTypes: MetadataType[];
     ticketPeriods: MetadataType[];
     ticketLines: MetadataType[];
     reliefTypes: MetadataType[];
+    paymentMethods: PaymentMethod[];
 }
 
 export interface FilterMapListType {
     label: string;
     value: string;
+    key: string;
 }
 

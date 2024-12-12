@@ -1,11 +1,12 @@
-//import xyzManager from './xyz.manager';
 import userManager from './user.manager';
 import ticketManager from "./ticket.manager";
 import reliefManager from "./relief.manager";
 import busStopManager from "./busStop.manager";
-import purchaseManager from "./purchase.manager";
 import topUpManager from "./topUp.manager";
 import lineManager from "./line.manager";
+import transactionManager from "./transaction.manager";
+import paymentManager from "./payment.manager";
+import userTicketManager from "./userTicket.manager";
 
 
 function getter(manager, request) {
@@ -19,7 +20,9 @@ export default {
     getTicketManager: getter(ticketManager),
     getReliefManager: getter(reliefManager),
     getBusStopManager: getter(busStopManager),
-    getPurchaseManager: getter(purchaseManager),
+    getTransactionManager: getter(transactionManager),
     getTopUpManager: getter(topUpManager),
     getLineManager: getter(lineManager),
+    getPaymentManager: getter(paymentManager),
+    getUserTicketManager: getter(userTicketManager),
 };

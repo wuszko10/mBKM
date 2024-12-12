@@ -14,6 +14,7 @@ import Mci from "react-native-vector-icons/MaterialCommunityIcons";
 import EditDataPopup from "../../components/User/EditDataPopup.tsx";
 import ChangePasswordPopup from "../../components/User/ChangePasswordPopup.tsx";
 import changePasswordPopup from "../../components/User/ChangePasswordPopup.tsx";
+import { storage } from "../../../App.tsx";
 
 
 type RootStackPramList = {
@@ -63,8 +64,9 @@ const Profile = () => {
     const navigation = useNavigation<NavigationProp>();
     const { setToken } = useAuth();
 
-    async function handleLogout() {
-        await AsyncStorage.removeItem("token");
+    function handleLogout() {
+        // await AsyncStorage.removeItem("token");
+        storage.delete('token');
         setToken("");
         navigation.navigate("Welcome");
     }

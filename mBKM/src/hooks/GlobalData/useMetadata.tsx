@@ -3,6 +3,7 @@ import {fetchMetadata} from "../../services/metadata.service.tsx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Metadata} from "../../types/interfaces.tsx";
 import {useAuth} from "../../components/Global/AuthContext.tsx";
+import { storage } from "../../../App.tsx";
 
 export const useMetadata = () => {
     const { token } = useAuth();
@@ -11,13 +12,18 @@ export const useMetadata = () => {
 
     const refreshMetadata = () => {
         fetchMetadata()
-            .then(async (data) => {
+            .then((data) => {
                 setMetadata(data);
                 if (data)
-                    await AsyncStorage.setItem('ticketTypes', JSON.stringify(data.ticketTypes));
-                    await AsyncStorage.setItem('ticketPeriods', JSON.stringify(data.ticketPeriods));
-                    await AsyncStorage.setItem('ticketLines', JSON.stringify(data.ticketLines));
-                    await AsyncStorage.setItem('reliefTypes', JSON.stringify(data.reliefTypes));
+                    // await AsyncStorage.setItem('ticketTypes', JSON.stringify(data.ticketTypes));
+                    // await AsyncStorage.setItem('ticketPeriods', JSON.stringify(data.ticketPeriods));
+                    // await AsyncStorage.setItem('ticketLines', JSON.stringify(data.ticketLines));
+                    // await AsyncStorage.setItem('reliefTypes', JSON.stringify(data.reliefTypes));
+                    storage.set('ticketTypes', JSON.stringify(data.ticketTypes));
+                    storage.set('ticketPeriods', JSON.stringify(data.ticketPeriods));
+                    storage.set('ticketLines', JSON.stringify(data.ticketLines));
+                    storage.set('reliefTypes', JSON.stringify(data.reliefTypes));
+                    storage.set('paymentMethods', JSON.stringify(data.paymentMethods));
             })
             .catch((error) => {
                 console.error("Błąd pobierania metadanych | " + error);

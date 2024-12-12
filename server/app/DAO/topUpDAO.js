@@ -5,20 +5,23 @@ import applicationException from '../service/applicationException';
 import mongoConverter from '../service/mongoConverter';
 import uniqueValidator from 'mongoose-unique-validator';
 
-const method = {
-    wallet: 'wallet',
-    card: 'card',
-    blik: 'blik',
-};
+const paymentMethod = {
+    progress: 'progress',
+    completed: 'completed',
+    invalid: 'invalid',
+}
 
-const methods = [method.wallet, method.card, method.blik];
+const paymentMethods = [paymentMethod.progress, paymentMethod.completed,paymentMethod.invalid];
 
 const topUpSchema = new mongoose.Schema({
     number: {type: Number, required: true, unique: true },
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     amount: {type: Number, required: true},
-    topUpDate: { type: Date, required: true },
-    method: { type: String, enum: methods, required: true },
+    currency: { type: Boolean, default: 'PLN', required: true },
+    paymentDate: { type: Date, required: true },
+    referenceId: { type: String, required: false },
+    methodId: { type: mongoose.Schema.Types.ObjectId, ref: 'paymentMethod', required: true },
+    status: { type: String, enum: paymentMethods, default: paymentMethod.progress , required: true },
 }, {
     collection: 'topUp'
 });
@@ -33,7 +36,7 @@ const generateTransactionNumber = async () => {
     const lastNumber = lastTopUp ? parseInt(lastTopUp.number.slice(2)) : 0;
     return `TD${(lastNumber + 1).toString().padStart(6, '0')}`
 };
-function createNewOrUpdateTopUp(transaction) {
+function createNewOrUpdate(transaction) {
 
     return Promise.resolve().then(async() => {
 
@@ -55,7 +58,7 @@ function createNewOrUpdateTopUp(transaction) {
         throw error;
     })
 }
-async function getAndSearchTopUp(page, pageSize, searchQuery, users) {
+async function getAndSearch(page, pageSize, searchQuery, users) {
 
     let usersIds = [];
 
@@ -103,7 +106,7 @@ async function getAndSearchTopUp(page, pageSize, searchQuery, users) {
     }
 }
 
-async function getTopUpsByUserId(id) {
+async function getByUserId(id) {
     const result = await TopUpModel.find({ userId: id });
     if (result) {
         return mongoConverter(result);
@@ -111,7 +114,7 @@ async function getTopUpsByUserId(id) {
     throw applicationException.new(applicationException.NOT_FOUND, 'User not found');
 }
 
-async function getTopUp(id) {
+async function getById(id) {
     const result = await TopUpModel.findOne({_id: id});
     if (result) {
         return mongoConverter(result);
@@ -121,10 +124,10 @@ async function getTopUp(id) {
 
 
 export default {
-    createNewOrUpdateTopUp: createNewOrUpdateTopUp,
-    getAndSearchTopUp: getAndSearchTopUp,
-    getTopUpsByUserId: getTopUpsByUserId,
-    getTopUp: getTopUp,
+    createNewOrUpdateTopUp: createNewOrUpdate,
+    getAndSearchTopUp: getAndSearch,
+    getTopUpByUserId: getByUserId,
+    getTopUpById: getById,
 
     model: TopUpModel,
 };

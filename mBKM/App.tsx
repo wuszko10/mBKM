@@ -15,7 +15,7 @@ import Login from "./src/screens/User/Login.tsx";
 import Welcome from "./src/screens/Global/Welcome.tsx";
 import Register from "./src/screens/User/Register.tsx";
 import { AuthProvider,useAuth } from "./src/components/Global/AuthContext.tsx";
-import TicketSummary from "./src/screens/Purchase/TicketSummary.tsx";
+import BuyTicketSummary from "./src/screens/BuyTicket/BuyTicketSummary/BuyTicketSummary.tsx";
 import TicketDetails from "./src/screens/Tickets/TicketDetails.tsx";
 import TopUpScreen from "./src/screens/Wallet/TopUpScreen.tsx";
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -23,18 +23,17 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import Mci from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from "./src/style/styleValues.js";
 import stylesApp from "./src/style/stylesApp";
-import TicketSelection from "./src/screens/Purchase/TicketSelection.tsx";
-import TicketConfiguration from "./src/screens/Purchase/TicketConfiguration.tsx";
+import BuyTicketSelection from "./src/screens/BuyTicket/BuyTicketSelection.tsx";
+import BuyTicketConfiguration from "./src/screens/BuyTicket/BuyTicketConfiguration.tsx";
 import PaymentScreen from "./src/screens/Global/PaymentScreen.tsx";
 import ValidateTicket from "./src/screens/Tickets/ValidateTicket.tsx";
 import {useAppData} from "./src/hooks/GlobalData/useAppData.tsx";
 import {isExpired} from "react-jwt";
-
+import { MMKV } from "react-native-mmkv";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
-
-
+export const storage = new MMKV();
 function UserPanel() {
 
     const renderHomeBarIcon = ({ focused }: { focused: boolean }) => (
@@ -93,9 +92,9 @@ function MainApp() {
                         <Stack.Screen name="UserPanel" component={UserPanel} options={{ headerShown: false }} />
                         <Stack.Screen name="TicketDetails" component={TicketDetails} options={{ headerShown: false }} />
                         <Stack.Screen name="TopUpScreen" component={TopUpScreen} options={{ headerShown: false }} />
-                        <Stack.Screen name="TicketSelection" component={TicketSelection} options={{ headerShown: false }} />
-                        <Stack.Screen name="TicketConfiguration" component={TicketConfiguration} options={{ headerShown: false }} />
-                        <Stack.Screen name="TicketSummary" component={TicketSummary} options={{ headerShown: false }} />
+                        <Stack.Screen name="BuyTicketSelection" component={BuyTicketSelection} options={{ headerShown: false }} />
+                        <Stack.Screen name="BuyTicketConfiguration" component={BuyTicketConfiguration} options={{ headerShown: false }} />
+                        <Stack.Screen name="BuyTicketSummary" component={BuyTicketSummary} options={{ headerShown: false }} />
                         <Stack.Screen name="PaymentScreen" component={PaymentScreen} options={{ headerShown: false }} />
                         <Stack.Screen name="ValidateTicket" component={ValidateTicket} options={{ headerShown: false }} />
                     </>
