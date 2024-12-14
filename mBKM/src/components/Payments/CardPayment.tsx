@@ -1,25 +1,16 @@
 import React,{ useState } from "react";
-import { View,TextInput,Button,Text,TouchableOpacity,StyleSheet } from "react-native";
-import { NavigationProp,useNavigation } from "@react-navigation/native";
+import { View,TextInput,Text,TouchableOpacity,StyleSheet } from "react-native";
 import ProcessingPopup from "../Global/ProcessingPopup.tsx";
 import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
+import { payCard,topUpCard } from "../../services/payment.service.tsx";
 
 type CardPaymentProps = {
-    transactionId: number,
-    paymentNumber: number,
+    transactionId: string,
     transactionAmount: number;
+    userTicketId?: string;
     cancelPopup: () => void;
 }
-
-type RootStackParamList = {
-    Home: undefined;
-    Tickets: undefined;
-    UserPanel: {screen: 'Tickets'};
-};
-
-type NavigationPropType = NavigationProp<RootStackParamList>;
-
 
 const CardPayment: React.FC<CardPaymentProps> = (props) => {
 
@@ -31,42 +22,35 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
     const [popupText, setPopupText] = useState("");
 
     const processCardPayment = async (cardNumber: string, expiryDate: string, cvv: string) => {
-        /*try {
-            const response = await fetch('https://api.paymentgateway.com/process-card', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    cardNumber,
-                    expiryDate,
-                    cvv,
-                }),
-            });
 
-            const data = await response.json();
-
-            if (data.success) {
-                console.log('Płatność kartą przebiegła pomyślnie!');
-                // Przekierowanie lub dalsza logika po pomyślnej płatności
-                //checkLocationAndConfirmTicket();
+        setIsProcessing(true);
+        let data;
+        try {
+            if (props.userTicketId) {
+                data = await payCard(props.transactionAmount, props.transactionId, cardNumber, expiryDate, cvv, props.userTicketId);
             } else {
-                console.log('Płatność kartą nie powiodła się.');
+                data = await topUpCard(props.transactionAmount, props.transactionId, cardNumber, expiryDate, cvv);
+            }
+
+            if (data) {
+                setPopupText("Transakcja zakończona pomyślnie!");
             }
         } catch (error) {
-            console.error('Błąd podczas przetwarzania płatności kartą:', error);
-            console.log('Wystąpił błąd. Spróbuj ponownie.');
-        }*/
-        setIsProcessing(true);
-        setShowPopup(true);
-        setTimeout(() => {
+            if (error.response.status === 406) {
+                setPopupText("Podano błędne dane karty.\nBilet nie został zakupiony");
+            } else if (error.response.status === 404) {
+                setPopupText("Błąd karty.\nBilet nie został zakupiony");
+            } else {
+                setPopupText("Wystąpił błąd podczas przetwarzania płatności.");
+            }
+        } finally {
             setIsProcessing(false);
-            setPopupText("Transakcja zakończona pomyślne!")
-        },2000);
+            setShowPopup(true);
+        }
     };
 
     const handleCardPayment = () => {
-        if (props.paymentNumber && props.transactionAmount && cardNumber && expiryDate && cvv) {
+        if (props.transactionAmount && cardNumber && expiryDate && cvv) {
             processCardPayment(cardNumber,expiryDate,cvv).then();
         } else {
             console.log('Proszę wprowadzić poprawne dane karty.');

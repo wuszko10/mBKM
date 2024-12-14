@@ -17,8 +17,6 @@ const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) =
         return false;
     });
 
-    console.log(filteredTickets);
-
     const handleTicketSelect = (ticket: Ticket) => {
         props.setSelectedTicket(ticket);
         props.setSelectedTicketId(ticket._id);

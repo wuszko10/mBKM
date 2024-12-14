@@ -1,14 +1,15 @@
-import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
+import { FlatList,StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import { colors,dimensions } from "../../style/styleValues.js";
 import Entypo from "react-native-vector-icons/Entypo";
 import React from "react";
 import { PaymentMethod } from "../../types/interfaces.tsx";
+import stylesApp from "../../style/stylesApp.js";
 
 
 type PaymentSelectorProps = {
-    paymentMethodId: number;
-    setPaymentMethodId: React.Dispatch<React.SetStateAction<number>>;
-    methods: PaymentMethod[];
+    paymentMethodId: string;
+    setPaymentMethodId: React.Dispatch<React.SetStateAction<string>>;
+    methods: PaymentMethod[] | undefined;
 };
 const PaymentSelector: React.FC<PaymentSelectorProps> = (
     {
@@ -17,16 +18,16 @@ const PaymentSelector: React.FC<PaymentSelectorProps> = (
         methods
     }) => {
 
-    const handlePaymentMethod = (id: number) => {
+    const handlePaymentMethod = (id: string) => {
         setPaymentMethodId(id);
     }
 
     return (
         <View style={localStyle.box}>
 
-            {methods.map(method => (
+            { methods && methods.map(method => (
                 <TouchableOpacity key={method.id} style={localStyle.methodBox} onPress={() => handlePaymentMethod(method.id)}>
-                    <Entypo name={method.icon} size={24} style={ paymentMethodId === method.id ? {color: colors.textColorBlack} : {color: colors.darkGray }} />
+                    <Entypo name={method.entypoIcon} size={24} style={ paymentMethodId === method.id ? {color: colors.textColorBlack} : {color: colors.darkGray }} />
                     <Text style={ paymentMethodId === method.id ? {color: colors.textColorBlack} : {color: colors.darkGray }}>{method.label}</Text>
                 </TouchableOpacity>
             ))}

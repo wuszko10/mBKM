@@ -14,14 +14,14 @@ const paymentMethod = {
 const paymentMethods = [paymentMethod.progress, paymentMethod.completed,paymentMethod.invalid];
 
 const transactionSchema = new mongoose.Schema({
-    number: {type: Number, required: true, unique: true },
+    number: {type: String, required: true, unique: true },
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     finalPrice: {type: Number, required: true, trim: true },
-    currency: { type: Boolean, default: 'PLN', required: true },
+    currency: { type: String, default: 'PLN', required: false },
     paymentDate: { type: Date, required: true },
     referenceId: { type: String, required: false },
     methodId: { type: mongoose.Schema.Types.ObjectId, ref: 'paymentMethod', required: true },
-    status: { type: String, enum: paymentMethods, default: paymentMethod.progress , required: true },
+    status: { type: String, enum: paymentMethods, default: paymentMethod.progress , required: false },
 }, {
     collection: 'transaction'
 });
@@ -40,17 +40,23 @@ function createNewOrUpdate(transaction) {
     return Promise.resolve().then(async() => {
 
         if (!transaction.id) {
+
             transaction.number = await generateTransactionNumber();
-            return new TransactionModel(transaction).save().then(result => {
-                if (result) {
-                    return mongoConverter(result);
-                }
-            })
+
+            return new TransactionModel(transaction).save()
+                .then(result => {
+                    if (result) {
+                        return result;
+                    }
+                });
         } else {
             return TransactionModel.findByIdAndUpdate(transaction.id, _.omit(transaction, 'id'), {new: true});
         }
     }).catch(error => {
-        if ('ValidationError' === error.name) {
+
+        console.log(error);
+
+        if ('ValidationError' === error.number) {
             error = error.errors[Object.keys(error.errors)[0]];
             throw applicationException.new(applicationException.BAD_REQUEST, error.message);
         }
@@ -93,12 +99,18 @@ async function get(id) {
     throw applicationException.new(applicationException.NOT_FOUND, 'Transaction not found');
 }
 
+async function removeById(id) {
+    return TransactionModel.findByIdAndRemove(id);
+}
+
+
 
 export default {
     createNewOrUpdateTransaction: createNewOrUpdate,
     getAndSearchTransaction: getAndSearch,
     getTransactionByUserId: getByUserId,
     getTransactionById: get,
+    removeTransactionById: removeById,
 
     model: TransactionModel,
 };

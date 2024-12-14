@@ -21,7 +21,7 @@ async function createNewOrUpdate(data) {
     const result = await WalletModel.findOneAndUpdate({ userId: data.userId }, _.omit(data, 'id'), { new: true });
 
     if (!result) {
-        const result = await new WalletModel({ userId: data.userId, amount: data.amount }).save();
+        const result = await new WalletModel({ userId: data.userId, amount: 0 }).save();
         if (result) {
             return mongoConverter(result);
         }

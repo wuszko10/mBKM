@@ -10,8 +10,8 @@ export const useLines = () => {
     const [lines, setLines] = useState<Line[]>();
     const [linesLoading, setLinesLoading] = useState(true);
 
-    const refreshLines = () => {
-        fetchLines()
+    const refreshLines = (token: string) => {
+        fetchLines(token)
             .then(async (data) => {
                 setLines(data);
                 if (data)
@@ -32,7 +32,7 @@ export const useLines = () => {
 
     useEffect(() => {
         if (token)
-            refreshLines();
+            refreshLines(token);
     }, []);
 
     return {

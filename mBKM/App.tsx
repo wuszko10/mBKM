@@ -68,13 +68,16 @@ function UserPanel() {
 }
 
 function MainApp() {
-    const { token } = useAuth();
+    const { token, setToken } = useAuth();
 
     const { refreshAll } = useAppData();
 
     useEffect(() => {
         if (token && !isExpired(token)) {
-            refreshAll();
+            refreshAll(token);
+        } else {
+            setToken(null);
+            storage.delete('token');
         }
     }, [token]);
 

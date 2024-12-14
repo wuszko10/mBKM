@@ -10,13 +10,13 @@ export const useAppData = () => {
     const { refreshStops } = useStops();
     const { refreshLines } = useLines();
     const { refreshReliefs } = useReliefs();
-    const refreshAll = () => {
+    const refreshAll = (token: string) => {
 
-        refreshMetadata();
-        refreshTickets();
-        refreshStops();
-        refreshLines();
-        refreshReliefs();
+        refreshMetadata(token);
+        refreshTickets(token);
+        refreshStops(token);
+        refreshLines(token);
+        refreshReliefs(token);
 
     };
 

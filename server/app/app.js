@@ -7,6 +7,8 @@ import morgan from 'morgan';
 import routes from './REST/routes';
 import {loadMetadataMiddleware} from "./middleware/cacheUpdater";
 import NodeCache from "node-cache";
+import cron from 'node-cron';
+import {startCronJobs} from "./service/cronJobs";
 
 // const cache = new NodeCache({ stdTTL: 86400 });
 const cache = new NodeCache({ stdTTL: 300 });
@@ -49,6 +51,7 @@ app.get('/*', function (req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });
 
+// startCronJobs();
 
 app.listen(config.port, function () {
   console.info(`Server is running at ${config.port}`)

@@ -1,100 +1,70 @@
 import React from "react";
-import { SafeAreaView,Text,TouchableOpacity,View } from "react-native";
+import { ActivityIndicator,SafeAreaView,Text,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
-import { paymentMethods } from "../../repositories/Data.tsx";
-import { CommonActions,useNavigation,useRoute } from "@react-navigation/native";
-import { StackNavigationProp } from "@react-navigation/stack";
+import { useRoute } from "@react-navigation/native";
 import WalletPayment from "../../components/Payments/WalletPayment.tsx";
 import CardPayment from "../../components/Payments/CardPayment.tsx";
 import OnlinePayment from "../../components/Payments/OnlinePayment.tsx";
+import { usePaymentLogic } from "../../hooks/Payment/usePaymentLogic.tsx";
+import { colors } from "../../style/styleValues.js";
+import { BLIK_PAYMENT,CARD_PAYMENT,WALLET_PAYMENT } from "../../../variables.tsx";
 
 type RouteParams = {
-    transactionId: number,
-    paymentMethodId: number,
+    transactionId: string,
+    transactionNumber: string,
+    paymentMethodId: string,
     transactionAmount: number,
+    userTicketId: string,
 }
-
-type RootStackParamList = {
-    Home: undefined;
-    UserPanel: {screen: 'Tickets' | 'Wallet'};
-    PaymentScreen: undefined;
-    ValidateTicket: {transactionId: number};
-    Wallet: undefined;
-
-};
-
-type NavigationProp = StackNavigationProp<RootStackParamList, 'PaymentScreen'>;
 const PaymentScreen = () => {
 
-    const navigation = useNavigation<NavigationProp>()
-
     const route = useRoute();
-    const {transactionId, paymentMethodId, transactionAmount} = route.params as RouteParams;
-    const paymentNumber = Math.floor(Math.random() * 10000);
-    const selectedPaymentMethod = paymentMethods.find(method => method.id === paymentMethodId);
+    const {transactionId, transactionNumber, paymentMethodId, transactionAmount, userTicketId} = route.params as RouteParams;
 
-    const confirmValidateTicketPopup = () => {
-        navigation.dispatch( (state) => {
-            const userPanelIndex = state.routes.findIndex(route => route.name === "UserPanel");
+    const {
+        method,
+        isLoading,
+        closePopup,
+    } = usePaymentLogic(transactionId, paymentMethodId, userTicketId);
 
-            return CommonActions.reset({
-                index: userPanelIndex !== -1 ? userPanelIndex : 0,
-                routes: [
-                    { name: 'UserPanel', state: { routes: [{ name: 'Tickets' }] } },
-                    { name: 'ValidateTicket', params: { transactionId: transactionId } },
-                ],
-            });
-        });
-    }
-
-    const confirmWalletPopup = () => {
-        navigation.dispatch( (state) => {
-            const userPanelIndex = state.routes.findIndex(route => route.name === "UserPanel");
-
-            return CommonActions.reset({
-                index: userPanelIndex !== -1 ? userPanelIndex : 0,
-                routes: [
-                    { name: 'UserPanel', state: { routes: [{ name: 'Wallet' }] } },
-                ],
-            });
-        });
-    }
-    const closePopup = () => {
-        navigation.popTo('UserPanel', {screen: 'Tickets'});
+    if (isLoading) {
+        return (
+            <View style={stylesApp.popupContainer}>
+                <ActivityIndicator size="large" color={colors.appFirstColor} />
+            </View>
+        )
     }
 
     return (
         <SafeAreaView style={stylesApp.popupContainer}>
-            <Text style={stylesApp.popupText}>Transakcja nr: {transactionId}</Text>
+            <Text style={stylesApp.popupText}>Transakcja nr: {transactionNumber}</Text>
 
             <View style={{gap: 5}}>
-                <Text style={stylesApp.whiteNormalCenterText}>Metoda płatności: {selectedPaymentMethod?.label}</Text>
                 <Text style={stylesApp.whiteNormalCenterText}>Kwota transakcji: <Text style={stylesApp.boldText}>{transactionAmount.toFixed(2)} zł</Text></Text>
             </View>
-            {selectedPaymentMethod?.label === 'Portfel' && (
+
+            {method?.name === WALLET_PAYMENT && (
                 <WalletPayment
                     transactionId={transactionId}
                     transactionAmount={transactionAmount}
-                    confirmValidateTicketPopup={confirmValidateTicketPopup}
-                    confirmWalletPopup={confirmWalletPopup}
                     closePopup={closePopup}
                 />
             )}
 
-            {selectedPaymentMethod?.label === 'Karta' && (
+            {method?.name === CARD_PAYMENT && (
                 <CardPayment
                     transactionId={transactionId}
-                    paymentNumber={paymentNumber}
                     transactionAmount={transactionAmount}
+                    userTicketId={userTicketId}
                     cancelPopup={closePopup}
                 />
             )}
 
-            {selectedPaymentMethod?.label === 'Online' && (
+            {method?.name === BLIK_PAYMENT && (
                 <OnlinePayment
                     transactionId={transactionId}
-                    paymentNumber={paymentNumber}
                     transactionAmount={transactionAmount}
+                    userTicketId={userTicketId}
                     cancelAction={closePopup}
                 />
             )}
@@ -105,6 +75,3 @@ const PaymentScreen = () => {
 
 export default PaymentScreen;
 
-/*
-
- */

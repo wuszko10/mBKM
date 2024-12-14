@@ -1,18 +1,17 @@
 import {useEffect, useState} from "react";
-import {fetchStops} from "../../services/busStop.service.tsx";
-import {fetchTickets} from "../../services/ticket.service.tsx";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import {fetchTickets} from "../../services/ticket.service.tsx";;
 import {Ticket} from "../../types/interfaces.tsx";
 import {useAuth} from "../../components/Global/AuthContext.tsx";
 import { storage } from "../../../App.tsx";
 
-export const useTickets = () => {
+export const useTransaction = () => {
     const { token } = useAuth();
+
     const [tickets, setTickets] = useState<Ticket[]>();
     const [ticketsLoading, setTicketsLoading] = useState(true);
 
-    const refreshTickets = (token: string) => {
-        fetchTickets(token)
+    const refreshTickets = () => {
+        fetchTickets()
             .then(async (data) => {
                 setTickets(data);
                 if (data)
@@ -33,7 +32,7 @@ export const useTickets = () => {
 
     useEffect(() => {
         if (token)
-            refreshTickets(token);
+            refreshTickets();
     }, []);
 
     return {

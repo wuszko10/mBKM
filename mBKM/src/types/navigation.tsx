@@ -3,9 +3,11 @@ import { Relief,Ticket,TicketOrderTransaction } from "./interfaces.tsx";
 import BuyTicketSummary from "../screens/BuyTicket/BuyTicketSummary/BuyTicketSummary.tsx";
 
 export type RootStackParamList = {
-    Home: undefined;
-    Tickets: undefined;
-    TicketDetails: {selectedTransaction: TicketOrderTransaction};
+
+    Welcome: undefined;
+    TicketDetails: {
+        selectedTransaction: TicketOrderTransaction
+    };
     BuyTicketSelection: undefined;
     BuyTicketConfiguration: {
         selectedTicket: Ticket | null;
@@ -17,7 +19,18 @@ export type RootStackParamList = {
         finalPrice: number,
         selectedDate?: string,
     };
-    Profile: { userId: string };
+    PaymentScreen: {
+        transactionId: string,
+        transactionNumber: string,
+        paymentMethodId: string,
+        transactionAmount: number,
+        userTicketId?: string,
+    };
+    Profile: undefined;
+    ValidateTicket: {
+        transactionId: number
+    };
+    UserPanel: {screen: 'Home' | 'Tickets' | 'Wallet'};
 };
 
 export type NavigationProp = BaseNavigationProp<RootStackParamList>;

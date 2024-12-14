@@ -4,13 +4,13 @@ import Promise from "bluebird";
 import mongoConverter from "../../service/mongoConverter";
 import * as _ from "lodash";
 import applicationException from "../../service/applicationException";
+import QRCode from 'qrcode'
 
 const ticketSchema = new mongoose.Schema({
-    number: {type: Number, required: true, unique: true },
-    ticketId: {type: mongoose.Schema.Types.ObjectId, ref: 'ticket', required: true},
+    number: {type: String, required: true, unique: true },
     transactionId: {type: mongoose.Schema.Types.ObjectId, ref: 'transaction', required: true},
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
-    price: {type: Number, required: true, trim: true },
+    ticketId: {type: mongoose.Schema.Types.ObjectId, ref: 'ticket', required: true},
     ticketStartDate: { type: Date, required: false },
     ticketEndDate: { type: Date, required: false },
     QRCode: { type: String, required: false },
@@ -26,22 +26,26 @@ const UserTicketModel = mongoose.model('userTicket', ticketSchema);
 
 const generateTransactionNumber = async () => {
     const last = await UserTicketModel.findOne().sort({ number: -1 });
-    const lastNumber = last ? parseInt(last.number.slice(2)) : 0;
+    const lastNumber = last ? parseInt(last.number.slice(3)) : 0;
     return `BLT${(lastNumber + 1).toString().padStart(6, '0')}`
 };
-function createNewOrUpdate(ticket) {
+
+function createNewOrUpdate(userTicket) {
 
     return Promise.resolve().then(async() => {
 
-        if (!ticket.id) {
-            ticket.number = await generateTransactionNumber();
-            return new UserTicketModel(ticket).save().then(result => {
+        if (!userTicket.id) {
+            userTicket.number = await generateTransactionNumber();
+
+            userTicket.QRCode = await QRCode.toDataURL(userTicket.number);
+
+            return new UserTicketModel(userTicket).save().then(result => {
                 if (result) {
-                    return mongoConverter(result);
+                    return result;
                 }
             })
         } else {
-            return UserTicketModel.findByIdAndUpdate(ticket.id, _.omit(ticket, 'id'), {new: true});
+            return UserTicketModel.findByIdAndUpdate(userTicket.id, _.omit(userTicket, 'id'), {new: true});
         }
     }).catch(error => {
         if ('ValidationError' === error.name) {
@@ -68,11 +72,24 @@ async function get(id) {
     throw applicationException.new(applicationException.NOT_FOUND, 'Ticket not found');
 }
 
+async function updateMany (date, currentStatus, invalidStatus) {
+    await UserTicketModel.updateMany(
+        { ticketEndDate: { $lt: date }, statusId: currentStatus._id },
+        { $set: { statusId: invalidStatus._id } }
+    );
+}
+
+async function removeById(id) {
+    return UserTicketModel.findByIdAndRemove(id);
+}
+
 
 export default {
     createNewOrUpdateUserTicket: createNewOrUpdate,
     getUserTicketByUserId: getByUserId,
     getUserTicketById: get,
+    updateManyUserTickets: updateMany,
+    removeTicketById: removeById,
 
     model: UserTicketModel,
 };

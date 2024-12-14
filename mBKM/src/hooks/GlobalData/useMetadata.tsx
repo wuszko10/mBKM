@@ -10,20 +10,22 @@ export const useMetadata = () => {
     const [metadata, setMetadata] = useState<Metadata>();
     const [metadataLoading, setMetadataLoading] = useState(true);
 
-    const refreshMetadata = () => {
-        fetchMetadata()
+    const refreshMetadata = (token: string) => {
+        fetchMetadata(token)
             .then((data) => {
                 setMetadata(data);
-                if (data)
+                if (data) {
                     // await AsyncStorage.setItem('ticketTypes', JSON.stringify(data.ticketTypes));
                     // await AsyncStorage.setItem('ticketPeriods', JSON.stringify(data.ticketPeriods));
                     // await AsyncStorage.setItem('ticketLines', JSON.stringify(data.ticketLines));
                     // await AsyncStorage.setItem('reliefTypes', JSON.stringify(data.reliefTypes));
-                    storage.set('ticketTypes', JSON.stringify(data.ticketTypes));
-                    storage.set('ticketPeriods', JSON.stringify(data.ticketPeriods));
-                    storage.set('ticketLines', JSON.stringify(data.ticketLines));
-                    storage.set('reliefTypes', JSON.stringify(data.reliefTypes));
+                    storage.set("ticketTypes",JSON.stringify(data.ticketTypes));
+                    storage.set("ticketPeriods",JSON.stringify(data.ticketPeriods));
+                    storage.set("ticketLines",JSON.stringify(data.ticketLines));
+                    storage.set("reliefTypes",JSON.stringify(data.reliefTypes));
                     storage.set('paymentMethods', JSON.stringify(data.paymentMethods));
+                    storage.set('statusTypes', JSON.stringify(data.statusTypes));
+                }
             })
             .catch((error) => {
                 console.error("Błąd pobierania metadanych | " + error);
@@ -39,7 +41,7 @@ export const useMetadata = () => {
 
     useEffect(() => {
         if (token)
-            refreshMetadata();
+            refreshMetadata(token);
     }, []);
 
     return {

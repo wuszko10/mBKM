@@ -10,8 +10,8 @@ export const useStops = () => {
     const [stops, setStops] = useState<BusStop[]>();
     const [stopsLoading, setStopsLoading] = useState(true);
 
-    const refreshStops = () => {
-        fetchStops()
+    const refreshStops = (token: string) => {
+        fetchStops(token)
             .then(async (data) => {
                 setStops(data);
                 if (data)
@@ -32,7 +32,7 @@ export const useStops = () => {
 
     useEffect(() => {
         if (token)
-            refreshStops();
+            refreshStops(token);
     }, []);
 
     return {

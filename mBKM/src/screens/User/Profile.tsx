@@ -15,14 +15,7 @@ import EditDataPopup from "../../components/User/EditDataPopup.tsx";
 import ChangePasswordPopup from "../../components/User/ChangePasswordPopup.tsx";
 import changePasswordPopup from "../../components/User/ChangePasswordPopup.tsx";
 import { storage } from "../../../App.tsx";
-
-
-type RootStackPramList = {
-    Welcome: undefined;
-    UserPanel: undefined;
-}
-
-type NavigationProp = StackNavigationProp<RootStackPramList>
+import { NavigationProp } from "../../types/navigation.tsx";
 
 const Profile = () => {
 
@@ -62,13 +55,14 @@ const Profile = () => {
     };
 
     const navigation = useNavigation<NavigationProp>();
-    const { setToken } = useAuth();
+    const { token, setToken } = useAuth();
 
     function handleLogout() {
         // await AsyncStorage.removeItem("token");
         storage.delete('token');
-        setToken("");
-        navigation.navigate("Welcome");
+        setToken(null);
+        if (!token)
+            navigation.navigate("Welcome");
     }
 
     return (

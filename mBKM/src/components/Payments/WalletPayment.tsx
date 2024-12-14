@@ -1,23 +1,25 @@
 import React,{ useEffect,useState } from "react";
 import { View,Text,Button,TouchableOpacity } from "react-native";
 import Popup from "../Global/Popup.tsx";
-import { NavigationProp,useNavigation } from "@react-navigation/native";
+import { CommonActions,useNavigation } from "@react-navigation/native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
 import ProcessingPopup from "../Global/ProcessingPopup.tsx";
 import { useCheckLocation } from "../Global/CheckLocation.tsx";
 import { LOCATION_TIMEOUT } from "../../../variables.tsx";
+import { NavigationProp } from "../../types/navigation.tsx";
 
 interface WalletPaymentProps {
-    transactionId: number;
+    transactionId: string;
     transactionAmount: number;
-    confirmValidateTicketPopup: () => void;
-    confirmWalletPopup: () => void;
     closePopup: () => void;
 }
 
 
 const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
+
+    const navigation = useNavigation<NavigationProp>();
+
     const [balance, setBalance] = useState(0);
     const [showPopup, setShowPopup] = useState(false);
     const [popupText, setPopupText] = useState("");
@@ -38,6 +40,35 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
         setBalance(10);
     };
 
+    const confirmValidateTicketPopup = () => {
+        navigation.dispatch( (state) => {
+            const userPanelIndex = state.routes.findIndex(route => route.name === "Tickets");
+
+            return CommonActions.reset({
+                index: userPanelIndex !== -1 ? userPanelIndex : 0,
+                routes: [
+                    // { name: 'UserPanel', state: { routes: [{ name: 'Tickets' }] } },
+                    { name: 'Tickets' },
+                    { name: 'ValidateTicket', params: { transactionId: props.transactionId } },
+                ],
+            });
+        });
+    }
+
+
+    const confirmWalletPopup = () => {
+        navigation.dispatch( (state) => {
+            const userPanelIndex = state.routes.findIndex(route => route.name === "Wallet");
+
+            return CommonActions.reset({
+                index: userPanelIndex !== -1 ? userPanelIndex : 0,
+                routes: [
+                    { name: 'Wallet' }
+                    // { name: 'UserPanel', state: { routes: [{ name: 'Wallet' }] } },
+                ],
+            });
+        });
+    }
 
     // useEffect(() => {
     //     const interval = setInterval(() => {
@@ -136,7 +167,7 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
                     message={popupText}
                     confirmationText={"Tak"}
                     cancelText={"Nie"}
-                    confirmationAction={ walletStatus ? props.confirmValidateTicketPopup : props.confirmWalletPopup}
+                    confirmationAction={ walletStatus ? confirmValidateTicketPopup : confirmWalletPopup}
                     cancelAction={props.closePopup}
                 />
             )}

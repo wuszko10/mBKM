@@ -45,10 +45,8 @@ const Login = () => {
                 password: password
             });
 
-            // await AsyncStorage.setItem('token', response.data.token);
-            storage.set('token', response.data.token);
             setToken(response.data.token);
-            console.log(response.data.token);
+            storage.set('token',response.data.token);
 
             handleChangeRoute();
         } catch (error) {

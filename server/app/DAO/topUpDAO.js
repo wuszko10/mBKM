@@ -5,23 +5,23 @@ import applicationException from '../service/applicationException';
 import mongoConverter from '../service/mongoConverter';
 import uniqueValidator from 'mongoose-unique-validator';
 
-const paymentMethod = {
+const paymentMethodStatus = {
     progress: 'progress',
     completed: 'completed',
     invalid: 'invalid',
 }
 
-const paymentMethods = [paymentMethod.progress, paymentMethod.completed,paymentMethod.invalid];
+const paymentMethodStatuses = [paymentMethodStatus.progress, paymentMethodStatus.completed,paymentMethodStatus.invalid];
 
 const topUpSchema = new mongoose.Schema({
-    number: {type: Number, required: true, unique: true },
+    number: {type: String, required: true, unique: true },
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     amount: {type: Number, required: true},
-    currency: { type: Boolean, default: 'PLN', required: true },
+    currency: { type: String, default: 'PLN', required: true },
     paymentDate: { type: Date, required: true },
     referenceId: { type: String, required: false },
     methodId: { type: mongoose.Schema.Types.ObjectId, ref: 'paymentMethod', required: true },
-    status: { type: String, enum: paymentMethods, default: paymentMethod.progress , required: true },
+    status: { type: String, enum: paymentMethodStatuses, default: paymentMethodStatus.progress , required: true },
 }, {
     collection: 'topUp'
 });
@@ -122,12 +122,17 @@ async function getById(id) {
     throw applicationException.new(applicationException.NOT_FOUND, 'Ticket not found');
 }
 
+async function removeById(id) {
+    return TopUpModel.findByIdAndRemove(id);
+}
+
 
 export default {
     createNewOrUpdateTopUp: createNewOrUpdate,
     getAndSearchTopUp: getAndSearch,
     getTopUpByUserId: getByUserId,
     getTopUpById: getById,
+    removeTopUpById: removeById,
 
     model: TopUpModel,
 };

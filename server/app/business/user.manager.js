@@ -41,7 +41,7 @@ function create(context) {
     if (await userData.password) {
       return await PasswordDAO.createOrUpdate({userId: user.id, password: hashString(userData.password)});
     }
-    await WalletDAO.createNewOrUpdate({ userId: user.id, amount: 0 });
+    await WalletDAO.createNewOrUpdate({ userId: user.id });
     return user;
   }
 

@@ -82,16 +82,27 @@ export interface Location {
 }
 
 export interface MetadataType {
-    _id: number;
+    id: string;
     name: string;
     label: string;
 }
 
 export interface PaymentMethod {
-    _id: string,
+    id: string,
     name: string,
     label: string,
     entypoIcon: string,
+}
+
+export interface DecodedToken {
+    "userId": string,
+    "name": string,
+    "role": string,
+    "isAdmin": boolean,
+    "access": string,
+    "iat": number,
+    "exp": number
+
 }
 
 export interface Metadata {
@@ -100,6 +111,7 @@ export interface Metadata {
     ticketLines: MetadataType[];
     reliefTypes: MetadataType[];
     paymentMethods: PaymentMethod[];
+    statusTypes: MetadataType[];
 }
 
 export interface FilterMapListType {

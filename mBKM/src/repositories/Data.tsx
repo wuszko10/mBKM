@@ -220,11 +220,11 @@ export const lines: Line[] = [
     },
 ];
 
-export const paymentMethods: PaymentMethod[] = [
-    { _id: "1", entypoIcon: 'wallet', label: 'Portfel', name: 'wallet' },
-    { _id: "2", entypoIcon: 'credit-card', label: 'Karta', name: 'card' },
-    { _id: "3", entypoIcon: 'credit', label: 'Online', name: 'online' },
-];
+// export const paymentMethods: PaymentMethod[] = [
+//     { _id: "1", entypoIcon: 'wallet', label: 'Portfel', name: 'wallet' },
+//     { _id: "2", entypoIcon: 'credit-card', label: 'Karta', name: 'card' },
+//     { _id: "3", entypoIcon: 'credit', label: 'BLIK', name: 'blik' },
+// ];
 
 export const busStopLocations: BusStop[] = [
     {

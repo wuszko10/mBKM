@@ -22,7 +22,13 @@ async function get() {
     throw applicationException.new(applicationException.NOT_FOUND, 'No status types in the database');
 }
 
+async function getByName(name) {
+    return StatusTypeModel.findOne({name: name});
+}
+
 export default {
     get:get,
+    getStatusByName: getByName,
+
     model: StatusTypeModel,
 }

@@ -11,3 +11,9 @@ export const ONE_LINE = 'one';
 
 export const ALL_LINES = 'all';
 export const DEFAULT_RELIEF = 'none';
+
+export const WALLET_PAYMENT = 'wallet';
+export const CARD_PAYMENT = 'card';
+export const BLIK_PAYMENT = 'blik';
+
+export const DEFAULT_TICKET_STATUS = 'purchased';

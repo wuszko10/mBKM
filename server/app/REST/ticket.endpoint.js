@@ -35,15 +35,6 @@ const TicketEndpoint = (router) => {
         }
     });
 
-    router.post('/api/ticket', admin, async (req, res) => {
-        try {
-            const ticket = await business.getTicketManager().createNewOrUpdateTicket(req.body);
-            res.status(201).json(ticket);
-        } catch (error) {
-            applicationException.errorHandler(error, res);
-        }
-    });
-
     router.delete('/api/ticket/:id', admin, async (req, res) => {
         try {
             const result = await business.getTicketManager().removeById(req.params.id);

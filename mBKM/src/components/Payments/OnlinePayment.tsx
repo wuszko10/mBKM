@@ -3,11 +3,12 @@ import { View,TextInput,Text,TouchableOpacity } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
 import ProcessingPopup from "../Global/ProcessingPopup.tsx";
+import { payBlik,payCard,topUpBlik } from "../../services/payment.service.tsx";
 
 type OnlinePaymentProps = {
-    transactionId: number,
-    paymentNumber: number,
+    transactionId: string,
     transactionAmount: number;
+    userTicketId?: string;
     cancelAction: () => void;
 }
 
@@ -18,51 +19,39 @@ const OnlinePayment: React.FC<OnlinePaymentProps> = (props) => {
     const [isProcessing, setIsProcessing] = useState(false);
     const [popupText, setPopupText] = useState("");
 
-    const processOnlinePayment = async (transactionNumber: number,transactionAmount: number, code: string) => {
-        /*try {
-            // Symulacja zapytania do API do płatności online
-            const response = await fetch('https://api.paymentgateway.com/process-online', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    transactionNumber,
-                    transactionAmount,
-                }),
-            });
+    const processTransactionPayment = async (code: string) => {
+        setIsProcessing(true);
 
-            const data = await response.json();
+        let data;
 
-            if (data.success) {
-                console.log('Płatność online zakończona pomyślnie!');
-                // Przekierowanie lub dalsza logika po pomyślnej płatności
-                //checkLocationAndConfirmTicket();
+        try {
+            console.log(code);
+            if (props.userTicketId) {
+                data = await payBlik(props.transactionAmount, props.transactionId, code, props.userTicketId);
             } else {
-                console.log('Płatność online nie powiodła się.');
+                // data = await topUpBlik(props.transactionAmount, props.transactionId, code);
+                console.log("top up - działa");
+            }
+
+            if (data) {
+                setPopupText("Transakcja zakończona pomyślnie!");
             }
         } catch (error) {
-            console.error('Błąd podczas przetwarzania płatności online:', error);
-            console.log('Wystąpił błąd. Spróbuj ponownie.');
-        }*/
-
-
-        // Symuluj czas przetwarzania np. 3 sekundy
-
-
-        setIsProcessing(true);
-        setShowPopup(true);
-        setTimeout(() => {
+            if (error.response.status === 406) {
+                setPopupText("Błędny kod.\nBilet nie został zakupiony");
+            } else {
+                setPopupText("Wystąpił błąd podczas przetwarzania płatności.");
+            }
+        } finally {
             setIsProcessing(false);
-            setPopupText("Transakcja zakończona pomyślne!")
-        },2000);
-
+            setShowPopup(true);
+        }
     };
 
 
     const handleOnlinePayment = () => {
-        if (props.paymentNumber && props.transactionAmount && code) {
-            processOnlinePayment(props.paymentNumber,props.transactionAmount, code).then();
+        if (props.transactionAmount && code && code.length === 6) {
+            processTransactionPayment(code).then();
         } else {
             console.log('Proszę wprowadzić poprawne dane transakcji.');
         }

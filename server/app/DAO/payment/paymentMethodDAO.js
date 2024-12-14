@@ -24,6 +24,6 @@ async function get() {
 }
 
 export default {
-    getMethod:get,
+    get:get,
     model: PaymentMethodModel,
 }

@@ -4,15 +4,39 @@ import TicketDAO from "../DAO/ticketDAO";
 import PurchaseDAO from "../DAO/transactionDAO";
 import TransactionDAO from "../DAO/transactionDAO";
 import {getMetadataNames, transactionMappingIdsToNames} from "../service/transactionManager.service";
+import UserTicketDAO from "../DAO/user/userTicketDAO";
+import TopUpDAO from "../DAO/topUpDAO";
+import mongoConverter from "../service/mongoConverter";
 
 function create(context) {
 
 
-  async function createNewOrUpdateTransaction(data) {
-    try {
-      return await TransactionDAO.createNewOrUpdateTransaction(data);
-    } catch (error) {
-      throw applicationException.new(applicationException.BAD_REQUEST, 'Error while creating or updating transaction');
+  async function createNewTransaction(transactionData, ticketData, userId) {
+
+    let ticket;
+
+    transactionData.userId = userId;
+    const transaction = await TransactionDAO.createNewOrUpdateTransaction(transactionData);
+
+    if (!transaction){
+      throw applicationException.new(applicationException.BAD_REQUEST, 'Transaction does not created');
+    }
+
+    ticketData.transactionId = transaction._id;
+    ticketData.userId = userId;
+
+    ticket = await UserTicketDAO.createNewOrUpdateUserTicket(ticketData);
+
+    if (!ticket){
+      throw applicationException.new(applicationException.BAD_REQUEST, 'Ticket does not created');
+    }
+
+    return {
+        transactionId: transaction._id,
+        transactionNumber: transaction.number,
+        paymentMethodId: transaction.methodId,
+        transactionAmount: transaction.finalPrice,
+        userTicketId: ticket._id,
     }
   }
 
@@ -62,8 +86,9 @@ function create(context) {
     }
   }
 
+
   return {
-    createNewOrUpdateTransaction: createNewOrUpdateTransaction,
+    createNewTransaction: createNewTransaction,
     getAndSearchTransaction: getAndSearchTransaction,
     getTransactionByUserId: getTransactionByUserId,
     getTransactionById: getTransactionById

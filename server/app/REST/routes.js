@@ -8,6 +8,7 @@ import lineEndpoint from "./line.endpoint";
 import transactionEndpoint from "./transaction.endpoint";
 import paymentEndpoint from "./payment.endpoint";
 import userTicketEndpoint from "./userTicket.endpoint";
+import rollbackEndpoint from "./rollback.endpoint";
 
 const routes = function (router) {
     userEndpoint(router);
@@ -20,6 +21,7 @@ const routes = function (router) {
     lineEndpoint(router);
     paymentEndpoint(router);
     userTicketEndpoint(router);
+    rollbackEndpoint(router);
 }
 
 export default routes;

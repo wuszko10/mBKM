@@ -9,6 +9,8 @@ import PaymentSelector from "../../../components/Payments/PaymentSelector.tsx";
 import { NavigationProp } from "../../../types/navigation.tsx";
 import { useBuyTicketSummaryLogic } from "../../../hooks/BuyTicket/useBuyTicketSummaryLogic.tsx";
 import { style as localStyle } from "./style.tsx";
+import { addTransaction } from "../../../services/transaction.service.tsx";
+import { useAuth } from "../../../components/Global/AuthContext.tsx";
 
 type RouteParams = {
     selectedTicket: Ticket,
@@ -21,6 +23,7 @@ const BuyTicketSummary = () => {
 
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute();
+    const { userId } = useAuth();
     const {selectedTicket, selectedLines, selectedRelief, selectedDate, finalPrice} = route.params as RouteParams;
     const parsedDate = selectedDate ? new Date(selectedDate) : undefined;
 
@@ -29,19 +32,32 @@ const BuyTicketSummary = () => {
         paymentMethodId,
         filteredMethods,
         isLoading,
+        statusId,
         setPaymentMethodId,
     } = useBuyTicketSummaryLogic(selectedTicket, selectedLines);
 
-    const handleBuyTicket = () => {
+    const handleBuyTicket = async () => {
         if (paymentMethodId) {
-            const ticketOrderTransactionId = Math.floor(Math.random() * 10000);
-            // navigation.navigate('PaymentScreen', {
-            //     transactionId: ticketOrderTransactionId,
-            //     paymentMethodId,
-            //     transactionAmount: finalPrice,
-            // })
+
+            console.log("Status + " + statusId);
+
+            const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId);
+
+            if (data) {
+                navigation.navigate('PaymentScreen', {
+                    transactionId: data.transactionId,
+                    transactionNumber: data.transactionNumber,
+                    paymentMethodId,
+                    transactionAmount: data.transactionAmount,
+                    userTicketId: data.userTicketId,
+
+                })
+            } else {
+                console.log("Błąd tworzenia transakcji");
+            }
+
         } else {
-            console.log("Wybierz metodę płatności")
+            console.log("Wybierz metodę płatności");
         }
     }
 
@@ -80,7 +96,10 @@ const BuyTicketSummary = () => {
 
             <Text style={stylesApp.normalH3}>Wybierz rodzaj płatności</Text>
 
-            <PaymentSelector paymentMethodId={paymentMethodId} setPaymentMethodId={setPaymentMethodId} methods={filteredMethods} />
+            <PaymentSelector
+                paymentMethodId={paymentMethodId}
+                setPaymentMethodId={setPaymentMethodId}
+                methods={filteredMethods} />
 
             <View style={stylesApp.summaryBox}>
                 <Text style={stylesApp.finalPrice}>Do zapłaty: <Text style={stylesApp.boldText}>{finalPrice.toFixed(2)} zł</Text></Text>

@@ -7,6 +7,7 @@ import lineManager from "./line.manager";
 import transactionManager from "./transaction.manager";
 import paymentManager from "./payment.manager";
 import userTicketManager from "./userTicket.manager";
+import rollbackManager from "./rollback.manager";
 
 
 function getter(manager, request) {
@@ -25,4 +26,5 @@ export default {
     getLineManager: getter(lineManager),
     getPaymentManager: getter(paymentManager),
     getUserTicketManager: getter(userTicketManager),
+    getRollbackManager: getter(rollbackManager),
 };

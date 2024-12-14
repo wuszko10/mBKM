@@ -3,218 +3,220 @@ import ReliefDAO from "../DAO/reliefDAO";
 import WalletDAO from "../DAO/user/WalletDAO";
 import TransactionDAO from "../DAO/transactionDAO";
 import TopUpDAO from "../DAO/topUpDAO";
+import TicketDAO from "../DAO/ticketDAO";
+import UserTicketDAO from "../DAO/user/userTicketDAO";
 
 
-const authorizationCodes = {
-  "123456": "completed",
-  "654321": "invalid",
-};
+const authorizationCodes = [
+    {
+        code: '123456',
+        status: 'completed'
+    },
+    {
+        code: '132435',
+        status: 'completed'
+    },
+    {
+        code: '654321',
+        status: 'completed'
+    },
+]
 
 const creditCards = [
-  {
-    cardNumber: "1111222233334444",
-    expirationDate: "10/26",
-    cvv: "789",
-    status: "completed"
-  },
-  {
-    cardNumber: "4444333322221111",
-    expirationDate: "09/23",
-    cvv: "321",
-    status: "invalid"
-  }
+    {
+        cardNumber: "1234123412341234",
+        expirationDate: "10/26",
+        cvv: "123",
+        status: "completed"
+    },
+    {
+        cardNumber: "4321432143214321",
+        expirationDate: "09/23",
+        cvv: "321",
+        status: "invalid"
+    }
 ];
+
 function create(context) {
 
-  function generateReferenceId() {
-    const timestamp = Date.now().toString(36);
-    const randomPart = Math.random().toString(36).substring(2, 8);
-    return `${timestamp}-${randomPart}`;
-  }
-
-  function findCreditCard(cardNumber, expirationDate, cvv) {
-    return creditCards.find(
-        (card) =>
-            card.cardNumber === cardNumber &&
-            card.expirationDate === expirationDate &&
-            card.cvv === cvv
-    );
-  }
-
-  function verifyAuthorizationCode(code) {
-    if (authorizationCodes[code] === "completed") {
-      return "completed";
-    } else if (authorizationCodes[code] === "invalid") {
-      return "invalid";
-    } else {
-      return "not recognized";
+    function generateReferenceId() {
+        const timestamp = Date.now().toString(36);
+        const randomPart = Math.random().toString(36).substring(2, 8);
+        return `${timestamp}-${randomPart}`;
     }
-  }
-  async function walletPayment(data) {
-    let newAmount;
 
-    try {
-      const wallet = await WalletDAO.getWalletByUserId(data.userId);
-      const transaction = await TransactionDAO.getTransactionById(data.transactionId);
-
-      if (!wallet || !transaction) {
-        return new Error('Wallet or transaction for user does not exist');
-      }
-
-      if (wallet.amount < data.amount) {
-        return new Error('Insufficient funds');
-      }
-
-      newAmount = wallet.amount - data.amount;
-
-      transaction.referenceId = generateReferenceId();
-      transaction.status = 'completed';
-
-      await transaction.save();
-
-      return await WalletDAO.createNewOrUpdateWallet({ userId: data.userId, amount: newAmount });
-    } catch (error) {
-      if (error.message === "Wallet or transaction for user does not exist") {
-        throw applicationException.new(applicationException.UNAUTHORIZED, error.message);
-      } else if ( error.message === "Insufficient funds"){
-        throw applicationException.new(applicationException.METHOD_NOT_ALLOWED, error.message);
-      } else {
-        throw applicationException.new(applicationException.BAD_REQUEST, 'Error while processing payment');
-      }
+    function findAuthorizationCode(code) {
+        return authorizationCodes.find(
+            (authCode) =>
+                authCode.code === code
+        );
     }
-  }
 
-
-  async function cardPaymentTransaction(data){
-    try {
-      const transaction = await TransactionDAO.getTransactionById(data.transactionId);
-      const card = findCreditCard(data.cardNumber, data.expiryDate, data.cvv);
-
-      if (!transaction) {
-        return new Error('Transaction for does not exist');
-      }
-
-      if (!card) {
-        return new Error("Invalid card details provided.");
-      }
-
-      if (card.status !== "approved") {
-        return new Error("Card is not approved for transactions.");
-      }
-
-      transaction.referenceId = generateReferenceId();
-      transaction.status = card.status;
-
-      return await transaction.save();
-    } catch (error) {
-      if (error.message === "Invalid card details provided.") {
-        throw applicationException.new(applicationException.FORBIDDEN, error.message);
-      } else if ( error.message === "Transaction for does not exist"){
-        throw applicationException.new(applicationException.UNAUTHORIZED, error.message);
-      } else {
-        throw applicationException.new(applicationException.BAD_REQUEST, 'Error while processing payment');
-      }
+    function findCreditCard(cardNumber, expirationDate, cvv) {
+        return creditCards.find(
+            (card) =>
+                card.cardNumber === cardNumber &&
+                card.expirationDate === expirationDate &&
+                card.cvv === cvv
+        );
     }
-  }
 
-  async function cardPaymentTopUp(data){
-    try {
-      const topUp = await TopUpDAO.getTopUpById(data.transactionId);
-      const card = findCreditCard(data.cardNumber, data.expiryDate, data.cvv);
+    async function transactionInvalidError(transaction, userTicketId) {
+        const ticket = await UserTicketDAO.getUserTicketById(userTicketId);
+        await UserTicketDAO.removeTicketById(ticket._id);
 
-      if (!topUp) {
-        return new Error('Transaction for does not exist');
-      }
-
-      if (!card) {
-        return new Error("Invalid card details provided.");
-      }
-
-      if (card.status !== "approved") {
-        return new Error("Card is not approved for transactions.");
-      }
-
-      topUp.referenceId = generateReferenceId();
-      topUp.status = card.status;
-
-      return await topUp.save();
-    } catch (error) {
-      if (error.message === "Invalid card details provided.") {
-        throw applicationException.new(applicationException.FORBIDDEN, error.message);
-      } else if ( error.message === "Transaction for does not exist"){
-        throw applicationException.new(applicationException.UNAUTHORIZED, error.message);
-      } else {
-        throw applicationException.new(applicationException.BAD_REQUEST, 'Error while processing payment');
-      }
+        transaction.referenceId = generateReferenceId();
+        transaction.status = 'invalid';
+        await TransactionDAO.createNewOrUpdateTransaction(transaction);
     }
-  }
 
-  async function blikPaymentTransaction(data){
-    try {
-      const transaction = await TransactionDAO.getTransactionById(data.transactionId);
-      const status = verifyAuthorizationCode(data.code);
+    async function topUpInvalidError(topUp) {
 
-      if (!transaction) {
-        return new Error('Transaction for does not exist');
-      }
-
-      if (status==="not recognized") {
-        return new Error("Invalid code details provided.");
-      }
-
-      transaction.referenceId = generateReferenceId();
-      transaction.status = status;
-
-      return await transaction.save();
-    } catch (error) {
-      if (error.message === "Invalid code details provided.") {
-        throw applicationException.new(applicationException.FORBIDDEN, error.message);
-      } else if ( error.message === "Transaction for does not exist"){
-        throw applicationException.new(applicationException.UNAUTHORIZED, error.message);
-      } else {
-        throw applicationException.new(applicationException.BAD_REQUEST, 'Error while processing payment');
-      }
+        topUp.referenceId = generateReferenceId();
+        topUp.status = 'invalid';
+        await TopUpDAO.createNewOrUpdateTopUp(topUp);
     }
-  }
 
-  async function blikPaymentTopUp(data){
-    try {
-      const topUp = await TopUpDAO.getTransactionById(data.transactionId);
-      const status = verifyAuthorizationCode(data.code);
+    async function walletPayment(amount, transactionId) {
+        let newAmount;
 
-      if (!topUp) {
-        return new Error('Transaction for does not exist');
-      }
+        const transaction = await TransactionDAO.getTransactionById(transactionId);
+        const wallet = await WalletDAO.getWalletByUserId(transaction.userId);
 
-      if (status==="not recognized") {
-        return new Error("Invalid code details provided.");
-      }
+        if (!wallet || !transaction) {
+            throw applicationException.new(applicationException.BAD_REQUEST, 'Wallet or transaction for user does not exist');
+        }
 
-      topUp.referenceId = generateReferenceId();
-      topUp.status = status;
+        if (wallet.amount < amount) {
+            throw applicationException.new(applicationException.BAD_REQUEST, 'Insufficient funds');
+        }
 
-      return await topUp.save();
-    } catch (error) {
-      if (error.message === "Invalid code details provided.") {
-        throw applicationException.new(applicationException.FORBIDDEN, error.message);
-      } else if ( error.message === "Transaction for does not exist"){
-        throw applicationException.new(applicationException.UNAUTHORIZED, error.message);
-      } else {
-        throw applicationException.new(applicationException.BAD_REQUEST, 'Error while processing payment');
-      }
+        newAmount = wallet.amount - amount;
+
+        transaction.referenceId = generateReferenceId();
+        transaction.status = 'completed';
+
+        await TransactionDAO.createNewOrUpdateTransaction(transaction);
+
+        return await WalletDAO.createNewOrUpdateWallet({userId: transaction.userId, amount: newAmount});
     }
-  }
 
-  return {
-    walletPayment: walletPayment,
-    cardPaymentTransaction:cardPaymentTransaction,
-    cardPaymentTopUp: cardPaymentTopUp,
-    blikPaymentTransaction: blikPaymentTransaction,
-    blikPaymentTopUp: blikPaymentTopUp,
-  };
+
+    async function cardPaymentTransaction(amount, transactionId, cardNumber, expiryDate, cvv, userTicketId) {
+
+
+        const transaction = await TransactionDAO.getTransactionById(transactionId);
+
+        const card = findCreditCard(cardNumber, expiryDate, cvv);
+
+        if (!transaction) {
+            throw applicationException.new(applicationException.BAD_REQUEST, 'Transaction for does not exist');
+        }
+
+        if (!card) {
+            const ticket = await UserTicketDAO.getUserTicketById(userTicketId);
+            await UserTicketDAO.removeTicketById(ticket._id);
+            await TransactionDAO.removeTransactionById(transaction._id);
+
+            throw applicationException.new(applicationException.NOT_FOUND, 'Card does not exist');
+        }
+
+        if (card.status !== "completed") {
+
+            await transactionInvalidError(transaction, userTicketId);
+
+            throw applicationException.new(applicationException.VALIDATION_FAILURE, 'Card is not validate');
+        }
+
+        transaction.referenceId = generateReferenceId();
+        transaction.status = card.status;
+
+        return await TransactionDAO.createNewOrUpdateTransaction(transaction);
+    }
+
+    async function cardPaymentTopUp(amount, topUpId, cardNumber, expiryDate, cvv) {
+
+        const topUp = await TopUpDAO.getTopUpById(topUpId);
+        const card = findCreditCard(cardNumber, expiryDate, cvv);
+
+        if (!topUp) {
+            throw applicationException.new(applicationException.BAD_REQUEST, 'Top up for does not exist');
+        }
+
+        if (!card) {
+
+            await TopUpDAO.removeTopUpById(topUp._id);
+
+            throw applicationException.new(applicationException.NOT_FOUND, 'Card does not exist');
+        }
+
+        if (card.status !== "completed") {
+
+            await topUpInvalidError(topUp)
+
+            throw applicationException.new(applicationException.VALIDATION_FAILURE, 'Card is not validate');
+        }
+
+        topUp.referenceId = generateReferenceId();
+        topUp.status = card.status;
+
+        return await TopUpDAO.createNewOrUpdateTopUp(topUp);
+    }
+
+    async function blikPaymentTransaction(amount, transactionId, code, userTicketId) {
+
+
+        const transaction = await TransactionDAO.getTransactionById(transactionId);
+        const authCode = findAuthorizationCode(code);
+
+        if (!transaction) {
+            throw applicationException.new(applicationException.BAD_REQUEST, 'Transaction for does not exist');
+        }
+
+        if (!authCode) {
+
+            await transactionInvalidError(transaction, userTicketId);
+
+            throw applicationException.new(applicationException.VALIDATION_FAILURE, "Invalid code");
+        }
+
+        transaction.referenceId = generateReferenceId();
+        transaction.status = authCode.status;
+
+        return await TransactionDAO.createNewOrUpdateTransaction(transaction);
+    }
+
+    async function blikPaymentTopUp(amount, topUpId, code) {
+        const topUp = await TopUpDAO.getTopUpById(topUpId);
+        const authCode = findAuthorizationCode(code);
+
+        if (!topUp) {
+            throw applicationException.new(applicationException.BAD_REQUEST, 'Transaction for does not exist');
+        }
+
+        if (!authCode) {
+
+            await topUpInvalidError(topUp);
+
+            throw applicationException.new(applicationException.BAD_REQUEST, "Invalid code details provided.");
+        }
+
+        topUp.referenceId = generateReferenceId();
+        topUp.status = authCode.status;
+
+        return await TopUpDAO.createNewOrUpdateTopUp(topUp);
+    }
+
+    return {
+        walletPayment: walletPayment,
+        cardPaymentTransaction: cardPaymentTransaction,
+        cardPaymentTopUp: cardPaymentTopUp,
+        blikPaymentTransaction: blikPaymentTransaction,
+        blikPaymentTopUp: blikPaymentTopUp,
+    };
 }
 
 export default {
 
-  create: create
+    create: create
 };

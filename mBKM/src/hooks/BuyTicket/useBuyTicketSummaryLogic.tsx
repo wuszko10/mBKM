@@ -1,28 +1,45 @@
 import { useEffect,useState } from "react";
-import { Line,PaymentMethod,Ticket } from "../../types/interfaces.tsx";
+import { Line,MetadataType,PaymentMethod,Ticket } from "../../types/interfaces.tsx";
 import { storage } from "../../../App.tsx";
-import { paymentMethods } from "../../repositories/Data.tsx";
+import { DEFAULT_TICKET_STATUS,SINGLE_TICKET,WALLET_PAYMENT } from "../../../variables.tsx";
+import { useMMKVString } from "react-native-mmkv";
 
 export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: string | null ) => {
 
     const [isLoading, setIsLoading] = useState(true);
-    const [paymentMethodId, setPaymentMethodId] = useState(0);
+    const [paymentMethodId, setPaymentMethodId] = useState<string>('');
     const [line, setLine] = useState<Line>();
+    const [methods, setMethods] = useState<PaymentMethod[]>();
+    const [statusId, setStatusId] = useState<string>('');
 
 
     const getData = () => {
         if(!isLoading) return;
 
         const linesStr = storage.getString('lines');
-        console.log(linesStr);
+        const methodStr = storage.getString('paymentMethods');
+        const statusStr = storage.getString('statusTypes');
 
-        if (linesStr)
+        if (linesStr && methodStr && statusStr)
         {
             const parseLines: Line[] = JSON.parse(linesStr);
-            console.log("tutaj");
+            const parseMethods: PaymentMethod[] = JSON.parse(methodStr);
+            const parseStatus: MetadataType[] = JSON.parse(statusStr);
+
             const filteredLine = parseLines.find(l => l.id == selectedLines)
-            console.log(filteredLine);
+
+            const filteredMethods = parseMethods
+                .filter(method =>
+                    selectedTicket.typeName === SINGLE_TICKET ? method.name === WALLET_PAYMENT :  method.name !== WALLET_PAYMENT);
+
+            const filteredStatus = parseStatus.find(s => s.name === DEFAULT_TICKET_STATUS);
+            if (filteredStatus) {
+                const id = filteredStatus?.id;
+                setStatusId(id);
+            }
+
             setLine(filteredLine);
+            setMethods(filteredMethods);
             setIsLoading(false);
         }
     }
@@ -31,16 +48,12 @@ export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: 
         getData();
     }, [isLoading])
 
-    const filteredMethods: PaymentMethod[] = paymentMethods
-        .filter(method => {
-            return selectedTicket.type === "jednorazowy" ? method.label === "Portfel" :  method.label !== "Portfel";
-        });
-
     return {
         line,
         paymentMethodId,
-        filteredMethods,
+        filteredMethods : methods,
         isLoading,
+        statusId,
         setPaymentMethodId,
     }
 }

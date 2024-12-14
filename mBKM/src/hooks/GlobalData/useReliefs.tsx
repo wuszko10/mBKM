@@ -10,8 +10,8 @@ export const useReliefs = () => {
     const [reliefs, setReliefs] = useState<Relief[]>();
     const [reliefsLoading, setReliefsLoading] = useState(true);
 
-    const refreshReliefs = () => {
-        fetchReliefs()
+    const refreshReliefs = (token: string) => {
+        fetchReliefs(token)
             .then((data) => {
                 setReliefs(data);
                 if (data)
@@ -32,7 +32,7 @@ export const useReliefs = () => {
 
     useEffect(() => {
         if (token)
-            refreshReliefs();
+            refreshReliefs(token);
     }, []);
 
     return {
