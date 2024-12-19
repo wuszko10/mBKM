@@ -38,7 +38,7 @@ function create(context) {
     }
   }
 
-  async function getAndSearchTransaction(page, pageSize, searchQuery) {
+  async function getAndSearchTransaction(queryPage, queryPageSize, searchQuery) {
 
     const users = await UserDAO.getAll();
     const tickets = await TicketDAO.getAllTickets()
@@ -52,7 +52,7 @@ function create(context) {
         pageSize,
         totalPages,
         totalRecords,
-      } = await TransactionDAO.getAndSearchTransaction(page, pageSize, searchCriteria);
+      } = await TransactionDAO.getAndSearchTransaction(queryPage, queryPageSize, searchCriteria);
 
       const transactions = getMetadataNames(data, tickets, users)
 

@@ -161,21 +161,21 @@ export const getTransactionColumns = (navigate) => [
         header: 'Numer biletu',
     },
     {
-        accessorKey: 'userEmail',
+        accessorKey: 'userId',
         header: 'Użytkownik',
     },
     {
-        accessorKey: 'amount',
+        accessorKey: 'finalPrice',
         header: 'Kwota [zł]',
     },
     {
-        accessorKey: 'purchaseDate',
+        accessorKey: 'paymentDate',
         header: 'Data zakupu',
     },
     {
         header: ' ',
         cell: ({ row }) => (
-            <button onClick={() => navigate(`/transaction/${row.original.id}`)}>Zobacz szczegóły</button>
+            <button onClick={() => navigate(`/transaction/${row.original._id}`)}>Zobacz szczegóły</button>
         ),
     },
 ];

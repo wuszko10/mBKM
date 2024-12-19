@@ -17,7 +17,7 @@ const userEndpoint = (router) => {
 
     router.post('/api/user/auth', async (request, response) => {
         try {
-            let result = await business.getUserManager().authenticate(request.body.login, request.body.password);
+            let result = await business.getUserManager().authenticate(request.body.email, request.body.password);
             response.status(200).send(result);
         } catch (error) {
             applicationException.errorHandler(error, response);

@@ -11,7 +11,7 @@ export const fetchPurchases = async (page, pageSize, searchQuery) => {
         searchQuery: searchQuery,
     });
 
-    const response = await axios.get(URI + `purchases?${params.toString()}`, {
+    const response = await axios.get(URI + `transactions?${params.toString()}`, {
         headers: {
             'authorization': `Bearer ${token}`,
         }

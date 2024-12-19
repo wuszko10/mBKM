@@ -1,10 +1,11 @@
 import authToken from "../middleware/authToken";
 import business from "../business/business.container";
 import applicationException from "../service/applicationException";
+import admin from "../middleware/admin";
 
 const TransactionEndpoint = (router) => {
 
-    router.get('/api/transactions', authToken, async (req, res) => {
+    router.get('/api/transactions', admin, async (req, res) => {
         const { page = 1, pageSize = 10, searchQuery } = req.query;
         const cache = req.app.locals.cache;
         try {

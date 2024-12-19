@@ -5,8 +5,8 @@ export function getMetadataNames (transactions, tickets, users) {
         const transactionObj = transaction.toObject();
         return {
             ...transactionObj,
-            userEmail: users.find(u => u.id === transaction.userId.toString())?.email,
-            numberTicket: tickets.find(t => t.id === transaction.ticketId.toString())?.number,
+            userEmail: users.find(u => u.id === transaction.userId)?.email,
+            numberTicket: tickets.find(t => t.id === transaction.ticketId)?.number,
         };
     });
 }

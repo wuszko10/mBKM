@@ -44,11 +44,11 @@ const Login = () => {
 
         axios
             .post(URI + 'user/auth', {
-                login: formData.login,
+                email: formData.login,
                 password: formData.password
             })
             .then((response) => {
-                localStorage.setItem('token', response.data.token);
+                localStorage.setItem('token', response.data.token.token);
                 handleChangeRoute();
             })
             .catch((error) => {
@@ -63,10 +63,6 @@ const Login = () => {
                     theme: "colored",
                 });
 
-                setFormData({
-                    login: '',
-                    password: '',
-                });
             });
     };
 
