@@ -11,6 +11,7 @@ export const addTicket = async (ticketData) => {
             period: ticketData.period,
             price: ticketData.price,
             offerStartDate: new Date(ticketData.offerStartDate).toISOString(),
+            endStartDate: ticketData.endStartDate ? new Date(ticketData.endStartDate).toISOString() : '',
         }, {
             headers: {
                 'authorization': `Bearer ${token}`,

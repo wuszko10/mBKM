@@ -2,19 +2,19 @@ import axios from 'axios';
 import {SERVER_URL} from "../../variables.tsx";
 import { storage } from "../../App.tsx";
 
-export const addTransaction = async (ticketId: string, finalPrice: number, methodId: string, userId: string, statusId: string) => {
+export const addTransaction = async (ticketId: string, finalPrice: number, methodId: string, userId: string, statusId: string, token: string) => {
 
     const userTicketData = {
         number: '',
         transactionId: '',
-        userId: '',
+        userId: userId,
         ticketId: ticketId,
         statusId: statusId,
     };
 
     const transactionData = {
         number: '',
-        userId: '',
+        userId: userId,
         finalPrice: finalPrice,
         paymentDate: new Date().toISOString(),
         referenceId: '',
@@ -22,11 +22,9 @@ export const addTransaction = async (ticketId: string, finalPrice: number, metho
     };
 
     try {
-        const token = storage.getString('token');
         const response = await axios.post(SERVER_URL + 'transaction/create', {
             transactionData: transactionData,
             userTicketData: userTicketData,
-            userId: userId,
         }, {
             headers: {
                 'authorization': `Bearer ${token}`,
@@ -47,9 +45,7 @@ export const addTransaction = async (ticketId: string, finalPrice: number, metho
         console.log ('Błąd przy transackji: ' + err);
     }
 };
-export const fetchTransactions = async () => {
-    // const token =  await AsyncStorage.getItem('token');
-    const token =  storage.getString('token');
+export const fetchTransactions = async (token: string) => {
 
     const response = await axios.get(SERVER_URL + `tickets`, {
         headers: {
@@ -59,7 +55,7 @@ export const fetchTransactions = async () => {
     return response.data;
 };
 
-export const rollbackTransaction = async (transactionId: string, ticketId: string) => {
+export const rollbackTransaction = async (transactionId: string, ticketId: string, token: string) => {
 
     const params = new URLSearchParams({
         transactionId,
@@ -67,7 +63,6 @@ export const rollbackTransaction = async (transactionId: string, ticketId: strin
     });
 
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.delete(SERVER_URL + `rollback/${params}`, {
             headers: {
                 'authorization': `Bearer ${token}`,

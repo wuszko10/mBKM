@@ -4,6 +4,8 @@ import ProcessingPopup from "../Global/ProcessingPopup.tsx";
 import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
 import { payCard,topUpCard } from "../../services/payment.service.tsx";
+import { useAuth } from "../Global/AuthContext.tsx";
+import { storage } from "../../../App.tsx";
 
 type CardPaymentProps = {
     transactionId: string,
@@ -20,6 +22,7 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
     const [showPopup, setShowPopup] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [popupText, setPopupText] = useState("");
+    const {wallet, setWallet, token} = useAuth();
 
     const processCardPayment = async (cardNumber: string, expiryDate: string, cvv: string) => {
 
@@ -27,9 +30,13 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
         let data;
         try {
             if (props.userTicketId) {
-                data = await payCard(props.transactionAmount, props.transactionId, cardNumber, expiryDate, cvv, props.userTicketId);
+                data = await payCard(props.transactionAmount, props.transactionId, cardNumber, expiryDate, cvv, props.userTicketId, token ? token : '');
             } else {
-                data = await topUpCard(props.transactionAmount, props.transactionId, cardNumber, expiryDate, cvv);
+                data = await topUpCard(props.transactionAmount, props.transactionId, cardNumber, expiryDate, cvv, wallet ? wallet?.id : '', token ? token : '');
+                if (data) {
+                    setWallet(data);
+                    storage.set('wallet', JSON.stringify(data));
+                }
             }
 
             if (data) {
@@ -37,9 +44,9 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
             }
         } catch (error) {
             if (error.response.status === 406) {
-                setPopupText("Podano błędne dane karty.\nBilet nie został zakupiony");
+                setPopupText("Podano błędne dane karty.");
             } else if (error.response.status === 404) {
-                setPopupText("Błąd karty.\nBilet nie został zakupiony");
+                setPopupText("Błąd karty.");
             } else {
                 setPopupText("Wystąpił błąd podczas przetwarzania płatności.");
             }

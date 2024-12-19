@@ -3,9 +3,8 @@ import {SERVER_URL} from "../../variables.tsx";
 import { storage } from "../../App.tsx";
 
 
-export const payWallet = async (amount: number, transactionId: string) => {
+export const payWallet = async (amount: number, transactionId: string, token: string) => {
 
-    const token = storage.getString('token');
     const response = await axios.post(SERVER_URL + 'pay/card', {
         amount: amount,
         transactionId: transactionId,
@@ -23,9 +22,8 @@ export const payWallet = async (amount: number, transactionId: string) => {
     return response.data;
 };
 
-export const payCard = async (amount: number, transactionId: string, cardNumber: string, expiryDate: string, cvv: string, userTicketId: string) => {
+export const payCard = async (amount: number, transactionId: string, cardNumber: string, expiryDate: string, cvv: string, userTicketId: string, token: string) => {
 
-    const token = storage.getString('token');
     const response = await axios.post(SERVER_URL + 'pay/card', {
         amount: amount,
         transactionId: transactionId,
@@ -48,9 +46,8 @@ export const payCard = async (amount: number, transactionId: string, cardNumber:
 };
 
 
-export const payBlik = async (amount: number, transactionId: string, code: string, userTicketId: string) => {
+export const payBlik = async (amount: number, transactionId: string, code: string, userTicketId: string, token: string) => {
 
-    const token = storage.getString('token');
     console.log("Transaction " + transactionId);
     const response = await axios.post(SERVER_URL + 'pay/blik', {
         amount: amount,
@@ -71,15 +68,15 @@ export const payBlik = async (amount: number, transactionId: string, code: strin
     return response.data;
 };
 
-export async function topUpCard  (amount: number, transactionId: string, cardNumber: string, expiryDate: string, cvv: string) {
+export async function topUpCard  (amount: number, topUpId: string, cardNumber: string, expiryDate: string, cvv: string, walletId: string, token: string) {
 
-    const token = storage.getString('token');
     const response = await axios.post(SERVER_URL + 'top-up/card', {
         amount: amount,
-        transactionId: transactionId,
+        topUpId: topUpId,
         cardNumber: cardNumber,
         expiryDate: expiryDate,
-        cvv: cvv
+        cvv: cvv,
+        walletId: walletId
     }, {
         headers: {
             'authorization': `Bearer ${token}`,
@@ -95,14 +92,13 @@ export async function topUpCard  (amount: number, transactionId: string, cardNum
 };
 
 
-export async function topUpBlik (amount: number, transactionId: string, code: string) {
+export async function topUpBlik (amount: number, transactionId: string, code: string, walletId: string, token: string) {
 
-    const token = storage.getString('token');
-    console.log("Transaction " + transactionId);
     const response = await axios.post(SERVER_URL + 'top-up/blik', {
         amount: amount,
         transactionId: transactionId,
-        code: code
+        code: code,
+        walletId: walletId
     }, {
         headers: {
             'authorization': `Bearer ${token}`,
@@ -117,9 +113,7 @@ export async function topUpBlik (amount: number, transactionId: string, code: st
     return response.data;
 };
 
-export const fetchTransactions = async () => {
-    // const token =  await AsyncStorage.getItem('token');
-    const token =  storage.getString('token');
+export const fetchTransactions = async (token: string) => {
 
     const response = await axios.get(SERVER_URL + `tickets`, {
         headers: {

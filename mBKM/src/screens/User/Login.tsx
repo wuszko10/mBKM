@@ -11,22 +11,15 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../../components/Global/AuthContext.tsx";
 import { SERVER_URL } from "../../../variables.tsx";
 import { storage } from "../../../App.tsx";
+import { NavigationProp } from "../../types/navigation.tsx";
 
-type RootStackPramList = {
-    Welcome: undefined;
-    Login: undefined;
-    Register: undefined;
-    UserPanel: undefined;
-}
-
-type NavigationProp = StackNavigationProp<RootStackPramList>
 const Login = () => {
 
     const navigation = useNavigation<NavigationProp>();
     const [username,setUsername] = useState("");
     const [password,setPassword] = useState("");
     const [showPassword,setShowPassword] = useState(true);
-    const { setToken } = useAuth();
+    const { setToken, setUser, setWallet } = useAuth();
 
 
     function handleChangeRoute() {
@@ -36,7 +29,8 @@ const Login = () => {
     async function handleLogin() {
 
         if (!username || !password){
-            console.log("Login and password are required")
+            console.log("Uzupełnij wszystkie pola");
+            return;
         }
 
         try {
@@ -46,7 +40,12 @@ const Login = () => {
             });
 
             setToken(response.data.token);
-            storage.set('token',response.data.token);
+            setUser(response.data.user);
+            setWallet(response.data.wallet);
+
+            storage.set('token', JSON.stringify(response.data.token));
+            storage.set('user', JSON.stringify(response.data.user));
+            storage.set('wallet', JSON.stringify(response.data.wallet));
 
             handleChangeRoute();
         } catch (error) {
@@ -76,7 +75,7 @@ const Login = () => {
                            value={username}
                            onChangeText={setUsername}
                            autoCapitalize="none"
-                           placeholderTextColor={colors.gray}
+                           placeholderTextColor={colors.darkGray}
                 />
 
                 <View style={[stylesApp.input,tw`flex flex-row items-center justify-between`]}>
@@ -86,7 +85,7 @@ const Login = () => {
                         value={password}
                         autoCapitalize="none"
                         secureTextEntry={showPassword}
-                        placeholderTextColor={colors.gray}
+                        placeholderTextColor={colors.darkGray}
                         onChangeText={(text) => setPassword(text)}
                     />
 

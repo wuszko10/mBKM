@@ -4,7 +4,8 @@ import UserDAO from '../DAO/user/userDAO';
 import applicationException from '../service/applicationException';
 import sha1 from 'sha1';
 import BusStopDAO from "../DAO/BusStopDAO";
-import WalletDAO from "../DAO/user/WalletDAO";
+import WalletDAO from "../DAO/user/walletDAO";
+import UserTicketDAO from "../DAO/user/userTicketDAO";
 
 function create(context) {
 
@@ -20,8 +21,13 @@ function create(context) {
     }
     userData = await user;
     await PasswordDAO.authorize(user.id, hashString(password));
+    const wallet = await WalletDAO.getWalletByUserId(user.id);
     const token = await TokenDAO.create(userData);
-    return getToken(token);
+    return {
+      token: getToken(token),
+      user: user,
+      wallet: wallet,
+    }
   }
 
   async function getAllUsers(page, pageSize, searchQuery) {
@@ -37,23 +43,39 @@ function create(context) {
   }
 
   async function createNewOrUpdate(userData) {
+
+    let wallet;
+
     const user = await UserDAO.createNewOrUpdate(userData);
+    wallet = { amount: 0, userId: user.id };
+
+    await WalletDAO.createNewOrUpdateWallet(wallet);
+
     if (await userData.password) {
       return await PasswordDAO.createOrUpdate({userId: user.id, password: hashString(userData.password)});
+    } else {
+      return user;
     }
-    await WalletDAO.createNewOrUpdate({ userId: user.id });
-    return user;
   }
 
   async function removeHashSession(userId) {
     return await TokenDAO.remove(userId);
   }
 
+  async function getUserById(id) {
+    try {
+      return await UserDAO.get(id);
+    } catch (error) {
+      throw applicationException.new(applicationException.NOT_FOUND, `Ticket with ID ${id} not found`);
+    }
+  }
+
   return {
     authenticate: authenticate,
     getAllUsers: getAllUsers,
     createNewOrUpdate: createNewOrUpdate,
-    removeHashSession: removeHashSession
+    removeHashSession: removeHashSession,
+    getUserById: getUserById,
   };
 }
 

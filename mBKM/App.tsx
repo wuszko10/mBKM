@@ -75,9 +75,7 @@ function MainApp() {
     useEffect(() => {
         if (token && !isExpired(token)) {
             refreshAll(token);
-        } else {
-            setToken(null);
-            storage.delete('token');
+            console.log(token);
         }
     }, [token]);
 

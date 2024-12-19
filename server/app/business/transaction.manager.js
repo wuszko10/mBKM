@@ -11,11 +11,10 @@ import mongoConverter from "../service/mongoConverter";
 function create(context) {
 
 
-  async function createNewTransaction(transactionData, ticketData, userId) {
+  async function createNewTransaction(transactionData, ticketData) {
 
     let ticket;
 
-    transactionData.userId = userId;
     const transaction = await TransactionDAO.createNewOrUpdateTransaction(transactionData);
 
     if (!transaction){
@@ -23,7 +22,6 @@ function create(context) {
     }
 
     ticketData.transactionId = transaction._id;
-    ticketData.userId = userId;
 
     ticket = await UserTicketDAO.createNewOrUpdateUserTicket(ticketData);
 

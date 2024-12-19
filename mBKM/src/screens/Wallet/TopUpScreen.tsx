@@ -11,62 +11,42 @@ import { WALLET_PAYMENT } from "../../../variables.tsx";
 import { addTransaction } from "../../services/transaction.service.tsx";
 import { NavigationProp } from "../../types/navigation.tsx";
 import { colors } from "../../style/styleValues.js";
+import { addTopUp } from "../../services/topUp.service.tsx";
+import { useAuth } from "../../components/Global/AuthContext.tsx";
+import { useTopUpLogic } from "../../hooks/Wallet/useTopUpLogic.tsx";
 
 const TopUpScreen = () => {
 
     const navigation = useNavigation<NavigationProp>();
-    const [amount, setAmount] = useState<string>('');
-    const [paymentMethod, setPaymentMethod] = useState<string | null>(null);
-    const [open, setOpen] = useState<boolean>(false);
-    const [paymentMethodId, setPaymentMethodId] = useState<string>('');
-    const [items, setItems] = useState([
-        { label: "Karta", value: "card" },
-        { label: "Przelew bankowy", value: "bank_transfer" },
-        { label: "Portfel elektroniczny", value: "e_wallet" },
-    ]);
+    const { userId, token } = useAuth();
 
+    const {
+        paymentMethodId,
+        amount,
+        filteredMethods,
+        isLoading,
+        setPaymentMethodId,
+        setAmount,
+    } = useTopUpLogic();
 
-    const [isLoading, setIsLoading] = useState(true);
-    const [method, setMethod] = useState<PaymentMethod[]>();
-
-
-    const getData = () => {
-        if(!isLoading) return;
-
-    const methodStr = storage.getString('paymentMethods');
-
-    if (methodStr) {
-        const parseMethod: PaymentMethod[] = JSON.parse(methodStr);
-
-        const filteredMethod = parseMethod.filter(m => m.name !== WALLET_PAYMENT)
-        setMethod(filteredMethod);
-        setIsLoading(false);
-    }
-    }
-
-    useEffect(()=>{
-        getData();
-    }, [isLoading])
-    const handleTopUp = () => {
-        if (!amount && !paymentMethod) {
+    const handleTopUp = async () => {
+        if (!amount || !paymentMethodId) {
             console.log('Proszę podać kwotę i wybrać metodę płatności');
             return;
         } else {
 
-            // const data = await a(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId);
+            const data = await addTopUp(Number(amount), paymentMethodId, userId, token ? token : '');
 
-            // if (data) {
+
+            if (data) {
                 navigation.navigate('PaymentScreen', {
-                    transactionId: 'ffff',
-                    transactionNumber: 'ffff',
+                    transactionId: data.id,
+                    transactionNumber: data.number,
                     paymentMethodId: paymentMethodId,
                     transactionAmount: Number(amount),
                 });
-            // }
-
+            }
         }
-
-
     };
 
 
@@ -95,19 +75,21 @@ const TopUpScreen = () => {
                 />
             </View>
 
-
-            <View>
-                <Text style={[stylesApp.blackText, {paddingLeft: 20}]} >Kwota doładowania: {amount ? amount : 0} PLN</Text>
-            </View>
-
             <View style={[stylesApp.divider, {marginVertical: 10}]} />
 
             <Text style={stylesApp.normalH3}>Wybierz rodzaj płatności</Text>
 
-            <PaymentSelector paymentMethodId={paymentMethodId} setPaymentMethodId={setPaymentMethodId} methods={method}/>
+            <PaymentSelector
+                paymentMethodId={paymentMethodId}
+                setPaymentMethodId={setPaymentMethodId}
+                methods={filteredMethods}/>
 
             <View style={stylesApp.separator} />
 
+
+            <View>
+                <Text style={[stylesApp.blackText, {textAlign: 'center'}]} >Kwota doładowania: {amount ? (Number(amount).toFixed(2).replace('.',',') + ' zł') : '--,--'}</Text>
+            </View>
             <TouchableOpacity onPress={handleTopUp} style={stylesApp.mainButton} >
                 <Text style={stylesApp.whiteBoldCenterText}>Doładuj</Text>
             </TouchableOpacity>

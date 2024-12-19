@@ -14,6 +14,16 @@ const RollbackEndpoint = (router) => {
             applicationException.errorHandler(error, res);
         }
     });
+
+    router.delete('/api/rollback/tp', admin, async (req, res) => {
+        const { topUpId } = req.params;
+        try {
+            const result = await business.getRollbackManager().rollbackTopUp(topUpId);
+            res.status(200).json(result);
+        } catch (error) {
+            applicationException.errorHandler(error, res);
+        }
+    });
 };
 
 export default RollbackEndpoint;

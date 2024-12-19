@@ -6,35 +6,28 @@ import tw from "twrnc";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { useNavigation } from "@react-navigation/native";
 import { StackNavigationProp } from "@react-navigation/stack";
+import { NavigationProp } from "../../types/navigation.tsx";
+import axios from "axios";
+import { SERVER_URL } from "../../../variables.tsx";
+import { storage } from "../../../App.tsx";
 
-type RootStackParamList = {
-    Login: undefined;
-    Register: undefined;
-};
-
-type NavigationProp = StackNavigationProp<RootStackParamList, 'Register'>;
 const Register = () => {
 
     const navigation = useNavigation<NavigationProp>();
 
     const [firstName,setFirstName] = useState("");
     const [lastName,setLastName] = useState("");
+    const [email,setEmail] = useState("");
     const [pesel,setPesel] = useState("");
 
-    const [streetName,setStreetName] = useState("");
-    const [streetNumber,setStreetNumber] = useState("");
-    const [apartmentNumber,setApartmentNumber] = useState("");
-    const [postalCode,setPostalCode] = useState("");
-    const [town,setTown] = useState("");
-    const [phoneNumber,setPhoneNumber] = useState("");
-
-    const [email,setEmail] = useState("");
     const [password,setPassword] = useState("");
     const [showPassword,setShowPassword] = useState(true);
     const [confirmPassword,setConfirmPassword] = useState("");
     const [showConfirmPassword,setShowConfirmPassword] = useState(true);
 
-    const [peselError, setPeselError] = useState("");
+    const [peselError, setPeselError] = useState(false);
+    const [emailError, setEmailError] = useState(false);
+    const [confirmPasswordError, setConfirmPasswordError] = useState(false);
 
 
     function togglePassword() {
@@ -45,45 +38,89 @@ const Register = () => {
         setShowConfirmPassword(!showConfirmPassword);
     }
 
+    function handleChangeRoute() {
+        navigation.navigate("Login");
+    }
+
+    async function handleRegister() {
+
+        if (!firstName || !lastName || (!pesel && !peselError) || (!email && !emailError) || !password || (!confirmPassword && !confirmPasswordError) ){
+            console.log("Uzupełnij wszystkie pola");
+            return;
+        }
+
+        try {
+            const response = await axios.post(SERVER_URL+'user/create', {
+                firstName: firstName,
+                lastName: lastName,
+                pesel: pesel,
+                email: email,
+                password: password
+            });
+
+            if(response){
+                handleChangeRoute();
+            }
+
+        } catch (error) {
+            if (error.response.status === 400){
+                console.log(error);
+                console.log('Użytkownik dla podanego nr PESEL lub adresu email istnieje w bazie danych.');
+            } else {
+                console.log(error);
+                console.log("Błąd podczas rejestracji. Spróbuj ponownie");
+            }
+
+            // setFirstName('');
+            // setLastName('');
+            // setPesel('');
+            // setEmail('');
+            // setPassword('');
+            // setConfirmPassword('');
+        }
+
+    }
+
     function handleLogin() {
         navigation.navigate("Login");
     }
 
-    function handleRegister() {
+    function validatePesel(input: string) {
+        const peselRegex = /^[0-9]{2}((0[1-9]|1[0-2])|(2[1-9]|3[0-2]))(0[1-9]|1[0-9]|2[0-9]|3[01])[0-9]{5}$/gm;
 
+        if (peselRegex.test(input)) {
+            setPesel(input);
+            setPeselError(false);
+        } else {
+            setPesel(input);
+            setPeselError(true);
+        }
     }
 
-    function validatePesel() {
-        setPeselError(pesel);
-/*        const reg = /^[0-9]{11}$/;
+    function validateEmail(input: string) {
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;;
 
-        if (!reg.test(value)) {
-            setPeselError("Niepoprawny numer PESEL");
+        if (emailRegex.test(input)) {
+            setEmail(input);
+            setEmailError(false);
         } else {
-            const digits = value.split('').map(Number);
+            setEmail(input);
+            setEmailError(true);
+        }
+    }
 
-            const day = parseInt(value.substring(4, 6), 10);
-            const month = parseInt(value.substring(2, 4), 10);
-
-            if (day > 31 || month > 12) {
-                return false;
-            }
-
-            const checksum = (digits[0] + 3 * digits[1] + 7 * digits[2] + 9 * digits[3] + digits[4] + 3 * digits[5] + 7 * digits[6] + 9 * digits[7] + digits[8] + 3 * digits[9]) % 10;
-
-            const controlNumber = checksum === 0 ? 0 : 10 - checksum;
-
-            if (digits[10] === controlNumber) {
-                setPesel(pesel);
-                setPeselError("");
-            } else {
-                setPeselError("Niepoprawny numer PESEL");
-            }
-        }*/
+    function validateConfirmPassword(input: string) {
+        if (input === password){
+            setConfirmPassword(input);
+            setConfirmPasswordError(false);
+        } else {
+            setConfirmPassword(input);
+            setConfirmPasswordError(true);
+        }
     }
 
     return (
-        <ScrollView>
+        <ScrollView style={{ backgroundColor: colors.lightBlue }}>
             <View style={stylesApp.loginRegisterContainer}>
                 <Text style={stylesApp.h2}>Zarejestruj się</Text>
 
@@ -98,7 +135,7 @@ const Register = () => {
                                value={firstName}
                                onChangeText={setFirstName}
                                autoCapitalize="none"
-                               placeholderTextColor={colors.textColorGray}
+                               placeholderTextColor={colors.darkGray}
                     />
 
                     <TextInput style={stylesApp.input}
@@ -106,84 +143,30 @@ const Register = () => {
                                value={lastName}
                                onChangeText={setLastName}
                                autoCapitalize="none"
-                               placeholderTextColor={colors.textColorGray}
+                               placeholderTextColor={colors.darkGray}
                     />
 
                     <View>
-                        <TextInput style={stylesApp.input}
+                        <TextInput style={[stylesApp.input, { borderColor: peselError ? 'red' : 'transparent', borderWidth: 1 }]}
                                    placeholder="PESEL"
                                    value={pesel}
                                    onChangeText={validatePesel}
                                    autoCapitalize="none"
                                    keyboardType="numeric"
-                                   placeholderTextColor={colors.textColorGray}
+                                   maxLength={11}
+                                   placeholderTextColor={colors.darkGray}
                         />
-                        {/* Display an error message if the PESEL is invalid */}
-                        {peselError ? (
-                            <Text style={stylesApp.inputError}>{peselError}</Text>
-                        ) : null}
                     </View>
 
 
-
-                    <Text style={stylesApp.h3}>Dane kontaktowe</Text>
-
-                    <TextInput style={stylesApp.input}
-                               placeholder="Ulica"
-                               value={streetName}
-                               onChangeText={setStreetName}
-                               autoCapitalize="none"
-                               placeholderTextColor={colors.textColorGray}
-                    />
-
-                    <TextInput style={stylesApp.input}
-                               placeholder="Numer domu"
-                               value={streetNumber}
-                               onChangeText={setStreetNumber}
-                               autoCapitalize="none"
-                               placeholderTextColor={colors.textColorGray}
-                    />
-
-                    <TextInput style={stylesApp.input}
-                               placeholder="Numer mieszkania"
-                               value={apartmentNumber}
-                               onChangeText={setApartmentNumber}
-                               autoCapitalize="none"
-                               placeholderTextColor={colors.textColorGray}
-                    />
-
-                    <TextInput style={stylesApp.input}
-                               placeholder="Kod pocztowy"
-                               value={postalCode}
-                               onChangeText={setPostalCode}
-                               autoCapitalize="none"
-                               placeholderTextColor={colors.textColorGray}
-                    />
-
-                    <TextInput style={stylesApp.input}
-                               placeholder="Miejscowość"
-                               value={town}
-                               onChangeText={setTown}
-                               autoCapitalize="none"
-                               placeholderTextColor={colors.textColorGray}
-                    />
-
-                    <TextInput style={stylesApp.input}
-                               placeholder="Numer telefonu"
-                               value={phoneNumber}
-                               onChangeText={setPhoneNumber}
-                               autoCapitalize="none"
-                               placeholderTextColor={colors.textColorGray}
-                    />
-
                     <Text style={stylesApp.h3}>Dane logowania</Text>
 
-                    <TextInput style={stylesApp.input}
-                               placeholder="email"
+                    <TextInput style={[stylesApp.input, { borderColor: emailError ? 'red' : 'transparent', borderWidth: 1 }]}
+                               placeholder="E-mail"
                                value={email}
-                               onChangeText={setEmail}
+                               onChangeText={validateEmail}
                                autoCapitalize="none"
-                               placeholderTextColor={colors.textColorGray}
+                               placeholderTextColor={colors.darkGray}
                     />
 
                     <View style={[stylesApp.input,tw`flex flex-row items-center justify-between`]}>
@@ -193,7 +176,7 @@ const Register = () => {
                             value={password}
                             autoCapitalize="none"
                             secureTextEntry={showPassword}
-                            placeholderTextColor={colors.textColorGray}
+                            placeholderTextColor={colors.darkGray}
                             onChangeText={(text) => setPassword(text)}
                         />
 
@@ -206,25 +189,29 @@ const Register = () => {
                         </TouchableOpacity>
                     </View>
 
-                    <View style={[stylesApp.input,tw`flex flex-row items-center justify-between`]}>
-                        <TextInput
-                            style={stylesApp.inputText}
-                            placeholder="Powtórz hasło"
-                            value={confirmPassword}
-                            autoCapitalize="none"
-                            secureTextEntry={showConfirmPassword}
-                            placeholderTextColor={colors.textColorGray}
-                            onChangeText={(text) => setConfirmPassword(text)}
-                        />
+                    <View>
+                        <View style={[stylesApp.input, tw`flex flex-row items-center justify-between`, { borderColor: confirmPasswordError ? 'red' : 'transparent', borderWidth: 1 }]}>
+                            <TextInput
+                                style={stylesApp.inputText}
+                                placeholder="Powtórz hasło"
+                                value={confirmPassword}
+                                autoCapitalize="none"
+                                secureTextEntry={showConfirmPassword}
+                                placeholderTextColor={colors.darkGray}
+                                onChangeText={(text) => validateConfirmPassword(text)}
+                            />
 
-                        <TouchableOpacity onPress={toggleConfirmPassword}>
-                            {showPassword?(
-                                <Icon name="eye" style={stylesApp.icon} />
-                            ):(
-                                <Icon name="eye-slash" style={stylesApp.icon} />
-                            )}
-                        </TouchableOpacity>
+                            <TouchableOpacity onPress={toggleConfirmPassword}>
+                                {showConfirmPassword?(
+                                    <Icon name="eye" style={stylesApp.icon} />
+                                ):(
+                                    <Icon name="eye-slash" style={stylesApp.icon} />
+                                )}
+                            </TouchableOpacity>
+                        </View>
+                        {  }
                     </View>
+
 
                 </View>
 

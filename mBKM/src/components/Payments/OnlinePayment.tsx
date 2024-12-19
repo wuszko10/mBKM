@@ -4,6 +4,8 @@ import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
 import ProcessingPopup from "../Global/ProcessingPopup.tsx";
 import { payBlik,payCard,topUpBlik } from "../../services/payment.service.tsx";
+import { useAuth } from "../Global/AuthContext.tsx";
+import { storage } from "../../../App.tsx";
 
 type OnlinePaymentProps = {
     transactionId: string,
@@ -18,23 +20,25 @@ const OnlinePayment: React.FC<OnlinePaymentProps> = (props) => {
     const [showPopup, setShowPopup] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [popupText, setPopupText] = useState("");
-
+    const {wallet, setWallet, token} = useAuth();
     const processTransactionPayment = async (code: string) => {
         setIsProcessing(true);
 
         let data;
 
         try {
-            console.log(code);
             if (props.userTicketId) {
-                data = await payBlik(props.transactionAmount, props.transactionId, code, props.userTicketId);
+                data = await payBlik(props.transactionAmount, props.transactionId, code, props.userTicketId, token ? token : '');
+                if (data) {
+                    setPopupText("Transakcja zakończona pomyślnie!");
+                }
             } else {
-                // data = await topUpBlik(props.transactionAmount, props.transactionId, code);
-                console.log("top up - działa");
-            }
-
-            if (data) {
-                setPopupText("Transakcja zakończona pomyślnie!");
+                data = await topUpBlik(props.transactionAmount, props.transactionId, code, wallet ? wallet?.id : '', token ? token : '');
+                if (data) {
+                    setWallet(data);
+                    storage.set('wallet', JSON.stringify(data));
+                    setPopupText("Transakcja zakończona pomyślnie!");
+                }
             }
         } catch (error) {
             if (error.response.status === 406) {

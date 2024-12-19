@@ -35,7 +35,7 @@ async function create(user) {
     userData,
     config.JwtSecret,
     {
-      expiresIn: '3h'
+      expiresIn: '24h'
     });
   const result = await TokenModel({
     userId: user.id,

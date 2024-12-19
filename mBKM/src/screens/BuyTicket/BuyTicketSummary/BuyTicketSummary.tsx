@@ -26,6 +26,7 @@ const BuyTicketSummary = () => {
     const { userId } = useAuth();
     const {selectedTicket, selectedLines, selectedRelief, selectedDate, finalPrice} = route.params as RouteParams;
     const parsedDate = selectedDate ? new Date(selectedDate) : undefined;
+    const { token } = useAuth();
 
     const {
         line,
@@ -41,7 +42,7 @@ const BuyTicketSummary = () => {
 
             console.log("Status + " + statusId);
 
-            const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId);
+            const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId, token ? token : '');
 
             if (data) {
                 navigation.navigate('PaymentScreen', {

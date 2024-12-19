@@ -1,18 +1,25 @@
 import React,{ createContext,ReactNode,useContext,useEffect,useState } from "react";
 import { storage } from "../../../App.tsx";
 import { decodeToken,isExpired } from "react-jwt";
-import { DecodedToken } from "../../types/interfaces.tsx";
+import { DecodedToken,Token,User,WalletDAO } from "../../types/interfaces.tsx";
+import Wallet from "../../screens/Wallet/Wallet.tsx";
 
 interface AuthContextType {
     token: string | null;
     setToken: (token: string | null) => void;
-    userId: string;
+    userId: string ;
+    user: User | null;
+    setUser: (user: User | null) => void;
+    wallet: WalletDAO | null;
+    setWallet: (wallet: WalletDAO | null) => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
+    const [user, setUser] = useState<User | null>(null);
+    const [wallet, setWallet] = useState<WalletDAO | null>(null);
     const [userId, setUserId] = useState<string>('');
 
 
@@ -21,20 +28,33 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             try {
                 // const savedToken = await AsyncStorage.getItem('token');
                 const savedToken = storage.getString('token');
+                const savedUser = storage.getString('user');
+                const savedWallet = storage.getString('wallet');
 
-                if (savedToken) {
-                    setToken(savedToken);
-                    const decodedToken: DecodedToken | null = decodeToken(savedToken);
-                    if (decodedToken) {
-                        setUserId(decodedToken.userId);
-                    }
+                if (savedToken && savedUser && savedWallet) {
+
+                    const parseToken: Token = JSON.parse(savedToken);
+                    const parseUser: User = JSON.parse(savedUser);
+                    const parseWallet: WalletDAO = JSON.parse(savedWallet);
+
+
+                    console.log ('token '+ JSON.stringify(parseToken.token));
+                    console.log ('user '+ JSON.stringify(parseUser));
+                    console.log ('wallet '+ JSON.stringify(parseWallet));
+
+                    setToken(parseToken.token);
+                    setUser(parseUser);
+                    setWallet(parseWallet);
+                    setUserId(parseUser.id);
+
                     if (isExpired(savedToken)) {
                         setToken(null);
+                        setUserId('');
                         storage.delete('token');
                     }
                 }
             } catch (error) {
-                console.error("Błąd podczas odczytywania tokena z AsyncStorage:", error);
+                console.error("Błąd podczas odczytywania tokena ze storage:", error);
             }
         };
 
@@ -42,7 +62,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [token]);
 
     return (
-        <AuthContext.Provider value={{ token, setToken, userId }}>
+        <AuthContext.Provider value={{ token, setToken, userId, user, setUser, wallet, setWallet }}>
             {children}
         </AuthContext.Provider>
     );

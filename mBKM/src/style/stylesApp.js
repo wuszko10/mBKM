@@ -231,6 +231,7 @@ export default StyleSheet.create({
         width: '90%',
         color: colors.darkGray,
         fontSize: dimensions.smallTextSize,
+        height: dimensions.inputHigh,
         padding: 0,
     },
 
@@ -251,7 +252,7 @@ export default StyleSheet.create({
     },
 
     lr_bottomText: {
-        color: colors.gray,
+        color: colors.darkGray,
         textAlign: 'center',
         fontSize: dimensions.smallTextSize,
     },

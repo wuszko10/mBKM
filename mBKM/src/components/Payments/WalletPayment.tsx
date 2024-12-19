@@ -42,13 +42,13 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
 
     const confirmValidateTicketPopup = () => {
         navigation.dispatch( (state) => {
-            const userPanelIndex = state.routes.findIndex(route => route.name === "Tickets");
+            const userPanelIndex = state.routes.findIndex(route => route.name === "UserPanel");
 
             return CommonActions.reset({
                 index: userPanelIndex !== -1 ? userPanelIndex : 0,
                 routes: [
-                    // { name: 'UserPanel', state: { routes: [{ name: 'Tickets' }] } },
-                    { name: 'Tickets' },
+                    { name: 'UserPanel', state: { routes: [{ name: 'Tickets' }] } },
+                    // { name: 'Tickets' },
                     { name: 'ValidateTicket', params: { transactionId: props.transactionId } },
                 ],
             });
@@ -58,13 +58,13 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
 
     const confirmWalletPopup = () => {
         navigation.dispatch( (state) => {
-            const userPanelIndex = state.routes.findIndex(route => route.name === "Wallet");
+            const userPanelIndex = state.routes.findIndex(route => route.name === "UserPanel");
 
             return CommonActions.reset({
                 index: userPanelIndex !== -1 ? userPanelIndex : 0,
                 routes: [
-                    { name: 'Wallet' }
-                    // { name: 'UserPanel', state: { routes: [{ name: 'Wallet' }] } },
+                    // { name: 'Wallet' }
+                    { name: 'UserPanel', state: { routes: [{ name: 'Wallet' }] } },
                 ],
             });
         });

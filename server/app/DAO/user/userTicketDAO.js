@@ -64,6 +64,14 @@ async function getByUserId(id) {
     throw applicationException.new(applicationException.NOT_FOUND, 'Ticket not found');
 }
 
+async function getByTransactionId(id) {
+    const result = await UserTicketModel.findOne({ transactionId: id });
+    if (result) {
+        return result;
+    }
+    throw applicationException.new(applicationException.NOT_FOUND, 'Ticket not found');
+}
+
 async function get(id) {
     const result = await UserTicketModel.findOne({_id: id});
     if (result) {
@@ -88,6 +96,7 @@ export default {
     createNewOrUpdateUserTicket: createNewOrUpdate,
     getUserTicketByUserId: getByUserId,
     getUserTicketById: get,
+    getUserTicketByTransactionId: getByTransactionId,
     updateManyUserTickets: updateMany,
     removeTicketById: removeById,
 

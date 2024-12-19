@@ -8,35 +8,37 @@ const TopUpEndpoint = (router) => {
         const { page = 1, pageSize = 10, searchQuery } = req.query;
         const cache = req.app.locals.cache;
         try {
-            const tickets = await business.getTopUpManager().getAndSearchTopUp(page, pageSize, searchQuery, cache);
-            res.status(200).json(tickets);
+            const topUp = await business.getTopUpManager().getAndSearchTopUp(page, pageSize, searchQuery, cache);
+            res.status(200).json(topUp);
         } catch (error) {
             applicationException.errorHandler(error, res);
         }
     })
 
-    router.get('/api/top-ups/:userId', authToken, async (req, res) => {
+    router.get('/api/top-ups/all/:userId', authToken, async (req, res) => {
         try {
-            const relief = await business.getTopUpManager().getTopUpsByUserId(req.params.userId);
-            res.status(200).json(relief);
+            const topUp = await business.getTopUpManager().getTopUpsByUserId(req.params.userId);
+            res.status(200).json(topUp);
         } catch (error) {
             applicationException.errorHandler(error, res);
         }
     });
 
-    router.get('/api/top-ups/:id', authToken, async (req, res) => {
+    router.get('/api/top-up/:id', authToken, async (req, res) => {
         try {
-            const relief = await business.getTopUpManager().getTopUp(req.params.id);
-            res.status(200).json(relief);
+            const topUp = await business.getTopUpManager().getTopUp(req.params.id);
+            res.status(200).json(topUp);
         } catch (error) {
             applicationException.errorHandler(error, res);
         }
     });
 
     router.post('/api/top-up/create', authToken, async (req, res) => {
+
+        console.log("Tutaj " + req.body);
         try {
-            const relief = await business.getTopUpManager().createNewOrUpdateTopUp(req.body);
-            res.status(201).json(relief);
+            const topUp = await business.getTopUpManager().createNewOrUpdateTopUp(req.body);
+            res.status(201).json(topUp);
         } catch (error) {
             applicationException.errorHandler(error, res);
         }

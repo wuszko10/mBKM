@@ -10,6 +10,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Header from "../../components/Global/Header.tsx";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
+import { useAuth } from "../../components/Global/AuthContext.tsx";
 
 
 type RootStackParamList = {
@@ -22,6 +23,8 @@ type NavigationProp = StackNavigationProp<RootStackParamList, 'Wallet'>;
 const Wallet = () => {
 
     const navigation = useNavigation<NavigationProp>();
+
+    const { wallet} = useAuth();
 
     const renderItem= ({item} : {item: TopUpTransaction}) => {
 
@@ -43,7 +46,7 @@ const Wallet = () => {
             <View style={localStyles.balanceContainer}>
                 <View>
                     <Text style={{color: colors.textColorBlack}}>Stan konta:</Text>
-                    <Text style={localStyles.balanceText}>100,00 zł</Text>
+                    <Text style={localStyles.balanceText}>{Number(wallet?.amount).toFixed(2).replace('.',',')} zł</Text>
                 </View>
 
                 <TouchableOpacity style={localStyles.topUpBox} onPress={() => (navigation.navigate('TopUpScreen'))}>

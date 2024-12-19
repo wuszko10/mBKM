@@ -1,10 +1,11 @@
 import applicationException from '../service/applicationException';
 import ReliefDAO from "../DAO/reliefDAO";
-import WalletDAO from "../DAO/user/WalletDAO";
+import WalletDAO from "../DAO/user/walletDAO";
 import TransactionDAO from "../DAO/transactionDAO";
 import TopUpDAO from "../DAO/topUpDAO";
 import TicketDAO from "../DAO/ticketDAO";
 import UserTicketDAO from "../DAO/user/userTicketDAO";
+import * as _ from "lodash";
 
 
 const authorizationCodes = [
@@ -77,7 +78,7 @@ function create(context) {
         await TopUpDAO.createNewOrUpdateTopUp(topUp);
     }
 
-    async function walletPayment(amount, transactionId) {
+    async function walletPayment(amount, transactionId, userTicketId) {
         let newAmount;
 
         const transaction = await TransactionDAO.getTransactionById(transactionId);
@@ -88,7 +89,10 @@ function create(context) {
         }
 
         if (wallet.amount < amount) {
-            throw applicationException.new(applicationException.BAD_REQUEST, 'Insufficient funds');
+
+            await transactionInvalidError(transaction, userTicketId);
+
+            throw applicationException.new(applicationException.FORBIDDEN, 'Insufficient funds');
         }
 
         newAmount = wallet.amount - amount;
@@ -134,7 +138,7 @@ function create(context) {
         return await TransactionDAO.createNewOrUpdateTransaction(transaction);
     }
 
-    async function cardPaymentTopUp(amount, topUpId, cardNumber, expiryDate, cvv) {
+    async function cardPaymentTopUp(amount, topUpId, cardNumber, expiryDate, cvv, walletId) {
 
         const topUp = await TopUpDAO.getTopUpById(topUpId);
         const card = findCreditCard(cardNumber, expiryDate, cvv);
@@ -160,7 +164,9 @@ function create(context) {
         topUp.referenceId = generateReferenceId();
         topUp.status = card.status;
 
-        return await TopUpDAO.createNewOrUpdateTopUp(topUp);
+        await TopUpDAO.createNewOrUpdateTopUp(topUp);
+
+        return await WalletDAO.addAmountWallet(walletId, amount);
     }
 
     async function blikPaymentTransaction(amount, transactionId, code, userTicketId) {
@@ -186,7 +192,7 @@ function create(context) {
         return await TransactionDAO.createNewOrUpdateTransaction(transaction);
     }
 
-    async function blikPaymentTopUp(amount, topUpId, code) {
+    async function blikPaymentTopUp(amount, topUpId, code, walletId) {
         const topUp = await TopUpDAO.getTopUpById(topUpId);
         const authCode = findAuthorizationCode(code);
 
@@ -204,7 +210,9 @@ function create(context) {
         topUp.referenceId = generateReferenceId();
         topUp.status = authCode.status;
 
-        return await TopUpDAO.createNewOrUpdateTopUp(topUp);
+        await TopUpDAO.createNewOrUpdateTopUp(topUp);
+
+        return await WalletDAO.addAmountWallet(walletId, amount);
     }
 
     return {

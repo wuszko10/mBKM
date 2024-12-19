@@ -4,6 +4,8 @@ import BuyTicketSummary from "../screens/BuyTicket/BuyTicketSummary/BuyTicketSum
 
 export type RootStackParamList = {
 
+    Login: undefined;
+    Register: undefined;
     Welcome: undefined;
     TicketDetails: {
         selectedTransaction: TicketOrderTransaction
@@ -30,7 +32,7 @@ export type RootStackParamList = {
     ValidateTicket: {
         transactionId: number
     };
-    UserPanel: {screen: 'Home' | 'Tickets' | 'Wallet'};
+    UserPanel: {screen: 'Home' | 'Tickets' | 'Wallet'} | undefined;
 };
 
 export type NavigationProp = BaseNavigationProp<RootStackParamList>;

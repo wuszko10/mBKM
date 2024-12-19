@@ -55,7 +55,7 @@ const Profile = () => {
     };
 
     const navigation = useNavigation<NavigationProp>();
-    const { token, setToken } = useAuth();
+    const { token, setToken, user } = useAuth();
 
     function handleLogout() {
         // await AsyncStorage.removeItem("token");
@@ -72,16 +72,16 @@ const Profile = () => {
             <Text style={[stylesApp.normalH3,{ fontSize: 18 }]}>Dane konta</Text>
 
             <View style={stylesApp.flatlistItem}>
-                <Text style={stylesApp.blackText}>{userData.firstname} {userData.lastname}</Text>
-                <Text style={stylesApp.blackText}>{userData.phoneNumber}</Text>
-                <Text style={stylesApp.blackText}>{userData.email}</Text>
+                <Text style={stylesApp.blackText}>{user?.firstName} {user?.lastName}</Text>
+                {/*<Text style={stylesApp.blackText}>{user?.phoneNumber}</Text>*/}
+                <Text style={stylesApp.blackText}>{user?.email}</Text>
 
                 {moreInfo && (
                     <View style={{ marginTop: 10 }}>
-                        <Text style={stylesApp.blackText}>PESEL: {userData.PESEL}</Text>
-                        <Text
-                            style={stylesApp.blackText}>Ulica: {userData?.streetName?userData?.streetName:userData.town} {userData.streetNumber} {userData?.apartmentNumber?("/" + userData?.apartmentNumber):""}</Text>
-                        <Text style={stylesApp.blackText}>Poczta: {userData.postalCode}, {userData.town}</Text>
+                        <Text style={stylesApp.blackText}>PESEL: {user?.pesel}</Text>
+                        {/*<Text*/}
+                        {/*    style={stylesApp.blackText}>Ulica: {userData?.streetName?userData?.streetName:userData.town} {userData.streetNumber} {userData?.apartmentNumber?("/" + userData?.apartmentNumber):""}</Text>*/}
+                        {/*<Text style={stylesApp.blackText}>Poczta: {userData.postalCode}, {userData.town}</Text>*/}
                     </View>
                 )}
 

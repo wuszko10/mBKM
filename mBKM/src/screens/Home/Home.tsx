@@ -25,8 +25,10 @@ const Home = () => {
 
     const navigation = useNavigation<NavigationProp>();
 
+    const { user} = useAuth();
+
     const [forValidation, setForValidation] = useState(false);
-    const [activeTickets, setActiveTickets] = useState(true);
+    const [activeTickets, setActiveTickets] = useState(false);
 
 
 
@@ -39,8 +41,8 @@ const Home = () => {
 
     const renderItem= ({item} : {item: TicketOrderTransaction}) => {
 
-        const typeId = ticketsData.find(type => type._id === item.ticketTypeId);
-        const reliefId = reliefs.find(relief => relief._id === item.discountId);
+        const typeId = ticketsData.find(type => type.id === item.ticketTypeId);
+        const reliefId = reliefs.find(relief => relief.id === item.discountId);
 
         return (
             <TouchableOpacity onPress={() => handleTicketDetails(item)} style={{marginHorizontal: 5, marginVertical: 10}}>
@@ -102,7 +104,7 @@ const Home = () => {
 
             <View style={stylesApp.container}>
                 <View style={localStyles.headerItems}>
-                    <Text style={localStyles.h2Header}>Cześć, Wiktor</Text>
+                    <Text style={localStyles.h2Header}>Cześć, {user?.firstName}</Text>
                 </View>
 
 

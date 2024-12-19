@@ -6,19 +6,22 @@ export interface TopUpTransaction {
 }
 
 export interface User {
-    id: number;
+    id: string;
+    firstName: string;
+    lastName: string;
     email: string;
+    pesel: string;
     password: string;
-    firstname: string;
-    lastname: string;
-    PESEL: string;
-    streetName?: string;
-    streetNumber: string;
-    apartmentNumber?: string;
-    postalCode: string;
-    postal: string;
-    town: string;
-    phoneNumber:string;
+}
+
+export interface WalletDAO {
+    id: string;
+    userId: string;
+    amount: number;
+}
+
+export interface Token {
+    token: string;
 }
 
 export interface Ticket {

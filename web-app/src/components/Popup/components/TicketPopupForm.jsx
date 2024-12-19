@@ -71,6 +71,8 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, refreshT
     async function handleEdit(event) {
         event.preventDefault();
 
+        console.log(ticket._id);
+
         await editTicket(ticket._id, formData);
 
         handleClose();

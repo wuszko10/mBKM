@@ -4,6 +4,7 @@ import { useEffect,useState } from "react";
 import { PaymentMethod } from "../../types/interfaces.tsx";
 import { storage } from "../../../App.tsx";
 import { rollbackTransaction } from "../../services/transaction.service.tsx";
+import { rollbackTopUp } from "../../services/topUp.service.tsx";
 
 export const usePaymentLogic = (transactionId: string, paymentMethodId: string, userTicketId: string) => {
 
@@ -35,17 +36,30 @@ export const usePaymentLogic = (transactionId: string, paymentMethodId: string, 
 
 
     const closePopup = async () => {
-        await rollbackTransaction(transactionId, userTicketId);
-        navigation.dispatch( (state) => {
-            const userPanelIndex = state.routes.findIndex(route => route.name === "UserPanel");
+        if (userTicketId) {
+            navigation.dispatch( (state) => {
+                const userPanelIndex = state.routes.findIndex(route => route.name === "UserPanel");
 
-            return CommonActions.reset({
-                index: userPanelIndex !== -1 ? userPanelIndex : 0,
-                routes: [
-                    { name: 'UserPanel', state: { routes: [{ name: 'Tickets' }] } },
-                ],
+                return CommonActions.reset({
+                    index: userPanelIndex !== -1 ? userPanelIndex : 0,
+                    routes: [
+                        { name: 'UserPanel', state: { routes: [{ name: 'Tickets' }] } },
+                    ],
+                });
             });
-        });
+        } else {
+            navigation.dispatch( (state) => {
+                const userPanelIndex = state.routes.findIndex(route => route.name === "UserPanel");
+
+                return CommonActions.reset({
+                    index: userPanelIndex !== -1 ? userPanelIndex : 0,
+                    routes: [
+                        { name: 'UserPanel', state: { routes: [{ name: 'Wallet' }] } },
+                    ],
+                });
+            });
+        }
+
     }
 
     return {

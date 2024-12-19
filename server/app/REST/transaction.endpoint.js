@@ -34,9 +34,9 @@ const TransactionEndpoint = (router) => {
     });
 
     router.post('/api/transaction/create', async (req, res) => {
-        const {transactionData, userTicketData, userId} = req.body;
+        const {transactionData, userTicketData} = req.body;
         try {
-            const transaction = await business.getTransactionManager().createNewTransaction(transactionData, userTicketData, userId);
+            const transaction = await business.getTransactionManager().createNewTransaction(transactionData, userTicketData);
             res.status(201).json(transaction);
         } catch (error) {
             applicationException.errorHandler(error, res);

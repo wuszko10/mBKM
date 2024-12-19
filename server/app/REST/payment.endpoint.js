@@ -7,9 +7,9 @@ const PaymentEndpoint = (router) => {
 
 
     router.post('/api/pay/wallet', authToken, async (req, res) => {
-        const { amount, transactionId } = req.body;
+        const { amount, transactionId, userTicketId } = req.body;
         try {
-            const tickets = await business.getPaymentManager().walletPayment(amount, transactionId);
+            const tickets = await business.getPaymentManager().walletPayment(amount, transactionId, userTicketId);
             res.status(200).json(tickets);
         } catch (error) {
             applicationException.errorHandler(error, res);
@@ -38,9 +38,9 @@ const PaymentEndpoint = (router) => {
     })
 
     router.post('/api/top-up/card', authToken, async (req, res) => {
-        const { amount, transactionId, cardNumber, expiryDate, cvv } = req.body;
+        const { amount, topUpId, cardNumber, expiryDate, cvv, walletId } = req.body;
         try {
-            const tickets = await business.getPaymentManager().cardPaymentTopUp(amount, transactionId, cardNumber, expiryDate, cvv);
+            const tickets = await business.getPaymentManager().cardPaymentTopUp(amount, topUpId, cardNumber, expiryDate, cvv, walletId);
             res.status(200).json(tickets);
         } catch (error) {
             applicationException.errorHandler(error, res);
@@ -48,9 +48,9 @@ const PaymentEndpoint = (router) => {
     })
 
     router.post('/api/top-up/blik', authToken, async (req, res) => {
-        const { amount, transactionId, code } = req.body;
+        const { amount, transactionId, code, walletId } = req.body;
         try {
-            const tickets = await business.getPaymentManager().blikPaymentTopUp(amount, transactionId, code);
+            const tickets = await business.getPaymentManager().blikPaymentTopUp(amount, transactionId, code, walletId);
             res.status(200).json(tickets);
         } catch (error) {
             applicationException.errorHandler(error, res);

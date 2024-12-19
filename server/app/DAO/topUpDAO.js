@@ -17,11 +17,11 @@ const topUpSchema = new mongoose.Schema({
     number: {type: String, required: true, unique: true },
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     amount: {type: Number, required: true},
-    currency: { type: String, default: 'PLN', required: true },
+    currency: { type: String, default: 'PLN', required: false },
     paymentDate: { type: Date, required: true },
     referenceId: { type: String, required: false },
     methodId: { type: mongoose.Schema.Types.ObjectId, ref: 'paymentMethod', required: true },
-    status: { type: String, enum: paymentMethodStatuses, default: paymentMethodStatus.progress , required: true },
+    status: { type: String, enum: paymentMethodStatuses, default: paymentMethodStatus.progress , required: false },
 }, {
     collection: 'topUp'
 });
@@ -31,26 +31,26 @@ topUpSchema.plugin(uniqueValidator);
 
 const TopUpModel = mongoose.model('topUp', topUpSchema);
 
-const generateTransactionNumber = async () => {
+const generateTopUpNumber = async () => {
     const lastTopUp = await TopUpModel.findOne().sort({ number: -1 });
     const lastNumber = lastTopUp ? parseInt(lastTopUp.number.slice(2)) : 0;
     return `TD${(lastNumber + 1).toString().padStart(6, '0')}`
 };
-function createNewOrUpdate(transaction) {
+function createNewOrUpdate(topUp) {
 
     return Promise.resolve().then(async() => {
-
-        if (!transaction.id) {
-            transaction.number = await generateTransactionNumber();
-            return new TopUpModel(transaction).save().then(result => {
+        if (!topUp.id) {
+            topUp.number = await generateTopUpNumber();
+            return new TopUpModel(topUp).save().then(result => {
                 if (result) {
                     return mongoConverter(result);
                 }
             })
         } else {
-            return TopUpModel.findByIdAndUpdate(transaction.id, _.omit(transaction, 'id'), {new: true});
+            return TopUpModel.findByIdAndUpdate(topUp.id, _.omit(topUp, 'id'), {new: true});
         }
-    }).catch(error => {
+    })
+        .catch(error => {
         if ('ValidationError' === error.name) {
             error = error.errors[Object.keys(error.errors)[0]];
             throw applicationException.new(applicationException.BAD_REQUEST, error.message);
