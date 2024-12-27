@@ -37,7 +37,9 @@ function createNewOrUpdate(userTicket) {
         if (!userTicket.id) {
             userTicket.number = await generateTransactionNumber();
 
-            userTicket.QRCode = await QRCode.toDataURL(userTicket.number);
+            userTicket.QRCode = await QRCode.toDataURL(userTicket.number, {
+                width: 400,
+            });
 
             return new UserTicketModel(userTicket).save().then(result => {
                 if (result) {
@@ -57,7 +59,7 @@ function createNewOrUpdate(userTicket) {
 }
 
 async function getByUserId(id) {
-    const result = await UserTicketModel.find({ userId: id });
+    const result = await UserTicketModel.find({ userId: id }).sort({ _id: -1 });
     if (result) {
         return mongoConverter(result);
     }

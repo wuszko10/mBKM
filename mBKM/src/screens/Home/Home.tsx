@@ -4,7 +4,7 @@ import stylesApp from "../../style/stylesApp.js";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "../../components/Global/AuthContext.tsx";
+import { useAuth } from "../../context/AuthContext.tsx";
 import { colors,dimensions } from "../../style/styleValues.js";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Foundation from 'react-native-vector-icons/Foundation';

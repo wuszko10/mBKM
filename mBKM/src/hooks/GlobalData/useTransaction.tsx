@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import {fetchTickets} from "../../services/ticket.service.tsx";;
 import {Ticket} from "../../types/interfaces.tsx";
-import {useAuth} from "../../components/Global/AuthContext.tsx";
+import {useAuth} from "../../context/AuthContext.tsx";
 import { storage } from "../../../App.tsx";
 
 export const useTransaction = () => {

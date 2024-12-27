@@ -8,7 +8,7 @@ export type RootStackParamList = {
     Register: undefined;
     Welcome: undefined;
     TicketDetails: {
-        selectedTransaction: TicketOrderTransaction
+        userTicketId: string,
     };
     BuyTicketSelection: undefined;
     BuyTicketConfiguration: {
@@ -30,9 +30,11 @@ export type RootStackParamList = {
     };
     Profile: undefined;
     ValidateTicket: {
-        transactionId: number
+        userTicketId: string,
+        walletTransaction?: boolean
     };
-    UserPanel: {screen: 'Home' | 'Tickets' | 'Wallet'} | undefined;
+    UserPanel: { screen: 'Home' | 'Tickets' | 'Wallet' } | undefined;
+    TopUpScreen: undefined;
 };
 
 export type NavigationProp = BaseNavigationProp<RootStackParamList>;

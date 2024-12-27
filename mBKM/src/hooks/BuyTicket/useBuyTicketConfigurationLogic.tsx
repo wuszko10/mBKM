@@ -20,8 +20,6 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
 
         if(!isLoading) return;
 
-        // const reliefStr = await AsyncStorage.getItem('reliefs');
-        // const lineStr = await AsyncStorage.getItem('lines');
         const reliefStr = storage.getString('reliefs');
         const lineStr = storage.getString('lines');
 

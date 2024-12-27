@@ -4,7 +4,7 @@ import ProcessingPopup from "../Global/ProcessingPopup.tsx";
 import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
 import { payCard,topUpCard } from "../../services/payment.service.tsx";
-import { useAuth } from "../Global/AuthContext.tsx";
+import { useAuth } from "../../context/AuthContext.tsx";
 import { storage } from "../../../App.tsx";
 
 type CardPaymentProps = {

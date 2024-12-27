@@ -31,6 +31,15 @@ const UserTicketEndpoint = (router) => {
         }
     });
 
+    router.post('/api/user-ticket/validate', authToken, async (req, res) => {
+        try {
+            const relief = await business.getUserTicketManager().validateUserTicket(req.body.userTicketId);
+            res.status(201).json(relief);
+        } catch (error) {
+            applicationException.errorHandler(error, res);
+        }
+    });
+
 };
 
 export default UserTicketEndpoint;

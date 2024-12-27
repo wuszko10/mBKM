@@ -10,7 +10,7 @@ import { NavigationProp } from "../../../types/navigation.tsx";
 import { useBuyTicketSummaryLogic } from "../../../hooks/BuyTicket/useBuyTicketSummaryLogic.tsx";
 import { style as localStyle } from "./style.tsx";
 import { addTransaction } from "../../../services/transaction.service.tsx";
-import { useAuth } from "../../../components/Global/AuthContext.tsx";
+import { useAuth } from "../../../context/AuthContext.tsx";
 
 type RouteParams = {
     selectedTicket: Ticket,

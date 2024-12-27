@@ -3,11 +3,13 @@ import {SERVER_URL} from "../../variables.tsx";
 import { storage } from "../../App.tsx";
 
 
-export const payWallet = async (amount: number, transactionId: string, token: string) => {
+export const payWallet = async (amount: number, transactionId: string, walletId: string, userTicketId: string, token: string) => {
 
-    const response = await axios.post(SERVER_URL + 'pay/card', {
+    const response = await axios.post(SERVER_URL + 'pay/wallet', {
         amount: amount,
         transactionId: transactionId,
+        walletId: walletId,
+        userTicketId: userTicketId,
     }, {
         headers: {
             'authorization': `Bearer ${token}`,

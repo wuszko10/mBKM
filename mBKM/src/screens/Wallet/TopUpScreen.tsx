@@ -12,7 +12,7 @@ import { addTransaction } from "../../services/transaction.service.tsx";
 import { NavigationProp } from "../../types/navigation.tsx";
 import { colors } from "../../style/styleValues.js";
 import { addTopUp } from "../../services/topUp.service.tsx";
-import { useAuth } from "../../components/Global/AuthContext.tsx";
+import { useAuth } from "../../context/AuthContext.tsx";
 import { useTopUpLogic } from "../../hooks/Wallet/useTopUpLogic.tsx";
 
 const TopUpScreen = () => {

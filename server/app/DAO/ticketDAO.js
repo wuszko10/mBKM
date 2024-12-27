@@ -63,7 +63,8 @@ async function getAndSearchTicket(page, pageSize, searchCriteria) {
 
         const tickets = await TicketModel.find(searchCriteria)
             .skip((page - 1) * pageSize)
-            .limit(pageSize);
+            .limit(pageSize)
+            .sort({ _id: -1 });
 
         return {
             data: tickets,
@@ -79,7 +80,7 @@ async function getAndSearchTicket(page, pageSize, searchCriteria) {
 
 
 async function getAllTickets() {
-    const result = await TicketModel.find();
+    const result = await TicketModel.find().sort({ _id: -1 });
     if (result) {
         return result;
     }

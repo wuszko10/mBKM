@@ -47,6 +47,7 @@ const PaymentScreen = () => {
                 <WalletPayment
                     transactionId={transactionId}
                     transactionAmount={transactionAmount}
+                    userTicketId={userTicketId}
                     closePopup={closePopup}
                 />
             )}

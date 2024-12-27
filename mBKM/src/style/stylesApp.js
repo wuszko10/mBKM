@@ -181,6 +181,12 @@ export default StyleSheet.create({
         fontWeight: 'bold',
     },
 
+    ticketTypeText: {
+        color: colors.appFirstColor,
+        fontWeight: "bold",
+        fontSize: 20,
+    },
+
     itemText: {
         fontSize: 16,
         color: colors.textColorBlack,

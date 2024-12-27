@@ -69,7 +69,8 @@ async function getAndSearch(page, pageSize, searchCriteria) {
 
         const transactions = await TransactionModel.find(searchCriteria)
             .skip((page - 1) * pageSize)
-            .limit(pageSize);
+            .limit(pageSize)
+            .sort({ _id: -1 });
 
         return {
             data: transactions,
@@ -84,7 +85,7 @@ async function getAndSearch(page, pageSize, searchCriteria) {
 }
 
 async function getByUserId(id) {
-    const result = await TransactionModel.find({ user: id });
+    const result = await TransactionModel.find({ user: id }).sort({ _id: -1 });
     if (result) {
         return mongoConverter(result);
     }

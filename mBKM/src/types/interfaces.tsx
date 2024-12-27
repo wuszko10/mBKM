@@ -1,8 +1,9 @@
 export interface TopUpTransaction {
-    transactionId: string;
+    id: string;
+    number: string;
     userId: string;
     amount: number;
-    date: string;
+    paymentDate: string;
 }
 
 export interface User {
@@ -40,17 +41,26 @@ export interface Ticket {
     lineLabel: string;
 }
 
+export interface UserTicket {
+    id: string;
+    _id: string;
+    number: string;
+    transactionId: string;
+    userId: string;
+    ticketId: string;
+    ticketStartDate: Date;
+    ticketEndDate: Date;
+    QRCode: string;
+    statusId: string;
+}
+
 export interface TicketOrderTransaction {
     _id: number;
     userId: number;
     number: string;
-    ticketTypeId: number;
-    status: 'zakupiony' | 'skasowany' | 'ważny' | 'nieważny';
-    lineId: number,
     discountId: string;
-    purchaseDate: string;
-    startDate: string | null;
-    endDate: string | null;
+    paymentDate: string;
+    methodId: string;
     finalPrice: number;
 }
 

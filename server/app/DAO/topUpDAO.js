@@ -82,7 +82,8 @@ async function getAndSearch(page, pageSize, searchQuery, users) {
 
         const topUps = await TopUpModel.find(searchCriteria)
             .skip((page - 1) * pageSize)
-            .limit(pageSize);
+            .limit(pageSize)
+            .sort({ _id: -1 });
 
         const ticketsArray = Array.isArray(topUps) ? topUps : [];
 
@@ -107,7 +108,7 @@ async function getAndSearch(page, pageSize, searchQuery, users) {
 }
 
 async function getByUserId(id) {
-    const result = await TopUpModel.find({ userId: id });
+    const result = await TopUpModel.find({ userId: id }).sort({ _id: -1 });
     if (result) {
         return mongoConverter(result);
     }
@@ -130,7 +131,7 @@ async function removeById(id) {
 export default {
     createNewOrUpdateTopUp: createNewOrUpdate,
     getAndSearchTopUp: getAndSearch,
-    getTopUpByUserId: getByUserId,
+    getTopUpsByUserId: getByUserId,
     getTopUpById: getById,
     removeTopUpById: removeById,
 

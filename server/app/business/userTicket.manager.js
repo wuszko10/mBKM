@@ -1,5 +1,8 @@
 import applicationException from '../service/applicationException';
 import UserTicketDAO from "../DAO/user/userTicketDAO";
+import TicketDAO from "../DAO/ticketDAO";
+import TicketPeriodDAO from "../DAO/metadata/ticketPeriodDAO";
+import TransactionDAO from "../DAO/transactionDAO";
 
 function create(context) {
 
@@ -9,11 +12,6 @@ function create(context) {
         } catch (error) {
             throw applicationException.new(applicationException.NOT_FOUND, 'Error while creating or updating user tickets');
         }
-    }
-
-    async function validateUserTicket(id) {
-        const ticket = await UserTicketDAO.findOne({_id: id});
-
     }
 
     async function getUserTicketByUserId(id) {
@@ -26,14 +24,18 @@ function create(context) {
 
     async function getUserTicketById(id) {
       try {
-        return await UserTicketDAO.getUserTicketById(id);
+          const userTicket = await UserTicketDAO.getUserTicketById(id);
+          const transaction = await TransactionDAO.getTransactionById(userTicket.transactionId);
+          return {
+              userTicket: userTicket,
+              transaction: transaction,
+          }
       } catch (error) {
         throw applicationException.new(applicationException.NOT_FOUND, `Ticket with ID ${id} not found`);
       }
     }
 
-    function addTime(dateString, unit) {
-        let currentTimestamp = Date.now();
+    function addTime(currentTimestamp, dateString) {
 
         let timestamp = dateString.replace(/(getTime\(\))|(getMonth\(\))|(setFullYear\(\))|(\+\d+)|(-\d+)/g, (match) => {
             if (match === 'getTime()') {
@@ -54,11 +56,29 @@ function create(context) {
         return date.getTime();
     }
 
+    async function validateUserTicket(id) {
+        const userTicket = await UserTicketDAO.getUserTicketById(id);
+        const ticketType = await TicketDAO.getTicket(userTicket.ticketId);
+        const period = await TicketPeriodDAO.getTicketPeriodById(ticketType.period);
+
+        const startTime = Date.now();
+        const endTime = addTime(startTime, period.period);
+
+        userTicket.statusId = '675c1ca31c33663091557e95';
+        userTicket.ticketStartDate = new Date(startTime).toISOString();
+        userTicket.ticketEndDate = endTime;
+
+        console.log(userTicket);
+
+        return await UserTicketDAO.createNewOrUpdateUserTicket(userTicket);
+    }
+
 
     return {
         createNewOrUpdateUserTicket,
         getUserTicketByUserId,
-        getUserTicketById
+        getUserTicketById,
+        validateUserTicket
     };
 }
 

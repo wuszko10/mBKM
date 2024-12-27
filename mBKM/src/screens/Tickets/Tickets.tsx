@@ -1,39 +1,48 @@
 import React from 'react';
-import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
+import { ActivityIndicator,FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { ticketOrderTransactions,ticketsData } from "../../repositories/Data.tsx";
 import { colors,dimensions } from "../../style/styleValues.js";
-import { TicketOrderTransaction } from "../../types/interfaces.tsx";
+import { TicketOrderTransaction,UserTicket } from "../../types/interfaces.tsx";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../../components/Global/Header.tsx";
 import Entypo from "react-native-vector-icons/Entypo";
 import {NavigationProp} from "../../types/navigation.tsx";
+import { useTicketLogic } from "../../hooks/Ticket/useTicketLogic.tsx";
 
 const Tickets = () => {
 
     const navigation = useNavigation<NavigationProp>();
+    const { userTickets, tickets, statusTypes, isLoading } = useTicketLogic();
 
-    function handleTicketDetails(item: TicketOrderTransaction) {
-        navigation.navigate('TicketDetails', {selectedTransaction: item});
+    function handleTicketDetails(item: UserTicket) {
+        navigation.navigate('TicketDetails', {userTicketId: item.id});
     }
 
-    const renderItem= ({item} : {item: TicketOrderTransaction}) => {
+    const renderItem= ({item} : {item: UserTicket}) => {
 
-        const typeId = ticketsData.find(type => type._id === String(item.ticketTypeId));
+        const ticketType = tickets && (tickets.find(type => type._id === item.ticketId));
+        const statusType = statusTypes && (statusTypes.find(s => s.id === item.statusId));
 
         return (
             <TouchableOpacity onPress={() => handleTicketDetails(item)}>
                 <View style={stylesApp.flatlistItem}>
-                    {typeId && (
-                        <Text style={localStyles.text}>
-                            Bilet {typeId?.type} na {typeId?.lines} linię
-                        </Text>
-                    )}
+                    <Text style={stylesApp.ticketTypeText}>
+                        Bilet {ticketType?.typeLabel} na {ticketType?.lineLabel}
+                    </Text>
                     <Text style={localStyles.text}>Numer biletu: <Text style={stylesApp.boldText}>{item.number}</Text></Text>
-                    <Text style={localStyles.text}>Cena: {item.finalPrice.toFixed(2)} zł</Text>
-                    <Text style={localStyles.text}>Date zakupu: {new Date(item.purchaseDate).toLocaleString()}</Text>
+                    <Text style={localStyles.text}>Status: <Text style={stylesApp.boldText}>{statusType?.label}</Text></Text>
+                    <Text style={localStyles.text}>Cena: <Text style={stylesApp.boldText}>{ticketType?.price.toFixed(2)} zł</Text></Text>
                 </View>
             </TouchableOpacity>
+        )
+    }
+
+    if (isLoading) {
+        return (
+            <View style={stylesApp.container}>
+                <ActivityIndicator size="large" color={colors.appFirstColor} />
+            </View>
         )
     }
 
@@ -47,12 +56,17 @@ const Tickets = () => {
                 <Text style={{color: colors.appFirstColor, fontSize: 14}}>Kup bilet</Text>
             </TouchableOpacity>
 
-            <FlatList
-                style={stylesApp.flatlist}
-                data={ticketOrderTransactions}
-                renderItem={renderItem}
-                keyExtractor={(item) => item.number}
-            />
+            { userTickets ? (
+                <FlatList
+                    style={stylesApp.flatlist}
+                    data={userTickets}
+                    renderItem={renderItem}
+                    keyExtractor={(item) => item.id}
+                />
+            ) : (
+                <Text>Brak biletów</Text>
+            )}
+
 
         </SafeAreaView>
     )

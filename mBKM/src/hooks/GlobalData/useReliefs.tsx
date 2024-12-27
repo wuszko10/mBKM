@@ -1,7 +1,7 @@
 import {useEffect, useState} from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Relief } from "../../types/interfaces.tsx";
-import {useAuth} from "../../components/Global/AuthContext.tsx";
+import {useAuth} from "../../context/AuthContext.tsx";
 import { fetchReliefs } from "../../services/relief.service.tsx";
 import { storage } from "../../../App.tsx";
 

@@ -6,7 +6,7 @@ import tw from "twrnc";
 import Icon from "react-native-vector-icons/FontAwesome";
 import Header from "../../components/Global/Header.tsx";
 import { useNavigation } from "@react-navigation/native";
-import { useAuth } from "../../components/Global/AuthContext.tsx";
+import { useAuth } from "../../context/AuthContext.tsx";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { StackNavigationProp } from "@react-navigation/stack";
 import { userData } from "../../repositories/Data.tsx";

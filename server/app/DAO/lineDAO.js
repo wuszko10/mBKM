@@ -53,7 +53,8 @@ async function getAndSearch(page, pageSize, searchQuery) {
 
         const lines = await LineModel.find(searchCriteria)
             .skip((page - 1) * pageSize)
-            .limit(pageSize);
+            .limit(pageSize)
+            .sort({ _id: -1 });
 
         return {
             data: lines,
@@ -68,7 +69,7 @@ async function getAndSearch(page, pageSize, searchQuery) {
 }
 
 async function getAll() {
-    const result = await LineModel.find();
+    const result = await LineModel.find().sort({ _id: -1 });
     if (result) {
         return mongoConverter(result);
     }

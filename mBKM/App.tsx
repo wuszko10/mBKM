@@ -14,7 +14,7 @@ import Wallet from "./src/screens/Wallet/Wallet.tsx";
 import Login from "./src/screens/User/Login.tsx";
 import Welcome from "./src/screens/Global/Welcome.tsx";
 import Register from "./src/screens/User/Register.tsx";
-import { AuthProvider,useAuth } from "./src/components/Global/AuthContext.tsx";
+import { AuthProvider,useAuth } from "./src/context/AuthContext.tsx";
 import BuyTicketSummary from "./src/screens/BuyTicket/BuyTicketSummary/BuyTicketSummary.tsx";
 import TicketDetails from "./src/screens/Tickets/TicketDetails.tsx";
 import TopUpScreen from "./src/screens/Wallet/TopUpScreen.tsx";
@@ -68,7 +68,7 @@ function UserPanel() {
 }
 
 function MainApp() {
-    const { token, setToken } = useAuth();
+    const { token } = useAuth();
 
     const { refreshAll } = useAppData();
 

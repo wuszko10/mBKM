@@ -8,7 +8,7 @@ import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import axios from 'axios';
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useAuth } from "../../components/Global/AuthContext.tsx";
+import { useAuth } from "../../context/AuthContext.tsx";
 import { SERVER_URL } from "../../../variables.tsx";
 import { storage } from "../../../App.tsx";
 import { NavigationProp } from "../../types/navigation.tsx";
@@ -39,7 +39,7 @@ const Login = () => {
                 password: password
             });
 
-            setToken(response.data.token);
+            setToken(response.data.token.token);
             setUser(response.data.user);
             setWallet(response.data.wallet);
 

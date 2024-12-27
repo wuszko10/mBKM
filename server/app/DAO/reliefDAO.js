@@ -54,7 +54,8 @@ async function getAndSearchRelief(page, pageSize, searchCriteria ) {
 
         const reliefs = await ReliefModel.find(searchCriteria)
             .skip((page - 1) * pageSize)
-            .limit(pageSize);
+            .limit(pageSize)
+            .sort({ _id: -1 });
 
         return {
             data: reliefs,
@@ -69,7 +70,7 @@ async function getAndSearchRelief(page, pageSize, searchCriteria ) {
 }
 
 async function getAllReliefs() {
-    const result = await ReliefModel.find();
+    const result = await ReliefModel.find().sort({ _id: -1 });
     if (result) {
         return result;
     }

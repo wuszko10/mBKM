@@ -1,6 +1,5 @@
 import axios from 'axios';
 import {SERVER_URL} from "../../variables.tsx";
-import { storage } from "../../App.tsx";
 
 export const addTransaction = async (ticketId: string, finalPrice: number, methodId: string, userId: string, statusId: string, token: string) => {
 

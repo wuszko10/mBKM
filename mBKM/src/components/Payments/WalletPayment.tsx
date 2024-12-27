@@ -1,17 +1,22 @@
 import React,{ useEffect,useState } from "react";
-import { View,Text,Button,TouchableOpacity } from "react-native";
+import { View,Text,Button,TouchableOpacity,ActivityIndicator } from "react-native";
 import Popup from "../Global/Popup.tsx";
 import { CommonActions,useNavigation } from "@react-navigation/native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
 import ProcessingPopup from "../Global/ProcessingPopup.tsx";
 import { useCheckLocation } from "../Global/CheckLocation.tsx";
-import { LOCATION_TIMEOUT } from "../../../variables.tsx";
 import { NavigationProp } from "../../types/navigation.tsx";
+import { useAuth } from "../../context/AuthContext.tsx";
+import { useStops } from "../../hooks/GlobalData/useStops.tsx";
+import { payWallet } from "../../services/payment.service.tsx";
+import { storage } from "../../../App.tsx";
+import { useLocalStops } from "../../hooks/Ticket/useLocalStops.tsx";
 
 interface WalletPaymentProps {
     transactionId: string;
     transactionAmount: number;
+    userTicketId: string;
     closePopup: () => void;
 }
 
@@ -20,25 +25,14 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
 
     const navigation = useNavigation<NavigationProp>();
 
-    const [balance, setBalance] = useState(0);
     const [showPopup, setShowPopup] = useState(false);
     const [popupText, setPopupText] = useState("");
     const [showPaymentPopup, setShowPaymentPopup] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [paymentPopupText, setPaymentPopupText] = useState("");
-
     const [walletStatus, setWalletStatus] = useState(false);
-
-    const [remainingTime, setRemainingTime] = useState(LOCATION_TIMEOUT);
-    const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
-
-    const isInRange = useCheckLocation();
-
-    // const isInRange = true;
-
-    const checkAccountBalance = () => {
-        setBalance(10);
-    };
+    const { wallet, setWallet, token } = useAuth();
+    const { stops, isLoading } = useLocalStops();
 
     const confirmValidateTicketPopup = () => {
         navigation.dispatch( (state) => {
@@ -48,8 +42,7 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
                 index: userPanelIndex !== -1 ? userPanelIndex : 0,
                 routes: [
                     { name: 'UserPanel', state: { routes: [{ name: 'Tickets' }] } },
-                    // { name: 'Tickets' },
-                    { name: 'ValidateTicket', params: { transactionId: props.transactionId } },
+                    { name: 'ValidateTicket', params: { userTicketId: props.userTicketId, walletTransaction: true } },
                 ],
             });
         });
@@ -63,88 +56,63 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
             return CommonActions.reset({
                 index: userPanelIndex !== -1 ? userPanelIndex : 0,
                 routes: [
-                    // { name: 'Wallet' }
                     { name: 'UserPanel', state: { routes: [{ name: 'Wallet' }] } },
                 ],
             });
         });
     }
 
-    // useEffect(() => {
-    //     const interval = setInterval(() => {
-    //         setRemainingTime((prevTime) => {
-    //             if (prevTime <= 1000) {
-    //                 clearInterval(interval);
-    //                 return 0;
-    //             }
-    //             if (isInRange) {
-    //                 console.log("Tutaj 0000");
-    //                 clearInterval(interval);
-    //                 return prevTime;
-    //             }
-    //             return prevTime - 500;
-    //         });
-    //     }, 500);
-    //
-    //     return () => clearInterval(interval);
-    // }, [isInRange]);
+    const processWalletPayment = async () => {
 
-
-    // console.log(timer+" | isinrange"+isInRange);
-
-
-    useEffect(() => {
-        checkAccountBalance();
-    },[]);
-
-    const processWalletPayment = async (transactionAmount: number) => {
-        /*
-        try {
-            const response = await fetch('https://api.walletgateway.com/process-payment', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({
-                    amount: transactionAmount,
-                }),
-            });
-
-            const data = await response.json();
-
-            if (data.success) {
-                console.log('Płatność z portfela zakończona pomyślnie!');
-                checkLocationAndConfirmTicket();
-            } else {
-                console.log('Płatność z portfela nie powiodła się.');
-            }
-
-        } catch (error) {
-            console.error('Błąd podczas przetwarzania płatności z portfela:', error);
-            console.log('Wystąpił błąd. Spróbuj ponownie.');
-        }*/
-
+        let inRange;
+        let data;
 
         setIsProcessing(true);
         setShowPaymentPopup(true);
-        if (isInRange) {
-            setTimeout( () => {
-                    setIsProcessing(false);
+
+        try {
+            data = await payWallet(props.transactionAmount, props.transactionId, wallet ? wallet?.id : '', props.userTicketId, token ? token : '');
+            if (data) {
+                setWallet(data.wallet);
+                storage.set('wallet', JSON.stringify(data));
+
+                let retries = 0;
+                while (!stops && retries < 10) {
+                    await new Promise(resolve => setTimeout(resolve, 100));
+                    retries++;
+                }
+
+                if (stops) {
+                    inRange = useCheckLocation(stops);
+                } else {
+                    setPopupText("Nie udało się pobrać danych lokalizacji.");
+                }
+
+                if (inRange) {
                     setPopupText("Czy chcesz skasować bilet?");
                     setShowPopup(true);
                     setShowPaymentPopup(false);
 
-                }, 2000
-            )
-        } else {
+                } else {
+                    setPaymentPopupText("Transakcja zakończona pomyślnie!");
+                    setShowPaymentPopup(true);
+                }
+            }
+        } catch (error) {
+            setPaymentPopupText("Wystąpił błąd podczas przetwarzania płatności.");
+            setShowPaymentPopup(true);
+        } finally {
             setIsProcessing(false);
-            setPaymentPopupText("Transakcja zakończona pomyślne!")
         }
+
     };
 
     const handleWalletPayment = () => {
+
+        const balance = wallet?.amount;
+
         if (balance && (balance >= props.transactionAmount)) {
-            processWalletPayment(props.transactionAmount).then();
+            processWalletPayment().then();
             setWalletStatus(true);
         } else {
             setWalletStatus(false);
@@ -153,9 +121,17 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
         }
     };
 
+    if (isLoading) {
+        return (
+            <View style={stylesApp.container}>
+                <ActivityIndicator size="large" color={colors.appFirstColor} />
+            </View>
+        )
+    }
+
     return (
         <View style={stylesApp.paymentBox}>
-            <Text style={stylesApp.whiteNormalCenterText}>Stan konta: <Text style={stylesApp.boldText}>{balance} PLN</Text></Text>
+            <Text style={stylesApp.whiteNormalCenterText}>Stan konta: <Text style={stylesApp.boldText}>{wallet?.amount.toFixed(2)} złotych</Text></Text>
             <View style={stylesApp.separator}/>
             <TouchableOpacity onPress={handleWalletPayment} style={stylesApp.whiteButton}>
                 <Text style={[stylesApp.popupText,{ color: colors.appFirstColor }]}>Zapłać z portfela</Text>

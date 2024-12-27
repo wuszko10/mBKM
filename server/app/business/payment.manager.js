@@ -78,11 +78,13 @@ function create(context) {
         await TopUpDAO.createNewOrUpdateTopUp(topUp);
     }
 
-    async function walletPayment(amount, transactionId, userTicketId) {
+    async function walletPayment(amount, transactionId, walletId, userTicketId) {
+
         let newAmount;
 
         const transaction = await TransactionDAO.getTransactionById(transactionId);
-        const wallet = await WalletDAO.getWalletByUserId(transaction.userId);
+        const wallet = await WalletDAO.getWalletById(walletId);
+
 
         if (!wallet || !transaction) {
             throw applicationException.new(applicationException.BAD_REQUEST, 'Wallet or transaction for user does not exist');

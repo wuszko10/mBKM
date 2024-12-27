@@ -23,7 +23,16 @@ async function get() {
     throw applicationException.new(applicationException.NOT_FOUND, 'No ticket periods in the database');
 }
 
+async function getById(id) {
+    const result = await TicketPeriodModel.findOne({_id: id});
+    if (result) {
+        return mongoConverter(result);
+    }
+    throw applicationException.new(applicationException.NOT_FOUND, 'Ticket not found');
+}
+
 export default {
     get:get,
+    getTicketPeriodById: getById,
     model: TicketPeriodModel,
 }

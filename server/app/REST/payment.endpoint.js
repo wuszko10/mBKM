@@ -7,9 +7,9 @@ const PaymentEndpoint = (router) => {
 
 
     router.post('/api/pay/wallet', authToken, async (req, res) => {
-        const { amount, transactionId, userTicketId } = req.body;
+        const { amount, transactionId, walletId, userTicketId } = req.body;
         try {
-            const tickets = await business.getPaymentManager().walletPayment(amount, transactionId, userTicketId);
+            const tickets = await business.getPaymentManager().walletPayment(amount, transactionId, walletId, userTicketId);
             res.status(200).json(tickets);
         } catch (error) {
             applicationException.errorHandler(error, res);

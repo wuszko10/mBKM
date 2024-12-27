@@ -11,7 +11,6 @@ export const useBuyTicketSelectionLogic = () => {
     const [ticketType, setTicketType] = useState<'single' | 'season' | null>(null);
 
     const getTickets = async () => {
-        // let ticketStr = await AsyncStorage.getItem('tickets');
         let ticketStr = storage.getString('tickets');
         if (ticketStr) {
             setTicketsData(JSON.parse(ticketStr));

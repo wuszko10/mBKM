@@ -55,7 +55,8 @@ async function getAndSearch(page, pageSize, searchQuery) {
 
         const stops = await BusStopModel.find(searchCriteria)
             .skip((page - 1) * pageSize)
-            .limit(pageSize);
+            .limit(pageSize)
+            .sort({ _id: -1 });
 
         return {
             data: stops,
@@ -70,7 +71,7 @@ async function getAndSearch(page, pageSize, searchQuery) {
 }
 
 async function getAll() {
-    const result = await BusStopModel.find();
+    const result = await BusStopModel.find().sort({ _id: -1 });
     if (result) {
         return mongoConverter(result);
     }
