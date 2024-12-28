@@ -56,11 +56,11 @@ export const getTopUp = async (id: string, token: string) => {
 export const rollbackTopUp = async (topUpId: string, token: string) => {
 
     const params = new URLSearchParams({
-        topUpId
+        topUpId: topUpId,
     });
 
     try {
-        const response = await axios.delete(SERVER_URL + `rollback/tp/${params}`, {
+        const response = await axios.delete(SERVER_URL + `top-up/rollback?${params.toString()}`, {
             headers: {
                 'authorization': `Bearer ${token}`,
             }

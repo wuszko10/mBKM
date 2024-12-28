@@ -1,5 +1,5 @@
 import { useEffect,useState } from "react";
-import { MetadataType,Ticket,UserTicket } from "../../types/interfaces.tsx";
+import { MetadataType,Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";
 import { storage } from "../../../App.tsx";
 import { fetchUserTickets } from "../../services/ticket.service.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
@@ -12,6 +12,7 @@ export const useTicketLogic = () => {
     const [userTickets, setUserTickets] = useState<UserTicket[]>();
     const [tickets, setTickets] = useState<Ticket[]>();
     const [statusTypes, setStatusTypes] = useState<MetadataType[]>()
+    const [reliefs, setReliefs] = useState<Relief[]>()
 
     const getUserTickets = (token: string) => {
 
@@ -22,10 +23,12 @@ export const useTicketLogic = () => {
             .then(async (data) => {
                 setUserTickets(data);
                 const ticketStr = storage.getString('tickets');
-                const statusTypesStr = storage.getString('statusTypes')
-                if (ticketStr && statusTypesStr) {
+                const statusTypesStr = storage.getString('statusTypes');
+                const reliefTypesStr = storage.getString('reliefs');
+                if (ticketStr && statusTypesStr && reliefTypesStr) {
                     setTickets(JSON.parse(ticketStr));
                     setStatusTypes(JSON.parse(statusTypesStr));
+                    setReliefs(JSON.parse(reliefTypesStr));
                 }
             })
             .catch((error) => {
@@ -49,6 +52,7 @@ export const useTicketLogic = () => {
         userTickets,
         tickets,
         statusTypes,
+        reliefs,
         isLoading,
     };
 }

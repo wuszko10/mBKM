@@ -39,7 +39,7 @@ const Login = () => {
                 password: password
             });
 
-            setToken(response.data.token.token);
+            setToken(String(response.data.token.token));
             setUser(response.data.user);
             setWallet(response.data.wallet);
 

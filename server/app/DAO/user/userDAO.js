@@ -18,7 +18,7 @@ const userSchema = new mongoose.Schema({
   firstName: { type: String, required: true, trim: true },
   lastName: { type: String, required: true, trim: true },
   email: { type: String, required: true, unique: true, trim: true },
-  pesel: { type: Number, required: true, unique: true, trim: true },
+  pesel: { type: String, required: true, unique: true, trim: true },
   role: { type: String, enum: userRoles, default: userRole.user, required: false },
   active: { type: Boolean, default: true, required: false },
   isAdmin: { type: Boolean, default: false, required: false }

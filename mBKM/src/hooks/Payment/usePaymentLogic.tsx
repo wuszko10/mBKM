@@ -35,7 +35,7 @@ export const usePaymentLogic = (transactionId: string, paymentMethodId: string, 
     }, [isLoading])
 
 
-    const closePopup = async () => {
+    const closePopup = () => {
         if (userTicketId) {
             navigation.dispatch( (state) => {
                 const userPanelIndex = state.routes.findIndex(route => route.name === "UserPanel");

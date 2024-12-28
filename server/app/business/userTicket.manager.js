@@ -3,6 +3,7 @@ import UserTicketDAO from "../DAO/user/userTicketDAO";
 import TicketDAO from "../DAO/ticketDAO";
 import TicketPeriodDAO from "../DAO/metadata/ticketPeriodDAO";
 import TransactionDAO from "../DAO/transactionDAO";
+import {addTime} from "../service/userTicket.service";
 
 function create(context) {
 
@@ -35,38 +36,19 @@ function create(context) {
       }
     }
 
-    function addTime(currentTimestamp, dateString) {
-
-        let timestamp = dateString.replace(/(getTime\(\))|(getMonth\(\))|(setFullYear\(\))|(\+\d+)|(-\d+)/g, (match) => {
-            if (match === 'getTime()') {
-                return currentTimestamp;
-            } else if (match === 'getMonth()') {
-                const regex = /\d+/g;
-                let number = parseInt(dateString.match(regex));
-                let date = new Date(currentTimestamp);
-                date.setMonth(date.getMonth() + number);
-                return date.getTime();
-            }
-
-            return match;
-        });
-
-        let date = new Date(eval(timestamp));
-
-        return date.getTime();
-    }
-
     async function validateUserTicket(id) {
+
         const userTicket = await UserTicketDAO.getUserTicketById(id);
         const ticketType = await TicketDAO.getTicket(userTicket.ticketId);
         const period = await TicketPeriodDAO.getTicketPeriodById(ticketType.period);
 
         const startTime = Date.now();
+
         const endTime = addTime(startTime, period.period);
 
         userTicket.statusId = '675c1ca31c33663091557e95';
         userTicket.ticketStartDate = new Date(startTime).toISOString();
-        userTicket.ticketEndDate = endTime;
+        userTicket.ticketEndDate = new Date(endTime).toISOString();
 
         console.log(userTicket);
 

@@ -72,6 +72,7 @@ const TopUpScreen = () => {
                     onChangeText={setAmount}
                     placeholder="Wpisz kwotę"
                     keyboardType="numeric"
+                    placeholderTextColor={colors.darkGray}
                 />
             </View>
 
@@ -90,6 +91,7 @@ const TopUpScreen = () => {
             <View>
                 <Text style={[stylesApp.blackText, {textAlign: 'center'}]} >Kwota doładowania: {amount ? (Number(amount).toFixed(2).replace('.',',') + ' zł') : '--,--'}</Text>
             </View>
+            <View style={stylesApp.separator} />
             <TouchableOpacity onPress={handleTopUp} style={stylesApp.mainButton} >
                 <Text style={stylesApp.whiteBoldCenterText}>Doładuj</Text>
             </TouchableOpacity>

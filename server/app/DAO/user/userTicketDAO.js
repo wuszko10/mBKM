@@ -5,12 +5,17 @@ import mongoConverter from "../../service/mongoConverter";
 import * as _ from "lodash";
 import applicationException from "../../service/applicationException";
 import QRCode from 'qrcode'
+import {addTime} from "../../service/userTicket.service";
+import TicketDAO from "../ticketDAO";
+import TicketPeriodDAO from "../metadata/ticketPeriodDAO";
 
 const ticketSchema = new mongoose.Schema({
     number: {type: String, required: true, unique: true },
     transactionId: {type: mongoose.Schema.Types.ObjectId, ref: 'transaction', required: true},
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     ticketId: {type: mongoose.Schema.Types.ObjectId, ref: 'ticket', required: true},
+    reliefId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
+    price: {type: Number, required: true},
     ticketStartDate: { type: Date, required: false },
     ticketEndDate: { type: Date, required: false },
     QRCode: { type: String, required: false },
@@ -40,6 +45,32 @@ function createNewOrUpdate(userTicket) {
             userTicket.QRCode = await QRCode.toDataURL(userTicket.number, {
                 width: 400,
             });
+
+            if (userTicket.startDate) {
+
+                const startDate = new Date(userTicket.startDate);
+                const currentDate = new Date();
+
+                if (startDate.toDateString() === currentDate.toDateString()) {
+                    startDate.setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds(), currentDate.getMilliseconds());
+                } else {
+                    startDate.setHours(0, 0, 0, 0);
+                }
+
+                const ticketType = await TicketDAO.getTicket(userTicket.ticketId);
+                const period = await TicketPeriodDAO.getTicketPeriodById(ticketType.period);
+
+                const endTime = addTime(startDate.toISOString(), period.period);
+
+                const endTimeDate = new Date(endTime);
+                endTimeDate.setHours(23, 59, 59, 999);
+
+
+                userTicket.ticketStartDate = startDate.toISOString();
+                userTicket.ticketEndDate = endTimeDate.toISOString();
+
+                delete userTicket.startDate;
+            }
 
             return new UserTicketModel(userTicket).save().then(result => {
                 if (result) {
@@ -100,7 +131,7 @@ export default {
     getUserTicketById: get,
     getUserTicketByTransactionId: getByTransactionId,
     updateManyUserTickets: updateMany,
-    removeTicketById: removeById,
+    removeUserTicketById: removeById,
 
     model: UserTicketModel,
 };

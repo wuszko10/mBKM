@@ -41,8 +41,8 @@ const Home = () => {
 
     const renderItem= ({item} : {item: TicketOrderTransaction}) => {
 
-        const typeId = ticketsData.find(type => type.id === item.ticketTypeId);
-        const reliefId = reliefs.find(relief => relief.id === item.discountId);
+        const typeId = ticketsData.find(type => type._id === item.ticketTypeId);
+        const reliefId = reliefs.find(relief => relief._id === item.discountId);
 
         return (
             <TouchableOpacity onPress={() => handleTicketDetails(item)} style={{marginHorizontal: 5, marginVertical: 10}}>

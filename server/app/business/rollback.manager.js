@@ -8,9 +8,10 @@ function create(context) {
 
 
   async function rollbackTransaction(transactionId, ticketId) {
+
     try {
       await TransactionDAO.removeTransactionById(transactionId);
-      await UserTicketDAO.removeTicketById(ticketId);
+      await UserTicketDAO.removeUserTicketById(ticketId);
 
       return { message: `Transaction with ID ${transactionId} successfully rollback` };
     } catch (error) {

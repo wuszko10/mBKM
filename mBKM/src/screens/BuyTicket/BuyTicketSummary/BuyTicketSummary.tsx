@@ -25,8 +25,10 @@ const BuyTicketSummary = () => {
     const route = useRoute();
     const { userId } = useAuth();
     const {selectedTicket, selectedLines, selectedRelief, selectedDate, finalPrice} = route.params as RouteParams;
-    const parsedDate = selectedDate ? new Date(selectedDate) : undefined;
+    const parsedDate = selectedDate && new Date(selectedDate);
     const { token } = useAuth();
+
+    console.log(selectedDate);
 
     const {
         line,
@@ -37,12 +39,14 @@ const BuyTicketSummary = () => {
         setPaymentMethodId,
     } = useBuyTicketSummaryLogic(selectedTicket, selectedLines);
 
+    console.log("ulga: " + JSON.stringify(selectedRelief));
+
     const handleBuyTicket = async () => {
         if (paymentMethodId) {
 
             console.log("Status + " + statusId);
 
-            const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId, token ? token : '');
+            const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId, selectedDate, selectedRelief ? selectedRelief?._id : '', token ? token : '');
 
             if (data) {
                 navigation.navigate('PaymentScreen', {
@@ -90,7 +94,7 @@ const BuyTicketSummary = () => {
                     <Text style={localStyle.textLeft}>{ selectedRelief?.name }</Text>
                     <Text style={localStyle.textLeft}>{ line?.name }</Text>
                     <Text style={localStyle.textLeft}>{selectedTicket.periodLabel || '—'}</Text>
-                    <Text style={localStyle.textLeft}>{parsedDate ? parsedDate.toLocaleDateString() : '—'}</Text>
+                    <Text style={localStyle.textLeft}>{parsedDate ? parsedDate.toLocaleDateString() : '-'}</Text>
                 </View>
 
             </View>

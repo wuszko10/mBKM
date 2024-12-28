@@ -1,4 +1,4 @@
-import React,{ useState } from "react";
+import React,{ Dispatch,useState } from "react";
 import { View,TextInput,Text,TouchableOpacity } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
@@ -11,6 +11,7 @@ type OnlinePaymentProps = {
     transactionId: string,
     transactionAmount: number;
     userTicketId?: string;
+    setStopPayment: React.Dispatch<React.SetStateAction<boolean>>;
     cancelAction: () => void;
 }
 
@@ -22,6 +23,8 @@ const OnlinePayment: React.FC<OnlinePaymentProps> = (props) => {
     const [popupText, setPopupText] = useState("");
     const {wallet, setWallet, token} = useAuth();
     const processTransactionPayment = async (code: string) => {
+
+        props.setStopPayment(false);
         setIsProcessing(true);
 
         let data;

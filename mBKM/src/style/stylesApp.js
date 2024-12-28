@@ -43,6 +43,26 @@ export default StyleSheet.create({
         gap: dimensions.itemGapBig,
     },
 
+    emptyFlatListContainer: {
+        flex: 1,
+        display: 'flex',
+        backgroundColor: colors.appThirdColor,
+        padding: dimensions.appPadding,
+        justifyContent: 'center',
+        gap: dimensions.itemGapBig,
+        borderRadius: dimensions.radius
+    },
+
+    userTicketContainer: {
+        backgroundColor: colors.lightBlue,
+        paddingTop: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
+        paddingBottom: 20,
+        gap: dimensions.itemGapBig,
+        borderRadius: dimensions.radius,
+    },
+
     separator: {
         height: dimensions.separator,
     },
@@ -59,6 +79,11 @@ export default StyleSheet.create({
     gapContainer: {
         display: 'flex',
         gap: dimensions.itemGap,
+    },
+
+    smallGapContainer: {
+        display: 'flex',
+        gap: dimensions.itemGapSmall,
     },
 
     tabBarStyle: {
@@ -207,6 +232,13 @@ export default StyleSheet.create({
         color: colors.textColorBlack,
         paddingLeft: 10,
         fontSize: dimensions.smallTextSize,
+    },
+
+    emptyFlatListText: {
+        color: colors.appFirstColor,
+        textAlign: 'center',
+        fontSize: dimensions.largeTextSize,
+        fontWeight: 'bold',
     },
 
     /*

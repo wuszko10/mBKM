@@ -26,7 +26,7 @@ const ProcessingPopup: React.FC<PaymentPopupProps>  = (props) => {
                     </View>
                 ) : (
                     <View style={{gap: 20}}>
-                        <Text style={stylesApp.whiteNormalCenterText}>{props.cancelText}</Text>
+                        <Text style={[stylesApp.popupText,{ color: colors.appWhite}]}>{props.cancelText}</Text>
                         <TouchableOpacity onPress={props.cancelAction} style={stylesApp.whiteButton}>
                             <Text style={[stylesApp.popupText,{ color: colors.appFirstColor }]}>Zakończ</Text>
                         </TouchableOpacity>

@@ -63,14 +63,16 @@ const Wallet = () => {
                 <Text style={stylesApp.h3}>Wpłaty</Text>
             </View>
 
-            { topUps ? (
+            { topUps && topUps.length > 0? (
                 <FlatList
                     style={stylesApp.flatlist}
                     data={topUps}
                     renderItem={renderItem}
                 />
             ) : (
-                <Text>Brak biletów</Text>
+                <View style={stylesApp.emptyFlatListContainer}>
+                    <Text style={stylesApp.emptyFlatListText}>Brak wpłat</Text>
+                </View>
             )}
 
         </SafeAreaView>

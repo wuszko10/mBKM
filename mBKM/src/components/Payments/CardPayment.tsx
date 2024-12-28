@@ -11,6 +11,7 @@ type CardPaymentProps = {
     transactionId: string,
     transactionAmount: number;
     userTicketId?: string;
+    setStopPayment: React.Dispatch<React.SetStateAction<boolean>>;
     cancelPopup: () => void;
 }
 
@@ -26,6 +27,7 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
 
     const processCardPayment = async (cardNumber: string, expiryDate: string, cvv: string) => {
 
+        props.setStopPayment(false);
         setIsProcessing(true);
         let data;
         try {

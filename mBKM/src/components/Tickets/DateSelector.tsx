@@ -19,11 +19,11 @@ const DateSelector: React.FC<DateSelectorProps> = (
 
 
     const onChange = (event:DateTimePickerEvent, selectedPickerDate?: Date) => {
-        const currentDate = selectedPickerDate || selectedDate;
-        currentDate.setHours(0);
-        currentDate.setMinutes(0);
-        currentDate.setSeconds(0);
-        currentDate.setMilliseconds(0);
+        let  currentDate = selectedPickerDate || selectedDate;
+
+        currentDate = new Date(currentDate);
+        currentDate.setHours(0, 0, 0, 0);
+
         setSelectedDate(currentDate);
         setShowPicker(false);
         setShowDate(true);

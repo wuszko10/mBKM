@@ -1,14 +1,17 @@
 import axios from 'axios';
 import {SERVER_URL} from "../../variables.tsx";
 
-export const addTransaction = async (ticketId: string, finalPrice: number, methodId: string, userId: string, statusId: string, token: string) => {
+export const addTransaction = async (ticketId: string, finalPrice: number, methodId: string, userId: string, statusId: string, startDate: string | undefined, reliefId: string, token: string) => {
 
     const userTicketData = {
         number: '',
         transactionId: '',
+        reliefId: reliefId,
+        price: finalPrice,
         userId: userId,
         ticketId: ticketId,
         statusId: statusId,
+        startDate: startDate,
     };
 
     const transactionData = {
@@ -57,12 +60,12 @@ export const fetchTransactions = async (token: string) => {
 export const rollbackTransaction = async (transactionId: string, ticketId: string, token: string) => {
 
     const params = new URLSearchParams({
-        transactionId,
-        ticketId
+        transactionId: transactionId,
+        ticketId: ticketId,
     });
 
     try {
-        const response = await axios.delete(SERVER_URL + `rollback/${params}`, {
+        const response = await axios.delete(SERVER_URL + `transaction/rollback?${params.toString()}`, {
             headers: {
                 'authorization': `Bearer ${token}`,
             }
@@ -73,6 +76,7 @@ export const rollbackTransaction = async (transactionId: string, ticketId: strin
         // });
         return response.data;
     } catch (err) {
+        console.error("Błąd "+err);
         // toast.error('Przystanek nie został usunięty', {
         //     position: 'top-right',
         //     theme: "colored",

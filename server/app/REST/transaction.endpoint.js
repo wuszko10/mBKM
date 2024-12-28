@@ -34,11 +34,21 @@ const TransactionEndpoint = (router) => {
         }
     });
 
-    router.post('/api/transaction/create', async (req, res) => {
+    router.post('/api/transaction/create', authToken, async (req, res) => {
         const {transactionData, userTicketData} = req.body;
         try {
             const transaction = await business.getTransactionManager().createNewTransaction(transactionData, userTicketData);
             res.status(201).json(transaction);
+        } catch (error) {
+            applicationException.errorHandler(error, res);
+        }
+    });
+
+    router.delete('/api/transaction/rollback', authToken, async (req, res) => {
+        const { transactionId, ticketId } = req.query;
+        try {
+            const result = await business.getRollbackManager().rollbackTransaction(transactionId, ticketId);
+            res.status(200).json(result);
         } catch (error) {
             applicationException.errorHandler(error, res);
         }

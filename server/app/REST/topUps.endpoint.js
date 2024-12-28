@@ -44,6 +44,16 @@ const TopUpEndpoint = (router) => {
         }
     });
 
+    router.delete('/api/top-up/rollback', authToken, async (req, res) => {
+        const { topUpId } = req.query;
+        try {
+            const result = await business.getRollbackManager().rollbackTopUp(topUpId);
+            res.status(200).json(result);
+        } catch (error) {
+            applicationException.errorHandler(error, res);
+        }
+    });
+
 };
 
 export default TopUpEndpoint;

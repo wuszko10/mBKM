@@ -13,7 +13,7 @@ import { useTicketLogic } from "../../hooks/Ticket/useTicketLogic.tsx";
 const Tickets = () => {
 
     const navigation = useNavigation<NavigationProp>();
-    const { userTickets, tickets, statusTypes, isLoading } = useTicketLogic();
+    const { userTickets, tickets, statusTypes, reliefs, isLoading } = useTicketLogic();
 
     function handleTicketDetails(item: UserTicket) {
         navigation.navigate('TicketDetails', {userTicketId: item.id});
@@ -23,16 +23,17 @@ const Tickets = () => {
 
         const ticketType = tickets && (tickets.find(type => type._id === item.ticketId));
         const statusType = statusTypes && (statusTypes.find(s => s.id === item.statusId));
+        const reliefType = reliefs && (reliefs.find(r => r._id === item.reliefId))
 
         return (
             <TouchableOpacity onPress={() => handleTicketDetails(item)}>
                 <View style={stylesApp.flatlistItem}>
                     <Text style={stylesApp.ticketTypeText}>
-                        Bilet {ticketType?.typeLabel} na {ticketType?.lineLabel}
+                        Bilet {ticketType?.typeLabel} {ticketType?.periodLabel}
                     </Text>
-                    <Text style={localStyles.text}>Numer biletu: <Text style={stylesApp.boldText}>{item.number}</Text></Text>
-                    <Text style={localStyles.text}>Status: <Text style={stylesApp.boldText}>{statusType?.label}</Text></Text>
-                    <Text style={localStyles.text}>Cena: <Text style={stylesApp.boldText}>{ticketType?.price.toFixed(2)} zł</Text></Text>
+                    <Text style={stylesApp.itemText}>Typ: <Text style={stylesApp.boldText}>{reliefType?.name}</Text></Text>
+                    <Text style={stylesApp.itemText}>Linie: <Text style={stylesApp.boldText}>{ticketType?.lineLabel}</Text></Text>
+                    <Text style={stylesApp.itemText}>Status: <Text style={stylesApp.boldText}>{statusType?.label}</Text></Text>
                 </View>
             </TouchableOpacity>
         )
@@ -56,7 +57,7 @@ const Tickets = () => {
                 <Text style={{color: colors.appFirstColor, fontSize: 14}}>Kup bilet</Text>
             </TouchableOpacity>
 
-            { userTickets ? (
+            { userTickets && userTickets.length > 0 ? (
                 <FlatList
                     style={stylesApp.flatlist}
                     data={userTickets}
@@ -64,7 +65,10 @@ const Tickets = () => {
                     keyExtractor={(item) => item.id}
                 />
             ) : (
-                <Text>Brak biletów</Text>
+                <View style={stylesApp.emptyFlatListContainer}>
+                    <Text style={stylesApp.emptyFlatListText}>Brak biletów</Text>
+                </View>
+
             )}
 
 
@@ -73,39 +77,6 @@ const Tickets = () => {
 };
 
 const localStyles = StyleSheet.create({
-    balanceContainer: {
-        flexDirection: "row",
-        justifyContent: 'space-between',
-        alignItems: 'center',
-        padding: 20,
-        marginTop: 30,
-        marginRight: dimensions.appNormalPadding,
-        marginLeft: dimensions.appNormalPadding,
-        backgroundColor: colors.appBg,
-        borderRadius: dimensions.inputRadius,
-    },
-
-    balanceText:{
-        color: colors.appFirstColor,
-        fontSize: 40,
-        fontWeight: 'bold',
-    },
-
-    transactionContainer: {
-        padding: dimensions.appNormalPadding,
-    },
-
-    item: {
-        marginLeft: 2,
-        padding: 15,
-        marginVertical: 5,
-        backgroundColor: colors.appThirdColor,
-        borderRadius: 10
-    },
-    text: {
-        fontSize: 16,
-        color: colors.textColorBlack,
-    },
     addButton: {
         flexDirection: "row",
         alignItems: "center",
@@ -118,6 +89,7 @@ const localStyles = StyleSheet.create({
         right: 20,
         zIndex: 10,
     },
+
     icon: {
         color: colors.appWhite,
         backgroundColor: colors.appFirstColor,

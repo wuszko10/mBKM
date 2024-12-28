@@ -7,6 +7,7 @@ import applicationException from "../../service/applicationException";
 const ticketPeriodSchema = new mongoose.Schema({
     name: { type: String, required: true, unique: true },
     label: { type: String, required: true },
+    period: { type: String, required: true },
 }, {
     collection: 'ticketPeriod'
 });

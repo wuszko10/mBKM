@@ -1,14 +1,13 @@
-import React,{ useEffect,useState } from "react";
-import { View,Text,Button,TouchableOpacity,ActivityIndicator } from "react-native";
+import React,{ useState } from "react";
+import { View,Text,TouchableOpacity,ActivityIndicator } from "react-native";
 import Popup from "../Global/Popup.tsx";
 import { CommonActions,useNavigation } from "@react-navigation/native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
 import ProcessingPopup from "../Global/ProcessingPopup.tsx";
-import { useCheckLocation } from "../Global/CheckLocation.tsx";
+import { checkLocation } from "../Global/CheckLocation.tsx";
 import { NavigationProp } from "../../types/navigation.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
-import { useStops } from "../../hooks/GlobalData/useStops.tsx";
 import { payWallet } from "../../services/payment.service.tsx";
 import { storage } from "../../../App.tsx";
 import { useLocalStops } from "../../hooks/Ticket/useLocalStops.tsx";
@@ -17,6 +16,7 @@ interface WalletPaymentProps {
     transactionId: string;
     transactionAmount: number;
     userTicketId: string;
+    setStopPayment: React.Dispatch<React.SetStateAction<boolean>>;
     closePopup: () => void;
 }
 
@@ -67,13 +67,15 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
         let inRange;
         let data;
 
+        props.setStopPayment(false);
         setIsProcessing(true);
         setShowPaymentPopup(true);
 
         try {
             data = await payWallet(props.transactionAmount, props.transactionId, wallet ? wallet?.id : '', props.userTicketId, token ? token : '');
             if (data) {
-                setWallet(data.wallet);
+
+                setWallet(data);
                 storage.set('wallet', JSON.stringify(data));
 
                 let retries = 0;
@@ -83,20 +85,24 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
                 }
 
                 if (stops) {
-                    inRange = useCheckLocation(stops);
-                } else {
-                    setPopupText("Nie udało się pobrać danych lokalizacji.");
+                    try {
+                        inRange = await checkLocation(stops);
+
+                        if (inRange) {
+                            setPopupText("Czy chcesz skasować bilet?");
+                            setShowPopup(true);
+                            setShowPaymentPopup(false);
+                        } else {
+                            setPaymentPopupText("Transakcja zakończona pomyślnie!");
+                            setShowPaymentPopup(true);
+                        }
+                    } catch (locationError) {
+                        setPaymentPopupText("Transakcja zakończona pomyślnie!");
+                        setShowPaymentPopup(true);
+                    }
                 }
 
-                if (inRange) {
-                    setPopupText("Czy chcesz skasować bilet?");
-                    setShowPopup(true);
-                    setShowPaymentPopup(false);
 
-                } else {
-                    setPaymentPopupText("Transakcja zakończona pomyślnie!");
-                    setShowPaymentPopup(true);
-                }
             }
         } catch (error) {
             setPaymentPopupText("Wystąpił błąd podczas przetwarzania płatności.");
@@ -115,6 +121,7 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
             processWalletPayment().then();
             setWalletStatus(true);
         } else {
+            props.setStopPayment(false);
             setWalletStatus(false);
             setPopupText("Brak wystarczających środków. Czy chcesz doładować portfel?");
             setShowPopup(true);

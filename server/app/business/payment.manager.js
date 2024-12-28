@@ -6,6 +6,7 @@ import TopUpDAO from "../DAO/topUpDAO";
 import TicketDAO from "../DAO/ticketDAO";
 import UserTicketDAO from "../DAO/user/userTicketDAO";
 import * as _ from "lodash";
+import mongoConverter from "../service/mongoConverter";
 
 
 const authorizationCodes = [
@@ -98,13 +99,15 @@ function create(context) {
         }
 
         newAmount = wallet.amount - amount;
+        wallet.amount = newAmount
 
         transaction.referenceId = generateReferenceId();
         transaction.status = 'completed';
 
         await TransactionDAO.createNewOrUpdateTransaction(transaction);
+        const result = await WalletDAO.createNewOrUpdateWallet(wallet)
 
-        return await WalletDAO.createNewOrUpdateWallet({userId: transaction.userId, amount: newAmount});
+        return mongoConverter(result);
     }
 
 
