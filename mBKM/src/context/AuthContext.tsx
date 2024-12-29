@@ -4,6 +4,8 @@ import { decodeToken } from "react-jwt";
 import { Token,User,WalletDAO } from "../types/interfaces.tsx";
 import axios from "axios";
 import { SERVER_URL } from "../../variables.tsx";
+import { userLogout } from "../services/user.service.tsx";
+import { ToastAndroid } from "react-native";
 
 interface AuthContextType {
     token: string | null;
@@ -49,13 +51,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, []);
 
     const logout = async () => {
-        const response = await axios.delete(SERVER_URL+`user/logout/?${userId}`);
+        const response = await userLogout(userId, token)
         if (response) {
             setToken(null);
             setUser(null);
             setWallet(null)
             setUserId('');
             storage.delete('token');
+        } else {
+            ToastAndroid.show('Wylogowanie nie powiodło się', ToastAndroid.SHORT);
         }
     }
 
@@ -72,7 +76,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
                 const timeoutId = setTimeout(logout, timeUntilExpiration);
                 return () => clearTimeout(timeoutId);
             } else {
-                logout();
+                logout().then();
             }
         }
     }, [token]);

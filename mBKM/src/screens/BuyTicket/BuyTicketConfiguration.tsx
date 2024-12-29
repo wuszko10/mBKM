@@ -5,9 +5,8 @@ import stylesApp from "../../style/stylesApp.js";
 import DateSelector from "../../components/Tickets/DateSelector.tsx";
 import DropdownSelector from "../../components/Tickets/DropdownSelector.tsx";
 import { Ticket } from "../../types/interfaces.tsx";
-import { useNavigation,useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
-import {NavigationProp} from "../../types/navigation.tsx";
 import {ONE_LINE, SEASON_TICKET} from "../../../variables.tsx";
 import {useBuyTicketConfigurationLogic} from "../../hooks/BuyTicket/useBuyTicketConfigurationLogic.tsx";
 import { colors } from "../../style/styleValues.js";
@@ -17,7 +16,6 @@ type RouteParams = {
 }
 const BuyTicketConfiguration = () => {
 
-    const navigation = useNavigation<NavigationProp>();
     const route = useRoute();
     const {selectedTicket} = route.params as RouteParams;
 
@@ -25,7 +23,6 @@ const BuyTicketConfiguration = () => {
     const {
         showDate,
         isLoading,
-        reliefs,
         reliefsData,
         linesData,
         selectedDate,
@@ -36,35 +33,10 @@ const BuyTicketConfiguration = () => {
         setSelectedDate,
         setSelectedRelief,
         setSelectedLines,
+        handleSummaryPurchase,
     } = useBuyTicketConfigurationLogic(selectedTicket)
 
-    const handleSummaryPurchase = () => {
 
-        if (selectedTicket.typeName === SEASON_TICKET && !showDate) {
-            console.log("Wybierz datę");
-            return;
-        }
-
-        if (selectedTicket.lineName === ONE_LINE && !selectedLines) {
-            console.log("Wybierz linię");
-            return;
-        }
-
-        if (!selectedRelief) {
-            console.log("Wybierz ulgę");
-            return;
-        }
-
-        const data = {
-            selectedTicket: selectedTicket,
-            selectedLines: selectedLines,
-            selectedRelief: reliefs?.find(r => r._id === selectedRelief),
-            finalPrice: finalPrice,
-            ...(selectedTicket.typeName === SEASON_TICKET && { selectedDate: selectedDate.toISOString() }),
-        };
-
-        navigation.navigate("BuyTicketSummary", data);
-    };
 
     return (
         <SafeAreaView style={stylesApp.container}>

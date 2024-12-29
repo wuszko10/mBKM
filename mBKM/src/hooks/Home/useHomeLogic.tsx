@@ -1,10 +1,11 @@
 import { useEffect,useState } from "react";
 import { Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";
-import { fetchUserTickets,fetchUserTicketToValidate,fetchUserTicketValidated } from "../../services/ticket.service.tsx";
+import { fetchUserTicketToValidate,fetchUserTicketValidated } from "../../services/ticket.service.tsx";
 import { storage } from "../../../App.tsx";
-import { useAuth } from "../../context/AuthContext.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "../../types/navigation.tsx";
+import { ToastAndroid } from "react-native";
+import checkInternetConnection from "../../utils/network.tsx";
 
 export const useHomeLogic = (token: string | null, userId: string) => {
 
@@ -27,9 +28,11 @@ export const useHomeLogic = (token: string | null, userId: string) => {
         navigation.navigate("ValidateTicket", {userTicketId: id})
     }
 
-    const getUserTickets = (token: string) => {
+    const getUserTickets = async (token: string) => {
 
         if(!isLoading) return;
+
+        checkInternetConnection();
 
         const ticketStr = storage.getString('tickets');
         const reliefTypesStr = storage.getString('reliefs');
@@ -44,12 +47,8 @@ export const useHomeLogic = (token: string | null, userId: string) => {
                     setToValidateTicketsTMP(data);
                 }
             })
-            .catch((error) => {
-                console.error("Błąd pobierania danych | " + error);
-                // toast.error('Brak danych w bazie', {
-                //     position: 'top-right',
-                //     theme: "colored",
-                // });
+            .catch(() => {
+                ToastAndroid.show('Błąd pobierania danych', ToastAndroid.SHORT);
             })
 
         fetchUserTicketValidated(userId, token)
@@ -59,12 +58,8 @@ export const useHomeLogic = (token: string | null, userId: string) => {
                     setValidateTickets(data);
                 }
             })
-            .catch((error) => {
-                console.error("Błąd pobierania danych | " + error);
-                // toast.error('Brak danych w bazie', {
-                //     position: 'top-right',
-                //     theme: "colored",
-                // });
+            .catch(() => {
+                ToastAndroid.show('Błąd pobierania danych', ToastAndroid.SHORT);
             })
 
         setIsLoading(false);

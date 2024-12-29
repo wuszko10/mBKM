@@ -1,11 +1,16 @@
-import React from "react";
+import React,{ SetStateAction } from "react";
 import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { Ticket } from "../../types/interfaces.tsx";
-import {TicketAndReliefTypeSelectorProps} from "../../types/componentProps.tsx";
 import {SEASON_TICKET, SINGLE_TICKET} from "../../../variables.tsx";
 
-
+type TicketAndReliefTypeSelectorProps = {
+    ticketsData: Ticket[];
+    setSelectedTicket: React.Dispatch<SetStateAction<Ticket | null>>;
+    selectedTicketId: string | null;
+    setSelectedTicketId: React.Dispatch<React.SetStateAction<string | null>>;
+    ticketType: 'single' | 'season' | null;
+};
 const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) => {
 
     const filteredTickets = props.ticketsData.filter((ticket) => {

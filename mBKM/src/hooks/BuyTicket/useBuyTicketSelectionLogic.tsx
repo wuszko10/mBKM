@@ -1,10 +1,13 @@
 import {useEffect, useState} from "react";
 import {Ticket} from "../../types/interfaces.tsx";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { storage } from "../../../App.tsx";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProp } from "../../types/navigation.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useBuyTicketSelectionLogic = () => {
 
+    const navigation = useNavigation<NavigationProp>();
     const [ticketsData, setTicketsData] = useState<Ticket[] | null>(null);
     const [selectedTicket, setSelectedTicket] = useState<Ticket | null>(null);
     const [selectedTicketId, setSelectedTicketId] = useState<string | null>(null);
@@ -18,7 +21,7 @@ export const useBuyTicketSelectionLogic = () => {
     }
 
     useEffect(() => {
-        getTickets();
+        getTickets().then();
     }, []);
 
     function resetData() {
@@ -30,6 +33,17 @@ export const useBuyTicketSelectionLogic = () => {
         resetData();
     }
 
+    const handleConfiguration= () => {
+        if (selectedTicket !== null && selectedTicketId !== null) {
+            navigation.navigate('BuyTicketConfiguration', {
+                selectedTicket: selectedTicket
+            });
+            resetData();
+        } else {
+            ToastAndroid.show('Uzupełnij wszystkie pola', ToastAndroid.SHORT);
+        }
+    }
+
 
     return {
         selectedTicket,
@@ -39,6 +53,6 @@ export const useBuyTicketSelectionLogic = () => {
         ticketType,
         toggleTicketType,
         ticketsData,
-        resetData,
+        handleConfiguration,
     };
 }

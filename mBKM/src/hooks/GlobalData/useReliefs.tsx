@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { Relief } from "../../types/interfaces.tsx";
 import {useAuth} from "../../context/AuthContext.tsx";
 import { fetchReliefs } from "../../services/relief.service.tsx";
 import { storage } from "../../../App.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useReliefs = () => {
     const { token } = useAuth();
@@ -15,15 +15,10 @@ export const useReliefs = () => {
             .then((data) => {
                 setReliefs(data);
                 if (data)
-                    // await AsyncStorage.setItem('reliefs', JSON.stringify(data));
                     storage.set('reliefs', JSON.stringify(data));
             })
-            .catch((error) => {
-                console.error("Błąd pobierania ulg | " + error);
-                // toast.error('Brak danych w bazie', {
-                //     position: 'top-right',
-                //     theme: "colored",
-                // });
+            .catch(() => {
+                ToastAndroid.show('Błąd pobierania ulg', ToastAndroid.SHORT);
             })
             .finally(() => {
                 setReliefsLoading(false);

@@ -2,6 +2,8 @@ import { useState } from "react";
 import { userRegister } from "../../services/user.service.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "../../types/navigation.tsx";
+import checkInternetConnection from "../../utils/network.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useRegisterLogic = () => {
     const navigation = useNavigation<NavigationProp>();
@@ -35,9 +37,11 @@ export const useRegisterLogic = () => {
     async function handleRegister() {
 
         if (!firstName || !lastName || (!pesel && !peselError) || (!email && !emailError) || !password || (!confirmPassword && !confirmPasswordError)) {
-            console.log("Uzupełnij wszystkie pola");
+            ToastAndroid.show('Uzupełnij wszystkie pola', ToastAndroid.SHORT);
             return;
         }
+
+        checkInternetConnection().then();
 
         try {
 
@@ -49,14 +53,12 @@ export const useRegisterLogic = () => {
 
         } catch (error) {
             if (error.response.status === 400) {
-                console.log(error);
-                console.log('Użytkownik dla podanego nr PESEL lub adresu email istnieje w bazie danych.');
+                ToastAndroid.show('Użytkownik dla podanego nr PESEL lub adresu email istnieje w bazie danych.', ToastAndroid.SHORT);
                 setPesel('');
                 setEmail('');
 
             } else {
-                console.log(error);
-                console.log("Błąd podczas rejestracji. Spróbuj ponownie");
+                ToastAndroid.show('Błąd podczas rejestracji. Spróbuj ponownie', ToastAndroid.SHORT);
 
                 setFirstName('');
                 setLastName('');

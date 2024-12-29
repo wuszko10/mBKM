@@ -3,6 +3,7 @@ import {fetchStops} from "../../services/busStop.service.tsx";
 import {BusStop} from "../../types/interfaces.tsx";
 import {useAuth} from "../../context/AuthContext.tsx";
 import { storage } from "../../../App.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useStops = () => {
     const { token } = useAuth();
@@ -16,12 +17,8 @@ export const useStops = () => {
                 if (data)
                     storage.set('stops', JSON.stringify(data));
             })
-            .catch((error) => {
-                console.error("Błąd pobierania przystanków | " + error);
-                // toast.error('Brak danych w bazie', {
-                //     position: 'top-right',
-                //     theme: "colored",
-                // });
+            .catch(() => {
+                ToastAndroid.show('Błąd pobierania przystanków', ToastAndroid.SHORT);
             })
             .finally(() => {
                 setStopsLoading(false);

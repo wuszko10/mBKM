@@ -1,5 +1,6 @@
 import axios from 'axios';
 import {SERVER_URL} from "../../variables.tsx";
+import { ToastAndroid } from "react-native";
 
 export const addTransaction = async (ticketId: string, finalPrice: number, methodId: string, userId: string, statusId: string, startDate: string | undefined, reliefId: string, token: string) => {
 
@@ -33,29 +34,12 @@ export const addTransaction = async (ticketId: string, finalPrice: number, metho
                 'authorization': `Bearer ${token}`,
             }
         });
-        // toast.success('Dodano nowy przystanek', {
-        //     position: 'top-right',
-        //     theme: "colored",
-        // });
 
 
         return response.data;
     } catch (err) {
-        // toast.error('Przystanek nie został utworzony', {
-        //     position: 'top-right',
-        //     theme: "colored",
-        // });
-        console.log ('Błąd przy transackji: ' + err);
+        ToastAndroid.show('Błąd przy tworzeniu transackji', ToastAndroid.SHORT);
     }
-};
-export const fetchTransactions = async (token: string) => {
-
-    const response = await axios.get(SERVER_URL + `tickets`, {
-        headers: {
-            'authorization': `Bearer ${token}`,
-        }
-    });
-    return response.data;
 };
 
 export const rollbackTransaction = async (transactionId: string, ticketId: string, token: string) => {
@@ -71,16 +55,8 @@ export const rollbackTransaction = async (transactionId: string, ticketId: strin
                 'authorization': `Bearer ${token}`,
             }
         });
-        // toast.success('Przystanek został usunięty', {
-        //     position: 'top-right',
-        //     theme: "colored",
-        // });
         return response.data;
     } catch (err) {
-        console.error("Błąd "+err);
-        // toast.error('Przystanek nie został usunięty', {
-        //     position: 'top-right',
-        //     theme: "colored",
-        // });
+        ToastAndroid.show('Błąd przy cofaniu transackji', ToastAndroid.SHORT);
     }
 }

@@ -1,8 +1,5 @@
 import axios from 'axios';
 import {SERVER_URL} from "../../variables.tsx";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { storage } from "../../App.tsx";
-import { useAuth } from "../context/AuthContext.tsx";
 
 export const fetchStops = async (token: string) => {
 

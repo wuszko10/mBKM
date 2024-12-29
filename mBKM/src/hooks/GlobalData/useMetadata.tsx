@@ -1,9 +1,9 @@
 import {useEffect, useState} from "react";
 import {fetchMetadata} from "../../services/metadata.service.tsx";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Metadata} from "../../types/interfaces.tsx";
 import {useAuth} from "../../context/AuthContext.tsx";
 import { storage } from "../../../App.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useMetadata = () => {
     const { token } = useAuth();
@@ -23,12 +23,8 @@ export const useMetadata = () => {
                     storage.set('statusTypes', JSON.stringify(data.statusTypes));
                 }
             })
-            .catch((error) => {
-                console.error("Błąd pobierania metadanych | " + error);
-                // toast.error('Brak danych w bazie', {
-                //     position: 'top-right',
-                //     theme: "colored",
-                // });
+            .catch(() => {
+                ToastAndroid.show('Błąd pobierania metadanych', ToastAndroid.SHORT);
             })
             .finally(() => {
                 setMetadataLoading(false);

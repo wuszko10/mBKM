@@ -1,7 +1,7 @@
-import { BusStop,Location } from "../../types/interfaces.tsx";
+import { BusStop,Location } from "../types/interfaces.tsx";
 import GetLocation from "react-native-get-location";
-import { calculateDistance } from "../../repositories/geofence.tsx";
-import { DISTANCE,LOCATION_TIMEOUT } from "../../../variables.tsx";
+import { calculateDistance } from "./distance.tsx";
+import { DISTANCE,LOCATION_TIMEOUT } from "../../variables.tsx";
 
 const distanceThreshold = DISTANCE;
 const checkIfInRange = (userLocation: Location, stops: BusStop[]) => {

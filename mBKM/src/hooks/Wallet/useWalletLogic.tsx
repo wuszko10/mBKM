@@ -1,9 +1,9 @@
 import { useEffect,useState } from "react";
-import { PaymentMethod,TopUpTransaction } from "../../types/interfaces.tsx";
-import { storage } from "../../../App.tsx";
-import { WALLET_PAYMENT } from "../../../variables.tsx";
+import { TopUpTransaction } from "../../types/interfaces.tsx";
 import { fetchTopUp } from "../../services/topUp.service.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
+import checkInternetConnection from "../../utils/network.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useWalletLogic = () => {
 
@@ -15,16 +15,14 @@ export const useWalletLogic = () => {
     const getData = (token: string) => {
         if(!isLoading) return;
 
+        checkInternetConnection().then();
+
         fetchTopUp(userId, token)
             .then(async (data) => {
                 setTopUps(data);
             })
-            .catch((error) => {
-                console.error("Błąd pobierania danych | " + error);
-                // toast.error('Brak danych w bazie', {
-                //     position: 'top-right',
-                //     theme: "colored",
-                // });
+            .catch(() => {
+                ToastAndroid.show('Błąd pobierania danych', ToastAndroid.SHORT);
             })
             .finally(() => {
                 setIsLoading(false);

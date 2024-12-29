@@ -1,19 +1,12 @@
 import React from "react";
 import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
-import { StackNavigationProp } from "@react-navigation/stack";
 import { useNavigation } from "@react-navigation/native";
 import { colors,dimensions } from "../../style/styleValues.js";
+import { NavigationProp } from "../../types/navigation.tsx";
 
-type RootStackPramList = {
-    Welcome: undefined;
-    Login: undefined;
-    Register: undefined;
-    Home: undefined;
-}
-
-type NavigationProp = StackNavigationProp<RootStackPramList>
 const Welcome = () => {
+
     const navigation = useNavigation<NavigationProp>();
 
     function handleLogin() {

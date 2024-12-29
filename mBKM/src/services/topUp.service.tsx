@@ -1,6 +1,6 @@
-import { storage } from "../../App.tsx";
 import axios from "axios";
 import { SERVER_URL } from "../../variables.tsx";
+import { ToastAndroid } from "react-native";
 
 export const addTopUp= async (amount: number, methodId: string, userId: string, token: string) => {
 
@@ -17,35 +17,16 @@ export const addTopUp= async (amount: number, methodId: string, userId: string, 
                 'authorization': `Bearer ${token}`,
             }
         });
-        // toast.success('Dodano nowy przystanek', {
-        //     position: 'top-right',
-        //     theme: "colored",
-        // });
-
 
         return response.data;
     } catch (err) {
-        // toast.error('Przystanek nie został utworzony', {
-        //     position: 'top-right',
-        //     theme: "colored",
-        // });
-        console.log ('Błąd przy doładowaniu: ' + err);
+        ToastAndroid.show('Błąd przy doładowaniu', ToastAndroid.SHORT);
     }
 };
 
 export const fetchTopUp = async (userId: string, token: string) => {
 
     const response = await axios.get(SERVER_URL + `top-ups/all/${userId}`, {
-        headers: {
-            'authorization': `Bearer ${token}`,
-        }
-    });
-    return response.data;
-};
-
-export const getTopUp = async (id: string, token: string) => {
-
-    const response = await axios.get(SERVER_URL + `top-up/${id}`, {
         headers: {
             'authorization': `Bearer ${token}`,
         }
@@ -65,15 +46,8 @@ export const rollbackTopUp = async (topUpId: string, token: string) => {
                 'authorization': `Bearer ${token}`,
             }
         });
-        // toast.success('Przystanek został usunięty', {
-        //     position: 'top-right',
-        //     theme: "colored",
-        // });
         return response.data;
     } catch (err) {
-        // toast.error('Przystanek nie został usunięty', {
-        //     position: 'top-right',
-        //     theme: "colored",
-        // });
+        ToastAndroid.show('Błąd przy cofaniu transackji', ToastAndroid.SHORT);
     }
 }

@@ -1,23 +1,14 @@
-import React,{ useEffect,useState } from "react";
+import React from "react";
 import { ActivityIndicator,SafeAreaView,Text,TextInput,TouchableOpacity,View } from "react-native";
-import { PaymentMethod,Ticket } from "../../types/interfaces.tsx";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { useNavigation } from "@react-navigation/native";
 import stylesApp from "../../style/stylesApp.js";
 import Header from "../../components/Global/Header.tsx";
 import PaymentSelector from "../../components/Payments/PaymentSelector.tsx";
-import { storage } from "../../../App.tsx";
-import { WALLET_PAYMENT } from "../../../variables.tsx";
-import { addTransaction } from "../../services/transaction.service.tsx";
-import { NavigationProp } from "../../types/navigation.tsx";
 import { colors } from "../../style/styleValues.js";
-import { addTopUp } from "../../services/topUp.service.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { useTopUpLogic } from "../../hooks/Wallet/useTopUpLogic.tsx";
 
 const TopUpScreen = () => {
 
-    const navigation = useNavigation<NavigationProp>();
     const { userId, token } = useAuth();
 
     const {
@@ -27,27 +18,8 @@ const TopUpScreen = () => {
         isLoading,
         setPaymentMethodId,
         setAmount,
-    } = useTopUpLogic();
-
-    const handleTopUp = async () => {
-        if (!amount || !paymentMethodId) {
-            console.log('Proszę podać kwotę i wybrać metodę płatności');
-            return;
-        } else {
-
-            const data = await addTopUp(Number(amount), paymentMethodId, userId, token ? token : '');
-
-
-            if (data) {
-                navigation.navigate('PaymentScreen', {
-                    transactionId: data.id,
-                    transactionNumber: data.number,
-                    paymentMethodId: paymentMethodId,
-                    transactionAmount: Number(amount),
-                });
-            }
-        }
-    };
+        handleTopUp
+    } = useTopUpLogic(userId, token);
 
 
     if (isLoading) {

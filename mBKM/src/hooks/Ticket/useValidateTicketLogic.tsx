@@ -1,11 +1,12 @@
 import { useEffect,useState } from "react";
-import { CommonActions,useNavigation,useRoute } from "@react-navigation/native";
+import { CommonActions,useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "../../types/navigation.tsx";
 import { useLocalStops } from "./useLocalStops.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { BusStop } from "../../types/interfaces.tsx";
-import { checkLocation } from "../../components/Global/CheckLocation.tsx";
+import { checkLocation } from "../../utils/CheckLocation.tsx";
 import { validateTicket } from "../../services/ticket.service.tsx";
+import checkInternetConnection from "../../utils/network.tsx";
 
 export const useValidateTicketLogic = (userTicketId: string, walletTransaction: boolean | undefined) => {
 
@@ -35,7 +36,7 @@ export const useValidateTicketLogic = (userTicketId: string, walletTransaction: 
     useEffect(() => {
         if (walletTransaction && location) {
             setLoading(false);
-            confirmationPopupAction();
+            confirmationPopupAction().then();
         }
     }, [walletTransaction, location])
 
@@ -43,6 +44,8 @@ export const useValidateTicketLogic = (userTicketId: string, walletTransaction: 
 
 
         setShowPaymentPopup(true);
+
+        checkInternetConnection().then();
 
         if (!location) {
             setCancelPopupText("Błąd. Lokalizacja jest wymagana, aby skasować bilet.");
@@ -54,9 +57,6 @@ export const useValidateTicketLogic = (userTicketId: string, walletTransaction: 
             setIsProcessing(true);
 
             const data = await validateTicket(userTicketId, token ? token : '');
-
-
-            console.log('wb k 2');
 
             if (data) {
                 setRefreshData(true);
@@ -117,7 +117,7 @@ export const useValidateTicketLogic = (userTicketId: string, walletTransaction: 
 
     useEffect( () => {
         if (stops && !walletTransaction) {
-            checkLocationAndSetState(stops);
+            checkLocationAndSetState(stops).then();
         }
     }, [stops])
 
@@ -125,7 +125,7 @@ export const useValidateTicketLogic = (userTicketId: string, walletTransaction: 
         if (stops) {
             setLoading(true);
             setShowBadPopupRequest(false);
-            checkLocationAndSetState(stops);
+            checkLocationAndSetState(stops).then();
         }
     }
 

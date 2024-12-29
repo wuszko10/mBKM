@@ -1,4 +1,4 @@
-import React,{ useEffect,useState } from "react";
+import React,{ useEffect } from "react";
 import styles from "./src/style/stylesApp";
 import {
     SafeAreaView
@@ -75,7 +75,6 @@ function MainApp() {
     useEffect(() => {
         if (token && !isExpired(token)) {
             refreshAll(token);
-            console.log(token);
         }
     }, [token]);
 

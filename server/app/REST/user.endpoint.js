@@ -35,7 +35,7 @@ const userEndpoint = (router) => {
 
     router.delete('/api/user/logout', async (request, response) => {
         try {
-            let result = await business.getUserManager().removeHashSession(request.query.userId);
+            let result = await business.getUserManager().removeHashSession(request.query.userId, request.query.token);
             response.status(200).send(result);
         } catch (error) {
             applicationException.errorHandler(error, response);

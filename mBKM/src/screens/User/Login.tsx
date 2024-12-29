@@ -1,70 +1,27 @@
-import React,{ useState } from "react";
+import React from "react";
 import { Text,TextInput,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import Icon from "react-native-vector-icons/FontAwesome";
 import tw from "twrnc";
 import { colors } from "../../style/styleValues.js";
-import { StackNavigationProp } from "@react-navigation/stack";
-import { CommonActions,useNavigation } from "@react-navigation/native";
-import axios from 'axios';
 import { useAuth } from "../../context/AuthContext.tsx";
-import { SERVER_URL } from "../../../variables.tsx";
-import { storage } from "../../../App.tsx";
-import { NavigationProp } from "../../types/navigation.tsx";
+import { useLoginLogic } from "../../hooks/User/useLoginLogic.tsx";
 
 const Login = () => {
 
-    const navigation = useNavigation<NavigationProp>();
-    const [username,setUsername] = useState("");
-    const [password,setPassword] = useState("");
-    const [showPassword,setShowPassword] = useState(true);
-    const { setToken, setUser, setUserId, setWallet, userId, token} = useAuth();
 
 
-    function handleChangeRoute() {
-        navigation.dispatch(CommonActions.reset({
-            index: 0,
-            routes: [{ name: 'UserPanel' }],
-        }));
-    }
+    const {
+        username,
+        setUsername,
+        password,
+        showPassword,
+        setPassword,
+        togglePassword,
+        handleLogin,
+        handleRegister
+    } = useLoginLogic();
 
-    async function handleLogin() {
-
-        if (!username || !password){
-            console.log("Uzupełnij wszystkie pola");
-            return;
-        }
-
-        try {
-            const response = await axios.post(SERVER_URL+'user/auth', {
-                email: username,
-                password: password
-            });
-
-            setToken(String(response.data.token.token));
-            setUser(response.data.user);
-            setUserId(String(response.data.user.id));
-            setWallet(response.data.wallet);
-
-            storage.set('token', JSON.stringify(response.data.token));
-            storage.set('user', JSON.stringify(response.data.user));
-            storage.set('wallet', JSON.stringify(response.data.wallet));
-
-            handleChangeRoute();
-        } catch (error) {
-            console.error(error);
-            setUsername('');
-            setPassword('');
-        }
-    }
-
-    const togglePassword = () => {
-        setShowPassword(!showPassword);
-    };
-
-    function handleRegister() {
-        navigation.navigate('Register');
-    }
 
     return (
         <View style={stylesApp.loginRegisterContainer}>

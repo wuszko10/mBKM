@@ -4,35 +4,21 @@ import Header from "../../components/Global/Header.tsx";
 import stylesApp from "../../style/stylesApp.js";
 import TicketSelector from "../../components/Tickets/TicketSelector.tsx";
 import TicketTypeSelector from "../../components/Tickets/TicketTypeSelector.tsx";
-import { useNavigation } from "@react-navigation/native";
 import {useBuyTicketSelectionLogic} from "../../hooks/BuyTicket/useBuyTicketSelectionLogic.tsx";
-import {NavigationProp} from "../../types/navigation.tsx";
 
 const BuyTicketSelection = () => {
 
-    const navigation = useNavigation<NavigationProp>();
-
     const {
-        selectedTicket,
         setSelectedTicket,
         selectedTicketId,
         setSelectedTicketId,
         ticketType,
         toggleTicketType,
         ticketsData,
-        resetData,
+        handleConfiguration,
     } = useBuyTicketSelectionLogic();
 
-    const handleConfiguration= () => {
-        if (selectedTicket !== null && selectedTicketId !== null) {
-            navigation.navigate('BuyTicketConfiguration', {
-                selectedTicket: selectedTicket
-            });
-            resetData();
-        } else {
-            console.log('Brak wystarczających danych do podsumowania transakcji.');
-        }
-    }
+
 
     return (
         <ScrollView style={stylesApp.scrollContainer}>

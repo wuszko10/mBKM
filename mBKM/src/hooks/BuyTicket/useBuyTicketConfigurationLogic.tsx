@@ -1,12 +1,15 @@
 import {useEffect, useState} from "react";
 import {FilterMapListType, Line, Relief, Ticket} from "../../types/interfaces.tsx";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-import { ALL_LINES,DEFAULT_RELIEF,SEASON_TICKET,SINGLE_TICKET } from "../../../variables.tsx";
+import { ALL_LINES,DEFAULT_RELIEF,ONE_LINE,SEASON_TICKET,SINGLE_TICKET } from "../../../variables.tsx";
 import { storage } from "../../../App.tsx";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProp } from "../../types/navigation.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
 
     const [isLoading, setIsLoading] = useState(true);
+    const navigation = useNavigation<NavigationProp>();
 
     const [showDate, setShowDate] = useState(false);
     const [reliefs, setReliefs] = useState<Relief[]>();
@@ -88,7 +91,33 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
         }
     }, [selectedRelief, reliefs]);
 
+    const handleSummaryPurchase = () => {
 
+        if (selectedTicket.typeName === SEASON_TICKET && !showDate) {
+            ToastAndroid.show('Wybierz datę', ToastAndroid.SHORT);
+            return;
+        }
+
+        if (selectedTicket.lineName === ONE_LINE && !selectedLines) {
+            ToastAndroid.show('Wybierz linię', ToastAndroid.SHORT);
+            return;
+        }
+
+        if (!selectedRelief) {
+            ToastAndroid.show('Wybierz ulgę', ToastAndroid.SHORT);
+            return;
+        }
+
+        const data = {
+            selectedTicket: selectedTicket,
+            selectedLines: selectedLines,
+            selectedRelief: reliefs?.find(r => r._id === selectedRelief),
+            finalPrice: finalPrice,
+            ...(selectedTicket.typeName === SEASON_TICKET && { selectedDate: selectedDate.toISOString() }),
+        };
+
+        navigation.navigate("BuyTicketSummary", data);
+    };
 
 
     return {
@@ -105,5 +134,6 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
         setSelectedDate,
         setSelectedRelief,
         setSelectedLines,
+        handleSummaryPurchase,
     };
 }

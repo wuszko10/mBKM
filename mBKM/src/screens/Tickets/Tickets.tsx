@@ -1,9 +1,8 @@
 import React from 'react';
 import { ActivityIndicator,FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
-import { ticketOrderTransactions,ticketsData } from "../../repositories/Data.tsx";
-import { colors,dimensions } from "../../style/styleValues.js";
-import { TicketOrderTransaction,UserTicket } from "../../types/interfaces.tsx";
+import { colors } from "../../style/styleValues.js";
+import { UserTicket } from "../../types/interfaces.tsx";
 import { useNavigation } from "@react-navigation/native";
 import Header from "../../components/Global/Header.tsx";
 import Entypo from "react-native-vector-icons/Entypo";
@@ -13,11 +12,15 @@ import { useTicketLogic } from "../../hooks/Ticket/useTicketLogic.tsx";
 const Tickets = () => {
 
     const navigation = useNavigation<NavigationProp>();
-    const { userTickets, tickets, statusTypes, reliefs, isLoading } = useTicketLogic();
+    const {
+        userTickets,
+        tickets,
+        statusTypes,
+        reliefs,
+        isLoading,
+        handleTicketDetails
+    } = useTicketLogic();
 
-    function handleTicketDetails(item: UserTicket) {
-        navigation.navigate('TicketDetails', {userTicketId: item.id});
-    }
 
     const renderItem= ({item} : {item: UserTicket}) => {
 

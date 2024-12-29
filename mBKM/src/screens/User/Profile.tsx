@@ -1,16 +1,10 @@
-import React,{ useEffect,useState } from "react";
+import React,{ useState } from "react";
 import { SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
 import Header from "../../components/Global/Header.tsx";
-import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../context/AuthContext.tsx";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
-import { storage } from "../../../App.tsx";
-import { NavigationProp } from "../../types/navigation.tsx";
-import axios from "axios";
-import { SERVER_URL } from "../../../variables.tsx";
-import { userLogout } from "../../services/user.service.tsx";
 
 const Profile = () => {
 

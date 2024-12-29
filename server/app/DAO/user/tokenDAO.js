@@ -58,9 +58,9 @@ async function get(tokenValue) {
     throw applicationException.new(applicationException.UNAUTHORIZED, 'Token not found');
 }
 
-async function remove(userId) {
-    const token = await TokenModel.findOne({userId: userId});
-    const result = await TokenModel.deleteOne(token);
+async function remove(userId, token) {
+    const tok = await TokenModel.findOne({userId: userId, value: token});
+    const result = await TokenModel.deleteOne(tok);
     if (result) {
         return result;
     }

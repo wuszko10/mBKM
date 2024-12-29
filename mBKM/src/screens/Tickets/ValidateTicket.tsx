@@ -1,4 +1,4 @@
-import React,{ useEffect } from "react";
+import React from "react";
 import { ActivityIndicator,SafeAreaView,Text,View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import stylesApp from "../../style/stylesApp.js";

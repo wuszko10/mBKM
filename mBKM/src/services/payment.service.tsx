@@ -1,7 +1,5 @@
 import axios from 'axios';
 import {SERVER_URL} from "../../variables.tsx";
-import { storage } from "../../App.tsx";
-
 
 export const payWallet = async (amount: number, transactionId: string, walletId: string, userTicketId: string, token: string) => {
 
@@ -15,11 +13,6 @@ export const payWallet = async (amount: number, transactionId: string, walletId:
             'authorization': `Bearer ${token}`,
         }
     });
-    // toast.success('Dodano nowy przystanek', {
-    //     position: 'top-right',
-    //     theme: "colored",
-    // });
-
 
     return response.data;
 };
@@ -38,11 +31,6 @@ export const payCard = async (amount: number, transactionId: string, cardNumber:
             'authorization': `Bearer ${token}`,
         }
     });
-    // toast.success('Dodano nowy przystanek', {
-    //     position: 'top-right',
-    //     theme: "colored",
-    // });
-
 
     return response.data;
 };
@@ -61,10 +49,6 @@ export const payBlik = async (amount: number, transactionId: string, code: strin
             'authorization': `Bearer ${token}`,
         }
     });
-    // toast.success('Dodano nowy przystanek', {
-    //     position: 'top-right',
-    //     theme: "colored",
-    // });
 
 
     return response.data;
@@ -84,15 +68,10 @@ export async function topUpCard  (amount: number, topUpId: string, cardNumber: s
             'authorization': `Bearer ${token}`,
         }
     });
-    // toast.success('Dodano nowy przystanek', {
-    //     position: 'top-right',
-    //     theme: "colored",
-    // });
 
 
     return response.data;
-};
-
+}
 
 export async function topUpBlik (amount: number, transactionId: string, code: string, walletId: string, token: string) {
 
@@ -106,21 +85,8 @@ export async function topUpBlik (amount: number, transactionId: string, code: st
             'authorization': `Bearer ${token}`,
         }
     });
-    // toast.success('Dodano nowy przystanek', {
-    //     position: 'top-right',
-    //     theme: "colored",
-    // });
 
 
     return response.data;
-};
+}
 
-export const fetchTransactions = async (token: string) => {
-
-    const response = await axios.get(SERVER_URL + `tickets`, {
-        headers: {
-            'authorization': `Bearer ${token}`,
-        }
-    });
-    return response.data;
-};

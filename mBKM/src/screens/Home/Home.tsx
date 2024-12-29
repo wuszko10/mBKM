@@ -4,7 +4,6 @@ import stylesApp from "../../style/stylesApp.js";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { colors } from "../../style/styleValues.js";
-import Icon from "react-native-vector-icons/FontAwesome";
 import Entypo from "react-native-vector-icons/Entypo";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
 import { useHomeLogic } from "../../hooks/Home/useHomeLogic.tsx";

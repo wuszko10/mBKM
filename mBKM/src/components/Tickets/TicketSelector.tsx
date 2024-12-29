@@ -2,8 +2,11 @@ import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
 import React from "react";
-import {TicketSelectorProps} from "../../types/componentProps.tsx";
 
+type TicketSelectorProps = {
+    ticketType: 'single' | 'season' | null;
+    toggleTicketType: (type: 'single' | 'season') => void;
+}
 const TicketSelector: React.FC<TicketSelectorProps> = (props) => {
 
     return(

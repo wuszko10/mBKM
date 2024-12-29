@@ -46,7 +46,7 @@ const TicketDetails = () => {
                     <Text style={stylesApp.ticketTypeText}>Bilet {ticket?.typeLabel} {ticket?.periodLabel}</Text>
                     <Text style={stylesApp.itemText}>Typ: <Text style={stylesApp.boldText}>{relief?.name}</Text></Text>
                     <Text style={stylesApp.itemText}>Linie: <Text style={stylesApp.boldText}>{ticket?.lineLabel}</Text></Text>
-                    <Text style={stylesApp.itemText}>Cena: <Text style={stylesApp.boldText}>{transaction?.finalPrice} zł</Text></Text>
+                    <Text style={stylesApp.itemText}>Cena: <Text style={stylesApp.boldText}>{transaction?.finalPrice.toFixed(2)} zł</Text></Text>
                     <Text style={stylesApp.itemText}>Status: <Text style={stylesApp.boldText}>{status?.label}</Text></Text>
                 </View>
 
@@ -87,7 +87,3 @@ const TicketDetails = () => {
 };
 
 export default TicketDetails;
-
-/*
-<QRCode ticketId={selectedTransaction.number.toString()}/>
- */ //generowanie kodu QR

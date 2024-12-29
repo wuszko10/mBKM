@@ -3,10 +3,15 @@ import { MetadataType,Relief,Ticket,UserTicket } from "../../types/interfaces.ts
 import { storage } from "../../../App.tsx";
 import { fetchUserTickets } from "../../services/ticket.service.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProp } from "../../types/navigation.tsx";
+import checkInternetConnection from "../../utils/network.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useTicketLogic = () => {
 
     const [isLoading, setIsLoading] = useState(true);
+    const navigation = useNavigation<NavigationProp>();
 
     const { token, userId } = useAuth();
     const [userTickets, setUserTickets] = useState<UserTicket[]>();
@@ -18,6 +23,7 @@ export const useTicketLogic = () => {
 
         if(!isLoading) return;
 
+        checkInternetConnection().then();
 
         fetchUserTickets(userId, token)
             .then(async (data) => {
@@ -31,12 +37,8 @@ export const useTicketLogic = () => {
                     setReliefs(JSON.parse(reliefTypesStr));
                 }
             })
-            .catch((error) => {
-                console.error("Błąd pobierania danych | " + error);
-                // toast.error('Brak danych w bazie', {
-                //     position: 'top-right',
-                //     theme: "colored",
-                // });
+            .catch(() => {
+                ToastAndroid.show('Błąd pobierania danych', ToastAndroid.SHORT);
             })
             .finally(() => {
                 setIsLoading(false);
@@ -48,11 +50,17 @@ export const useTicketLogic = () => {
             getUserTickets(token);
     }, [isLoading]);
 
+
+    function handleTicketDetails(item: UserTicket) {
+        navigation.navigate('TicketDetails', {userTicketId: item.id});
+    }
+
     return {
         userTickets,
         tickets,
         statusTypes,
         reliefs,
         isLoading,
+        handleTicketDetails,
     };
 }

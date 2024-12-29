@@ -58,8 +58,8 @@ function create(context) {
     }
   }
 
-  async function removeHashSession(userId) {
-    return await TokenDAO.remove(userId);
+  async function removeHashSession(userId, token) {
+    return await TokenDAO.remove(userId, token);
   }
 
   async function getUserById(id) {

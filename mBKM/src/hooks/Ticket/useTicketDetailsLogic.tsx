@@ -1,14 +1,15 @@
 import { useEffect,useState } from "react";
 import { MetadataType,PaymentMethod,Relief,Ticket,TicketOrderTransaction,UserTicket } from "../../types/interfaces.tsx";
 import { storage } from "../../../App.tsx";
-import { fetchUserTickets,getUserTicket } from "../../services/ticket.service.tsx";
+import { getUserTicket } from "../../services/ticket.service.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useTicketDetailsLogic = (userTicketId: string) => {
 
     const [isLoading, setIsLoading] = useState(true);
 
-    const { token, userId } = useAuth();
+    const { token } = useAuth();
     const [userTicket, setUserTicket] = useState<UserTicket>();
     const [transaction, setTransaction] = useState<TicketOrderTransaction>();
     const [status, setStatus] = useState<MetadataType>()
@@ -49,12 +50,8 @@ export const useTicketDetailsLogic = (userTicketId: string) => {
                     setRelief(filterRelief);
                 }
             })
-            .catch((error) => {
-                console.error("Błąd pobierania danych | " + error);
-                // toast.error('Brak danych w bazie', {
-                //     position: 'top-right',
-                //     theme: "colored",
-                // });
+            .catch(() => {
+                ToastAndroid.show('Błąd pobierania danych', ToastAndroid.SHORT);
             })
             .finally(() => {
                 setIsLoading(false);

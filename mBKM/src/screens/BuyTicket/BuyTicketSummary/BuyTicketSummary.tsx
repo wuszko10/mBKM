@@ -1,15 +1,13 @@
 import React from "react";
 import { ActivityIndicator,SafeAreaView,Text,TouchableOpacity,View } from "react-native";
-import { useNavigation,useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import { Relief,Ticket } from "../../../types/interfaces.tsx";
 import stylesApp from "../../../style/stylesApp.js";
 import Header from "../../../components/Global/Header.tsx";
 import { colors } from "../../../style/styleValues.js";
 import PaymentSelector from "../../../components/Payments/PaymentSelector.tsx";
-import { NavigationProp } from "../../../types/navigation.tsx";
 import { useBuyTicketSummaryLogic } from "../../../hooks/BuyTicket/useBuyTicketSummaryLogic.tsx";
 import { style as localStyle } from "./style.tsx";
-import { addTransaction } from "../../../services/transaction.service.tsx";
 import { useAuth } from "../../../context/AuthContext.tsx";
 
 type RouteParams = {
@@ -21,46 +19,20 @@ type RouteParams = {
 }
 const BuyTicketSummary = () => {
 
-    const navigation = useNavigation<NavigationProp>();
     const route = useRoute();
-    const { userId } = useAuth();
     const {selectedTicket, selectedLines, selectedRelief, selectedDate, finalPrice} = route.params as RouteParams;
     const parsedDate = selectedDate && new Date(selectedDate);
-    const { token } = useAuth();
+    const { token, userId } = useAuth();
 
     const {
         line,
         paymentMethodId,
         filteredMethods,
         isLoading,
-        statusId,
         setPaymentMethodId,
-    } = useBuyTicketSummaryLogic(selectedTicket, selectedLines);
+        handleBuyTicket
+    } = useBuyTicketSummaryLogic(selectedTicket, selectedLines, selectedRelief, selectedDate, finalPrice, userId, token);
 
-
-
-    const handleBuyTicket = async () => {
-        if (paymentMethodId) {
-
-            const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId, selectedDate, selectedRelief ? selectedRelief?._id : '', token ? token : '');
-
-            if (data) {
-                navigation.navigate('PaymentScreen', {
-                    transactionId: data.transactionId,
-                    transactionNumber: data.transactionNumber,
-                    paymentMethodId,
-                    transactionAmount: data.transactionAmount,
-                    userTicketId: data.userTicketId,
-
-                })
-            } else {
-                console.log("Błąd tworzenia transakcji");
-            }
-
-        } else {
-            console.log("Wybierz metodę płatności");
-        }
-    }
 
     if (isLoading) {
         return (

@@ -1,10 +1,9 @@
 import {useEffect, useState} from "react";
-import {fetchStops} from "../../services/busStop.service.tsx";
 import {fetchTickets} from "../../services/ticket.service.tsx";
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import {Ticket} from "../../types/interfaces.tsx";
 import {useAuth} from "../../context/AuthContext.tsx";
 import { storage } from "../../../App.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useTickets = () => {
     const { token } = useAuth();
@@ -16,15 +15,10 @@ export const useTickets = () => {
             .then(async (data) => {
                 setTickets(data);
                 if (data)
-                    // await AsyncStorage.setItem('tickets', JSON.stringify(data));
                     storage.set('tickets', JSON.stringify(data));
             })
-            .catch((error) => {
-                console.error("Błąd pobierania biletów | " + error);
-                // toast.error('Brak danych w bazie', {
-                //     position: 'top-right',
-                //     theme: "colored",
-                // });
+            .catch(() => {
+                ToastAndroid.show('Błąd pobierania biletów', ToastAndroid.SHORT);
             })
             .finally(() => {
                 setTicketsLoading(false);
