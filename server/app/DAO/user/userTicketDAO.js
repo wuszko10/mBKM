@@ -16,6 +16,7 @@ const ticketSchema = new mongoose.Schema({
     ticketId: {type: mongoose.Schema.Types.ObjectId, ref: 'ticket', required: true},
     reliefId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     price: {type: Number, required: true},
+    purchaseDate: { type: Date, required: true },
     ticketStartDate: { type: Date, required: false },
     ticketEndDate: { type: Date, required: false },
     QRCode: { type: String, required: false },
@@ -53,6 +54,7 @@ function createNewOrUpdate(userTicket) {
 
                 if (startDate.toDateString() === currentDate.toDateString()) {
                     startDate.setHours(currentDate.getHours(), currentDate.getMinutes(), currentDate.getSeconds(), currentDate.getMilliseconds());
+                    userTicket.statusId = '675c1ca31c33663091557e95';
                 } else {
                     startDate.setHours(0, 0, 0, 0);
                 }
@@ -64,7 +66,6 @@ function createNewOrUpdate(userTicket) {
 
                 const endTimeDate = new Date(endTime);
                 endTimeDate.setHours(23, 59, 59, 999);
-
 
                 userTicket.ticketStartDate = startDate.toISOString();
                 userTicket.ticketEndDate = endTimeDate.toISOString();
@@ -91,6 +92,22 @@ function createNewOrUpdate(userTicket) {
 
 async function getByUserId(id) {
     const result = await UserTicketModel.find({ userId: id }).sort({ _id: -1 });
+    if (result) {
+        return mongoConverter(result);
+    }
+    throw applicationException.new(applicationException.NOT_FOUND, 'Ticket not found');
+}
+
+async function getToValidateByUserId(id) {
+    const result = await UserTicketModel.find({ userId: id, statusId: '675c1c4e1c33663091557e94' }).sort({ _id: -1 });
+    if (result) {
+        return mongoConverter(result);
+    }
+    throw applicationException.new(applicationException.NOT_FOUND, 'Ticket not found');
+}
+
+async function getValidatedByUserId(id) {
+    const result = await UserTicketModel.find({ userId: id, statusId: '675c1ca31c33663091557e95' }).sort({ _id: -1 });
     if (result) {
         return mongoConverter(result);
     }
@@ -128,6 +145,8 @@ async function removeById(id) {
 export default {
     createNewOrUpdateUserTicket: createNewOrUpdate,
     getUserTicketByUserId: getByUserId,
+    getUserTicketToValidateByUserId: getToValidateByUserId,
+    getUserTicketValidatedByUserId: getValidatedByUserId,
     getUserTicketById: get,
     getUserTicketByTransactionId: getByTransactionId,
     updateManyUserTickets: updateMany,

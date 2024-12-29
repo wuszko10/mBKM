@@ -8,6 +8,7 @@ export const addTransaction = async (ticketId: string, finalPrice: number, metho
         transactionId: '',
         reliefId: reliefId,
         price: finalPrice,
+        purchaseDate: new Date().toISOString(),
         userId: userId,
         ticketId: ticketId,
         statusId: statusId,

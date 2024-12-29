@@ -13,6 +13,24 @@ const UserTicketEndpoint = (router) => {
         }
     });
 
+    router.get('/api/user-ticket/user/to-validate/:userId', authToken, async (req, res) => {
+        try {
+            const relief = await business.getUserTicketManager().getUserTicketToValidateByUserId(req.params.userId);
+            res.status(200).json(relief);
+        } catch (error) {
+            applicationException.errorHandler(error, res);
+        }
+    });
+
+    router.get('/api/user-ticket/user/validated/:userId', authToken, async (req, res) => {
+        try {
+            const relief = await business.getUserTicketManager().getUserTicketValidatedByUserId(req.params.userId);
+            res.status(200).json(relief);
+        } catch (error) {
+            applicationException.errorHandler(error, res);
+        }
+    });
+
     router.get('/api/user-ticket/:id', authToken, async (req, res) => {
         try {
             const relief = await business.getUserTicketManager().getUserTicketById(req.params.id);

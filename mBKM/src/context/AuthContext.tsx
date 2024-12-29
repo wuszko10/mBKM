@@ -6,7 +6,8 @@ import { Token,User,WalletDAO } from "../types/interfaces.tsx";
 interface AuthContextType {
     token: string | null;
     setToken: (token: string | null) => void;
-    userId: string ;
+    userId: string;
+    setUserId: (userId: string)=>void;
     user: User | null;
     setUser: (user: User | null) => void;
     wallet: WalletDAO | null;
@@ -77,7 +78,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [token]);
 
     return (
-        <AuthContext.Provider value={{ token, setToken, userId, user, setUser, wallet, setWallet }}>
+        <AuthContext.Provider value={{ token, setToken, userId, setUserId, user, setUser, wallet, setWallet }}>
             {children}
         </AuthContext.Provider>
     );

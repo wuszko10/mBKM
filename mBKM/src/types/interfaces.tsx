@@ -50,6 +50,7 @@ export interface UserTicket {
     ticketId: string;
     reliefId: string;
     price: number;
+    purchaseDate: Date;
     ticketStartDate: Date;
     ticketEndDate: Date;
     QRCode: string;

@@ -14,10 +14,25 @@ function create(context) {
             throw applicationException.new(applicationException.NOT_FOUND, 'Error while creating or updating user tickets');
         }
     }
-
     async function getUserTicketByUserId(id) {
         try {
             return await UserTicketDAO.getUserTicketByUserId(id);
+        } catch (error) {
+            throw applicationException.new(applicationException.NOT_FOUND, `Ticket with ID ${id} not found`);
+        }
+    }
+
+    async function getUserTicketToValidateByUserId(id) {
+        try {
+            return await UserTicketDAO.getUserTicketToValidateByUserId(id);
+        } catch (error) {
+            throw applicationException.new(applicationException.NOT_FOUND, `Ticket with ID ${id} not found`);
+        }
+    }
+
+    async function getUserTicketValidatedByUserId(id) {
+        try {
+            return await UserTicketDAO.getUserTicketValidatedByUserId(id);
         } catch (error) {
             throw applicationException.new(applicationException.NOT_FOUND, `Ticket with ID ${id} not found`);
         }
@@ -59,6 +74,8 @@ function create(context) {
     return {
         createNewOrUpdateUserTicket,
         getUserTicketByUserId,
+        getUserTicketToValidateByUserId,
+        getUserTicketValidatedByUserId,
         getUserTicketById,
         validateUserTicket
     };

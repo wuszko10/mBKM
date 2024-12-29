@@ -19,7 +19,7 @@ const Login = () => {
     const [username,setUsername] = useState("");
     const [password,setPassword] = useState("");
     const [showPassword,setShowPassword] = useState(true);
-    const { setToken, setUser, setWallet } = useAuth();
+    const { setToken, setUser, setUserId, setWallet } = useAuth();
 
 
     function handleChangeRoute() {
@@ -42,6 +42,7 @@ const Login = () => {
             setToken(String(response.data.token.token));
             setUser(response.data.user);
             setWallet(response.data.wallet);
+            setUserId(response.data.user.id);
 
             storage.set('token', JSON.stringify(response.data.token));
             storage.set('user', JSON.stringify(response.data.user));

@@ -68,8 +68,8 @@ export default StyleSheet.create({
     },
 
     divider: {
-        borderBottomWidth: 1,
-        borderColor: colors.appThirdColor,
+        borderBottomWidth: 0.5,
+        borderColor: colors.gray,
     },
 
     bigSeparator: {
@@ -194,6 +194,12 @@ export default StyleSheet.create({
         color: colors.appFirstColor,
         textAlign: 'center',
         fontSize: dimensions.normalTextSize,
+    },
+
+    activeTicketText: {
+        color: '#10430a',
+        textAlign: 'center',
+        fontSize: dimensions.smallTextSize,
     },
 
     secondButtonText: {

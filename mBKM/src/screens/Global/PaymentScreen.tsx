@@ -1,7 +1,7 @@
 import React,{ useEffect,useState } from "react";
 import { ActivityIndicator,SafeAreaView,Text,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
-import { CommonActions,useNavigation,useRoute } from "@react-navigation/native";
+import { useNavigation,useRoute } from "@react-navigation/native";
 import WalletPayment from "../../components/Payments/WalletPayment.tsx";
 import CardPayment from "../../components/Payments/CardPayment.tsx";
 import OnlinePayment from "../../components/Payments/OnlinePayment.tsx";
@@ -36,7 +36,7 @@ const PaymentScreen = () => {
 
 
     useEffect(() => {
-        return navigation.addListener('beforeRemove', async (e) => {
+        return navigation.addListener('beforeRemove', async () => {
             if (!stopPayment) {
                 return;
             }
