@@ -107,7 +107,8 @@ async function getToValidateByUserId(id) {
 }
 
 async function getValidatedByUserId(id) {
-    const result = await UserTicketModel.find({ userId: id, statusId: '675c1ca31c33663091557e95' }).sort({ _id: -1 });
+    const currentDate = new Date();
+    const result = await UserTicketModel.find({ userId: id, statusId: '675c1ca31c33663091557e95',ticketEndDate: { $gt: currentDate } }).sort({ _id: -1 });
     if (result) {
         return mongoConverter(result);
     }

@@ -13,7 +13,6 @@ const checkIfInRange = (userLocation: Location, stops: BusStop[]) => {
             stop.latitude,
             stop.longitude
         );
-        console.log("Jest czy nie jest? " + (distance));
         return distance <= distanceThreshold;
     });
 };
@@ -24,8 +23,6 @@ export function checkLocation (stops: BusStop[]) {
             timeout: LOCATION_TIMEOUT,
         })
             .then((loc) => {
-                console.log(stops);
-                console.log("Lokalizacja: " + JSON.stringify(loc));
                 return checkIfInRange(loc, stops);
             })
             .catch((err) => {

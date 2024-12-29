@@ -10,6 +10,7 @@ type PropTypes = {
     endTime: Date | undefined;
     type: string | undefined;
     onFinish: () => void;
+    setActiveTickets: (activeTickets: boolean) => void;
 }
 
 const Timer: React.FC<PropTypes> = (props) => {
@@ -26,7 +27,6 @@ const Timer: React.FC<PropTypes> = (props) => {
 
     const totalDuration = endTime - startTime;
 
-
     useEffect(() => {
 
         if (props.type === SINGLE_TICKET || (props.type === SEASON_TICKET && duration <= oneDayToEnd)) {
@@ -36,25 +36,31 @@ const Timer: React.FC<PropTypes> = (props) => {
                 duration: duration,
                 useNativeDriver: false,
             }).start(() => {
-                props.onFinish();
+                props.setActiveTickets(false);
             });
+            props.setActiveTickets(true);
         }
 
     }, [startTime, endTime, progress, duration, props]);
 
     useEffect(()=> {
+
+        if (remainingTime <= 0) {
+            props.setActiveTickets(false);
+            return;
+        }
+
         const interval = setInterval(() => {
             const timeLeft = Math.max(endTime - Date.now(), 0);
             setRemainingTime(timeLeft);
-
             if (timeLeft <= 0) {
                 clearInterval(interval);
-                props.onFinish();
+                props.setActiveTickets(false);
             }
-        }, 1000);
-
+        }, 60 * 1000);
+        props.setActiveTickets(true);
         return () => clearInterval(interval);
-    }, [remainingTime])
+    }, [remainingTime, props])
 
 
     const width = progress.interpolate({
@@ -77,7 +83,7 @@ const Timer: React.FC<PropTypes> = (props) => {
         const minutes = Math.floor(seconds / 60);
         const hours = Math.floor(minutes / 60);
         const days = Math.floor(hours / 24);
-        const months = Math.floor(days / 30);  // Zakładając średnią liczbę dni w miesiącu
+        const months = Math.floor(days / 30);
 
         if (months > 1) {
             return `Ważny przez ${months} ${getPolishPlural(months, 'miesiąc', 'miesiące', 'miesięcy')}`;

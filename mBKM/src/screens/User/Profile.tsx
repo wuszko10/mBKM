@@ -8,6 +8,9 @@ import { useAuth } from "../../context/AuthContext.tsx";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
 import { storage } from "../../../App.tsx";
 import { NavigationProp } from "../../types/navigation.tsx";
+import axios from "axios";
+import { SERVER_URL } from "../../../variables.tsx";
+import { userLogout } from "../../services/user.service.tsx";
 
 const Profile = () => {
 
@@ -15,15 +18,10 @@ const Profile = () => {
     const [changeData,setChangeData] = useState(false);
     const [changePassword,setChangePassword] = useState(false);
 
+    const { user , logout } = useAuth();
 
-    const navigation = useNavigation<NavigationProp>();
-    const { token, setToken, user } = useAuth();
-
-    function handleLogout() {
-        storage.delete('token');
-        setToken(null);
-        if (!token)
-            navigation.navigate("Welcome");
+    async function handleLogout() {
+        logout();
     }
 
     return (

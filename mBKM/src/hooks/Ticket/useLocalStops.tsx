@@ -1,4 +1,4 @@
-import { BusStop,Ticket } from "../../types/interfaces.tsx";
+import { BusStop } from "../../types/interfaces.tsx";
 import { useEffect,useState } from "react";
 import { storage } from "../../../App.tsx";
 

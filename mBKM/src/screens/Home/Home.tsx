@@ -16,11 +16,13 @@ import ToValidateTicketComponent from "../../components/Home/ToValidateTicketCom
 const Home = () => {
 
     const navigation = useNavigation<NavigationProp>();
-    const { user} = useAuth();
+    const { user, token, userId} = useAuth();
+
     const {
         forValidation,
         activeTickets,
         setActiveTickets,
+        setForValidation,
         toValidateTickets,
         validateTickets,
         reliefs,
@@ -28,7 +30,7 @@ const Home = () => {
         handleTicketDetails,
         handleValidateTicket,
         isLoading
-    } = useHomeLogic();
+    } = useHomeLogic(token, userId);
 
     if (isLoading) {
         return (
@@ -87,6 +89,7 @@ const Home = () => {
                         reliefs={reliefs}
                         handleTicketDetails={handleTicketDetails}
                         handleValidateTicket={handleValidateTicket}
+                        setForValidation={setForValidation}
                     />
                 )}
 

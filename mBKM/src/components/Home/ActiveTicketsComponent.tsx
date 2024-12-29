@@ -43,6 +43,7 @@ const ActiveTicketsComponent: React.FC<ComponentProps> = (props) => {
                         endTime={item?.ticketEndDate}
                         type={ticketType?.typeName}
                         onFinish={handleFinish}
+                        setActiveTickets={props.setActiveTickets}
                     />
 
                 </View>

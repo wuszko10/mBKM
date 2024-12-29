@@ -2,6 +2,8 @@ import React,{ createContext,ReactNode,useContext,useEffect,useState } from "rea
 import { storage } from "../../App.tsx";
 import { decodeToken } from "react-jwt";
 import { Token,User,WalletDAO } from "../types/interfaces.tsx";
+import axios from "axios";
+import { SERVER_URL } from "../../variables.tsx";
 
 interface AuthContextType {
     token: string | null;
@@ -12,6 +14,7 @@ interface AuthContextType {
     setUser: (user: User | null) => void;
     wallet: WalletDAO | null;
     setWallet: (wallet: WalletDAO | null) => void;
+    logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -33,10 +36,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const parseUser: User = JSON.parse(savedUser);
             const parseWallet: WalletDAO = JSON.parse(savedWallet);
 
-            console.log ('token '+ JSON.stringify(parseToken.token));
-            console.log ('user '+ JSON.stringify(parseUser));
-            console.log ('wallet '+ JSON.stringify(parseWallet));
-
             setToken(parseToken.token);
             setUser(parseUser);
             setWallet(parseWallet);
@@ -49,14 +48,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         loadToken();
     }, []);
 
-    const autoLogout = () => {
+    const logout = async () => {
+        const response = await axios.delete(SERVER_URL+`user/logout/?${userId}`);
+        if (response) {
             setToken(null);
             setUser(null);
             setWallet(null)
             setUserId('');
             storage.delete('token');
-
+        }
     }
+
     useEffect(() => {
         if (token) {
 
@@ -65,20 +67,18 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
             const expirationTime = decodedToken && (decodedToken.exp);
             const currentTime = Date.now();
             const timeUntilExpiration = expirationTime && ((expirationTime * 1000) - currentTime);
-            console.log("remaining time: " + new Date(timeUntilExpiration));
 
             if ( timeUntilExpiration && (timeUntilExpiration > 0)) {
-                const timeoutId = setTimeout(autoLogout, timeUntilExpiration);
+                const timeoutId = setTimeout(logout, timeUntilExpiration);
                 return () => clearTimeout(timeoutId);
             } else {
-                console.log("logout");
-                autoLogout();
+                logout();
             }
         }
     }, [token]);
 
     return (
-        <AuthContext.Provider value={{ token, setToken, userId, setUserId, user, setUser, wallet, setWallet }}>
+        <AuthContext.Provider value={{ token, setToken, userId, setUserId, user, setUser, wallet, setWallet, logout }}>
             {children}
         </AuthContext.Provider>
     );

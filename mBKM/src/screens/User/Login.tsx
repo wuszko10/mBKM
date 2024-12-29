@@ -5,9 +5,8 @@ import Icon from "react-native-vector-icons/FontAwesome";
 import tw from "twrnc";
 import { colors } from "../../style/styleValues.js";
 import { StackNavigationProp } from "@react-navigation/stack";
-import { useNavigation } from "@react-navigation/native";
+import { CommonActions,useNavigation } from "@react-navigation/native";
 import axios from 'axios';
-import AsyncStorage from "@react-native-async-storage/async-storage";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { SERVER_URL } from "../../../variables.tsx";
 import { storage } from "../../../App.tsx";
@@ -19,11 +18,14 @@ const Login = () => {
     const [username,setUsername] = useState("");
     const [password,setPassword] = useState("");
     const [showPassword,setShowPassword] = useState(true);
-    const { setToken, setUser, setUserId, setWallet } = useAuth();
+    const { setToken, setUser, setUserId, setWallet, userId, token} = useAuth();
 
 
     function handleChangeRoute() {
-        navigation.navigate("UserPanel");
+        navigation.dispatch(CommonActions.reset({
+            index: 0,
+            routes: [{ name: 'UserPanel' }],
+        }));
     }
 
     async function handleLogin() {
@@ -41,8 +43,8 @@ const Login = () => {
 
             setToken(String(response.data.token.token));
             setUser(response.data.user);
+            setUserId(String(response.data.user.id));
             setWallet(response.data.wallet);
-            setUserId(response.data.user.id);
 
             storage.set('token', JSON.stringify(response.data.token));
             storage.set('user', JSON.stringify(response.data.user));

@@ -6,15 +6,15 @@ import { useAuth } from "../../context/AuthContext.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "../../types/navigation.tsx";
 
-export const useHomeLogic = () => {
+export const useHomeLogic = (token: string | null, userId: string) => {
 
     const [isLoading, setIsLoading] = useState(true);
-    const { token, userId } = useAuth();
     const navigation = useNavigation<NavigationProp>();
 
     const [forValidation, setForValidation] = useState(false);
     const [activeTickets, setActiveTickets] = useState(false);
     const [toValidateTickets, setToValidateTickets] = useState<UserTicket[]>();
+    const [toValidateTicketsTMP, setToValidateTicketsTMP] = useState<UserTicket[]>();
     const [validateTickets, setValidateTickets] = useState<UserTicket[]>();
     const [reliefs, setReliefs] = useState<Relief[]>();
     const [tickets, setTickets] = useState<Ticket[]>();
@@ -41,8 +41,7 @@ export const useHomeLogic = () => {
         fetchUserTicketToValidate(userId, token)
             .then(async (data) => {
                 if(data && data.length > 0) {
-                    setForValidation(true);
-                    setToValidateTickets(data);
+                    setToValidateTicketsTMP(data);
                 }
             })
             .catch((error) => {
@@ -67,18 +66,36 @@ export const useHomeLogic = () => {
                 //     theme: "colored",
                 // });
             })
+
         setIsLoading(false);
     }
 
     useEffect(() => {
-        if(token)
+        if(token && userId) {
+
             getUserTickets(token);
+
+            if (!isLoading) {
+                const filteredTickets = toValidateTicketsTMP && toValidateTicketsTMP.filter((item) => {
+                    const ticketType = tickets && tickets.find(type => type._id === item.ticketId);
+                    return ticketType?.type === "674dd1b74e3d87c99c967256";
+                });
+
+                if (filteredTickets && filteredTickets?.length>0) {
+                    setForValidation(true);
+                    setToValidateTickets(filteredTickets);
+                } else {
+                    setForValidation(false);
+                }
+            }
+        }
     }, [isLoading]);
 
     return {
         forValidation,
         activeTickets,
         setActiveTickets,
+        setForValidation,
         toValidateTickets,
         validateTickets,
         reliefs,

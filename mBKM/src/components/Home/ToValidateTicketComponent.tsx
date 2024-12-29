@@ -12,6 +12,7 @@ type ComponentProps = {
     reliefs: Relief[] | undefined;
     handleTicketDetails: (id: string) => void;
     handleValidateTicket: (id: string) => void;
+    setForValidation: (forValidation: boolean) => void;
 }
 const ToValidateTicketComponent: React.FC<ComponentProps> = (props) => {
 

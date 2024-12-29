@@ -28,8 +28,6 @@ const BuyTicketSummary = () => {
     const parsedDate = selectedDate && new Date(selectedDate);
     const { token } = useAuth();
 
-    console.log(selectedDate);
-
     const {
         line,
         paymentMethodId,
@@ -39,12 +37,10 @@ const BuyTicketSummary = () => {
         setPaymentMethodId,
     } = useBuyTicketSummaryLogic(selectedTicket, selectedLines);
 
-    console.log("ulga: " + JSON.stringify(selectedRelief));
+
 
     const handleBuyTicket = async () => {
         if (paymentMethodId) {
-
-            console.log("Status + " + statusId);
 
             const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId, selectedDate, selectedRelief ? selectedRelief?._id : '', token ? token : '');
 

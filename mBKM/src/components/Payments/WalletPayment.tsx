@@ -89,16 +89,14 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
                         inRange = await checkLocation(stops);
 
                         if (inRange) {
+                            setShowPaymentPopup(false);
                             setPopupText("Czy chcesz skasować bilet?");
                             setShowPopup(true);
-                            setShowPaymentPopup(false);
                         } else {
                             setPaymentPopupText("Transakcja zakończona pomyślnie!");
-                            setShowPaymentPopup(true);
                         }
                     } catch (locationError) {
                         setPaymentPopupText("Transakcja zakończona pomyślnie!");
-                        setShowPaymentPopup(true);
                     }
                 }
 
@@ -106,7 +104,6 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
             }
         } catch (error) {
             setPaymentPopupText("Wystąpił błąd podczas przetwarzania płatności.");
-            setShowPaymentPopup(true);
         } finally {
             setIsProcessing(false);
         }

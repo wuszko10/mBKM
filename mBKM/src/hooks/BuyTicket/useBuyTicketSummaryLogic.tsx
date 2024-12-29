@@ -2,7 +2,6 @@ import { useEffect,useState } from "react";
 import { Line,MetadataType,PaymentMethod,Ticket } from "../../types/interfaces.tsx";
 import { storage } from "../../../App.tsx";
 import { DEFAULT_TICKET_STATUS,SINGLE_TICKET,WALLET_PAYMENT } from "../../../variables.tsx";
-import { useMMKVString } from "react-native-mmkv";
 
 export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: string | null ) => {
 
@@ -33,6 +32,7 @@ export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: 
                     selectedTicket.typeName === SINGLE_TICKET ? method.name === WALLET_PAYMENT :  method.name !== WALLET_PAYMENT);
 
             const filteredStatus = parseStatus.find(s => s.name === DEFAULT_TICKET_STATUS);
+
             if (filteredStatus) {
                 const id = filteredStatus?.id;
                 setStatusId(id);
