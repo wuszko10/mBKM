@@ -30,6 +30,7 @@ import ValidateTicket from "./src/screens/Tickets/ValidateTicket.tsx";
 import {useAppData} from "./src/hooks/GlobalData/useAppData.tsx";
 import {isExpired} from "react-jwt";
 import { MMKV } from "react-native-mmkv";
+import SplashScreen from 'react-native-splash-screen';
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -105,6 +106,14 @@ function MainApp() {
 }
 
 function App(): React.JSX.Element {
+
+    useEffect(() => {
+        const timeoutId = setTimeout(() => {
+            SplashScreen.hide();
+        }, 1800);
+
+        return () => clearTimeout(timeoutId);
+    }, []);
 
     return (
         <SafeAreaView style={styles.appContainer}>

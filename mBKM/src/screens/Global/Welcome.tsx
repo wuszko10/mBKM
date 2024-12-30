@@ -1,14 +1,14 @@
-import React from "react";
-import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
+import React,{ useEffect } from "react";
+import { Image,StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { useNavigation } from "@react-navigation/native";
 import { colors,dimensions } from "../../style/styleValues.js";
 import { NavigationProp } from "../../types/navigation.tsx";
+import SplashScreen from "react-native-splash-screen";
 
 const Welcome = () => {
 
     const navigation = useNavigation<NavigationProp>();
-
     function handleLogin() {
         navigation.navigate('Login');
     }
@@ -19,7 +19,13 @@ const Welcome = () => {
 
     return (
         <View style={localStyles.welcomeContainer}>
-            <Text style={stylesApp.h1}>mBKM</Text>
+            <View style={{justifyContent: 'center', alignItems: 'center'}}>
+                <Image
+                    source={require('../../assets/logo.png')}
+                    style={{ width: 150, height: 150 }}
+                />
+                <Text style={stylesApp.h1}>mBKM</Text>
+            </View>
 
             <View style={stylesApp.bigSeparator}/>
 

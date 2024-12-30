@@ -1,6 +1,5 @@
 import { StyleSheet } from "react-native";
 import { colors, dimensions } from "./styleValues";
-import { colorOpacity } from "twrnc/dist/esm/resolve/color";
 
 export default StyleSheet.create({
 
@@ -73,7 +72,7 @@ export default StyleSheet.create({
     },
 
     bigSeparator: {
-        height: 240,
+        height: 200,
     },
 
     gapContainer: {

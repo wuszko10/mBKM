@@ -1,4 +1,4 @@
-import React from "react";
+import React,{ useEffect } from "react";
 import { ActivityIndicator,ScrollView,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { useNavigation } from "@react-navigation/native";
@@ -11,6 +11,7 @@ import { NavigationProp } from "../../types/navigation.tsx";
 import { style as localStyles } from "./style.tsx";
 import ActiveTicketsComponent from "../../components/Home/ActiveTicketsComponent.tsx";
 import ToValidateTicketComponent from "../../components/Home/ToValidateTicketComponent.tsx";
+import SplashScreen from "react-native-splash-screen";
 
 const Home = () => {
 
