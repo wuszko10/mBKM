@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
-import {fetchTicketDetails, fetchTickets} from '../services/ticket.service';
+import {fetchTicketDetails} from '../services/ticket.service';
+import {useAuth} from "../context/authProvider";
 
 export const useTicketDetails = (id) => {
     const [ticket, setTicket] = useState({
@@ -11,10 +12,11 @@ export const useTicketDetails = (id) => {
         id: ''
     });
     const [loading, setLoading] = useState(true);
+    const {token} = useAuth();
 
     useEffect(() => {
 
-        fetchTicketDetails(id)
+        fetchTicketDetails(id, token)
             .then((data) => {
                 setTicket(data);
             })

@@ -12,7 +12,7 @@ export const getTicketsTableColumns = (handleEdit, handleRemove) => [
     },
     {
         accessorKey: 'periodLabel',
-        header: 'Ważność*',
+        header: 'Ważność',
     },
     {
         accessorKey: 'lineLabel',
@@ -21,7 +21,7 @@ export const getTicketsTableColumns = (handleEdit, handleRemove) => [
     {
         accessorKey: 'price',
         header: 'Cena [zł]',
-        cell: (info) => (info.getValue() + " zł"),
+        cell: (info) => (info.getValue().toFixed(2) + " zł"),
     },
     {
         accessorKey: 'offerStartDate',
@@ -95,12 +95,12 @@ export const getStopsColumns = (handleEdit, handleRemove) => [
         header: 'Nazwa przystanku',
     },
     {
-        accessorKey: 'longitude',
-        header: 'Długość geograficzna',
-    },
-    {
         accessorKey: 'latitude',
         header: 'Szerokość geograficzna',
+    },
+    {
+        accessorKey: 'longitude',
+        header: 'Długość geograficzna',
     },
     {
         header: ' ',
@@ -151,26 +151,32 @@ export const getTransactionColumns = (navigate) => [
     {
         accessorKey: 'id',
         header: 'ID',
+        cell: (info) => info.row.index + 1,
     },
     {
         accessorKey: 'number',
         header: 'Numer transakcji',
     },
     {
-        accessorKey: 'numberTicket',
-        header: 'Numer biletu',
-    },
-    {
-        accessorKey: 'userId',
+        accessorKey: 'userEmail',
         header: 'Użytkownik',
+        cell: ({row} ) => {
+            return <button onClick={() => navigate(`/user/${row.original.userId}`)}>{row.original.userEmail}</button>
+        }
     },
     {
         accessorKey: 'finalPrice',
         header: 'Kwota [zł]',
+        cell: (info) => (info.getValue().toFixed(2) + " zł"),
     },
     {
         accessorKey: 'paymentDate',
         header: 'Data zakupu',
+        cell: (info) => new Date(info.getValue()).toLocaleString(),
+    },
+    {
+        accessorKey: 'ticketNumber',
+        header: 'Numer biletu',
     },
     {
         header: ' ',
@@ -180,10 +186,11 @@ export const getTransactionColumns = (navigate) => [
     },
 ];
 
-export const getTopUpTransactionColumns = () => [
+export const getTopUpTransactionColumns = (navigate) => [
     {
         accessorKey: 'id',
         header: 'ID',
+        cell: (info) => info.row.index + 1,
     },
     {
         accessorKey: 'number',
@@ -192,18 +199,27 @@ export const getTopUpTransactionColumns = () => [
     {
         accessorKey: 'userEmail',
         header: 'Użytkownik',
+        cell: ({row} ) => {
+            return <button onClick={() => navigate(`/user/${row.original.userId}`)}>{row.original.userEmail}</button>
+        }
     },
     {
         accessorKey: 'amount',
         header: 'Kwota [zł]',
-    },
-    {
-        accessorKey: 'topUpDate',
-        header: 'Data doładowania',
+        cell: (info) => (info.getValue().toFixed(2) + " zł"),
     },
     {
         accessorKey: 'method',
         header: 'Metoda',
+    },
+    {
+        accessorKey: 'referenceId',
+        header: 'Numer płatności',
+    },
+    {
+        accessorKey: 'paymentDate',
+        header: 'Data doładowania',
+        cell: (info) => new Date(info.getValue()).toLocaleString(),
     }
 ];
 

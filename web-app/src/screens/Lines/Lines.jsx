@@ -26,6 +26,7 @@ const Lines = () => {
     const [selectedLine, setSelectedLine] = useState({});
     const [title, setTitle] = useState('');
     const [buttonText, setButtonText] = useState('');
+    const [editMode, setEditMode] = useState(false);
 
 
     const data = React.useMemo(() => {
@@ -43,6 +44,7 @@ const Lines = () => {
         setSelectedLine(line);
         setTitle('Aktualizuj linię');
         setButtonText("Aktualizuj");
+        setEditMode(true);
         setShow(true);
     }
 
@@ -88,6 +90,8 @@ const Lines = () => {
                 line={selectedLine}
                 titleForm={title}
                 buttonText={buttonText}
+                editMode={editMode}
+                setEditMode={setEditMode}
                 refreshLines={refreshLines}
             />
         </div>

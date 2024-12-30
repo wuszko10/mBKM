@@ -26,6 +26,7 @@ const BusStops = () => {
     const [selectedBusStop, setSelectedBusStop] = useState({});
     const [title, setTitle] = useState('');
     const [buttonText, setButtonText] = useState('');
+    const [editMode, setEditMode] = useState(false);
 
 
     const data = React.useMemo(() => {
@@ -43,6 +44,7 @@ const BusStops = () => {
         setSelectedBusStop(busStop);
         setTitle('Aktualizuj przystanek');
         setButtonText("Aktualizuj");
+        setEditMode(true);
         setShow(true);
     }
 
@@ -88,6 +90,8 @@ const BusStops = () => {
                 stop={selectedBusStop}
                 titleForm={title}
                 buttonText={buttonText}
+                editMode={editMode}
+                setEditMode={setEditMode}
                 refreshStops={refreshStops}
             />
         </div>

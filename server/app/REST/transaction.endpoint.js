@@ -25,9 +25,9 @@ const TransactionEndpoint = (router) => {
         }
     });
 
-    router.get('/api/transaction/:id', authToken, async (req, res) => {
+    router.get('/api/transaction', authToken, async (req, res) => {
         try {
-            const transaction = await business.getTransactionManager().getTransactionById(req.params.id);
+            const transaction = await business.getTransactionManager().getTransactionById(req.query.id);
             res.status(200).json(transaction);
         } catch (error) {
             applicationException.errorHandler(error, res);

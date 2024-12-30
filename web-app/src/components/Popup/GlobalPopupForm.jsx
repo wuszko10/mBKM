@@ -39,6 +39,7 @@ const GlobalPopupForm = ({
                                             name={field.name}
                                             value={formData[field.name] || ""}
                                             onChange={handleInputChange}
+                                            disabled={field.disabled}
                                         >
                                             <option value="" disabled>
                                                 Wybierz opcję
@@ -68,6 +69,7 @@ const GlobalPopupForm = ({
                                                     },
                                                 })
                                             }
+                                            disabled={field.disabled}
                                         />
                                         {field.label}
                                     </label>
@@ -83,6 +85,7 @@ const GlobalPopupForm = ({
                                             placeholder={field.placeholder}
                                             value={formData[field.name] || ""}
                                             onChange={handleInputChange}
+                                            disabled={field.disabled}
                                         />
                                     </label>
                                 );

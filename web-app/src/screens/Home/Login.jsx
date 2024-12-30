@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import '../../styles/style.scss'
 import {useNavigate} from "react-router-dom";
-import axios from "axios";
 import {toast} from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import {PiNavigationArrowFill} from "react-icons/pi";
+import {userLogin} from "../../services/user.service";
+import {useAuth} from "../../context/authProvider";
 
 const Login = () => {
 
-    const URI = process.env.REACT_APP_API_URL;
 
     const navigate = useNavigate();
+    const { setToken, setUser } = useAuth();
 
     const [formData, setFormData] = useState({
         login: '',
@@ -24,11 +25,7 @@ const Login = () => {
         });
     };
 
-    const [errors, setErrors] = useState({});
-
     function handleChangeRoute() {
-        navigate('/');
-        window.location.reload();
         toast.success('Zalogowano', {
             position: 'top-right',
             theme: "colored",
@@ -42,28 +39,22 @@ const Login = () => {
             return;
         }
 
-        axios
-            .post(URI + 'user/auth', {
-                email: formData.login,
-                password: formData.password
-            })
-            .then((response) => {
-                localStorage.setItem('token', response.data.token.token);
-                handleChangeRoute();
-            })
-            .catch((error) => {
-                const errorMessages = {};
-                errorMessages.password =
-                    "Given username doesn't exist or the password is wrong!";
-                setErrors(errorMessages || {});
-                console.log(error);
+        const response = await userLogin(formData.login, formData.password)
 
-                toast.error('Błąd logowania', {
-                    position: 'top-right',
-                    theme: "colored",
-                });
+        if(response) {
+            setToken(response.token.token);
+            setUser(response.user);
 
+            localStorage.setItem('token', JSON.stringify(response.token.token));
+            localStorage.setItem('user', JSON.stringify(response.user));
+
+            handleChangeRoute();
+        } else {
+            toast.error('Błąd logowania', {
+                position: 'top-right',
+                theme: "colored",
             });
+        }
     };
 
     return (

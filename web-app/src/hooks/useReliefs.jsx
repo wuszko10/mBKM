@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { fetchTickets } from '../services/ticket.service';
 import {fetchReliefs} from "../services/relief.service";
 import {toast} from "react-toastify";
+import {useAuth} from "../context/authProvider";
 
 export const useReliefs = () => {
     const [reliefs, setReliefs] = useState([]);
@@ -10,9 +11,9 @@ export const useReliefs = () => {
     const [pageSize, setPageSize] = useState(10);
     const [searchQuery, setSearchQuery] = useState('');
     const [totalPages, setTotalPages] = useState(0);
-
+    const {token} = useAuth();
     const refreshReliefs = () => {
-        fetchReliefs(page, pageSize, searchQuery)
+        fetchReliefs(page, pageSize, searchQuery, token)
             .then((data) => {
                 setReliefs(data.data);
                 setTotalPages(data.totalPages || 0);

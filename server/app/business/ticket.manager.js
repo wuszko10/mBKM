@@ -15,6 +15,7 @@ function create(context) {
     }
   }
   async function getAllTickets(cache) {
+
     const ticketTypes = cache.get("ticketTypes");
     const ticketPeriods = cache.get("ticketPeriods");
     const ticketLines = cache.get("ticketLines");
@@ -25,11 +26,11 @@ function create(context) {
       return getMetadataNames(tickets, ticketTypes, ticketPeriods, ticketLines);
 
     } catch (error) {
-      throw applicationException.new(applicationException.NOT_FOUND, `Tickets not found`);
+      throw applicationException.new(applicationException.BAD_REQUEST, `Tickets not found`);
     }
   }
 
-  async function getAndSearchTicket(page, pageSize, searchQuery, cache) {
+  async function getAndSearchTicket(queryPage, queryPageSize, searchQuery, cache) {
 
     const ticketTypes = cache.get("ticketTypes");
     const ticketPeriods = cache.get("ticketPeriods");
@@ -45,7 +46,7 @@ function create(context) {
           pageSize,
           totalPages,
           totalRecords,
-      } = await TicketDAO.getAndSearchTicket(page, pageSize, searchCriteria)
+      } = await TicketDAO.getAndSearchTicket(queryPage, queryPageSize, searchCriteria)
 
       const tickets = getMetadataNames(data, ticketTypes, ticketPeriods, ticketLines);
 

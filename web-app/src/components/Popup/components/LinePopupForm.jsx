@@ -6,7 +6,7 @@ import {
 import {addBusStop, editBusStop} from "../../../services/stop.service";
 import {addLine, editLine} from "../../../services/line.service";
 
-const LinePopupForm = ({show, setShow, line, titleForm, buttonText, refreshLines}) => {
+const LinePopupForm = ({show, setShow, line, titleForm, buttonText, editMode, setEditMode, refreshLines}) => {
 
     const initialFormData = {
         number: '',
@@ -14,7 +14,7 @@ const LinePopupForm = ({show, setShow, line, titleForm, buttonText, refreshLines
     }
 
     const [formData, setFormData] = useState(initialFormData);
-    const formFields = getLineFormFields();
+    const formFields = getLineFormFields(editMode);
 
     const loadData = () => {
 
@@ -29,7 +29,10 @@ const LinePopupForm = ({show, setShow, line, titleForm, buttonText, refreshLines
 
     useEffect(loadData, [line]);
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setEditMode(false);
+    };
     const handleInputChange = (event) => {
         setFormData({
             ...formData,

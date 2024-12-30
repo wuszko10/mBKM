@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { fetchTickets } from '../services/ticket.service';
+import {useAuth} from "../context/authProvider";
 
 export const useTickets = () => {
     const [tickets, setTickets] = useState([]);
@@ -8,9 +9,9 @@ export const useTickets = () => {
     const [pageSize, setPageSize] = useState(10);
     const [searchQuery, setSearchQuery] = useState('');
     const [totalPages, setTotalPages] = useState(0);
-
+    const {token} = useAuth();
     const refreshTickets = () => {
-        fetchTickets(page, pageSize, searchQuery)
+        fetchTickets(page, pageSize, searchQuery, token)
                 .then((data) => {
                     setTickets(data.data);
                     setTotalPages(data.totalPages || 0);

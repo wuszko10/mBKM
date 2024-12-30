@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {getReliefFormFields} from "../PopupFields";
 import {addRelief, editRelief} from "../../../services/relief.service";
 
-const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, refreshReliefs}) => {
+const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, editMode, setEditMode, refreshReliefs}) => {
 
     const initialFormData = {
         name: '',
@@ -14,7 +14,7 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, refreshR
 
     const [formData, setFormData] = useState(initialFormData);
     const metadata = JSON.parse(localStorage.getItem('metadata'));
-    const formFields = getReliefFormFields(metadata);
+    const formFields = getReliefFormFields(metadata, editMode);
 
     const loadData = () => {
 
@@ -31,7 +31,10 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, refreshR
 
     useEffect(loadData, [relief]);
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setEditMode(false);
+    };
     const handleInputChange = (event) => {
         setFormData({
             ...formData,

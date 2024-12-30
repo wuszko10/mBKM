@@ -3,7 +3,7 @@ import '../../styles/style.scss';
 import DynamicTable from "../../components/Table/DynamicTable";
 import {useNavigate} from "react-router-dom";
 import {getTransactionColumns} from "../../components/Table/TableColumns";
-import {usePurchases} from "../../hooks/usePurchases";
+import {useTransactions} from "../../hooks/useTransactions";
 const Transactions = () => {
 
     const navigate = useNavigate();
@@ -18,7 +18,7 @@ const Transactions = () => {
         setPage,
         setPageSize,
         setSearchQuery,
-    } = usePurchases();
+    } = useTransactions();
 
     const data = React.useMemo(() => {
         return purchases.length > 0 ? purchases : [];

@@ -15,6 +15,15 @@ const userEndpoint = (router) => {
         }
     });
 
+    router.get('/api/user', admin, async (request, response) => {
+        try {
+            let result = await business.getUserManager().getUserById(request.query.id);
+            response.status(200).send(result);
+        } catch (error) {
+            applicationException.errorHandler(error, response);
+        }
+    });
+
     router.post('/api/user/auth', async (request, response) => {
         try {
             let result = await business.getUserManager().authenticate(request.body.email, request.body.password);
@@ -33,6 +42,15 @@ const userEndpoint = (router) => {
         }
     });
 
+    router.post('/api/user/deactivate', admin, async (request, response) => {
+        try {
+            const result = await business.getUserManager().deactivateUser(request.query.id);
+            response.status(200).send(result);
+        } catch (error) {
+            applicationException.errorHandler(error, response);
+        }
+    });
+
     router.delete('/api/user/logout', async (request, response) => {
         try {
             let result = await business.getUserManager().removeHashSession(request.query.userId, request.query.token);
@@ -41,6 +59,7 @@ const userEndpoint = (router) => {
             applicationException.errorHandler(error, response);
         }
     });
+
 };
 
 export default userEndpoint;

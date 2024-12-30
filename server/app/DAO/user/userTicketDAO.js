@@ -14,7 +14,7 @@ const ticketSchema = new mongoose.Schema({
     transactionId: {type: mongoose.Schema.Types.ObjectId, ref: 'transaction', required: true},
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     ticketId: {type: mongoose.Schema.Types.ObjectId, ref: 'ticket', required: true},
-    reliefId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
+    reliefId: {type: mongoose.Schema.Types.ObjectId, ref: 'relief', required: true},
     price: {type: Number, required: true},
     purchaseDate: { type: Date, required: true },
     ticketStartDate: { type: Date, required: false },
@@ -118,7 +118,7 @@ async function getValidatedByUserId(id) {
 async function getByTransactionId(id) {
     const result = await UserTicketModel.findOne({ transactionId: id });
     if (result) {
-        return result;
+        return mongoConverter(result);
     }
     throw applicationException.new(applicationException.NOT_FOUND, 'Ticket not found');
 }
@@ -138,6 +138,14 @@ async function updateMany (date, currentStatus, invalidStatus) {
     );
 }
 
+async function getAll () {
+    const result = await UserTicketModel.find();
+    if (result) {
+        return mongoConverter(result);
+    }
+    throw applicationException.new(applicationException.NOT_FOUND, 'Tickets not found');
+}
+
 async function removeById(id) {
     return UserTicketModel.findByIdAndRemove(id);
 }
@@ -152,6 +160,7 @@ export default {
     getUserTicketByTransactionId: getByTransactionId,
     updateManyUserTickets: updateMany,
     removeUserTicketById: removeById,
+    getAllUserTickets: getAll,
 
     model: UserTicketModel,
 };

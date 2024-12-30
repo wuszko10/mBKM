@@ -15,6 +15,7 @@ const Tickets = () => {
     const [selectedTicket, setSelectedTicket] = useState({});
     const [title, setTitle] = useState('');
     const [buttonText, setButtonText] = useState('');
+    const [editMode, setEditMode] = useState(false);
 
     const {
         tickets,
@@ -43,6 +44,7 @@ const Tickets = () => {
         setSelectedTicket(ticket);
         setTitle('Aktualizuj bilet');
         setButtonText("Aktualizuj");
+        setEditMode(true);
         setShow(true);
     }
 
@@ -83,8 +85,6 @@ const Tickets = () => {
                     onPageSizeChange={setPageSize}
                     loading={loading}
                 />
-
-                <p>* – ważność biletów okresowych wyrażona jest w miesiącach, a biletów jednorazowych – w minutach</p>
             </div>
 
             <TicketPopupForm
@@ -93,6 +93,8 @@ const Tickets = () => {
                 ticket={selectedTicket}
                 titleForm={title}
                 buttonText={buttonText}
+                editMode={editMode}
+                setEditMode={setEditMode}
                 refreshTickets={refreshTickets}
             />
 

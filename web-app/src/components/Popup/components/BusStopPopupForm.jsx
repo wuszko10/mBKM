@@ -5,7 +5,7 @@ import {
 } from "../PopupFields";
 import {addBusStop, editBusStop} from "../../../services/stop.service";
 
-const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, refreshStops}) => {
+const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, editMode, setEditMode, refreshStops}) => {
 
     const initialFormData = {
         name: '',
@@ -14,7 +14,7 @@ const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, refreshSt
     }
 
     const [formData, setFormData] = useState(initialFormData);
-    const formFields = getBusStopFormFields();
+    const formFields = getBusStopFormFields(editMode);
 
     const loadData = () => {
 
@@ -30,7 +30,10 @@ const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, refreshSt
 
     useEffect(loadData, [stop]);
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setEditMode(false);
+    };
     const handleInputChange = (event) => {
         setFormData({
             ...formData,

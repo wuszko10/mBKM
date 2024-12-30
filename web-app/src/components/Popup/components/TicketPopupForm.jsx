@@ -3,7 +3,7 @@ import React, {useEffect, useState} from "react";
 import {getTicketFormFields} from "../PopupFields";
 import {addTicket, editTicket} from "../../../services/ticket.service";
 
-const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, refreshTickets}) => {
+const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, editMode, setEditMode, refreshTickets}) => {
 
     const initialFormData = {
         type: '',
@@ -16,7 +16,7 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, refreshT
 
     const [formData, setFormData] = useState(initialFormData);
     const metadata = JSON.parse(localStorage.getItem('metadata'));
-    const formFields = getTicketFormFields(metadata);
+    const formFields = getTicketFormFields(metadata, editMode);
 
     const loadData = () => {
 
@@ -39,7 +39,10 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, refreshT
 
     useEffect(loadData, [ticket]);
 
-    const handleClose = () => setShow(false);
+    const handleClose = () => {
+        setShow(false);
+        setEditMode(false);
+    };
     const handleInputChange = (event) => {
         setFormData({
             ...formData,
@@ -71,10 +74,7 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, refreshT
     async function handleEdit(event) {
         event.preventDefault();
 
-        console.log(ticket._id);
-
         await editTicket(ticket._id, formData);
-
         handleClose();
         await refreshTickets();
     }

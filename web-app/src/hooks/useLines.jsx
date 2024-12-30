@@ -4,6 +4,7 @@ import {fetchReliefs} from "../services/relief.service";
 import {toast} from "react-toastify";
 import {fetchStops} from "../services/stop.service";
 import {fetchLines} from "../services/line.service";
+import {useAuth} from "../context/authProvider";
 
 export const useLines = () => {
     const [lines, setLines] = useState([]);
@@ -12,9 +13,10 @@ export const useLines = () => {
     const [pageSize, setPageSize] = useState(10);
     const [searchQuery, setSearchQuery] = useState('');
     const [totalPages, setTotalPages] = useState(0);
+    const {token} = useAuth();
 
     const refreshLines = () => {
-        fetchLines(page, pageSize, searchQuery)
+        fetchLines(page, pageSize, searchQuery, token)
             .then((data) => {
                 setLines(data.data);
                 setTotalPages(data.totalPages || 0);

@@ -3,10 +3,14 @@ export function getMetadataNames (transactions, tickets, users) {
 
     return transactionsArray.map(transaction => {
         const transactionObj = transaction.toObject();
+
+        const user = users.find(u => u.id === transaction.userId.toString());
+        const ticket = tickets.find(t => t.transactionId.toString() === transaction._id.toString());
+
         return {
             ...transactionObj,
-            userEmail: users.find(u => u.id === transaction.userId)?.email,
-            numberTicket: tickets.find(t => t.id === transaction.ticketId)?.number,
+            userEmail: user?.email,
+            ticketNumber: ticket?.number,
         };
     });
 }
@@ -14,13 +18,13 @@ export function getMetadataNames (transactions, tickets, users) {
 export function transactionMappingIdsToNames (users, tickets, searchQuery) {
 
     let usersIds = [];
-    let ticketsIds = [];
+    let ticketIds = [];
 
     if (searchQuery) {
         const lowerCaseSearchQuery = searchQuery.toLowerCase();
 
         usersIds = users.filter(u => u.email.toLowerCase().includes(lowerCaseSearchQuery)).map(u => u.id);
-        ticketsIds = tickets.filter(p => p.number.toLowerCase().includes(lowerCaseSearchQuery)).map(p => p.id);
+        ticketIds = tickets.filter(u => u.number.toLowerCase().includes(lowerCaseSearchQuery)).map(t => t.transactionId);
     }
 
     return searchQuery
@@ -28,7 +32,7 @@ export function transactionMappingIdsToNames (users, tickets, searchQuery) {
             $or: [
                 { number: { $regex: searchQuery, $options: 'i' } },
                 { userId: { $in: usersIds } },
-                { ticketId: { $in: ticketsIds } },
+                { _id: { $in: ticketIds } },
             ],
         }
         : {};

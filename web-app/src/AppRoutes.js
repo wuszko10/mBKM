@@ -5,53 +5,31 @@ import Main from "./screens/Home/Main";
 import Tickets from "./screens/Tickets/Tickets";
 import Reliefs from "./screens/Reliefs/Reliefs";
 import BusStops from "./screens/BusStops/BusStops";
-import TransactionDetails from "./screens/Users/UserDetails";
+import UserDetails from "./screens/Users/UserDetails";
 import Transactions from "./screens/Transactions/Transactions";
 import Users from "./screens/Users/Users";
-import UserDetails from "./screens/Users/UserDetails";
 import NotFound from "./screens/Home/NotFound";
 import PublicLayout from "./components/PublicLayot";
 import Login from "./screens/Home/Login";
 import TopUps from "./screens/Transactions/topUps";
-import {useEffect, useState} from "react";
-import axios from "axios";
+import {useEffect} from "react";
 import Lines from "./screens/Lines/Lines";
+import {useAuth} from "./context/authProvider";
+import {fetchMetadata} from "./services/metadata.service";
+import TransactionDetails from "./screens/Transactions/TransactionDetails";
 
 const AppRoutes = () => {
-    let token = localStorage.getItem('token');
-    const isAuthenticated = !isExpired(token);
-
-    const [metadata, setMetadata] = useState({
-        ticketTypes: [],
-        ticketPeriods: [],
-        ticketLines: [],
-        reliefTypes: [],
-    });
+    const { token } = useAuth();
 
     useEffect(() => {
-        const URI = process.env.REACT_APP_API_URL;
-        const fetchMetadata = async () => {
-
-            try {
-                const response = await axios.get(URI + 'metadata', {
-                    headers: {
-                        'Authorization': `Bearer ${token}`,
-                    }
-                });
-                setMetadata(response.data);
-                localStorage.setItem('metadata', JSON.stringify(response.data));
-            } catch (error) {
-                console.error('Error fetching data:', error);
-            }
-        };
-
-        fetchMetadata();
-
+        if (token && !isExpired(token)) {
+            fetchMetadata(token).then();
+        }
     }, [token]);
 
     return (
         <Routes>
-            {isAuthenticated ? (
+            {token ? (
                 <Route path="/" element={<UserLayout />}>
                     <Route index element={<Main />} />
                     <Route path="tickets" element={<Tickets />} />

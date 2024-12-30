@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import {toast} from "react-toastify";
 import {fetchUsers} from "../services/user.service";
+import {useAuth} from "../context/authProvider";
 
 export const useUsers = () => {
     const [users, setUsers] = useState([]);
@@ -9,9 +10,9 @@ export const useUsers = () => {
     const [pageSize, setPageSize] = useState(10);
     const [searchQuery, setSearchQuery] = useState('');
     const [totalPages, setTotalPages] = useState(0);
-
+    const {token} = useAuth();
     const refreshUsers = () => {
-        fetchUsers(page, pageSize, searchQuery)
+        fetchUsers(page, pageSize, searchQuery, token)
             .then((data) => {
                 setUsers(data.data);
                 setTotalPages(data.totalPages || 0);

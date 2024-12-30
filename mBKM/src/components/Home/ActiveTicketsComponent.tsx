@@ -23,7 +23,7 @@ const ActiveTicketsComponent: React.FC<ComponentProps> = (props) => {
 
     const renderActiveTicketItem = ( {item} : {item: UserTicket} ) => {
 
-        const ticketType = props.tickets && (props.tickets.find(type => type._id === item.ticketId));
+        const ticketType = props.tickets && (props.tickets.find(type => type.id === item.ticketId));
         const reliefType = props.reliefs && (props.reliefs.find(r => r._id === item.reliefId))
 
         return (

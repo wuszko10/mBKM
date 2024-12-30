@@ -4,9 +4,9 @@ export function getMetadataNames (tickets, ticketTypes, ticketPeriods, ticketLin
     return ticketsArray.map(ticket => {
         const ticketObj = ticket.toObject();
 
-        const type = ticketTypes.find(t => t.id === ticket.type.toString());
-        const period = ticketPeriods.find(p => p.id === ticket.period.toString());
-        const line = ticketLines.find(l => l.id === ticket.lines.toString());
+        const type = ticketTypes.find(t => t.id.toString() === ticket.type.toString());
+        const period = ticketPeriods.find(p => p.id.toString() === ticket.period.toString());
+        const line = ticketLines.find(l => l.id.toString() === ticket.lines.toString());
 
         return {
             ...ticketObj,

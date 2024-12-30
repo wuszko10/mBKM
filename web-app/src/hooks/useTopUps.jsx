@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import {toast} from "react-toastify";
 import {fetchTopUps} from "../services/trasanction.service";
+import {useAuth} from "../context/authProvider";
 
 export const useTopUps = () => {
     const [topUps, setTopUps] = useState([]);
@@ -9,9 +10,10 @@ export const useTopUps = () => {
     const [pageSize, setPageSize] = useState(10);
     const [searchQuery, setSearchQuery] = useState('');
     const [totalPages, setTotalPages] = useState(0);
+    const {token} = useAuth();
 
     useEffect(() => {
-        fetchTopUps(page, pageSize, searchQuery)
+        fetchTopUps(page, pageSize, searchQuery, token)
             .then((data) => {
                 setTopUps(data.data);
                 setTotalPages(data.totalPages || 0);

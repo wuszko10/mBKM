@@ -2,9 +2,8 @@ import axios from 'axios';
 import {toast} from "react-toastify";
 
 const URI = process.env.REACT_APP_API_URL;
-export const addRelief = async (reliefData) => {
+export const addRelief = async (reliefData, token) => {
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.post(URI + 'relief', {
             name: reliefData.name,
             type: reliefData.type,
@@ -28,8 +27,7 @@ export const addRelief = async (reliefData) => {
     }
 };
 
-export const fetchReliefs = async (page, pageSize, searchQuery) => {
-    const token = localStorage.getItem('token');
+export const fetchReliefs = async (page, pageSize, searchQuery, token) => {
 
     const params = new URLSearchParams({
         page: page,
@@ -45,9 +43,8 @@ export const fetchReliefs = async (page, pageSize, searchQuery) => {
     return response.data;
 };
 
-export const editRelief = async (id, reliefData) => {
+export const editRelief = async (id, reliefData, token) => {
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.post(URI + 'relief', {
             id: id,
             name: reliefData.name,
@@ -72,9 +69,8 @@ export const editRelief = async (id, reliefData) => {
     }
 };
 
-export const deleteRelief = async (id) => {
+export const deleteRelief = async (id, token) => {
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.delete(URI + `relief/${id}`, {
             headers: {
                 'authorization': `Bearer ${token}`,

@@ -1,13 +1,10 @@
 import React, {useState} from 'react';
 import '../../styles/style.scss'
-import {useNavigate} from "react-router-dom";
 import DynamicTable from "../../components/Table/DynamicTable";
-import GlobalPopupForm from "../../components/Popup/GlobalPopupForm";
 import {LuPlusCircle} from "react-icons/lu";
-import {getReliefColumns, getTicketsTableColumns} from "../../components/Table/TableColumns";
+import {getReliefColumns} from "../../components/Table/TableColumns";
 import {useReliefs} from "../../hooks/useReliefs";
-import {addRelief, deleteRelief} from "../../services/relief.service";
-import {deleteTicket} from "../../services/ticket.service";
+import {deleteRelief} from "../../services/relief.service";
 import ReliefPopupForm from "../../components/Popup/components/ReliefPopupForm";
 
 const Reliefs = () => {
@@ -18,6 +15,7 @@ const Reliefs = () => {
     const [selectedRelief, setSelectedRelief] = useState({});
     const [title, setTitle] = useState('');
     const [buttonText, setButtonText] = useState('');
+    const [editMode, setEditMode] = useState(false);
 
     const {
         reliefs,
@@ -47,6 +45,7 @@ const Reliefs = () => {
         setSelectedRelief(relief);
         setTitle('Aktualizuj ulgę');
         setButtonText("Aktualizuj");
+        setEditMode(true);
         setShow(true);
     }
 
@@ -91,6 +90,8 @@ const Reliefs = () => {
                 relief={selectedRelief}
                 titleForm={title}
                 buttonText={buttonText}
+                editMode={editMode}
+                setEditMode={setEditMode}
                 refreshReliefs={refreshReliefs}
             />
         </div>

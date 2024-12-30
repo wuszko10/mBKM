@@ -2,16 +2,15 @@ import React from 'react';
 import '../styles/style.scss'
 import {Link, NavLink, useNavigate} from "react-router-dom";
 import { PiNavigationArrowFill} from "react-icons/pi";
+import {useAuth} from "../context/authProvider";
 
 const Header = () => {
 
     const navigate = useNavigate();
-
+    const {logout} = useAuth();
 
     const handleLogout = () => {
-        localStorage.removeItem('token');
-        navigate("/");
-        window.location.reload();
+        logout();
     };
 
     return (
@@ -22,6 +21,7 @@ const Header = () => {
                         <div className="logo">
                             <PiNavigationArrowFill className="logo-icon"/>
                             <h1>mBKM</h1>
+                            <p>Admin</p>
                         </div>
                     </Link>
 

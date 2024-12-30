@@ -58,24 +58,8 @@ function createNewOrUpdate(topUp) {
         throw error;
     })
 }
-async function getAndSearch(page, pageSize, searchQuery, users) {
+async function getAndSearch(page, pageSize, searchCriteria) {
 
-    let usersIds = [];
-
-    if (searchQuery) {
-        const lowerCaseSearchQuery = searchQuery.toLowerCase();
-
-        usersIds = users.filter(u => u.email.toLowerCase().includes(lowerCaseSearchQuery)).map(u => u.id);
-    }
-
-    const searchCriteria = searchQuery
-        ? {
-            $or: [
-                { number: { $regex: searchQuery, $options: 'i' } },
-                { userId: { $in: usersIds } },
-            ],
-        }
-        : {};
 
     try {
         const totalRecords = await TopUpModel.countDocuments(searchCriteria);
@@ -85,18 +69,8 @@ async function getAndSearch(page, pageSize, searchQuery, users) {
             .limit(pageSize)
             .sort({ _id: -1 });
 
-        const ticketsArray = Array.isArray(topUps) ? topUps : [];
-
-        const transformedTopUps = ticketsArray.map(topUp => {
-            const topUpObj = topUp.toObject();
-            return {
-                ...topUpObj,
-                userEmail: users.find(u => u.id === topUp.userId.toString())?.email,
-            };
-        });
-
         return {
-            data: transformedTopUps,
+            data: topUps,
             page,
             pageSize,
             totalPages: Math.ceil(totalRecords / pageSize),

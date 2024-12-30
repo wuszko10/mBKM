@@ -2,9 +2,8 @@ import axios from 'axios';
 import {toast} from "react-toastify";
 
 const URI = process.env.REACT_APP_API_URL;
-export const addTicket = async (ticketData) => {
+export const addTicket = async (ticketData, token) => {
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.post(URI + 'ticket', {
             type: ticketData.type,
             lines: ticketData.lines,
@@ -30,8 +29,7 @@ export const addTicket = async (ticketData) => {
     }
 };
 
-export const fetchTickets = async (page, pageSize, searchQuery) => {
-    const token = localStorage.getItem('token');
+export const fetchTickets = async (page, pageSize, searchQuery, token) => {
 
     const params = new URLSearchParams({
         page: page,
@@ -47,9 +45,8 @@ export const fetchTickets = async (page, pageSize, searchQuery) => {
     return response.data;
 };
 
-export const fetchTicketDetails = async (id) => {
+export const fetchTicketDetails = async (id, token) => {
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.get(URI + `ticket/${id}`, {
             headers: {
                 'authorization': `Bearer ${token}`,
@@ -61,9 +58,8 @@ export const fetchTicketDetails = async (id) => {
     }
 };
 
-export const editTicket = async (id, ticketData) => {
+export const editTicket = async (id, ticketData, token) => {
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.post(URI + 'ticket', {
             id: id,
             type: ticketData.type,
@@ -90,9 +86,8 @@ export const editTicket = async (id, ticketData) => {
     }
 };
 
-export const deleteTicket = async (id) => {
+export const deleteTicket = async (id, token) => {
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.delete(URI + `ticket/${id}`, {
             headers: {
                 'authorization': `Bearer ${token}`,

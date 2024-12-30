@@ -2,9 +2,8 @@ import axios from 'axios';
 import {toast} from "react-toastify";
 
 const URI = process.env.REACT_APP_API_URL;
-export const addLine = async (lineData) => {
+export const addLine = async (lineData, token) => {
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.post(URI + 'line', {
             number: lineData.number,
             name: lineData.name || lineData.number,
@@ -26,8 +25,7 @@ export const addLine = async (lineData) => {
     }
 };
 
-export const fetchLines = async (page, pageSize, searchQuery) => {
-    const token = localStorage.getItem('token');
+export const fetchLines = async (page, pageSize, searchQuery, token) => {
 
     const params = new URLSearchParams({
         page: page,
@@ -43,9 +41,8 @@ export const fetchLines = async (page, pageSize, searchQuery) => {
     return response.data;
 };
 
-export const editLine = async (id, lineData) => {
+export const editLine = async (id, lineData, token) => {
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.post(URI + 'line', {
             id: id,
             number: lineData.number,
@@ -68,9 +65,8 @@ export const editLine = async (id, lineData) => {
     }
 };
 
-export const deleteLine = async (id) => {
+export const deleteLine = async (id, token) => {
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.delete(URI + `line/${id}`, {
             headers: {
                 'authorization': `Bearer ${token}`,

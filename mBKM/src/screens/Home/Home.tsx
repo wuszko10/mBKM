@@ -11,7 +11,6 @@ import { NavigationProp } from "../../types/navigation.tsx";
 import { style as localStyles } from "./style.tsx";
 import ActiveTicketsComponent from "../../components/Home/ActiveTicketsComponent.tsx";
 import ToValidateTicketComponent from "../../components/Home/ToValidateTicketComponent.tsx";
-import SplashScreen from "react-native-splash-screen";
 
 const Home = () => {
 

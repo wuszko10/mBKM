@@ -2,9 +2,8 @@ import axios from 'axios';
 import {toast} from "react-toastify";
 
 const URI = process.env.REACT_APP_API_URL;
-export const addUser = async (userData) => {
+export const addUser = async (userData, token) => {
     try {
-        const token = localStorage.getItem('token');
         const response = await axios.post(URI + 'user/create', {
             firstName: userData.firstName,
             lastName: userData.lastName,
@@ -28,8 +27,21 @@ export const addUser = async (userData) => {
     }
 };
 
-export const fetchUsers = async (page, pageSize, searchQuery) => {
-    const token = localStorage.getItem('token');
+export const getUser = async (id, token) => {
+
+    const params = new URLSearchParams({
+        id: id
+    });
+
+    const response = await axios.get(URI+`user/?${params.toString()}`, {
+        headers: {
+            'authorization': `Bearer ${token}`,
+        }
+    });
+    return response.data;
+};
+
+export const fetchUsers = async (page, pageSize, searchQuery, token) => {
 
     const params = new URLSearchParams({
         page: page,
@@ -44,3 +56,19 @@ export const fetchUsers = async (page, pageSize, searchQuery) => {
     });
     return response.data;
 };
+
+export const userLogout = async (userId, token) => {
+
+    const response = await axios.delete(URI+`user/logout/?${userId}?${token}`);
+    return response.data;
+};
+
+export const userLogin = async (username, password) => {
+
+    const response = await axios.post(URI+'user/auth', {
+        email: username,
+        password: password
+    });
+    return response.data;
+};
+

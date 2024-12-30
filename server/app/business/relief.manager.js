@@ -21,7 +21,7 @@ function create(context) {
     }
   }
 
-  async function getAndSearchRelief(page, pageSize, searchQuery, cache) {
+  async function getAndSearchRelief(queryPage, queryPageSize, searchQuery, cache) {
 
     const reliefTypes = cache.get("reliefTypes");
     const ticketTypes = cache.get("ticketTypes");
@@ -34,7 +34,7 @@ function create(context) {
         pageSize,
         totalPages,
         totalRecords,
-      } = await ReliefDAO.getAndSearchRelief(page, pageSize, searchCriteria);
+      } = await ReliefDAO.getAndSearchRelief(queryPage, queryPageSize, searchCriteria);
       const reliefs = getReliefTypesNames(data, reliefTypes, ticketTypes);
       return {
         data: reliefs,
