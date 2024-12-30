@@ -39,10 +39,6 @@ const Home = () => {
         )
     }
 
-    console.log("activeTickets " +activeTickets);
-    console.log("forValidation " +forValidation);
-    console.log("isLoading " +isLoading);
-
     return (
         <ScrollView style={stylesApp.scrollContainer}>
 

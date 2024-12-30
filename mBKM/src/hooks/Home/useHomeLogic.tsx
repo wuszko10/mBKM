@@ -1,6 +1,8 @@
 import { useEffect,useState } from "react";
 import { Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";
-import { fetchUserTicketToValidate,fetchUserTicketValidated } from "../../services/ticket.service.tsx";
+import {
+    fetchDashboardUserTicket
+} from "../../services/ticket.service.tsx";
 import { storage } from "../../../App.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "../../types/navigation.tsx";
@@ -15,7 +17,6 @@ export const useHomeLogic = (token: string | null, userId: string) => {
     const [forValidation, setForValidation] = useState(false);
     const [activeTickets, setActiveTickets] = useState(false);
     const [toValidateTickets, setToValidateTickets] = useState<UserTicket[]>();
-    const [toValidateTicketsTMP, setToValidateTicketsTMP] = useState<UserTicket[]>();
     const [validateTickets, setValidateTickets] = useState<UserTicket[]>();
     const [reliefs, setReliefs] = useState<Relief[]>();
     const [tickets, setTickets] = useState<Ticket[]>();
@@ -41,63 +42,35 @@ export const useHomeLogic = (token: string | null, userId: string) => {
             setReliefs(JSON.parse(reliefTypesStr));
         }
 
-        fetchUserTicketToValidate(userId, token)
+        fetchDashboardUserTicket(userId, token)
             .then(async (data) => {
-                if(data && data.length > 0) {
-                    setToValidateTicketsTMP(data);
+                if(data) {
+                    if (data.active.length > 0){
+                        setValidateTickets(data.active);
+                        setActiveTickets(true);
+                    }
+
+                    if (data.toValidate.length>0) {
+                        setToValidateTickets(data.toValidate);
+                        setForValidation(true);
+                    }
+
                 }
             })
             .catch(() => {
                 ToastAndroid.show('Błąd pobierania danych', ToastAndroid.SHORT);
             })
-
-        fetchUserTicketValidated(userId, token)
-            .then(async (data) => {
-                console.log('aaaa');
-                if(data && data.length > 0) {
-
-                    console.log('zzzzzz');
-                    setActiveTickets(true);
-                    setValidateTickets(data);
-                }
-            })
-            .catch(() => {
-                ToastAndroid.show('Błąd pobierania danych', ToastAndroid.SHORT);
+            .finally(() => {
+                setIsLoading(false);
             })
 
-        setIsLoading(false);
     }
 
     useEffect(() => {
         if(token && userId) {
             getUserTickets(token).then();
         }
-
     }, [isLoading]);
-
-    useEffect(() => {
-
-        if (!isLoading) {
-
-            const filteredTickets = toValidateTicketsTMP && toValidateTicketsTMP.filter((item) => {
-                const ticketType = tickets && tickets.find(type => type._id === item.ticketId);
-                return ticketType?.type === "674dd1b74e3d87c99c967256";
-            });
-
-            if (filteredTickets && filteredTickets?.length>0) {
-                setForValidation(true);
-                setToValidateTickets(filteredTickets);
-            } else {
-                setForValidation(false);
-            }
-        }
-
-    }, [toValidateTicketsTMP]);
-
-
-    console.log("at " +activeTickets);
-    console.log("fv " +forValidation);
-    console.log("il " +isLoading);
 
     return {
         forValidation,

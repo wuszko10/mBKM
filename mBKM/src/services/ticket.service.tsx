@@ -42,19 +42,9 @@ export const getUserTicket = async (userTicketId:string, token: string) => {
     return response.data;
 };
 
-export const fetchUserTicketToValidate = async (userTicketId:string, token: string) => {
+export const fetchDashboardUserTicket = async (userTicketId:string, token: string) => {
 
-    const response = await axios.get(SERVER_URL + `user-ticket/user/to-validate/${userTicketId}`, {
-        headers: {
-            'authorization': `Bearer ${token}`,
-        }
-    });
-    return response.data;
-};
-
-export const fetchUserTicketValidated = async (userTicketId:string, token: string) => {
-
-    const response = await axios.get(SERVER_URL + `user-ticket/user/validated/${userTicketId}`, {
+    const response = await axios.get(SERVER_URL + `user-ticket/dashboard/user/${userTicketId}`, {
         headers: {
             'authorization': `Bearer ${token}`,
         }

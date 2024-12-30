@@ -22,17 +22,28 @@ function create(context) {
         }
     }
 
-    async function getUserTicketToValidateByUserId(id) {
-        try {
-            return await UserTicketDAO.getUserTicketToValidateByUserId(id);
-        } catch (error) {
-            throw applicationException.new(applicationException.NOT_FOUND, `Ticket with ID ${id} not found`);
-        }
-    }
+    async function getDashboardUserTicketByUserId(id) {
 
-    async function getUserTicketValidatedByUserId(id) {
+        let tickets = [];
+        let toValidate = [];
+        let filteredToValidate = [];
+
         try {
-            return await UserTicketDAO.getUserTicketValidatedByUserId(id);
+            tickets = await TicketDAO.getAllTickets();
+            toValidate = await UserTicketDAO.getUserTicketToValidateByUserId(id);
+
+            filteredToValidate = toValidate.filter((item) => {
+                const ticketType = tickets.find(type => type._id.toString() === item.ticketId.toString());
+                return ticketType?.type.toString() === "674dd1b74e3d87c99c967256";
+            });
+
+            const active = await UserTicketDAO.getUserTicketValidatedByUserId(id);
+
+            return {
+                active: active,
+                toValidate: filteredToValidate
+            }
+
         } catch (error) {
             throw applicationException.new(applicationException.NOT_FOUND, `Ticket with ID ${id} not found`);
         }
@@ -74,8 +85,7 @@ function create(context) {
     return {
         createNewOrUpdateUserTicket,
         getUserTicketByUserId,
-        getUserTicketToValidateByUserId,
-        getUserTicketValidatedByUserId,
+        getDashboardUserTicketByUserId,
         getUserTicketById,
         validateUserTicket
     };
