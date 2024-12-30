@@ -32,7 +32,7 @@ export const useHomeLogic = (token: string | null, userId: string) => {
 
         if(!isLoading) return;
 
-        checkInternetConnection();
+        checkInternetConnection().then();
 
         const ticketStr = storage.getString('tickets');
         const reliefTypesStr = storage.getString('reliefs');
@@ -53,7 +53,10 @@ export const useHomeLogic = (token: string | null, userId: string) => {
 
         fetchUserTicketValidated(userId, token)
             .then(async (data) => {
+                console.log('aaaa');
                 if(data && data.length > 0) {
+
+                    console.log('zzzzzz');
                     setActiveTickets(true);
                     setValidateTickets(data);
                 }
@@ -67,24 +70,34 @@ export const useHomeLogic = (token: string | null, userId: string) => {
 
     useEffect(() => {
         if(token && userId) {
+            getUserTickets(token).then();
+        }
 
-            getUserTickets(token);
+    }, [isLoading]);
 
-            if (!isLoading) {
-                const filteredTickets = toValidateTicketsTMP && toValidateTicketsTMP.filter((item) => {
-                    const ticketType = tickets && tickets.find(type => type._id === item.ticketId);
-                    return ticketType?.type === "674dd1b74e3d87c99c967256";
-                });
+    useEffect(() => {
 
-                if (filteredTickets && filteredTickets?.length>0) {
-                    setForValidation(true);
-                    setToValidateTickets(filteredTickets);
-                } else {
-                    setForValidation(false);
-                }
+        if (!isLoading) {
+
+            const filteredTickets = toValidateTicketsTMP && toValidateTicketsTMP.filter((item) => {
+                const ticketType = tickets && tickets.find(type => type._id === item.ticketId);
+                return ticketType?.type === "674dd1b74e3d87c99c967256";
+            });
+
+            if (filteredTickets && filteredTickets?.length>0) {
+                setForValidation(true);
+                setToValidateTickets(filteredTickets);
+            } else {
+                setForValidation(false);
             }
         }
-    }, [isLoading]);
+
+    }, [toValidateTicketsTMP]);
+
+
+    console.log("at " +activeTickets);
+    console.log("fv " +forValidation);
+    console.log("il " +isLoading);
 
     return {
         forValidation,
