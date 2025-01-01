@@ -5,16 +5,19 @@ import {
 } from "../PopupFields";
 import {addBusStop, editBusStop} from "../../../services/stop.service";
 import {addLine, editLine} from "../../../services/line.service";
+import {useAuth} from "../../../context/authProvider";
 
 const LinePopupForm = ({show, setShow, line, titleForm, buttonText, editMode, setEditMode, refreshLines}) => {
 
     const initialFormData = {
         number: '',
         name: '',
+        isActive: '',
     }
 
     const [formData, setFormData] = useState(initialFormData);
     const formFields = getLineFormFields(editMode);
+    const { token } = useAuth();
 
     const loadData = () => {
 
@@ -22,6 +25,7 @@ const LinePopupForm = ({show, setShow, line, titleForm, buttonText, editMode, se
             setFormData({
                 number: line.number,
                 name: line.name,
+                isActive: line.isActive,
             });
         }
 
@@ -54,7 +58,7 @@ const LinePopupForm = ({show, setShow, line, titleForm, buttonText, editMode, se
             return;
         }
 
-        await addLine(formData);
+        await addLine(formData, token);
 
         setFormData(initialFormData);
         handleClose();
@@ -64,7 +68,7 @@ const LinePopupForm = ({show, setShow, line, titleForm, buttonText, editMode, se
     async function handleEdit(event) {
         event.preventDefault();
 
-        await editLine(line._id, formData);
+        await editLine(line._id, formData, token);
 
         handleClose();
         await refreshLines();

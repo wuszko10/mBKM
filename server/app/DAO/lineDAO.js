@@ -7,7 +7,8 @@ import uniqueValidator from 'mongoose-unique-validator';
 
 const lineSchema = new mongoose.Schema({
     number: {type: String, required: true, unique: true},
-    name: {type: String, required: true}
+    name: {type: String, required: true},
+    isActive: {type: Boolean, default: true, required: false}
 }, {
     collection: 'line'
 });

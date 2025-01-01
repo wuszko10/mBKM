@@ -45,5 +45,6 @@ export const useStops = () => {
         setPageSize,
         setSearchQuery,
         refreshStops,
+        token,
     };
 };

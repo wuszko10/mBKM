@@ -13,6 +13,7 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
 
     const [showDate, setShowDate] = useState(false);
     const [reliefs, setReliefs] = useState<Relief[]>();
+    const [lines, setLines] = useState<Line[]>();
     const [reliefsData, setReliefsData] = useState<FilterMapListType[]>();
     const [linesData, setLinesData] = useState<FilterMapListType[]>();
     const [selectedRelief, setSelectedRelief] = useState<string | null>(null);
@@ -33,8 +34,8 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
             const filteredReliefs = parseRelief
                 .filter(r =>
                     selectedTicket.typeName === SINGLE_TICKET
-                        ? (r.ticketTypeName === SINGLE_TICKET || r.ticketTypeName === ALL_LINES)
-                        : (r.ticketTypeName === SEASON_TICKET || r.ticketTypeName === ALL_LINES))
+                        ? ((r.ticketTypeName === SINGLE_TICKET || r.ticketTypeName === ALL_LINES) && r.isActive )
+                        : ((r.ticketTypeName === SEASON_TICKET || r.ticketTypeName === ALL_LINES) && r.isActive ))
                 .map(r => ({
                     label: r.name+" ("+r.percentage+"%)",
                     value: r._id,
@@ -44,8 +45,8 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
             const filteredLines = parseLines
                 .filter(line =>
                     selectedTicket.lineName === ALL_LINES
-                        ? line.number === ALL_LINES
-                        : line.number !== ALL_LINES
+                        ? (line.number === ALL_LINES && line.isActive)
+                        : (line.number !== ALL_LINES && line.isActive)
                 )
                 .map(line => ({
                     label: line.name,
@@ -56,6 +57,7 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
             setReliefsData(filteredReliefs);
             setLinesData(filteredLines);
             setReliefs(parseRelief);
+            setLines(parseLines);
             setIsLoading(false);
         }
     }
@@ -110,7 +112,7 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
 
         const data = {
             selectedTicket: selectedTicket,
-            selectedLines: selectedLines,
+            selectedLines: lines?.find(l => l.id === selectedLines),
             selectedRelief: reliefs?.find(r => r._id === selectedRelief),
             finalPrice: finalPrice,
             ...(selectedTicket.typeName === SEASON_TICKET && { selectedDate: selectedDate.toISOString() }),

@@ -1,10 +1,11 @@
 import business from '../business/business.container';
 import applicationException from '../service/applicationException';
 import authToken from '../middleware/authToken';
+import admin from "../middleware/admin";
 
 const TopUpEndpoint = (router) => {
 
-    router.get('/api/top-ups', authToken, async (req, res) => {
+    router.get('/api/top-ups', admin, async (req, res) => {
         const { page = 1, pageSize = 10, searchQuery } = req.query;
         const cache = req.app.locals.cache;
         try {

@@ -47,5 +47,6 @@ export const useLines = () => {
         setPageSize,
         setSearchQuery,
         refreshLines,
+        token,
     };
 };

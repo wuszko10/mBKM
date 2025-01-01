@@ -1,5 +1,6 @@
 import applicationException from '../service/applicationException';
 import LineDAO from "../DAO/lineDAO";
+import UserTicketDAO from "../DAO/user/userTicketDAO";
 
 function create(context) {
 
@@ -37,6 +38,13 @@ function create(context) {
   }
 
   async function removeById(id) {
+
+    const isUsedInTickets = await UserTicketDAO.getByLineId(id);
+
+    if (isUsedInTickets){
+      throw applicationException.new(applicationException.METHOD_NOT_ALLOWED, `Line with ID ${id} cannot be remove successfully`);
+    }
+
     try {
       await LineDAO.removeById(id);
       return { message: `Line with ID ${id} successfully removed` };

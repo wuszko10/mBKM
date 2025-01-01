@@ -26,6 +26,39 @@ function createNewOrUpdateTicket(ticket) {
 
     return Promise.resolve().then(() => {
 
+        const targetDate = new Date(ticket.offerStartDate || Date.now());
+        targetDate.setDate(targetDate.getDate() - 1);
+        targetDate.setHours(22, 59, 59, 999);
+
+        const overlappingTickets = TicketModel.find({
+            type: ticket.type,
+            lines: ticket.lines,
+            period: ticket.period,
+            $and: [
+                {
+                    $and: [
+                        { $or: [{ offerEndDate: null }, { offerEndDate: {$exists: false} }, { offerEndDate: { $gte: ticket.offerStartDate } }] },
+                        { offerStartDate: { $lte: targetDate } },
+                    ],
+                },
+                {
+                    $and: [
+                        { $or: [{ offerEndDate: null }, { offerEndDate: {$exists: false} }, { offerEndDate: { $gte: targetDate } }] },
+                        { offerStartDate: { $lte: ticket.offerStartDate } },
+                    ],
+                },
+            ]
+        });
+
+
+        // Jeśli istnieje kolizja, rzucamy wyjątek
+        if (overlappingTickets.length > 0) {
+            throw applicationException.new(
+                applicationException.BAD_REQUEST,
+                'Bilet z podanymi parametrami i datami już istnieje lub daty nachodzą się na inne bilety.'
+            );
+        }
+
         if (!ticket.id) {
 
             return new TicketModel(ticket).save().then(result => {
@@ -105,6 +138,9 @@ async function getTicket(id) {
 }
 
 async function removeTicketById(id) {
+
+    console.log("id: " + id)
+
     return TicketModel.findByIdAndRemove(id);
 }
 

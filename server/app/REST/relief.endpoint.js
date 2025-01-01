@@ -45,7 +45,7 @@ const ReliefEndpoint = (router) => {
         }
     });
 
-    router.post('/api/relief', authToken, authUserRole('admin'), async (req, res) => {
+    router.post('/api/relief', admin, async (req, res) => {
         try {
             const relief = await business.getReliefManager().createNewOrUpdateRelief(req.body);
             res.status(201).json(relief);
@@ -54,7 +54,7 @@ const ReliefEndpoint = (router) => {
         }
     });
 
-    router.delete('/api/relief/:id', authToken, authUserRole('admin'), async (req, res) => {
+    router.delete('/api/relief/:id', admin, async (req, res) => {
         try {
             const result = await business.getReliefManager().removeReliefById(req.params.id);
             res.status(200).json(result);

@@ -1,6 +1,13 @@
 import React from "react";
+import {RiEdit2Fill, RiEdit2Line} from "react-icons/ri";
+import Button from "../button";
+import {MdCancel, MdOutlineCancel} from "react-icons/md";
+import {TbCopyPlus, TbCopyPlusFilled, TbTrash, TbTrashFilled} from "react-icons/tb";
+import {FaExternalLinkSquareAlt} from "react-icons/fa";
+import {FiExternalLink} from "react-icons/fi";
+import ToggleSwitch from "../toggleSwitch";
 
-export const getTicketsTableColumns = (handleEdit, handleRemove) => [
+export const getTicketsTableColumns = (handleEdit, handleRemove, handleDuplicate, handleCancel) => [
     {
         accessorKey: 'id',
         header: 'ID',
@@ -28,7 +35,7 @@ export const getTicketsTableColumns = (handleEdit, handleRemove) => [
         header: 'Data rozpoczęcia oferty',
         cell: (info) => {
             const dateValue = info.getValue();
-            return dateValue ? new Date(dateValue).toLocaleDateString() : 'Brak';
+            return dateValue ? new Date(dateValue).toLocaleString() : 'Brak';
         },
     },
     {
@@ -36,21 +43,62 @@ export const getTicketsTableColumns = (handleEdit, handleRemove) => [
         header: 'Data zakończenia oferty',
         cell: (info) => {
             const dateValue = info.getValue();
-            return dateValue ? new Date(dateValue).toLocaleDateString() : 'Brak';
+            return dateValue ? new Date(dateValue).toLocaleString() : 'Brak';
         },
     },
     {
         header: ' ',
-        cell: ({ row }) => (
-            <div className="row-div">
-                <button onClick={() => handleEdit(row.original._id)}>Edytuj</button>
-                <button onClick={() => handleRemove(row.original._id)}>Usuń</button>
-            </div>
-        ),
+        cell: ({ row }) => {
+            const currentDate = new Date().toISOString();
+
+            return (<div className="row-div">
+                {row.original.offerStartDate >= currentDate
+
+                    ? (<div className="row-div">
+                        <Button
+                            handleFunction={handleEdit}
+                            argument={row.original._id}
+                            defaultIcon={<RiEdit2Line className={'defaultTableIcon'} />}
+                            hoverIcon={<RiEdit2Fill className={'hoverTableIcon'} />}
+                            title={'Edytuj ofertę'}
+                        />
+                        <Button
+                            handleFunction={handleRemove}
+                            argument={row.original._id}
+                            defaultIcon={<TbTrash className={'defaultTableIcon'} />}
+                            hoverIcon={<TbTrashFilled className={'hoverTableIcon'} />}
+                            title={'Usuń ofertę'}
+                        />
+                    </div>)
+                    : (<div className="row-div">
+                        {!row.original.offerEndDate ? <Button
+                            handleFunction={handleCancel}
+                            argument={row.original._id}
+                            defaultIcon={<MdOutlineCancel className={'defaultTableIcon'} />}
+                            hoverIcon={<MdCancel className={'hoverTableIcon'} />}
+                            title={'Zakończ ofertę'}
+                        /> : <Button
+                            handleFunction={handleCancel}
+                            argument={row.original._id}
+                            defaultIcon={<RiEdit2Line className={'defaultTableIcon'} />}
+                            hoverIcon={<RiEdit2Fill className={'hoverTableIcon'} />}
+                            title={'Edytuj datę zakończenia oferty'}
+                        />}
+                        <Button
+                            handleFunction={handleDuplicate}
+                            argument={row.original._id}
+                            defaultIcon={<TbCopyPlus className={'defaultTableIcon'} />}
+                            hoverIcon={<TbCopyPlusFilled className={'hoverTableIcon'} />}
+                            title={'Skopiuj, aby ustalić nową cenę'}
+                        />
+                    </div>)
+                }
+            </div>)
+        },
     },
 ];
 
-export const getReliefColumns = (handleEdit, handleRemove) => [
+export const getReliefColumns = (handleEdit, handleRemove, handleToggle) => [
     {
         accessorKey: 'id',
         header: 'ID',
@@ -74,17 +122,40 @@ export const getReliefColumns = (handleEdit, handleRemove) => [
         header: 'Typ biletu',
     },
     {
+        accessorKey: 'isActive',
+        header: 'Aktywny',
+        cell: ({ row }) => (
+            <ToggleSwitch
+                isActive={row.original.isActive}
+                onToggle={handleToggle}
+                argument={row.original._id}
+            />
+        )
+    },
+    {
         header: ' ',
         cell: ({ row }) => (
             <div className="row-div">
-                <button onClick={() => handleEdit(row.original._id)}>Edytuj</button>
-                <button onClick={() => handleRemove(row.original._id)}>Usuń</button>
+                <Button
+                    handleFunction={handleEdit}
+                    argument={row.original._id}
+                    defaultIcon={<RiEdit2Line className={'defaultTableIcon'} />}
+                    hoverIcon={<RiEdit2Fill className={'hoverTableIcon'} />}
+                    title={'Edytuj dane ulgi'}
+                />
+                <Button
+                    handleFunction={handleRemove}
+                    argument={row.original._id}
+                    defaultIcon={<TbTrash className={'defaultTableIcon'} />}
+                    hoverIcon={<TbTrashFilled className={'hoverTableIcon'} />}
+                    title={'Usuń ulgę'}
+                />
             </div>
         ),
     },
 ];
 
-export const getStopsColumns = (handleEdit, handleRemove) => [
+export const getStopsColumns = (handleEdit, handleRemove, handleToggle) => [
     {
         accessorKey: 'id',
         header: 'ID',
@@ -103,17 +174,40 @@ export const getStopsColumns = (handleEdit, handleRemove) => [
         header: 'Długość geograficzna',
     },
     {
+        accessorKey: 'isActive',
+        header: 'Aktywny',
+        cell: ({ row }) => (
+            <ToggleSwitch
+                isActive={row.original.isActive}
+                onToggle={handleToggle}
+                argument={row.original._id}
+            />
+        )
+    },
+    {
         header: ' ',
         cell: ({ row }) => (
             <div className="row-div">
-                <button onClick={() => handleEdit(row.original._id)}>Edytuj</button>
-                <button onClick={() => handleRemove(row.original._id)}>Usuń</button>
+                <Button
+                    handleFunction={handleEdit}
+                    argument={row.original._id}
+                    defaultIcon={<RiEdit2Line className={'defaultTableIcon'} />}
+                    hoverIcon={<RiEdit2Fill className={'hoverTableIcon'} />}
+                    title={'Edytuj dane przystanku'}
+                />
+                <Button
+                    handleFunction={handleRemove}
+                    argument={row.original._id}
+                    defaultIcon={<TbTrash className={'defaultTableIcon'} />}
+                    hoverIcon={<TbTrashFilled className={'hoverTableIcon'} />}
+                    title={'Usuń przystanek'}
+                />
             </div>
         ),
     },
 ];
 
-export const getUsersColumns = (navigate) => [
+export const getUsersColumns = (navigate, handleToggle) => [
     {
         accessorKey: 'id',
         header: 'ID',
@@ -134,15 +228,26 @@ export const getUsersColumns = (navigate) => [
     {
         accessorKey: 'active',
         header: 'Aktywny',
-        cell: (info) => {
-            const dateValue = info.getValue();
-            return dateValue ? "Tak" : 'Nie';
-        }
+        cell: ({ row }) => (
+            <ToggleSwitch
+                isActive={row.original.isActive}
+                onToggle={handleToggle}
+                argument={row.original._id}
+            />
+        )
     },
     {
         header: ' ',
         cell: ({ row }) => (
-            <button onClick={() => navigate(`/user/${row.original._id}`)}>Zobacz szczegóły</button>
+            <div className="row-div">
+                <Button
+                    handleFunction={navigate}
+                    argument={`/user/${row.original._id}`}
+                    defaultIcon={<FaExternalLinkSquareAlt  className={'defaultTableIcon'} />}
+                    hoverIcon={<FiExternalLink className={'hoverTableIcon'} />}
+                    title={'Szczegóły użytkownika'}
+                />
+            </div>
         ),
     },
 ];
@@ -181,7 +286,15 @@ export const getTransactionColumns = (navigate) => [
     {
         header: ' ',
         cell: ({ row }) => (
-            <button onClick={() => navigate(`/transaction/${row.original._id}`)}>Zobacz szczegóły</button>
+            <div className="row-div">
+                <Button
+                    handleFunction={navigate}
+                    argument={`/transaction/${row.original._id}`}
+                    defaultIcon={<FaExternalLinkSquareAlt  className={'defaultTableIcon'} />}
+                    hoverIcon={<FiExternalLink className={'hoverTableIcon'} />}
+                    title={'Szczegóły transakcji'}
+                />
+            </div>
         ),
     },
 ];
@@ -223,7 +336,7 @@ export const getTopUpTransactionColumns = (navigate) => [
     }
 ];
 
-export const getLinesColumns = (handleEdit, handleRemove) => [
+export const getLinesColumns = (handleEdit, handleRemove, handleToggle) => [
     {
         accessorKey: 'id',
         header: 'ID',
@@ -238,11 +351,34 @@ export const getLinesColumns = (handleEdit, handleRemove) => [
         header: 'Nazwa linii',
     },
     {
+        accessorKey: 'isActive',
+        header: 'Aktywna',
+        cell: ({ row }) => (
+            <ToggleSwitch
+                isActive={row.original.isActive}
+                onToggle={handleToggle}
+                argument={row.original._id}
+            />
+        )
+    },
+    {
         header: ' ',
         cell: ({ row }) => (
             <div className="row-div">
-                <button onClick={() => handleEdit(row.original._id)}>Edytuj</button>
-                <button onClick={() => handleRemove(row.original._id)}>Usuń</button>
+                <Button
+                    handleFunction={handleEdit}
+                    argument={row.original._id}
+                    defaultIcon={<RiEdit2Line className={'defaultTableIcon'} />}
+                    hoverIcon={<RiEdit2Fill className={'hoverTableIcon'} />}
+                    title={'Edytuj dane linii'}
+                />
+                <Button
+                    handleFunction={handleRemove}
+                    argument={row.original._id}
+                    defaultIcon={<TbTrash className={'defaultTableIcon'} />}
+                    hoverIcon={<TbTrashFilled className={'hoverTableIcon'} />}
+                    title={'Usuń linię'}
+                />
             </div>
         ),
     },

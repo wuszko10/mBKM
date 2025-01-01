@@ -8,11 +8,10 @@ import { ToastAndroid } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "../../types/navigation.tsx";
 
-export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: string | null, selectedRelief: Relief | null, selectedDate: string | undefined, finalPrice: number, userId: string, token: string | null,  ) => {
+export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: Line | null, selectedRelief: Relief | null, selectedDate: string | undefined, finalPrice: number, userId: string, token: string | null,  ) => {
 
     const [isLoading, setIsLoading] = useState(true);
     const [paymentMethodId, setPaymentMethodId] = useState<string>('');
-    const [line, setLine] = useState<Line>();
     const [methods, setMethods] = useState<PaymentMethod[]>();
     const [statusId, setStatusId] = useState<string>('');
     const navigation = useNavigation<NavigationProp>();
@@ -20,17 +19,14 @@ export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: 
     const getData = () => {
         if(!isLoading) return;
 
-        const linesStr = storage.getString('lines');
         const methodStr = storage.getString('paymentMethods');
         const statusStr = storage.getString('statusTypes');
 
-        if (linesStr && methodStr && statusStr)
+        if (methodStr && statusStr)
         {
-            const parseLines: Line[] = JSON.parse(linesStr);
             const parseMethods: PaymentMethod[] = JSON.parse(methodStr);
             const parseStatus: MetadataType[] = JSON.parse(statusStr);
 
-            const filteredLine = parseLines.find(l => l.id == selectedLines)
 
             const filteredMethods = parseMethods
                 .filter(method =>
@@ -43,7 +39,6 @@ export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: 
                 setStatusId(id);
             }
 
-            setLine(filteredLine);
             setMethods(filteredMethods);
             setIsLoading(false);
         }
@@ -58,7 +53,7 @@ export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: 
 
             checkInternetConnection().then();
 
-            const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId, selectedDate,selectedRelief ? selectedRelief?._id : '', token ? token : '');
+            const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId, selectedDate,selectedRelief ? selectedRelief._id : '', selectedLines ? selectedLines.id : '', token ? token : '');
 
             if (data) {
                 navigation.navigate('PaymentScreen', {
@@ -79,7 +74,7 @@ export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: 
     }
 
     return {
-        line,
+        line: selectedLines,
         paymentMethodId,
         filteredMethods : methods,
         isLoading,

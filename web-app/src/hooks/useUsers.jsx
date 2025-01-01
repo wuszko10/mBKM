@@ -43,5 +43,6 @@ export const useUsers = () => {
         setPageSize,
         setSearchQuery,
         refreshUsers,
+        token,
     };
 };

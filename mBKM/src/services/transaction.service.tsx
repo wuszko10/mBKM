@@ -2,12 +2,13 @@ import axios from 'axios';
 import {SERVER_URL} from "../../variables.tsx";
 import { ToastAndroid } from "react-native";
 
-export const addTransaction = async (ticketId: string, finalPrice: number, methodId: string, userId: string, statusId: string, startDate: string | undefined, reliefId: string, token: string) => {
+export const addTransaction = async (ticketId: string, finalPrice: number, methodId: string, userId: string, statusId: string, startDate: string | undefined, reliefId: string, lineId: string, token: string) => {
 
     const userTicketData = {
         number: '',
         transactionId: '',
         reliefId: reliefId,
+        lineId: lineId,
         price: finalPrice,
         purchaseDate: new Date().toISOString(),
         userId: userId,

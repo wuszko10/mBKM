@@ -6,6 +6,7 @@ import {getReliefColumns} from "../../components/Table/TableColumns";
 import {useReliefs} from "../../hooks/useReliefs";
 import {deleteRelief} from "../../services/relief.service";
 import ReliefPopupForm from "../../components/Popup/components/ReliefPopupForm";
+import {editBusStop} from "../../services/stop.service";
 
 const Reliefs = () => {
 
@@ -27,6 +28,7 @@ const Reliefs = () => {
         setPageSize,
         setSearchQuery,
         refreshReliefs,
+        token
     } = useReliefs();
 
     const data = React.useMemo(() => {
@@ -55,12 +57,25 @@ const Reliefs = () => {
         const confirmDelete = window.confirm('Czy na pewno chcesz usunąć tę ulgę?');
 
         if (confirmDelete) {
-            await deleteRelief(id);
+            await deleteRelief(id, token);
             await refreshReliefs();
         }
     }
 
-    const columns = getReliefColumns(handleShowEditForm, handleRemove);
+    async function handleToggle(id, newState) {
+
+        let data = reliefs.find(relief => relief._id === id);
+
+        data.isActive = Boolean(newState);
+
+        if (data){
+            await editBusStop(id, data, token)
+            await refreshReliefs();
+        }
+
+    }
+
+    const columns = getReliefColumns(handleShowEditForm, handleRemove, handleToggle);
 
     return (
         <div className="main-box">

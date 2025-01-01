@@ -26,7 +26,7 @@ const TicketEndpoint = (router) => {
         }
     })
 
-    router.get('/api/ticket/:id', async (req, res) => {
+    router.get('/api/ticket/:id', authToken, async (req, res) => {
         try {
             const ticket = await business.getTicketManager().getById(req.params.id);
             res.status(200).json(ticket);
@@ -35,7 +35,7 @@ const TicketEndpoint = (router) => {
         }
     });
 
-    router.post('/api/ticket', async (request, response) => {
+    router.post('/api/ticket', admin, async (request, response) => {
         try {
             const result = await business.getTicketManager().createNewOrUpdateTicket(request.body);
             response.status(200).send(result);

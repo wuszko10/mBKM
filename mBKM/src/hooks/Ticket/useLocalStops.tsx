@@ -17,7 +17,9 @@ export const useLocalStops = () => {
         if (stopsStr) {
             const parseStops: BusStop[] = JSON.parse(stopsStr);
 
-            setStops(parseStops);
+            const filteredStops = parseStops.filter(s => s.isActive);
+
+            setStops(filteredStops);
             setIsLoading(false);
         }
     }

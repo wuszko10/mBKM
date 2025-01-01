@@ -10,6 +10,7 @@ const reliefSchema = new mongoose.Schema({
     type: {type: mongoose.Schema.Types.ObjectId, ref: 'reliefType', required: true},
     ticketType: {type: mongoose.Schema.Types.ObjectId, ref: 'ticketType', required: true},
     percentage: {type: Number, required: true},
+    isActive: {type: Boolean, default: true, required: false}
 }, {
     collection: 'relief'
 });

@@ -2,8 +2,9 @@ import GlobalPopupForm from "../GlobalPopupForm";
 import React, {useEffect, useState} from "react";
 import {getTicketFormFields} from "../PopupFields";
 import {addTicket, editTicket} from "../../../services/ticket.service";
+import {useAuth} from "../../../context/authProvider";
 
-const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, editMode, setEditMode, refreshTickets}) => {
+const TicketPopupForm = ({show, setShow, ticket, oldTicket, titleForm, buttonText, editMode, duplicateMode, cancelMode, setEditMode, setDuplicateMode, setCancelMode, refreshTickets}) => {
 
     const initialFormData = {
         type: '',
@@ -16,13 +17,24 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, editMode
 
     const [formData, setFormData] = useState(initialFormData);
     const metadata = JSON.parse(localStorage.getItem('metadata'));
-    const formFields = getTicketFormFields(metadata, editMode);
+    const formFields = getTicketFormFields(metadata, editMode, duplicateMode, cancelMode);
+    const { token } = useAuth();
 
     const loadData = () => {
 
         if (!(ticket === undefined)) {
-            const date = ticket.offerStartDate && Date.parse(ticket.offerStartDate)
-                ? new Date(ticket.offerStartDate).toISOString().split("T")[0]
+            const startDate = ticket.offerStartDate && Date.parse(ticket.offerStartDate)
+                ? (() => {
+                    const localDate = new Date(ticket.offerStartDate);
+                    return localDate.toISOString().split("T")[0];
+                })()
+                : '';
+
+            const endDate = ticket.offerEndDate && Date.parse(ticket.offerEndDate)
+                ? (() => {
+                    const localDate = new Date(ticket.offerEndDate);
+                    return localDate.toISOString().split("T")[0];
+                })()
                 : '';
 
             setFormData({
@@ -30,8 +42,8 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, editMode
                 lines: ticket.lines,
                 period: ticket.period,
                 price: ticket.price,
-                offerStartDate: date,
-                offerEndDate: '',
+                offerStartDate: startDate,
+                offerEndDate: endDate,
             });
         }
 
@@ -42,6 +54,9 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, editMode
     const handleClose = () => {
         setShow(false);
         setEditMode(false);
+        setDuplicateMode(false);
+        setCancelMode(false);
+        setFormData(initialFormData);
     };
     const handleInputChange = (event) => {
         setFormData({
@@ -50,31 +65,72 @@ const TicketPopupForm = ({show, setShow, ticket, titleForm, buttonText, editMode
         });
     };
 
+    const isFormValid = () => {
+        const requiredFields = formFields.filter((field) => field.required).map((field) => field.name);
+        return requiredFields.every((field) => formData[field] !== "");
+    };
+
+    const handleOldTicketEdit = async () => {
+        const newStartDate = new Date(formData.offerStartDate);
+        const oldTicketEndDay = new Date(newStartDate);
+        oldTicketEndDay.setDate(oldTicketEndDay.getDate() - 1);
+        oldTicketEndDay.setHours(23, 59, 59, 999);
+        oldTicket.offerEndDate = oldTicketEndDay;
+
+        console.log(oldTicket)
+        console.log(JSON.stringify(oldTicket))
+
+        await editTicket(oldTicket._id, oldTicket, token);
+    };
+
+    const handleCreateOrUpdateTicket = async () => {
+        const offerStartDate = new Date(formData.offerStartDate);
+        formData.offerStartDate = offerStartDate;
+        offerStartDate.setHours(0,0,0,0);
+
+
+        if (editMode || cancelMode) {
+            const endDateCheck = new Date(oldTicket.offerEndDate);
+            if (offerStartDate <= endDateCheck) {
+                alert(`Data musi być późniejsza niż obowiązująca oferta.\n\nAktualnie oferta ważna jest do: ${endDateCheck.toLocaleString()}\nWybrana data: ${offerStartDate.toLocaleString()}`);
+                return;
+            }
+        }
+
+        // await addTicket(formData, token);
+
+        setFormData(initialFormData);
+    };
+
     async function handleCreate(event) {
         event.preventDefault();
 
-        const requiredFields = formFields
-            .filter((field) => field.required)
-            .map((field) => field.name);
-
-        const allFieldsFilled = requiredFields.every((field) => formData[field] !== "");
-
-        if (!allFieldsFilled) {
+        if (!isFormValid()) {
             alert("Proszę wypełnić wszystkie pola.");
             return;
         }
 
-        await addTicket(formData);
+        if ( oldTicket ){
+            console.log("tutaj");
+            await handleOldTicketEdit();
+        }
 
-        setFormData(initialFormData);
+        // await handleCreateOrUpdateTicket();
+
         handleClose();
         await refreshTickets();
+
     }
 
     async function handleEdit(event) {
         event.preventDefault();
 
-        await editTicket(ticket._id, formData);
+        const endDate = new Date(formData.offerEndDate);
+        endDate.setHours(23, 59, 59, 999);
+
+        formData.offerEndDate = endDate;
+
+        await editTicket(ticket._id, formData, token);
         handleClose();
         await refreshTickets();
     }

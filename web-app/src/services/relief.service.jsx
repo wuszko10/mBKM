@@ -9,6 +9,7 @@ export const addRelief = async (reliefData, token) => {
             type: reliefData.type,
             ticketType: reliefData.ticketType,
             percentage: reliefData.percentage,
+            isActive: reliefData.isActive,
         }, {
             headers: {
                 'authorization': `Bearer ${token}`,
@@ -51,6 +52,7 @@ export const editRelief = async (id, reliefData, token) => {
             type: reliefData.type,
             ticketType: reliefData.ticketType,
             percentage: reliefData.percentage,
+            isActive: reliefData.isActive,
         }, {
             headers: {
                 'authorization': `Bearer ${token}`,
@@ -82,9 +84,16 @@ export const deleteRelief = async (id, token) => {
         });
         return response.data;
     } catch (err) {
-        toast.error('Ulga nie została usunięta', {
-            position: 'top-right',
-            theme: "colored",
-        });
+        if (err.response && err.response.status === 405) {
+            toast.error('Ulga nie może zostać usunięta, ponieważ jest używana', {
+                position: 'top-right',
+                theme: "colored",
+            });
+        } else {
+            toast.error('Ulga nie została usunięta', {
+                position: 'top-right',
+                theme: "colored",
+            });
+        }
     }
 };

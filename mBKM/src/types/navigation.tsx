@@ -1,5 +1,5 @@
 import { NavigationProp as BaseNavigationProp } from '@react-navigation/native';
-import { Relief,Ticket,TicketOrderTransaction } from "./interfaces.tsx";
+import { Line,Relief,Ticket,TicketOrderTransaction } from "./interfaces.tsx";
 import BuyTicketSummary from "../screens/BuyTicket/BuyTicketSummary/BuyTicketSummary.tsx";
 
 export type RootStackParamList = {
@@ -16,7 +16,7 @@ export type RootStackParamList = {
     };
     BuyTicketSummary: {
         selectedTicket: Ticket,
-        selectedLines: string | null,
+        selectedLines: Line | undefined,
         selectedRelief: Relief | undefined,
         finalPrice: number,
         selectedDate?: string,

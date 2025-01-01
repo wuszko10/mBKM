@@ -15,6 +15,7 @@ const ticketSchema = new mongoose.Schema({
     userId: {type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true},
     ticketId: {type: mongoose.Schema.Types.ObjectId, ref: 'ticket', required: true},
     reliefId: {type: mongoose.Schema.Types.ObjectId, ref: 'relief', required: true},
+    lineId: {type: mongoose.Schema.Types.ObjectId, ref: 'line', required: true},
     price: {type: Number, required: true},
     purchaseDate: { type: Date, required: true },
     ticketStartDate: { type: Date, required: false },
@@ -131,6 +132,14 @@ async function get(id) {
     throw applicationException.new(applicationException.NOT_FOUND, 'Ticket not found');
 }
 
+async function getByRelief(id){
+    return UserTicketModel.findOne({reliefId: id});
+}
+
+async function getByLine(id){
+    return  UserTicketModel.findOne({lineId: id});
+}
+
 async function updateMany (date, currentStatus, invalidStatus) {
     await UserTicketModel.updateMany(
         { ticketEndDate: { $lt: date }, statusId: currentStatus._id },
@@ -161,6 +170,8 @@ export default {
     updateManyUserTickets: updateMany,
     removeUserTicketById: removeById,
     getAllUserTickets: getAll,
+    getByReliefId: getByRelief,
+    getByLineId: getByLine,
 
     model: UserTicketModel,
 };

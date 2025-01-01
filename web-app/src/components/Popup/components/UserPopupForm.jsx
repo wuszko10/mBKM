@@ -5,6 +5,7 @@ import {
 } from "../PopupFields";
 import {addBusStop, editBusStop} from "../../../services/stop.service";
 import {addUser} from "../../../services/user.service";
+import {useAuth} from "../../../context/authProvider";
 
 const UserPopupForm = ({show, setShow, refreshUsers}) => {
 
@@ -13,10 +14,12 @@ const UserPopupForm = ({show, setShow, refreshUsers}) => {
         lastName: '',
         email: '',
         pesel: '',
+        isActive: '',
     }
 
     const [formData, setFormData] = useState(initialFormData);
     const formFields = getCreateUserFormFields();
+    const { token } = useAuth();
 
     const handleClose = () => setShow(false);
     const handleInputChange = (event) => {
@@ -36,7 +39,7 @@ const UserPopupForm = ({show, setShow, refreshUsers}) => {
             return;
         }
 
-        await addUser(formData);
+        await addUser(formData, token);
 
         setFormData(initialFormData);
         handleClose();

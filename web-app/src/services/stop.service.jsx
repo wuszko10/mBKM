@@ -8,6 +8,7 @@ export const addBusStop = async (stopData, token) => {
             name: stopData.name,
             longitude: stopData.longitude,
             latitude: stopData.latitude,
+            isActive: stopData.isActive,
         }, {
             headers: {
                 'authorization': `Bearer ${token}`,
@@ -49,6 +50,7 @@ export const editBusStop = async (id, stopData, token) => {
             name: stopData.name,
             longitude: stopData.longitude,
             latitude: stopData.latitude,
+            isActive: stopData.isActive,
         }, {
             headers: {
                 'authorization': `Bearer ${token}`,

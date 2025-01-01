@@ -44,5 +44,6 @@ export const useReliefs = () => {
         setPageSize,
         setSearchQuery,
         refreshReliefs,
+        token,
     };
 };

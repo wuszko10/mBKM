@@ -1,4 +1,4 @@
-export const getTicketFormFields = (metadata, isEditMode = false) => {
+export const getTicketFormFields = (metadata, isEditMode = false, isDuplicateMode = false, isCancel = false) => {
     return [
         {
             name: "type",
@@ -39,22 +39,26 @@ export const getTicketFormFields = (metadata, isEditMode = false) => {
             type: "number",
             placeholder: "Cena w zł",
             required: true,
-            disabled: false,
+            disabled: isDuplicateMode,
         },
         {
             name: "offerStartDate",
             label: "Data wprowadzenia oferty",
             type: "date",
             required: true,
-            disabled: isEditMode,
+            disabled: isDuplicateMode,
         },
         {
             name: "offerEndDate",
-            label: "Data zakończenia oferty (nieobowiązkowe)",
+            label: "Data zakończenia oferty*",
             type: "date",
-            required: false,
+            required: isCancel,
             disabled: false,
         },
+        {
+            type: "legend",
+            name: "* - obowiązkowe przy zakończeniu oferty",
+        }
     ];
 };
 
@@ -94,6 +98,12 @@ export const getReliefFormFields = (metadata, isEditMode = false) => {
             placeholder: "Odpłatność",
             disabled: false,
         },
+        {
+            name: "isActive",
+            label: "Czy aktywować ulgę?",
+            type: "checkbox",
+            disabled: false,
+        }
     ];
 };
 
@@ -174,6 +184,12 @@ export const getLineFormFields = (isEditMode = false) => {
             required: false,
             disabled: false,
         },
+        {
+            name: "isActive",
+            label: "Czy aktywować linię?",
+            type: "checkbox",
+            disabled: false,
+        }
     ];
 };
 

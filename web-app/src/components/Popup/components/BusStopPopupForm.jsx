@@ -4,6 +4,7 @@ import {
     getBusStopFormFields
 } from "../PopupFields";
 import {addBusStop, editBusStop} from "../../../services/stop.service";
+import {useAuth} from "../../../context/authProvider";
 
 const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, editMode, setEditMode, refreshStops}) => {
 
@@ -11,10 +12,12 @@ const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, editMode,
         name: '',
         longitude: '',
         latitude: '',
+        isActive: '',
     }
 
     const [formData, setFormData] = useState(initialFormData);
     const formFields = getBusStopFormFields(editMode);
+    const { token } = useAuth();
 
     const loadData = () => {
 
@@ -23,6 +26,7 @@ const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, editMode,
                 name: stop.name,
                 longitude: stop.longitude,
                 latitude: stop.latitude,
+                isActive: stop.isActive,
             });
         }
 
@@ -51,7 +55,7 @@ const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, editMode,
             return;
         }
 
-        await addBusStop(formData);
+        await addBusStop(formData, token);
 
         setFormData(initialFormData);
         handleClose();
@@ -61,7 +65,7 @@ const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, editMode,
     async function handleEdit(event) {
         event.preventDefault();
 
-        await editBusStop(stop._id, formData);
+        await editBusStop(stop._id, formData, token);
 
         handleClose();
         await refreshStops();

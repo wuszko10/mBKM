@@ -6,6 +6,8 @@ import {LuPlusCircle} from "react-icons/lu";
 import {getUsersColumns} from "../../components/Table/TableColumns";
 import {useUsers} from "../../hooks/useUsers";
 import UserPopupForm from "../../components/Popup/components/UserPopupForm";
+import {editBusStop} from "../../services/stop.service";
+import {addUser} from "../../services/user.service";
 
 const Users = () => {
 
@@ -22,6 +24,7 @@ const Users = () => {
         setPageSize,
         setSearchQuery,
         refreshUsers,
+        token,
     } = useUsers();
 
     const data = React.useMemo(() => {
@@ -32,7 +35,18 @@ const Users = () => {
         setShow(true);
     };
 
-    const columns = getUsersColumns(navigate);
+    const handleToggle = async (id, newState) => {
+        let data = users.find(u => u._id === id);
+
+        data.isActive = Boolean(newState);
+
+        if (data){
+            await addUser(id, data, token)
+            await refreshUsers();
+        }
+    }
+
+    const columns = getUsersColumns(navigate, handleToggle);
 
     return (
         <div className="main-box">

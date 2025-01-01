@@ -22,10 +22,17 @@ export const addTicket = async (ticketData, token) => {
         });
         return response.data;
     } catch (err) {
-        toast.error('Bilet nie został utworzony', {
-            position: 'top-right',
-            theme: "colored",
-        });
+        if (err.response && err.response.status === 400) {
+            toast.error('Próba stworzenia oferty z nakładającą się datą.', {
+                position: 'top-right',
+                theme: "colored",
+            });
+        } else {
+            toast.error('Bilet nie został zaktualizowany', {
+                position: 'top-right',
+                theme: "colored",
+            });
+        }
     }
 };
 
@@ -79,10 +86,17 @@ export const editTicket = async (id, ticketData, token) => {
         });
         return response.data;
     } catch (err) {
-        toast.error('Bilet nie został zaktualizowany', {
-            position: 'top-right',
-            theme: "colored",
-        });
+        if (err.response && err.response.status === 400) {
+            toast.error('Próba stworzenia oferty z nakładającą się datą.', {
+                position: 'top-right',
+                theme: "colored",
+            });
+        } else {
+            toast.error('Bilet nie został zaktualizowany', {
+                position: 'top-right',
+                theme: "colored",
+            });
+        }
     }
 };
 

@@ -6,6 +6,7 @@ import {getLinesColumns} from "../../components/Table/TableColumns";
 import LinePopupForm from "../../components/Popup/components/LinePopupForm";
 import {useLines} from "../../hooks/useLines";
 import {deleteLine} from "../../services/line.service";
+import {editBusStop} from "../../services/stop.service";
 
 const Lines = () => {
 
@@ -19,6 +20,7 @@ const Lines = () => {
         setPageSize,
         setSearchQuery,
         refreshLines,
+        token,
     } = useLines();
 
 
@@ -54,12 +56,25 @@ const Lines = () => {
         const confirmDelete = window.confirm('Czy na pewno chcesz usunąć tę linię?');
 
         if (confirmDelete) {
-            await deleteLine(id);
+            await deleteLine(id, token);
             await refreshLines();
         }
     }
 
-    const columns = getLinesColumns(handleShowEditForm, handleRemove);
+    async function handleToggle(id, newState) {
+
+        let data = lines.find(l => l._id === id);
+
+        data.isActive = Boolean(newState);
+
+        if (data){
+            await editBusStop(id, data, token)
+            await refreshLines();
+        }
+
+    }
+
+    const columns = getLinesColumns(handleShowEditForm, handleRemove, handleToggle);
 
     return (
         <div className="main-box">

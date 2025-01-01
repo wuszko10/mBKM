@@ -62,6 +62,7 @@ const Login = () => {
             <div className="logo logo-login">
                 <PiNavigationArrowFill className="logo-icon-login"/>
                 <h1>mBKM</h1>
+                <p>Admin</p>
             </div>
             <div className="login-container">
                 <h2>Zaloguj się</h2>

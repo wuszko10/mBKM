@@ -8,7 +8,8 @@ import uniqueValidator from 'mongoose-unique-validator';
 const busStopSchema = new mongoose.Schema({
     name: {type: String, required: true, unique: true},
     longitude: {type: Number, required: true},
-    latitude: {type: Number, required: true}
+    latitude: {type: Number, required: true},
+    isActive: {type: Boolean, default: true, required: false},
 }, {
     collection: 'busStop'
 });

@@ -5,7 +5,7 @@ import {LuPlusCircle} from "react-icons/lu";
 import {getStopsColumns} from "../../components/Table/TableColumns";
 import {useStops} from "../../hooks/useStops";
 import BusStopPopupForm from "../../components/Popup/components/BusStopPopupForm";
-import {deleteBusStop} from "../../services/stop.service";
+import {deleteBusStop, editBusStop} from "../../services/stop.service";
 
 const BusStops = () => {
 
@@ -19,6 +19,7 @@ const BusStops = () => {
         setPageSize,
         setSearchQuery,
         refreshStops,
+        token,
     } = useStops();
 
 
@@ -54,12 +55,25 @@ const BusStops = () => {
         const confirmDelete = window.confirm('Czy na pewno chcesz usunąć ten przystanek?');
 
         if (confirmDelete) {
-            await deleteBusStop(id);
+            await deleteBusStop(id, token);
             await refreshStops();
         }
     }
 
-    const columns = getStopsColumns(handleShowEditForm, handleRemove);
+    async function handleToggle(id, newState) {
+
+        let busStop = stops.find(busStop => busStop._id === id);
+
+        busStop.isActive = Boolean(newState);
+
+        if (busStop){
+            await editBusStop(id, busStop, token)
+            await refreshStops();
+        }
+
+    }
+
+    const columns = getStopsColumns(handleShowEditForm, handleRemove, handleToggle);
 
     return (
         <div className="main-box">

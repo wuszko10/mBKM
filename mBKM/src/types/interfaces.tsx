@@ -71,6 +71,7 @@ export interface Relief {
     _id: string;
     name: string;
     type: string;
+    isActive: boolean;
     ticketType: string;
     percentage: number;
     typeName: string;
@@ -83,6 +84,7 @@ export interface Line {
     id: string;
     number: string;
     name: string;
+    isActive: boolean;
 }
 
 export interface BusStop {
@@ -90,6 +92,7 @@ export interface BusStop {
     name: string;
     latitude: number;
     longitude: number;
+    isActive: boolean;
 }
 
 export interface Location {

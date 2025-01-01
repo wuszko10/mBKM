@@ -7,6 +7,7 @@ export const addLine = async (lineData, token) => {
         const response = await axios.post(URI + 'line', {
             number: lineData.number,
             name: lineData.name || lineData.number,
+            isActive: lineData.isActive,
         }, {
             headers: {
                 'authorization': `Bearer ${token}`,
@@ -47,6 +48,7 @@ export const editLine = async (id, lineData, token) => {
             id: id,
             number: lineData.number,
             name: lineData.name || lineData.number,
+            isActive: lineData.isActive,
         }, {
             headers: {
                 'authorization': `Bearer ${token}`,
@@ -58,6 +60,7 @@ export const editLine = async (id, lineData, token) => {
         });
         return response.data;
     } catch (err) {
+
         toast.error('Przystanek nie został zaktualizowany', {
             position: 'top-right',
             theme: "colored",

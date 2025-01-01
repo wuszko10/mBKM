@@ -1,65 +1,42 @@
-import React, {useState} from 'react';
+import React from 'react';
 import '../../styles/style.scss'
 import {Link} from "react-router-dom";
 import DynamicTable from "../../components/Table/DynamicTable";
 import {FaReceipt} from "react-icons/fa";
 import {LuPlusCircle} from "react-icons/lu";
 import {useTickets} from "../../hooks/useTickets";
-import {getTicketsTableColumns} from "../../components/Table/TableColumns";
-import {deleteTicket} from "../../services/ticket.service";
 import TicketPopupForm from "../../components/Popup/components/TicketPopupForm";
 
 const Tickets = () => {
 
-    const [show, setShow] = useState(false);
-    const [selectedTicket, setSelectedTicket] = useState({});
-    const [title, setTitle] = useState('');
-    const [buttonText, setButtonText] = useState('');
-    const [editMode, setEditMode] = useState(false);
 
     const {
-        tickets,
         loading,
         page,
         pageSize,
         totalPages,
+        data,
+        columns,
+        show,
+        selectedTicket,
+        oldTicket,
+        title,
+        buttonText,
+        editMode,
+        duplicateMode,
+        cancelMode,
         setPage,
         setPageSize,
         setSearchQuery,
+        setShow,
+        setEditMode,
+        setDuplicateMode,
+        setCancelMode,
         refreshTickets,
+        handleShowCreateForm,
     } = useTickets();
 
-    const data = React.useMemo(() => {
-        return tickets.length > 0 ? tickets : [];
-    }, [tickets]);
 
-    const handleShowCreateForm = () => {
-        setTitle('Dodaj nowy typ biletu');
-        setButtonText("Utwórz");
-        setShow(true);
-    };
-
-    function handleShowEditForm(id) {
-        let ticket = tickets.find(ticket => ticket._id === id);
-        setSelectedTicket(ticket);
-        setTitle('Aktualizuj bilet');
-        setButtonText("Aktualizuj");
-        setEditMode(true);
-        setShow(true);
-    }
-
-
-    async function  handleRemove(id) {
-
-        const confirmDelete = window.confirm('Czy na pewno chcesz usunąć ten bilet?');
-
-        if (confirmDelete) {
-            await deleteTicket(id);
-            await refreshTickets();
-        }
-    }
-
-    const columns = getTicketsTableColumns(handleShowEditForm, handleRemove);
 
     return (
         <div className="main-box">
@@ -91,10 +68,15 @@ const Tickets = () => {
                 show={show}
                 setShow={setShow}
                 ticket={selectedTicket}
+                oldTicket={oldTicket}
                 titleForm={title}
                 buttonText={buttonText}
                 editMode={editMode}
+                duplicateMode={duplicateMode}
+                cancelMode={cancelMode}
                 setEditMode={setEditMode}
+                setDuplicateMode={setDuplicateMode}
+                setCancelMode={setCancelMode}
                 refreshTickets={refreshTickets}
             />
 

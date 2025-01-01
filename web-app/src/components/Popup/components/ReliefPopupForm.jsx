@@ -2,6 +2,7 @@ import GlobalPopupForm from "../GlobalPopupForm";
 import React, {useEffect, useState} from "react";
 import {getReliefFormFields} from "../PopupFields";
 import {addRelief, editRelief} from "../../../services/relief.service";
+import {useAuth} from "../../../context/authProvider";
 
 const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, editMode, setEditMode, refreshReliefs}) => {
 
@@ -10,11 +11,13 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, editMode
         type: '',
         ticketType: '',
         percentage: '',
+        isActive: '',
     }
 
     const [formData, setFormData] = useState(initialFormData);
     const metadata = JSON.parse(localStorage.getItem('metadata'));
     const formFields = getReliefFormFields(metadata, editMode);
+    const { token } = useAuth();
 
     const loadData = () => {
 
@@ -24,6 +27,7 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, editMode
                 type: relief.type,
                 ticketType: relief.ticketType,
                 percentage: relief.percentage,
+                isActive: relief.isActive,
             });
         }
 
@@ -52,7 +56,7 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, editMode
             return;
         }
 
-        await addRelief(formData);
+        await addRelief(formData, token);
 
         setFormData(initialFormData);
         handleClose();
@@ -62,7 +66,7 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, editMode
     async function handleEdit(event) {
         event.preventDefault();
 
-        await editRelief(relief._id, formData);
+        await editRelief(relief._id, formData, token);
 
         handleClose();
         await refreshReliefs();
