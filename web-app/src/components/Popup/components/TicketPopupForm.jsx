@@ -1,5 +1,5 @@
 import GlobalPopupForm from "../GlobalPopupForm";
-import React, {useEffect, useState} from "react";
+import React, {useCallback, useEffect, useState} from "react";
 import {getTicketFormFields} from "../PopupFields";
 import {addTicket, editTicket} from "../../../services/ticket.service";
 import {useAuth} from "../../../context/authProvider";
@@ -21,7 +21,7 @@ const TicketPopupForm = ({show, setShow, ticket, oldTicket, titleForm, buttonTex
     const formFields = getTicketFormFields(metadata, editMode, duplicateMode, cancelMode);
     const { token } = useAuth();
 
-    const loadData = () => {
+    const loadData = useCallback(() => {
 
         if (!(ticket === undefined)) {
             const startDate = ticket.offerStartDate && Date.parse(ticket.offerStartDate)
@@ -48,14 +48,14 @@ const TicketPopupForm = ({show, setShow, ticket, oldTicket, titleForm, buttonTex
             });
         }
 
-    }
+    }, [ticket]);
 
     useEffect( () => {
         if (show){
             loadData();
         }
 
-    }, [show]);
+    }, [loadData, show]);
 
     const handleClose = () => {
         setShow(false);
@@ -112,10 +112,9 @@ const TicketPopupForm = ({show, setShow, ticket, oldTicket, titleForm, buttonTex
 
 
         try {
-
             await addTicket(formData, token);
         } catch (err) {
-            if (err.response && err.response.status === 405) {
+            if (err.response && err.response.status === 409) {
                 alert('Próba stworzenia oferty z nakładającą się datą. Operacja nie powiodła się');
             } else {
                 toast.error('Bilet nie został utworzony', {
@@ -123,7 +122,6 @@ const TicketPopupForm = ({show, setShow, ticket, oldTicket, titleForm, buttonTex
                     theme: "colored",
                 });
             }
-            throw err;
         }
 
     };

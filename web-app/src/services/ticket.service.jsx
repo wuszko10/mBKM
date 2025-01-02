@@ -3,23 +3,27 @@ import {toast} from "react-toastify";
 
 const URI = process.env.REACT_APP_API_URL;
 export const addTicket = async (ticketData, token) => {
-    const response = await axios.post(URI + 'ticket', {
-        type: ticketData.type,
-        lines: ticketData.lines,
-        period: ticketData.period,
-        price: ticketData.price,
-        offerStartDate: new Date(ticketData.offerStartDate).toISOString(),
-        offerEndDate: ticketData.offerEndDate ? new Date(ticketData.offerEndDate).toISOString() : '',
-    }, {
-        headers: {
-            'authorization': `Bearer ${token}`,
-        }
-    });
-    toast.success('Dodano nowy bilet', {
-        position: 'top-right',
-        theme: "colored",
-    });
-    return response.data;
+    try {
+        const response = await axios.post(URI + 'ticket', {
+            type: ticketData.type,
+            lines: ticketData.lines,
+            period: ticketData.period,
+            price: ticketData.price,
+            offerStartDate: new Date(ticketData.offerStartDate).toISOString(),
+            offerEndDate: ticketData.offerEndDate ? new Date(ticketData.offerEndDate).toISOString() : '',
+        }, {
+            headers: {
+                'authorization': `Bearer ${token}`,
+            }
+        });
+        toast.success('Dodano nowy bilet', {
+            position: 'top-right',
+            theme: "colored",
+        });
+        return response.data;
+    } catch (err) {
+        throw err;
+    }
 };
 
 export const fetchTickets = async (page, pageSize, searchQuery, token) => {
@@ -73,8 +77,8 @@ export const editTicket = async (id, ticketData, token) => {
         });
         return response.data;
     } catch (err) {
-        if (err.response && err.response.status === 405) {
-            toast.error('Próba stworzenia oferty z nakładającą się datą.', {
+        if (err.response && err.response.status === 409) {
+            toast.warn('Próba stworzenia oferty z nakładającą się datą.', {
                 position: 'top-right',
                 theme: "colored",
             });

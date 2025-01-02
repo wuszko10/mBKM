@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useCallback} from 'react';
 import {deleteTicket, fetchTickets} from '../services/ticket.service';
 import {useAuth} from "../context/authProvider";
 import {getTicketsTableColumns} from "../components/Table/TableColumns";
@@ -20,7 +20,7 @@ export const useTickets = () => {
     const [cancelMode, setCancelMode] = useState(false);
     const {token} = useAuth();
 
-    const refreshTickets = () => {
+    const refreshTickets = useCallback(() => {
         fetchTickets(page, pageSize, searchQuery, token)
                 .then((data) => {
                     setTickets(data.data);
@@ -32,11 +32,11 @@ export const useTickets = () => {
                 .finally(() => {
                     setLoading(false);
                 });
-    };
+    },[page, pageSize, searchQuery, token]);
 
     useEffect(() => {
         refreshTickets();
-    }, [page, pageSize, searchQuery]);
+    }, [page, pageSize, refreshTickets, searchQuery]);
 
 
     const data = React.useMemo(() => {

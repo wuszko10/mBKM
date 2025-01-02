@@ -78,7 +78,7 @@ async function createNewOrUpdateTicket(ticket) {
             });
 
             const ticketsArray = Array.isArray(overlappingTickets) ? mongoConverter(overlappingTickets) : [];
-            
+
             if (ticketsArray.length > 0) {
                 const isOverlap = checkForDateOverlap(ticket, ticketsArray);
                 if (isOverlap.length > 0) {
@@ -91,9 +91,9 @@ async function createNewOrUpdateTicket(ticket) {
         }
     }).catch(error => {
         if (error === "overlapError") {
-            throw applicationException.new(applicationException.METHOD_NOT_ALLOWED,'Bilet z podanymi parametrami i datami już istnieje lub daty nachodzą się na inne bilety.');
+            throw applicationException.new(applicationException.CONFLICT,'Bilet z podanymi parametrami i datami już istnieje lub daty nachodzą się na inne bilety.');
         } else if (error.name === 'ValidationError') {
-            throw applicationException.new(applicationException.METHOD_NOT_ALLOWED,`Błąd walidacji ${error.message}`);
+            throw applicationException.new(applicationException.NOT_FOUND, `Błąd walidacji ${error.message}`);
         } else {
             throw error
         }
