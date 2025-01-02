@@ -49,12 +49,13 @@ export const getTicketsTableColumns = (handleEdit, handleRemove, handleDuplicate
     {
         header: ' ',
         cell: ({ row }) => {
-            const currentDate = new Date().toISOString();
+            const currentDate = new Date(Date.now());
+            currentDate.setHours(0,0,0,0);
 
             return (<div className="row-div">
-                {row.original.offerStartDate >= currentDate
+                {row.original.offerStartDate >= currentDate.toISOString()
 
-                    ? (<div className="row-div">
+                    && (<div className="row-div">
                         <Button
                             handleFunction={handleEdit}
                             argument={row.original._id}
@@ -69,28 +70,34 @@ export const getTicketsTableColumns = (handleEdit, handleRemove, handleDuplicate
                             hoverIcon={<TbTrashFilled className={'hoverTableIcon'} />}
                             title={'Usuń ofertę'}
                         />
-                    </div>)
-                    : (<div className="row-div">
-                        {!row.original.offerEndDate ? <Button
-                            handleFunction={handleCancel}
-                            argument={row.original._id}
-                            defaultIcon={<MdOutlineCancel className={'defaultTableIcon'} />}
-                            hoverIcon={<MdCancel className={'hoverTableIcon'} />}
-                            title={'Zakończ ofertę'}
-                        /> : <Button
-                            handleFunction={handleCancel}
-                            argument={row.original._id}
-                            defaultIcon={<RiEdit2Line className={'defaultTableIcon'} />}
-                            hoverIcon={<RiEdit2Fill className={'hoverTableIcon'} />}
-                            title={'Edytuj datę zakończenia oferty'}
-                        />}
+                    </div>)}
+
+                {row.original.offerStartDate < currentDate.toISOString() &&
+                    (<div className="row-div">
                         <Button
-                            handleFunction={handleDuplicate}
+                            handleFunction={handleCancel}
                             argument={row.original._id}
-                            defaultIcon={<TbCopyPlus className={'defaultTableIcon'} />}
-                            hoverIcon={<TbCopyPlusFilled className={'hoverTableIcon'} />}
-                            title={'Skopiuj, aby ustalić nową cenę'}
+                            defaultIcon={<RiEdit2Line className={'defaultTableIcon'}/>}
+                            hoverIcon={<RiEdit2Fill className={'hoverTableIcon'}/>}
+                            title={'Edytuj datę zakończenia oferty'}
                         />
+                        {!row.original.offerEndDate ? (
+                            <Button
+                                handleFunction={handleCancel}
+                                argument={row.original._id}
+                                defaultIcon={<MdOutlineCancel className={'defaultTableIcon'}/>}
+                                hoverIcon={<MdCancel className={'hoverTableIcon'}/>}
+                                title={'Zakończ ofertę'}
+                            />)
+                            :
+                            (<Button
+                                handleFunction={handleDuplicate}
+                                argument={row.original._id}
+                                defaultIcon={<TbCopyPlus className={'defaultTableIcon'}/>}
+                                hoverIcon={<TbCopyPlusFilled className={'hoverTableIcon'}/>}
+                                title={'Skopiuj, aby ustalić nową cenę'}
+                            />)
+                        }
                     </div>)
                 }
             </div>)

@@ -44,14 +44,24 @@ export const useTickets = () => {
     }, [tickets]);
 
     const handleShowCreateForm = () => {
+        setSelectedTicket({});
+        setOldTicket({});
         setTitle('Dodaj nowy typ biletu');
         setButtonText("Utwórz");
         setShow(true);
     };
 
     function handleShowEditForm(id) {
-        let ticket = tickets.find(ticket => ticket._id === id);
+        let tmp = tickets.find(ticket => ticket._id === id);
+        const ticket = { ...tmp};
+
+        const newStartDate = new Date(ticket.offerStartDate);
+        newStartDate.setDate(newStartDate.getDate());
+        newStartDate.setHours(1,0,0,0);
+        ticket.offerStartDate = newStartDate
+
         setSelectedTicket(ticket);
+        setOldTicket({});
         setTitle(`Aktualizuj bilet ${ticket._id}`);
         setButtonText("Aktualizuj");
         setEditMode(true);
@@ -70,8 +80,8 @@ export const useTickets = () => {
     }
 
     function handleDuplicate(id) {
-        let ticket = tickets.find(ticket => ticket._id === id);
-        let newTicket = ticket;
+        const ticket = tickets.find(ticket => ticket._id === id);
+        const newTicket = { ...ticket };
 
         const currentDate = ticket.offerEndDate ? ticket.offerEndDate : ticket.offerStartDate
         const newStartDate = new Date(currentDate);
@@ -79,15 +89,15 @@ export const useTickets = () => {
         newStartDate.setHours(1,0,0,0);
 
         newTicket.offerStartDate = new Date(newStartDate);
+        newTicket.price = '';
+        newTicket.offerEndDate = '';
 
         delete newTicket._id;
-        delete newTicket.price;
-        delete newTicket.offerEndDate;
 
         setSelectedTicket(newTicket);
         setOldTicket(ticket);
-        setTitle('Zmień cenę biletu');
-        setButtonText("Aktualizuj");
+        setTitle('Ustal nową cenę biletu');
+        setButtonText("Zmień cenę");
         setEditMode(true);
         setShow(true);
     }
@@ -97,6 +107,7 @@ export const useTickets = () => {
 
         let ticket = tickets.find(ticket => ticket._id === id);
         setSelectedTicket(ticket);
+        setOldTicket({});
         setTitle(`Zmień datę zakończenia oferty`);
         setButtonText("Zmień datę");
         setEditMode(true);

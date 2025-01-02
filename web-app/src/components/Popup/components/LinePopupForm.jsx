@@ -31,7 +31,12 @@ const LinePopupForm = ({show, setShow, line, titleForm, buttonText, editMode, se
 
     }
 
-    useEffect(loadData, [line]);
+    useEffect( () => {
+        if (show){
+            loadData();
+        }
+
+    }, [show]);
 
     const handleClose = () => {
         setShow(false);

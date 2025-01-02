@@ -3,6 +3,7 @@ import React, {useEffect, useState} from "react";
 import {getTicketFormFields} from "../PopupFields";
 import {addTicket, editTicket} from "../../../services/ticket.service";
 import {useAuth} from "../../../context/authProvider";
+import {toast} from "react-toastify";
 
 const TicketPopupForm = ({show, setShow, ticket, oldTicket, titleForm, buttonText, editMode, duplicateMode, cancelMode, setEditMode, setDuplicateMode, setCancelMode, refreshTickets}) => {
 
@@ -49,7 +50,12 @@ const TicketPopupForm = ({show, setShow, ticket, oldTicket, titleForm, buttonTex
 
     }
 
-    useEffect(loadData, [ticket]);
+    useEffect( () => {
+        if (show){
+            loadData();
+        }
+
+    }, [show]);
 
     const handleClose = () => {
         setShow(false);
@@ -70,36 +76,56 @@ const TicketPopupForm = ({show, setShow, ticket, oldTicket, titleForm, buttonTex
         return requiredFields.every((field) => formData[field] !== "");
     };
 
-    const handleOldTicketEdit = async () => {
-        const newStartDate = new Date(formData.offerStartDate);
-        const oldTicketEndDay = new Date(newStartDate);
-        oldTicketEndDay.setDate(oldTicketEndDay.getDate() - 1);
-        oldTicketEndDay.setHours(23, 59, 59, 999);
-        oldTicket.offerEndDate = oldTicketEndDay;
-
-        console.log(oldTicket)
-        console.log(JSON.stringify(oldTicket))
-
-        await editTicket(oldTicket._id, oldTicket, token);
-    };
-
-    const handleCreateOrUpdateTicket = async () => {
+    const isValidDate = () => {
         const offerStartDate = new Date(formData.offerStartDate);
-        formData.offerStartDate = offerStartDate;
         offerStartDate.setHours(0,0,0,0);
+        formData.offerStartDate = offerStartDate;
 
+        const currentDate = new Date(Date.now())
+        currentDate.setHours(0,0,0,0);
 
-        if (editMode || cancelMode) {
+        if (editMode || cancelMode || duplicateMode) {
+
             const endDateCheck = new Date(oldTicket.offerEndDate);
             if (offerStartDate <= endDateCheck) {
                 alert(`Data musi być późniejsza niż obowiązująca oferta.\n\nAktualnie oferta ważna jest do: ${endDateCheck.toLocaleString()}\nWybrana data: ${offerStartDate.toLocaleString()}`);
-                return;
+                return false;
+            }
+        } else {
+
+            if (offerStartDate<=currentDate){
+                alert(`Data rozpoczęcia oferty nie może być późniejsza niż bieżący dzień.\n\nAktualna data: ${currentDate.toLocaleString()}\nWybrana data: ${offerStartDate.toLocaleString()}`);
+                return false;
+            }
+
+            if (formData.offerEndDate) {
+                const offerEndDate = new Date(formData.offerEndDate);
+                offerEndDate.setHours(23,59,59,999);
+                formData.offerEndDate = offerEndDate;
             }
         }
 
-        // await addTicket(formData, token);
+        return true;
+    }
 
-        setFormData(initialFormData);
+    const handleCreateOrUpdateTicket = async () => {
+
+
+        try {
+
+            await addTicket(formData, token);
+        } catch (err) {
+            if (err.response && err.response.status === 405) {
+                alert('Próba stworzenia oferty z nakładającą się datą. Operacja nie powiodła się');
+            } else {
+                toast.error('Bilet nie został utworzony', {
+                    position: 'top-right',
+                    theme: "colored",
+                });
+            }
+            throw err;
+        }
+
     };
 
     async function handleCreate(event) {
@@ -110,29 +136,57 @@ const TicketPopupForm = ({show, setShow, ticket, oldTicket, titleForm, buttonTex
             return;
         }
 
-        if ( oldTicket ){
-            console.log("tutaj");
-            await handleOldTicketEdit();
+        if (!isValidDate()) {
+            return;
         }
 
-        // await handleCreateOrUpdateTicket();
+        try {
+            await handleCreateOrUpdateTicket();
+            handleClose();
+            await refreshTickets();
+        } catch (err) {
+            toast.warn('Bilet nie został utworzony', {
+                position: 'top-right',
+                theme: "colored",
+            });
+        }
 
-        handleClose();
-        await refreshTickets();
 
     }
 
     async function handleEdit(event) {
         event.preventDefault();
 
-        const endDate = new Date(formData.offerEndDate);
-        endDate.setHours(23, 59, 59, 999);
+        if (!isFormValid()) {
+            alert("Proszę wypełnić wszystkie pola.");
+            return;
+        }
 
-        formData.offerEndDate = endDate;
+        const startDate = new Date(formData.offerStartDate);
+        startDate.setHours(0,0,0,0);
 
-        await editTicket(ticket._id, formData, token);
-        handleClose();
-        await refreshTickets();
+        formData.offerStartDate = startDate;
+
+        if (formData.offerEndDate && formData.offerEndDate !== ''){
+            const endDate = new Date(formData.offerEndDate);
+            endDate.setHours(23, 59, 59, 999);
+
+            formData.offerEndDate = endDate;
+        }
+
+
+        try {
+
+            await editTicket(ticket._id, formData, token);
+        } catch (error) {
+            toast.error('Operacja nie powiodła się', {
+                position: 'top-right',
+                theme: "colored",
+            });
+        } finally {
+            handleClose();
+            await refreshTickets();
+        }
     }
 
     return (

@@ -32,7 +32,12 @@ const BusStopPopupForm = ({show, setShow, stop, titleForm, buttonText, editMode,
 
     }
 
-    useEffect(loadData, [stop]);
+    useEffect( () => {
+        if (show){
+            loadData();
+        }
+
+    }, [show]);
 
     const handleClose = () => {
         setShow(false);

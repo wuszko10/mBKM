@@ -33,7 +33,12 @@ const ReliefPopupForm = ({show, setShow, relief, titleForm, buttonText, editMode
 
     }
 
-    useEffect(loadData, [relief]);
+    useEffect( () => {
+        if (show){
+            loadData();
+        }
+
+    }, [loadData, show]);
 
     const handleClose = () => {
         setShow(false);

@@ -4,10 +4,12 @@ export const getTicketFormFields = (metadata, isEditMode = false, isDuplicateMod
             name: "type",
             label: "Wybierz typ biletu",
             type: "select",
-            options: metadata.ticketTypes.map((type) => ({
-                label: type.label,
-                value: type.id,
-            })),
+            options: metadata.ticketTypes
+                .filter((type) => type.name !== "all")
+                .map((type) => ({
+                    label: type.label,
+                    value: type.id,
+                })),
             required: true,
             disabled: isEditMode,
         },

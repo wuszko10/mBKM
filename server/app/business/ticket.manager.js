@@ -11,6 +11,9 @@ function create(context) {
     try {
       return await TicketDAO.createNewOrUpdateTicket(ticketData);
     } catch (error) {
+      if (error.error.code === 405) {
+        throw applicationException.new(applicationException.METHOD_NOT_ALLOWED,'Bilet z podanymi parametrami i datami już istnieje lub daty nachodzą się na inne bilety.');
+      }
       throw applicationException.new(applicationException.NOT_FOUND, 'Error while creating or updating tickets');
     }
   }

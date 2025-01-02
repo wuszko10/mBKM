@@ -22,44 +22,43 @@ ticketSchema.plugin(uniqueValidator);
 
 const TicketModel = mongoose.model('ticket', ticketSchema);
 
-function createNewOrUpdateTicket(ticket) {
+function checkForDateOverlap(ticket, ticketsArray) {
+    const responseTicketStartDate = new Date(ticket.offerStartDate).toISOString();
+    const responseTicketEndDate = ticket.offerEndDate ? new Date(ticket.offerEndDate).toISOString() : '';
 
-    return Promise.resolve().then(() => {
+    return ticketsArray.filter(existingTicket => {
+        const filterTicketStartDate = new Date(existingTicket.offerStartDate).toISOString();
+        const filterTicketEndDate = existingTicket.offerEndDate ? new Date(existingTicket.offerEndDate).toISOString() : '';
 
-        const targetDate = new Date(ticket.offerStartDate || Date.now());
-        targetDate.setDate(targetDate.getDate() - 1);
-        targetDate.setHours(22, 59, 59, 999);
+        const isEndDateValid = filterTicketEndDate === '' || filterTicketEndDate >= responseTicketStartDate;
+        const isStartDateValid = responseTicketEndDate === '' || filterTicketStartDate >= responseTicketEndDate || filterTicketEndDate === '';
 
-        const overlappingTickets = TicketModel.find({
-            type: ticket.type,
-            lines: ticket.lines,
-            period: ticket.period,
-            $and: [
-                {
-                    $and: [
-                        { $or: [{ offerEndDate: null }, { offerEndDate: {$exists: false} }, { offerEndDate: { $gte: ticket.offerStartDate } }] },
-                        { offerStartDate: { $lte: targetDate } },
-                    ],
-                },
-                {
-                    $and: [
-                        { $or: [{ offerEndDate: null }, { offerEndDate: {$exists: false} }, { offerEndDate: { $gte: targetDate } }] },
-                        { offerStartDate: { $lte: ticket.offerStartDate } },
-                    ],
-                },
-            ]
-        });
+        return (isEndDateValid && isStartDateValid);
+    });
+}
+async function createNewOrUpdateTicket(ticket) {
 
-
-        // Jeśli istnieje kolizja, rzucamy wyjątek
-        if (overlappingTickets.length > 0) {
-            throw applicationException.new(
-                applicationException.BAD_REQUEST,
-                'Bilet z podanymi parametrami i datami już istnieje lub daty nachodzą się na inne bilety.'
-            );
-        }
+    return Promise.resolve().then(async () => {
 
         if (!ticket.id) {
+
+            const overlappingTickets = await TicketModel.find({
+                $and: [
+                    { type: ticket.type },
+                    { lines: ticket.lines },
+                    { period: ticket.period },
+                ],
+            });
+
+
+            const ticketsArray = Array.isArray(overlappingTickets) ? mongoConverter(overlappingTickets) : [];
+
+            if (ticketsArray.length > 0) {
+                const isOverlap = checkForDateOverlap(ticket, ticketsArray);
+                if (isOverlap.length > 0) {
+                    throw "overlapError";
+                }
+            }
 
             return new TicketModel(ticket).save().then(result => {
                 if (result) {
@@ -67,27 +66,39 @@ function createNewOrUpdateTicket(ticket) {
                 }
             })
         } else {
+
+            const overlappingTickets = await TicketModel.find({
+                $and: [
+                    { type: ticket.type },
+                    { lines: ticket.lines },
+                    { period: ticket.period },
+                    { _id: { $ne: ticket.id } },
+                ],
+
+            });
+
+            const ticketsArray = Array.isArray(overlappingTickets) ? mongoConverter(overlappingTickets) : [];
+            
+            if (ticketsArray.length > 0) {
+                const isOverlap = checkForDateOverlap(ticket, ticketsArray);
+                if (isOverlap.length > 0) {
+                    throw "overlapError";
+                }
+            }
+
             return TicketModel.findByIdAndUpdate(ticket.id, _.omit(ticket, 'id'), {new: true});
+
         }
     }).catch(error => {
-        if ('ValidationError' === error.name) {
-            error = error.errors[Object.keys(error.errors)[0]];
-            throw applicationException.new(applicationException.BAD_REQUEST, error.message);
+        if (error === "overlapError") {
+            throw applicationException.new(applicationException.METHOD_NOT_ALLOWED,'Bilet z podanymi parametrami i datami już istnieje lub daty nachodzą się na inne bilety.');
+        } else if (error.name === 'ValidationError') {
+            throw applicationException.new(applicationException.METHOD_NOT_ALLOWED,`Błąd walidacji ${error.message}`);
+        } else {
+            throw error
         }
-        throw error;
     })
 }
-
-
-// async function getByEmailOrName(name) {
-//     const result = await UserModel.findOne({$or: [{email: name}, {name: name}]});
-//     if (result) {
-//         return mongoConverter(result);
-//     }
-//     throw applicationException.new(applicationException.NOT_FOUND, 'User not found');
-// }
-
-
 
 async function getAndSearchTicket(page, pageSize, searchCriteria) {
 
@@ -138,8 +149,6 @@ async function getTicket(id) {
 }
 
 async function removeTicketById(id) {
-
-    console.log("id: " + id)
 
     return TicketModel.findByIdAndRemove(id);
 }

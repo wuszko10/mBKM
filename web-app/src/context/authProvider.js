@@ -54,8 +54,6 @@ export const AuthProvider = ({ children }) => {
             const currentTime = Date.now();
             const timeUntilExpiration = expirationTime && ((expirationTime * 1000) - currentTime);
 
-            console.log(new Date(timeUntilExpiration));
-
             if ( timeUntilExpiration && (timeUntilExpiration > 0)) {
                 const timeoutId = setTimeout(logout, timeUntilExpiration);
                 return () => clearTimeout(timeoutId);
