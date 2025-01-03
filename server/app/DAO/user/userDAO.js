@@ -19,6 +19,7 @@ const userSchema = new mongoose.Schema({
   lastName: { type: String, required: true, trim: true },
   email: { type: String, required: true, unique: true, trim: true },
   pesel: { type: String, required: true, unique: true, trim: true },
+  registrationDate: { type: Date, required: true },
   role: { type: String, enum: userRoles, default: userRole.user, required: false },
   active: { type: Boolean, default: true, required: false },
   isAdmin: { type: Boolean, default: false, required: false }
@@ -51,7 +52,7 @@ function createNewOrUpdate(user) {
 }
 
 async function getByEmailOrName(email) {
-  const result = await UserModel.findOne({email: email});
+  const result = await UserModel.findOne({email: email, active: true});
   if (result) {
     return mongoConverter(result);
   }

@@ -1,0 +1,64 @@
+@import '../../../styles/variables';
+
+.qr-code {
+  height: 340px;
+  width: 340px;
+  padding: 0;
+  border-radius: $borderRadius;
+  display: block;
+  margin: 15px auto 0 auto;
+}
+
+.ticket-box{
+  flex-direction: column;
+  background-color: $light-blue;
+  padding: 30px;
+  border-radius: $borderRadius;
+  gap: 5px;
+  max-width: 340px;
+}
+
+.transaction-box {
+  flex-direction: row;
+  gap: 50px;
+  align-items: start;
+  margin: 50px auto;
+  justify-content: space-between;
+  width: 1000px;
+  max-width: 1200px;
+  padding: 70px 100px;
+  border-radius: 20px;
+  background-color: $bg-light-gray;
+}
+
+.details-box{
+  margin-top: 60px;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.date-box {
+  flex-direction: column;
+  gap: $smallGap;
+  margin-top: 20px;
+}
+
+.ticket-box h3, .details-box h3 {
+  font-size: $largeTextSize;
+  padding-bottom: 15px;
+}
+
+.ticket-box p, .date-box p, .details-box p {
+  margin: 0;
+  padding: 0;
+  color: black;
+}
+
+a {
+  font-weight: bold;
+  color: black;
+}
+
+a:hover {
+  text-decoration: underline;
+}

@@ -1,5 +1,13 @@
 import { useEffect,useState } from "react";
-import { MetadataType,PaymentMethod,Relief,Ticket,TicketOrderTransaction,UserTicket } from "../../types/interfaces.tsx";
+import {
+    Line,
+    MetadataType,
+    PaymentMethod,
+    Relief,
+    Ticket,
+    TicketOrderTransaction,
+    UserTicket
+} from "../../types/interfaces.tsx";
 import { storage } from "../../../App.tsx";
 import { getUserTicket } from "../../services/ticket.service.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
@@ -16,6 +24,7 @@ export const useTicketDetailsLogic = (userTicketId: string) => {
     const [method, setMethod] = useState<PaymentMethod>()
     const [ticket, setTicket] = useState<Ticket>();
     const [relief, setRelief] = useState<Relief>();
+    const [line, setLine] = useState<Line>();
 
     const getUserTicketData = (token: string) => {
 
@@ -31,7 +40,8 @@ export const useTicketDetailsLogic = (userTicketId: string) => {
                 const statusTypesStr = storage.getString('statusTypes');
                 const methodStr = storage.getString('paymentMethods');
                 const reliefTypesStr = storage.getString('reliefs');
-                if (ticketStr && statusTypesStr && methodStr && reliefTypesStr) {
+                const linesStr = storage.getString('lines');
+                if (ticketStr && statusTypesStr && methodStr && reliefTypesStr && linesStr) {
                     const parseTickets: Ticket[] = JSON.parse(ticketStr);
                     const filterTicket = parseTickets.find(t => t._id == data.userTicket.ticketId);
 
@@ -44,10 +54,14 @@ export const useTicketDetailsLogic = (userTicketId: string) => {
                     const parseRelief: Relief[] = JSON.parse(reliefTypesStr);
                     const filterRelief = parseRelief.find(r => r._id === data.userTicket.reliefId);
 
+                    const parseLine: Line[] = JSON.parse(linesStr);
+                    const filterLine = parseLine.find(l => l.id === data.userTicket.lineId);
+
                     setTicket(filterTicket);
                     setStatus(filterStatus);
                     setMethod(filterMethod);
                     setRelief(filterRelief);
+                    setLine(filterLine);
                 }
             })
             .catch(() => {
@@ -70,6 +84,7 @@ export const useTicketDetailsLogic = (userTicketId: string) => {
         status,
         method,
         relief,
+        line,
         isLoading,
     };
 }

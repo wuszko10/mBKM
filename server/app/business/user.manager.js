@@ -6,6 +6,8 @@ import sha1 from 'sha1';
 import BusStopDAO from "../DAO/BusStopDAO";
 import WalletDAO from "../DAO/user/walletDAO";
 import UserTicketDAO from "../DAO/user/userTicketDAO";
+import TransactionDAO from "../DAO/transactionDAO";
+import TopUpDAO from "../DAO/topUpDAO";
 
 function create(context) {
 
@@ -47,18 +49,25 @@ function create(context) {
 
     async function createNewOrUpdate(userData) {
 
-        let wallet;
+        console.log(userData);
 
-        const user = await UserDAO.createNewOrUpdate(userData);
-        wallet = {amount: 0, userId: user.id};
+        if (!userData.id) {
+            let wallet;
 
-        await WalletDAO.createNewOrUpdateWallet(wallet);
+            const user = await UserDAO.createNewOrUpdate(userData);
+            wallet = {amount: 0, userId: user.id};
 
-        if (await userData.password) {
-            return await PasswordDAO.createOrUpdate({userId: user.id, password: hashString(userData.password)});
+            await WalletDAO.createNewOrUpdateWallet(wallet);
+
+            if (await userData.password) {
+                return await PasswordDAO.createOrUpdate({userId: user.id, password: hashString(userData.password)});
+            } else {
+                return user;
+            }
         } else {
-            return user;
+            return await UserDAO.createNewOrUpdate(userData);
         }
+
     }
 
     async function removeHashSession(userId, token) {
@@ -66,8 +75,23 @@ function create(context) {
     }
 
     async function getUserById(id) {
+
         try {
-            return await UserDAO.get(id);
+            const user = await UserDAO.get(id);
+            const wallet = await WalletDAO.getWalletByUserId(id);
+            const userTickets = await UserTicketDAO.countUserTicketsByUserId(id);
+            const transactions = await TransactionDAO.countTransactionsByUserId(id);
+            const topUps = await TopUpDAO.countTopUpsByUserId(id);
+            const sessions = await TokenDAO.countTokensByUserId(id);
+
+            return {
+                user: user,
+                wallet: wallet,
+                userTickets: userTickets,
+                transactions: transactions,
+                topUps: topUps,
+                sessions: sessions,
+            }
         } catch (error) {
             throw applicationException.new(applicationException.NOT_FOUND, `User with ID ${id} not found`);
         }

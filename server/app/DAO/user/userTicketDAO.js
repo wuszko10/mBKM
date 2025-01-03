@@ -155,6 +155,11 @@ async function getAll () {
     throw applicationException.new(applicationException.NOT_FOUND, 'Tickets not found');
 }
 
+
+async function countByUserId(id){
+    return UserTicketModel.countDocuments({userId: id});
+}
+
 async function removeById(id) {
     return UserTicketModel.findByIdAndRemove(id);
 }
@@ -172,6 +177,7 @@ export default {
     getAllUserTickets: getAll,
     getByReliefId: getByRelief,
     getByLineId: getByLine,
+    countUserTicketsByUserId: countByUserId,
 
     model: UserTicketModel,
 };

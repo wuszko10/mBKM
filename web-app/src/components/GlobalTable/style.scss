@@ -1,0 +1,120 @@
+@import '../../styles/variables';
+
+.content-table {
+  width: 100%;
+  overflow-x: auto;
+  gap: $gap;
+}
+
+.content-table button {
+  background-color: transparent;
+  border: none;
+  font-family: "Lato Regular", serif;
+  font-size: 15px;
+  padding: 5px 10px;
+  cursor: pointer;
+  border-radius: $borderRadiusSmall;
+
+}
+
+.content-table button:hover {
+  text-decoration: underline;
+}
+
+.table-container {
+  width: 100%; /* Wypełnia dostępne miejsce */
+  overflow-x: auto; /* Dodaje pasek przewijania poziomego, jeśli zawartość wychodzi poza ekran */
+}
+
+table {
+  border-collapse: collapse;  /* Eliminuje przestrzenie między komórkami */
+  width: auto;
+  min-width: 100%;
+  flex: 1;
+}
+
+
+th, td {
+  padding: 8px;
+  text-align: left;
+}
+
+th {
+  background-color: $primary-color;  /* Kolor tła nagłówka */
+  color: white;
+}
+
+tr:nth-child(even) {
+  background-color: $light-blue;  /* Tło dla co drugiego wiersza */
+}
+
+tr:nth-child(odd) {
+  background-color: $tableRowSecondBg;  /* Tło dla pozostałych wierszy */
+}
+
+td {
+  border-left: none;
+  border-right: none;
+}
+
+.defaultTableIcon {
+  font-size: $iconSize;
+  color: $placeholder-gray;
+}
+
+.hoverTableIcon {
+  font-size: $iconSize;
+}
+
+
+.pagination {
+  justify-content: center;
+  align-items: center;
+  gap: $gap;
+}
+
+.pagination p {
+  font-size: 15px;
+  font-family: "Montserrat SemiBold", serif;
+}
+
+.pagination button {
+  margin: 0 2px;
+  background-color: transparent;
+  color: gray;
+  font-size: 15px;
+  font-family: "Montserrat SemiBold", serif;
+  text-decoration: none;
+  padding: 10px 14px;
+  border-width: 0;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.pagination button.active {
+  color: $primary-color;
+}
+
+.pagination button:hover {
+  color: $primary-color;
+  text-decoration: underline;
+}
+
+/*
+table tr:first-child th:first-child {
+    border-top-left-radius: $borderRadius;
+}
+
+table tr:first-child th:last-child {
+    border-top-right-radius: $borderRadius;
+}
+
+
+table tr:last-child td:first-child {
+    border-bottom-left-radius: $borderRadius;
+}
+
+
+table tr:last-child td:last-child {
+    border-bottom-right-radius: $borderRadius;
+}*/

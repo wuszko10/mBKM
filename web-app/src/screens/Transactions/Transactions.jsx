@@ -1,16 +1,12 @@
 import React from 'react';
 import '../../styles/style.scss';
-import DynamicTable from "../../components/Table/DynamicTable";
-import {useNavigate} from "react-router-dom";
-import {getTransactionColumns} from "../../components/Table/TableColumns";
-import {useTransactions} from "../../hooks/useTransactions";
+import DynamicTable from "../../components/GlobalTable/DynamicTable";
+import {useTransactions} from "../../hooks/Transactions/useTransactions";
 const Transactions = () => {
 
-    const navigate = useNavigate();
-    const columns = getTransactionColumns(navigate);
-
     const {
-        purchases,
+        columns,
+        data,
         loading,
         page,
         pageSize,
@@ -18,15 +14,8 @@ const Transactions = () => {
         setPage,
         setPageSize,
         setSearchQuery,
+        handleTopUp,
     } = useTransactions();
-
-    const data = React.useMemo(() => {
-        return purchases.length > 0 ? purchases : [];
-    }, [purchases]);
-
-    const handleTopUp = () => {
-        navigate('/top-ups');
-    }
 
     return (
         <div className="main-box">

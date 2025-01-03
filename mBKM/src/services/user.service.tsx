@@ -21,8 +21,9 @@ export const userRegister = async (firstName: string, lastName: string, pesel: s
     const response = await axios.post(SERVER_URL+'user/create', {
         firstName: firstName,
         lastName: lastName,
-        pesel: pesel,
         email: email,
+        pesel: pesel,
+        registrationDate: new Date(Date.now()).toISOString(),
         password: password
     });
     return response.data;

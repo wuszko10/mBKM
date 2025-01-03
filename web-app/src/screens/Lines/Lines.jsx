@@ -1,80 +1,33 @@
-import React, {useState} from 'react';
+import React from 'react';
 import '../../styles/style.scss'
-import DynamicTable from "../../components/Table/DynamicTable";
+import DynamicTable from "../../components/GlobalTable/DynamicTable";
 import {LuPlusCircle} from "react-icons/lu";
-import {getLinesColumns} from "../../components/Table/TableColumns";
-import LinePopupForm from "../../components/Popup/components/LinePopupForm";
-import {useLines} from "../../hooks/useLines";
-import {deleteLine} from "../../services/line.service";
-import {editBusStop} from "../../services/stop.service";
+import LinePopupForm from "../../components/Popup/LinePopupForm";
+import {useLines} from "../../hooks/Lines/useLines";
 
 const Lines = () => {
 
     const {
-        lines,
+        data,
+        columns,
         loading,
         page,
         pageSize,
         totalPages,
+        show,
+        title,
+        buttonText,
+        editMode,
+        selectedLine,
         setPage,
         setPageSize,
         setSearchQuery,
+        setShow,
+        setEditMode,
         refreshLines,
-        token,
+        handleShowCreateForm,
     } = useLines();
 
-
-    const [show, setShow] = useState(false);
-    const [selectedLine, setSelectedLine] = useState({});
-    const [title, setTitle] = useState('');
-    const [buttonText, setButtonText] = useState('');
-    const [editMode, setEditMode] = useState(false);
-
-
-    const data = React.useMemo(() => {
-        return lines.length > 0 ? lines : [];
-    }, [lines]);
-
-    const handleShowCreateForm = () => {
-        setTitle('Dodaj nową linię');
-        setButtonText("Utwórz");
-        setShow(true);
-    };
-
-    function handleShowEditForm(id) {
-        let line = lines.find(line => line._id === id);
-        setSelectedLine(line);
-        setTitle('Aktualizuj linię');
-        setButtonText("Aktualizuj");
-        setEditMode(true);
-        setShow(true);
-    }
-
-
-    async function handleRemove(id) {
-
-        const confirmDelete = window.confirm('Czy na pewno chcesz usunąć tę linię?');
-
-        if (confirmDelete) {
-            await deleteLine(id, token);
-            await refreshLines();
-        }
-    }
-
-    async function handleToggle(id, newState) {
-
-        let data = lines.find(l => l._id === id);
-
-        data.isActive = Boolean(newState);
-
-        if (data){
-            await editBusStop(id, data, token)
-            await refreshLines();
-        }
-
-    }
-
-    const columns = getLinesColumns(handleShowEditForm, handleRemove, handleToggle);
 
     return (
         <div className="main-box">

@@ -1,13 +1,11 @@
 import UserDAO from '../DAO/user/userDAO';
 import applicationException from '../service/applicationException';
 import TicketDAO from "../DAO/ticketDAO";
-import PurchaseDAO from "../DAO/transactionDAO";
 import TransactionDAO from "../DAO/transactionDAO";
 import {getMetadataNames, transactionMappingIdsToNames} from "../service/transactionManager.service";
 import UserTicketDAO from "../DAO/user/userTicketDAO";
-import TopUpDAO from "../DAO/topUpDAO";
-import mongoConverter from "../service/mongoConverter";
 import ReliefDAO from "../DAO/reliefDAO";
+import LineDAO from "../DAO/lineDAO";
 
 function create(context) {
 
@@ -75,15 +73,17 @@ function create(context) {
         const userTicket = await UserTicketDAO.getUserTicketByTransactionId(transaction.id);
         const ticket = await TicketDAO.getTicket(userTicket.ticketId);
         const relief = await ReliefDAO.getReliefById(userTicket.reliefId);
+        const line = await LineDAO.getById(userTicket.lineId);
         const user = await UserDAO.get(transaction.userId);
 
-        if (!transaction || !ticket || !userTicket || !relief || !user) throw applicationException.new(applicationException.BAD_REQUEST, `Transaction with ID ${id} not found`);
+        if (!transaction || !ticket || !userTicket || !relief || !line || !user) throw applicationException.new(applicationException.BAD_REQUEST, `Transaction with ID ${id} not found`);
 
         return {
             transaction: transaction,
             userTicket: userTicket,
             ticket: ticket,
             relief: relief,
+            line: line,
             user:user,
         }
     }

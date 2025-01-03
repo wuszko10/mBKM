@@ -1,4 +1,4 @@
-import mongoose, {Types} from 'mongoose';
+import mongoose from 'mongoose';
 import config from '../../config.js';
 import momentWrapper from '../../service/momentWrapper';
 import jwt from 'jsonwebtoken';
@@ -67,10 +67,41 @@ async function remove(userId, token) {
     throw applicationException.new(applicationException.UNAUTHORIZED, 'Token not found');
 }
 
+async function getByUserId(id) {
+    return TokenModel.countDocuments({userId: id});
+}
+
+async function deleteExpiredTokens() {
+    const now = Math.floor(Date.now() / 1000);
+
+    const tokens = await TokenModel.find({});
+
+    const expiredTokens = tokens.filter(token => {
+        try {
+            const decoded = jwt.decode(token.value);
+            return decoded.exp && decoded.exp < now;
+        } catch (err) {
+            return false;
+        }
+    });
+
+    if (expiredTokens.length > 0) {
+        const tokenIds = expiredTokens.map(token => token._id);
+        await TokenModel.deleteMany({ _id: { $in: tokenIds } });
+    }
+}
+
+async function countByUserId(id){
+    return TokenModel.countDocuments({userId: id});
+}
+
 export default {
     create: create,
     get: get,
     remove: remove,
+    getByUserId,
+    deleteExpiredTokens,
+    countTokensByUserId: countByUserId,
 
     tokenTypeEnum: tokenTypeEnum,
     model: TokenModel

@@ -5,7 +5,7 @@ import Header from "../../components/Global/Header.tsx";
 import stylesApp from "../../style/stylesApp.js";
 import { NavigationProp } from "../../types/navigation.tsx";
 import { useTicketDetailsLogic } from "../../hooks/Ticket/useTicketDetailsLogic.tsx";
-import { DEFAULT_TICKET_STATUS,SINGLE_TICKET } from "../../../variables.tsx";
+import { ALL_LINES,DEFAULT_TICKET_STATUS,SINGLE_TICKET } from "../../../variables.tsx";
 import { colors,dimensions } from "../../style/styleValues.js";
 
 
@@ -18,7 +18,7 @@ const TicketDetails = () => {
     const navigation = useNavigation<NavigationProp>();
     const route = useRoute();
     const { userTicketId} = route.params as RouteParams;
-    const { userTicket, transaction, ticket, status, method, relief,  isLoading} = useTicketDetailsLogic(userTicketId);
+    const { userTicket, transaction, ticket, status, method, relief, line, isLoading} = useTicketDetailsLogic(userTicketId);
 
     const handleValidateTicket = () => {
         if (userTicket)
@@ -45,7 +45,7 @@ const TicketDetails = () => {
                 <View style={stylesApp.smallGapContainer}>
                     <Text style={stylesApp.ticketTypeText}>Bilet {ticket?.typeLabel} {ticket?.periodLabel}</Text>
                     <Text style={stylesApp.itemText}>Typ: <Text style={stylesApp.boldText}>{relief?.name}</Text></Text>
-                    <Text style={stylesApp.itemText}>Linie: <Text style={stylesApp.boldText}>{ticket?.lineLabel}</Text></Text>
+                    <Text style={stylesApp.itemText}>Linie: <Text style={stylesApp.boldText}>{ticket?.lineLabel}{line?.number !== ALL_LINES ? (": " + line?.name) : ''}</Text></Text>
                     <Text style={stylesApp.itemText}>Cena: <Text style={stylesApp.boldText}>{transaction?.finalPrice.toFixed(2)} zł</Text></Text>
                     <Text style={stylesApp.itemText}>Status: <Text style={stylesApp.boldText}>{status?.label}</Text></Text>
                 </View>

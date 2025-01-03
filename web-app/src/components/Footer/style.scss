@@ -1,0 +1,14 @@
+@import '../../styles/variables';
+
+
+.footer-txt {
+  color: $placeholder-gray;
+  font-size: 15px;
+}
+
+footer {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding:  10px 20px;
+}

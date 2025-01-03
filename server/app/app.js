@@ -51,10 +51,11 @@ app.get('/*', function (req, res) {
   res.sendFile(__dirname + '/public/index.html');
 });
 
-// startCronJobs();
 
 app.listen(config.port, function () {
   console.info(`Server is running at ${config.port}`)
+
+    startCronJobs();
 });
 
 

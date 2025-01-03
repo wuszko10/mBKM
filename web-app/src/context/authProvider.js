@@ -1,15 +1,18 @@
 import React, {createContext, useState, useContext, useEffect, useCallback} from 'react';
-import {userLogout} from "../services/user.service";
+import {userLogout} from "../services/Users/user.service";
 import {toast} from "react-toastify";
 import {decodeToken} from "react-jwt";
 
 const AuthContext = createContext();
 
 export const AuthProvider = ({ children }) => {
+    const [loading, setLoading] = useState(true);
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
 
     const loadToken = () => {
+        if (!loading) return;
+
         const savedToken = localStorage.getItem('token');
         const savedUser = localStorage.getItem('user');
 
@@ -21,6 +24,8 @@ export const AuthProvider = ({ children }) => {
             setToken(parseToken);
             setUser(parseUser);
         }
+
+        setLoading(false);
     };
 
     useEffect(() => {
@@ -66,7 +71,7 @@ export const AuthProvider = ({ children }) => {
 
 
     return (
-        <AuthContext.Provider value={{ user, token, setToken, setUser, logout }}>
+        <AuthContext.Provider value={{ user, token, setToken, setUser, logout, loading }}>
             {children}
         </AuthContext.Provider>
     );

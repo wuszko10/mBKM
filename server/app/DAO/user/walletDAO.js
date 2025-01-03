@@ -71,6 +71,7 @@ async function removeById(id) {
     return WalletModel.findByIdAndRemove(id);
 }
 
+
 export default {
     createNewOrUpdateWallet: createNewOrUpdate,
     getWalletByUserId: getByUserId,

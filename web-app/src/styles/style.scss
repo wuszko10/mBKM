@@ -1,6 +1,5 @@
 @import '../styles/variables';
 
-
 h1 {
     font-family: "Montserrat ExtraBold", serif;
     font-size: 50px;
@@ -23,11 +22,16 @@ h3 {
     color: black;
 }
 
+p {
+    margin: 0;
+    padding: 0;
+}
+
 a {
     text-decoration: none;
 }
 
-.column-div, .logo {
+.column-div {
     flex-direction: column;
     align-items: center;
 }
@@ -39,17 +43,6 @@ a {
     gap: 0;
 }
 
-.detailsBox {
-    flex-direction: column;
-    align-items: start;
-}
-
-.detailsBox p {
-    color: $black;
-    line-height: 1.9;
-}
-
-
 .main-box {
     display: block;
     width: 100%;
@@ -58,41 +51,13 @@ a {
     flex: 1;
 }
 
-.notFound-Box{
-    display: flex;
-    height: 100%;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    gap: 50px
-}
 
 .content-box {
-    max-width: 1300px;
-    margin: 0 auto;
-}
-
-.content-box, .content-box-table {
     flex-direction: column;
     gap: $gap;
     flex: 1;
-}
-
-.content-box-table {
-    flex: 1;
-    padding-top: 30px;
-}
-
-.search-input {
-    border: 1px solid $gray;
-    padding: 15px 20px;
-    border-radius: $borderRadiusSmall;
-    color: black;
-    font-size: 14px;
-}
-
-.search-input::placeholder {
-    color: $placeholder-gray;
+    max-width: 1300px;
+    margin: 0 auto;
 }
 
 .header-with-button {
@@ -117,403 +82,8 @@ a {
     gap: 5px;
 }
 
-.modal-container {
-    height: 100%;
-    width: 100%;
-    max-height: 90vh;
-    justify-content: center;
-    align-items: center;
-}
 
-.popup-box {
-    flex-direction: column;
-    background: $light-blue;
-    border-radius: $borderRadius;
-    padding: 10px;
-    width: auto;
-    height: fit-content;
-    max-width: 70%;
-    max-height: 90%;
-    position: relative;
-    text-align: right;
-}
-
-.popup-container {
-    flex: 1;
-    flex-direction: column;
-    align-items: center;
-    gap: 50px;
-    margin-top: -55px;
-    padding: 60px;
-    overflow: hidden;
-}
-
-.popup-form-scroll{
-    flex: 1;
-    max-height: 60%;
-    overflow-y: auto;
-    padding: 0 10px;
-}
-
-.popup-container h3 {
-    width: 400px;
-    text-align: center;
-}
-.popup-form-scroll::-webkit-scrollbar {
-    width: 4px;
-}
-
-.popup-form-scroll::-webkit-scrollbar-thumb {
-    background-color: $primary-color;
-    border-radius: 10px;
-}
-
-.popup-form-scroll::-webkit-scrollbar-thumb:hover {
-    background-color: $placeholder-gray;
-}
-
-.popup-form-scroll::-webkit-scrollbar-track {
-    background: $light-blue;
-}
-
-.popup-header {
-    width: 100%;
-    height: fit-content;
-    justify-content: space-between;
-    align-items: center;
-}
-
-.popup-overlay {
-    background-color: rgba(0, 0, 0, 0.8);
-    position: fixed;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    justify-content: center;
-    align-items: center;
-}
-
-.popup-label {
-    margin-top: -$smallGap;
-    margin-bottom: -$gap;
-    align-self: start;
-}
-
-/** ICONS */
-
-.close-icon {
-    margin-top: 20px;
-    margin-right: 20px;
-    margin-left: auto;
-    color: $gray;
-    font-size: 30px;
-    cursor: pointer;
-    z-index: 1;
-}
-
-.close-icon:hover {
-    color: $primary-color;
-}
-
-.logo-icon, .logo-icon-login {
-    color: white;
-    font-size: 50px;
-}
-
-.logo-icon-login {
-    font-size: 250px;
-}
-
-/** JESZCZE NIE WIEM CO TO JEST ***/
-
-
-.sectionGrid {
-    flex-direction: column;
-    position: relative;
-    gap: 50px;
-}
-
-.sectionGrid h2 {
-    font-family: "Montserrat ExtraBold", serif;
-    font-size: 40px;
-    color: black;
-    margin: 0;
-}
-
-.movie-grid {
-    display: grid;
-    grid-template-columns: repeat(5, 1fr);
-    gap: 50px;
-}
-
-.movie-grid-box{
-    flex-direction: column;
-    gap: 40px;
-}
-
-.pagination {
-    justify-content: center;
-    align-items: center;
-    gap: $gap;
-}
-
-.pagination p {
-    font-size: 15px;
-    font-family: "Montserrat SemiBold", serif;
-}
-
-.pagination button {
-    margin: 0 2px;
-    background-color: transparent;
-    color: gray;
-    font-size: 15px;
-    font-family: "Montserrat SemiBold", serif;
-    text-decoration: none;
-    padding: 10px 14px;
-    border-width: 0;
-    border-radius: 5px;
-    cursor: pointer;
-}
-
-.pagination button.active {
-    color: $primary-color;
-}
-
-.pagination button:hover {
-    color: $primary-color;
-    text-decoration: underline;
-}
-
-
-/* ######### header ######### */
-
-
-.header-box {
-    display: block;
-    width: 100%;
-    padding: 40px;
-}
-
-.header-content{
-    height: 100%;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.logo {
-    padding-top: 30px;
-    gap: 10px;
-}
-
-.logo img {
-    max-height: 50px;
-}
-
-.logo p {
-    color: white;
-    margin: 0;
-    padding: 0;
-    font-family: "Montserrat", serif;
-}
-
-.header-menu {
-    width: 85%;
-}
-
-.header-menu a {
-    font-family: "Montserrat SemiBold", serif;
-    color: white;
-    padding: 10px 30px;
-    background-color: transparent;
-    border-radius: $borderRadius;
-}
-
-.header-menu a:hover{
-    color: $primary-color;
-    background-color: white;
-}
-
-.header-menu {
-    flex-direction: column;
-    text-align: left;
-    margin-top: 70px;
-    gap: 10px;
-}
-
-.login-btn {
-    background-color: $primary-color;
-    color: #fff;
-    font-size: 15px;
-    font-family: "Montserrat", serif;
-    text-transform: uppercase;
-    text-decoration: none;
-    padding: 16px 30px;
-    border: none;
-    border-radius: $borderRadius;
-    cursor: pointer;
-}
-
-.login-btn:hover {
-    background-color: white;
-    color: $primary-color;
-    font-family: "Montserrat SemiBold", serif;
-}
-
-.header-footer{
-    justify-content: center;
-    text-align: center;
-    width: 100%;
-}
-
-/* ########## table ############*/
-
-.content-table {
-    width: 100%;
-    overflow-x: auto;
-    gap: $gap;
-}
-
-.content-table button {
-    background-color: transparent;
-    border: none;
-    font-family: "Lato Regular", serif;
-    font-size: 15px;
-    padding: 5px 10px;
-    cursor: pointer;
-    border-radius: $borderRadiusSmall;
-
-}
-
-.content-table button:hover {
-    text-decoration: underline;
-}
-
-.table-container {
-    width: 100%; /* Wypełnia dostępne miejsce */
-    overflow-x: auto; /* Dodaje pasek przewijania poziomego, jeśli zawartość wychodzi poza ekran */
-}
-
-table {
-    border-collapse: collapse;  /* Eliminuje przestrzenie między komórkami */
-    width: auto;
-    min-width: 100%;
-    flex: 1;
-}
-
-
-th, td {
-    padding: 8px;
-    text-align: left;
-}
-
-th {
-    background-color: $primary-color;  /* Kolor tła nagłówka */
-    color: white;
-}
-
-tr:nth-child(even) {
-    background-color: $light-blue;  /* Tło dla co drugiego wiersza */
-}
-
-tr:nth-child(odd) {
-    background-color: $tableRowSecondBg;  /* Tło dla pozostałych wierszy */
-}
-
-td {
-    border-left: none;
-    border-right: none;
-}
-
-.defaultTableIcon {
-    font-size: $iconSize;
-    color: $placeholder-gray;
-}
-
-.hoverTableIcon {
-    font-size: $iconSize;
-}
-
-/*
-table tr:first-child th:first-child {
-    border-top-left-radius: $borderRadius;
-}
-
-table tr:first-child th:last-child {
-    border-top-right-radius: $borderRadius;
-}
-
-
-table tr:last-child td:first-child {
-    border-bottom-left-radius: $borderRadius;
-}
-
-
-table tr:last-child td:last-child {
-    border-bottom-right-radius: $borderRadius;
-}*/
-
-
-
-/* ########### footer ############# */
-
-.footer-txt {
-    color: $placeholder-gray;
-    font-size: 15px;
-}
-
-footer {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding:  10px 20px;
-}
-
-/* ########### login/register ############# */
-
-.logo-login {
-    align-items: center;
-    padding-right: 50px;
-    padding-bottom: 30px;
-}
-
-.logo-login h1 {
-    font-size: 100px;
-}
-
-.logo-login p {
-    font-size: 22px;
-}
-
-.login-box {
-    height: 100vh;
-    width: 100%;
-    margin: 0 auto;
-    justify-content: center;
-    align-items: center;
-    background-color: $primary-color;
-    gap: 15%;
-}
-
-.login-container {
-    text-align: center;
-    width: fit-content;
-    height: fit-content;
-    align-items: center;
-    justify-content: center;
-    padding: 50px;
-    border-radius: 20px;
-    flex-direction: column;
-    background-color: $light-blue;
-    row-gap: 10px;
-}
-
-.login-container h2 {
-    color: black;
-    font-family: "Montserrat ExtraBold", serif;
-    font-size: 35px;
-    margin: 0 0 30px 0;
-}
+/* ########### Form styles ############# */
 
 .form-global {
     display: flex;
@@ -571,8 +141,7 @@ select:disabled {
     color: $gray;
 }
 
-
-.form-global button, .not-found-button {
+.form-global button {
     background-color: $primary-color;
     color: #fff;
     font-size: 15px;
@@ -608,95 +177,4 @@ select:disabled {
 .form-global option {
     color: #222B31;
     background-color: #e5e5e5;
-}
-
-.login-link-text {
-    color: black;
-    font-weight: bold;
-}
-
-.login-link-text-blue {
-    color: $primary-color;
-    font-weight: bold;
-    text-decoration: none;
-}
-
-.login-link-text-blue:hover {
-    text-decoration: underline;
-}
-
-
-.spinner {
-    border: 4px solid $primary-color;
-    border-radius: 50%;
-    width: 40px;
-    height: 40px;
-    animation: spin 2s linear infinite;
-}
-
-@keyframes spin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
-}
-
-
-
-.switch {
-    position: relative;
-    display: inline-block;
-    width: 39px;
-    height: 22px;
-}
-
-.switch input {
-    opacity: 0;
-    width: 0;
-    height: 0;
-}
-
-.slider {
-    position: absolute;
-    cursor: pointer;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
-    background-color: #ccc;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-.slider:before {
-    position: absolute;
-    content: "";
-    height: 15px;
-    width: 15px;
-    left: 4px;
-    bottom: 4px;
-    background-color: white;
-    -webkit-transition: .4s;
-    transition: .4s;
-}
-
-input:checked + .slider {
-    background-color: $primary-color;
-}
-
-input:focus + .slider {
-    box-shadow: 0 0 1px $primary-color;
-}
-
-input:checked + .slider:before {
-    -webkit-transform: translateX(15px);
-    -ms-transform: translateX(15px);
-    transform: translateX(15px);
-}
-
-/* Rounded sliders */
-.slider.round {
-    border-radius: 21px;
-}
-
-.slider.round:before {
-    border-radius: 50%;
 }

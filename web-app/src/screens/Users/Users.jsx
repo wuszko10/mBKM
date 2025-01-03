@@ -1,52 +1,28 @@
-import React, {useState} from 'react';
+import React from 'react';
 import '../../styles/style.scss'
-import {useNavigate} from "react-router-dom";
-import DynamicTable from "../../components/Table/DynamicTable";
+import DynamicTable from "../../components/GlobalTable/DynamicTable";
 import {LuPlusCircle} from "react-icons/lu";
-import {getUsersColumns} from "../../components/Table/TableColumns";
-import {useUsers} from "../../hooks/useUsers";
-import UserPopupForm from "../../components/Popup/components/UserPopupForm";
-import {editBusStop} from "../../services/stop.service";
-import {addUser} from "../../services/user.service";
+import {useUsers} from "../../hooks/Users/useUsers";
+import UserPopupForm from "../../components/Popup/UserPopupForm";
 
 const Users = () => {
 
-    const navigate = useNavigate();
-    const [show, setShow] = useState(false);
-
     const {
-        users,
+        data,
+        columns,
         loading,
         page,
         pageSize,
         totalPages,
+        show,
         setPage,
         setPageSize,
         setSearchQuery,
+        setShow,
         refreshUsers,
-        token,
+        handleShowCreateForm
     } = useUsers();
 
-    const data = React.useMemo(() => {
-        return users.length > 0 ? users : [];
-    }, [users]);
-
-    const handleShowCreateForm = () => {
-        setShow(true);
-    };
-
-    const handleToggle = async (id, newState) => {
-        let data = users.find(u => u._id === id);
-
-        data.isActive = Boolean(newState);
-
-        if (data){
-            await addUser(id, data, token)
-            await refreshUsers();
-        }
-    }
-
-    const columns = getUsersColumns(navigate, handleToggle);
 
     return (
         <div className="main-box">

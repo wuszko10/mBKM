@@ -100,9 +100,14 @@ async function get(id) {
     throw applicationException.new(applicationException.NOT_FOUND, 'Transaction not found');
 }
 
+async function countByUserId(id){
+    return TransactionModel.countDocuments({userId: id});
+}
+
 async function removeById(id) {
     return TransactionModel.findByIdAndRemove(id);
 }
+
 
 
 
@@ -112,6 +117,7 @@ export default {
     getTransactionByUserId: getByUserId,
     getTransactionById: get,
     removeTransactionById: removeById,
+    countTransactionsByUserId: countByUserId,
 
     model: TransactionModel,
 };

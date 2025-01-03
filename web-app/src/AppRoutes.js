@@ -1,31 +1,38 @@
 import {isExpired} from "react-jwt";
 import {Navigate, Route, Routes} from "react-router-dom";
-import UserLayout from "./components/UserLayout";
-import Main from "./screens/Home/Main";
+import UserLayout from "./components/Layout/UserLayout";
+import Main from "./screens/Home/Main/Main";
 import Tickets from "./screens/Tickets/Tickets";
 import Reliefs from "./screens/Reliefs/Reliefs";
 import BusStops from "./screens/BusStops/BusStops";
-import UserDetails from "./screens/Users/UserDetails";
+import UserDetails from "./screens/Users/UserDetails/UserDetails";
 import Transactions from "./screens/Transactions/Transactions";
 import Users from "./screens/Users/Users";
-import NotFound from "./screens/Home/NotFound";
-import PublicLayout from "./components/PublicLayot";
-import Login from "./screens/Home/Login";
-import TopUps from "./screens/Transactions/topUps";
+import NotFound from "./screens/Home/NotFound/NotFound";
+import PublicLayout from "./components/Layout/PublicLayot";
+import Login from "./screens/Home/Login/Login";
+import TopUps from "./screens/Transactions/TopUps";
 import {useEffect} from "react";
 import Lines from "./screens/Lines/Lines";
 import {useAuth} from "./context/authProvider";
 import {fetchMetadata} from "./services/metadata.service";
-import TransactionDetails from "./screens/Transactions/TransactionDetails";
+import TransactionDetails from "./screens/Transactions/TransationDetails/TransactionDetails";
+import Loading from "./components/Loading/Loading";
 
 const AppRoutes = () => {
-    const { token } = useAuth();
+    const { token, loading } = useAuth();
 
     useEffect(() => {
         if (token && !isExpired(token)) {
             fetchMetadata(token).then();
         }
     }, [token]);
+
+    if( loading ) {
+        return (
+            <Loading />
+        )
+    }
 
     return (
         <Routes>
@@ -45,7 +52,7 @@ const AppRoutes = () => {
                 </Route>
             ) : (
                 <Route path="/" element={<PublicLayout />}>
-                    <Route path="/" element={<Login />} />
+                    <Route index element={<Login />} />
                     <Route path="*" element={<Navigate to="/" />} />
                 </Route>
             )}

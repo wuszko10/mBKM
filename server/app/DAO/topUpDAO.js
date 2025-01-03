@@ -97,6 +97,10 @@ async function getById(id) {
     throw applicationException.new(applicationException.NOT_FOUND, 'Ticket not found');
 }
 
+async function countByUserId(id){
+    return TopUpModel.countDocuments({userId: id});
+}
+
 async function removeById(id) {
     return TopUpModel.findByIdAndRemove(id);
 }
@@ -108,6 +112,7 @@ export default {
     getTopUpsByUserId: getByUserId,
     getTopUpById: getById,
     removeTopUpById: removeById,
+    countTopUpsByUserId: countByUserId,
 
     model: TopUpModel,
 };
