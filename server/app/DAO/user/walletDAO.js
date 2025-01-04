@@ -21,7 +21,6 @@ async function createNewOrUpdate(wallet) {
     return Promise.resolve().then(() => {
         if (!wallet.id) {
 
-            console.log("Tytaj");
             return new  WalletModel(wallet).save().then(result => {
                 if (result) {
                     return mongoConverter(result);
@@ -56,7 +55,7 @@ async function getById(id) {
     if (result) {
         return mongoConverter(result);
     }
-    throw applicationException.new(applicationException.NOT_FOUND, 'Relief not found');
+    throw applicationException.new(applicationException.NOT_FOUND, 'Wallet not found');
 }
 
 async function getByUserId(id) {
@@ -64,11 +63,28 @@ async function getByUserId(id) {
     if (result) {
         return mongoConverter(result);
     }
-    throw applicationException.new(applicationException.NOT_FOUND, 'Relief not found');
+    throw applicationException.new(applicationException.NOT_FOUND, 'Wallet not found');
 }
 
 async function removeById(id) {
     return WalletModel.findByIdAndRemove(id);
+}
+
+async function totalAmount(){
+    const result = await WalletModel.aggregate([
+        {
+            $group: {
+                _id: null,
+                amount: { $sum: "$amount" },
+            },
+        },
+    ]);
+
+    if (!result || result.length === 0){
+        throw applicationException.new(applicationException.NOT_FOUND, 'Wallets data not found');
+    }
+
+    return result[0].amount;
 }
 
 
@@ -78,6 +94,7 @@ export default {
     getWalletById: getById,
     removeWalletById: removeById,
     addAmountWallet: updateWallet,
+    walletTotalAmount: totalAmount,
 
     model: WalletModel
 };

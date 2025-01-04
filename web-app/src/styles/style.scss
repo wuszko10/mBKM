@@ -54,8 +54,13 @@ a {
 
 .content-box {
     flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
     gap: $gap;
     flex: 1;
+    padding: 0 40px;
+    box-sizing: border-box;
+    width: 100%;
     max-width: 1300px;
     margin: 0 auto;
 }
@@ -177,4 +182,35 @@ select:disabled {
 .form-global option {
     color: #222B31;
     background-color: #e5e5e5;
+}
+
+
+@media (max-width: $laptop) {
+    .header-with-button {
+        flex-direction: column;
+        gap: 25px
+    }
+
+    .header-with-button div {
+        flex-direction: column;
+    }
+
+    .header-with-button h2 {
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .content-box {
+        padding: 0;
+    }
+
+    .form-global input {
+        width: auto;
+        box-sizing: border-box;
+    }
+
+    .form-global select {
+        width: auto;
+        box-sizing: border-box;
+    }
 }

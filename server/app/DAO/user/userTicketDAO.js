@@ -164,6 +164,23 @@ async function removeById(id) {
     return UserTicketModel.findByIdAndRemove(id);
 }
 
+async function getLastUserTickets(days) {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - Number(days));
+
+    try {
+        const orders = await UserTicketModel.find({
+            purchaseDate: { $gte: startDate},
+        });
+
+        if (orders) {
+            return mongoConverter(orders);
+        }
+    } catch {
+        throw applicationException.new(applicationException.NOT_FOUND, 'Transaction not found');
+    }
+}
+
 
 export default {
     createNewOrUpdateUserTicket: createNewOrUpdate,
@@ -178,6 +195,7 @@ export default {
     getByReliefId: getByRelief,
     getByLineId: getByLine,
     countUserTicketsByUserId: countByUserId,
+    getLastUserTickets,
 
     model: UserTicketModel,
 };

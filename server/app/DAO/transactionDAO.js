@@ -108,6 +108,23 @@ async function removeById(id) {
     return TransactionModel.findByIdAndRemove(id);
 }
 
+async function getLastTransaction(days) {
+    const startDate = new Date();
+    startDate.setDate(startDate.getDate() - Number(days));
+
+    try {
+        const orders = await TransactionModel.find({
+            paymentDate: { $gte: startDate},
+        });
+
+        if (orders) {
+            return mongoConverter(orders);
+        }
+    } catch {
+        throw applicationException.new(applicationException.NOT_FOUND, 'Transaction not found');
+    }
+}
+
 
 
 
@@ -118,6 +135,7 @@ export default {
     getTransactionById: get,
     removeTransactionById: removeById,
     countTransactionsByUserId: countByUserId,
+    getLastTransaction,
 
     model: TransactionModel,
 };

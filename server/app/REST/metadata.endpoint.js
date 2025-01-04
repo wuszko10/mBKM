@@ -1,4 +1,7 @@
 import authToken from "../middleware/authToken";
+import admin from "../middleware/admin";
+import business from "../business/business.container";
+import applicationException from "../service/applicationException";
 
 const MetadataEndpoint = (router) => {
 
@@ -26,6 +29,15 @@ const MetadataEndpoint = (router) => {
             statusTypes
         });
     });
+
+    router.get('/api/admin/dashboard/:days', admin, async (req, res) => {
+        try {
+            const response = await business.getMetadataManager().getDashboardStats(req.params.days);
+            res.status(200).json(response);
+        } catch (error) {
+            applicationException.errorHandler(error, res);
+        }
+    })
 }
 
 export default MetadataEndpoint;

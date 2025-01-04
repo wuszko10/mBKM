@@ -1,97 +1,143 @@
-import React from 'react';
+import React, {useState} from 'react';
 import '../../styles/style.scss'
 import {Link, NavLink} from "react-router-dom";
 import { PiNavigationArrowFill} from "react-icons/pi";
 import {useAuth} from "../../context/authProvider";
 import './style.scss';
+import {FiMenu} from "react-icons/fi";
+import Modal from "react-modal";
 
 const Header = () => {
 
     const {logout} = useAuth();
+    const [isModalOpen, setModalOpen] = useState(false);
 
-    const handleLogout = () => {
+    const handleLogout = (e) => {
+        e.stopPropagation();
         logout();
     };
+
+    const renderMenuItems = () => {
+        return (
+            <div className="header-menu">
+
+                <NavLink
+                    style={({isActive}) => {
+                        return {
+                            color: isActive ? "#002B44" : "white",
+                            backgroundColor: isActive ? "white" : "transparent",
+                        };
+                    }}
+                    to="/">Start</NavLink>
+
+                <NavLink
+                    style={({isActive}) => {
+                        return {
+                            color: isActive ? "#002B44" : "white",
+                            backgroundColor: isActive ? "white" : "transparent",
+                        };
+                    }}
+                    to="/tickets">Bilety</NavLink>
+
+                <NavLink
+                    style={({isActive}) => {
+                        return {
+                            color: isActive ? "#002B44" : "white",
+                            backgroundColor: isActive ? "white" : "transparent",
+                        };
+                    }}
+                    to="/stops">Przystanki</NavLink>
+
+                <NavLink
+                    style={({isActive}) => {
+                        return {
+                            color: isActive ? "#002B44" : "white",
+                            backgroundColor: isActive ? "white" : "transparent",
+                        };
+                    }}
+                    to="/lines">Linie</NavLink>
+
+                <NavLink
+                    style={({isActive}) => {
+                        return {
+                            color: isActive ? "#002B44" : "white",
+                            backgroundColor: isActive ? "white" : "transparent",
+                        };
+                    }}
+                    to="/transactions">Transakcje</NavLink>
+
+                <NavLink
+                    style={({isActive}) => {
+                        return {
+                            color: isActive ? "#002B44" : "white",
+                            backgroundColor: isActive ? "white" : "transparent",
+                        };
+                    }}
+                    to="/users">Użytkownicy</NavLink>
+            </div>
+        )
+    }
+
+    const renderLogoutButton = () => {
+        return (
+            <div className="header-footer">
+                <button onClick={handleLogout} className="login-btn">
+                    Wyloguj się
+                </button>
+            </div>
+        )
+    }
+
+    const handleMenu = () => {
+        setModalOpen(true);
+    }
+
+    const close = () => {
+        setModalOpen(false);
+    }
 
     return (
         <header className="header-box">
             <div className="header-content">
-                <div className="column-div">
+                <div className="header-items">
                     <Link to="/">
-                        <div className="logo">
-                            <PiNavigationArrowFill className="logo-icon"/>
+                        <div className="logo-header">
+                            <PiNavigationArrowFill className="logo-header-icon"/>
                             <h1>mBKM</h1>
                             <p>Admin</p>
                         </div>
                     </Link>
 
-                    <div className="header-menu">
+                    <div className={"mobile-menu"} onClick={handleMenu}>
+                        <FiMenu size={30} className={"logo-header-icon"} />
+                    </div>
 
-                        <NavLink
-                            style={({isActive}) => {
-                                return {
-                                    color: isActive ? "#002B44" : "white",
-                                    backgroundColor: isActive ? "white" : "transparent",
-                                };
-                            }}
-                            to="/">Start</NavLink>
-
-                        <NavLink
-                            style={({isActive}) => {
-                                return {
-                                    color: isActive ? "#002B44" : "white",
-                                    backgroundColor: isActive ? "white" : "transparent",
-                                };
-                            }}
-                            to="/tickets">Bilety</NavLink>
-
-                        <NavLink
-                            style={({isActive}) => {
-                                return {
-                                    color: isActive ? "#002B44" : "white",
-                                    backgroundColor: isActive ? "white" : "transparent",
-                                };
-                            }}
-                            to="/stops">Przystanki</NavLink>
-
-                        <NavLink
-                            style={({isActive}) => {
-                                return {
-                                    color: isActive ? "#002B44" : "white",
-                                    backgroundColor: isActive ? "white" : "transparent",
-                                };
-                            }}
-                            to="/lines">Linie</NavLink>
-
-                        <NavLink
-                            style={({isActive}) => {
-                                return {
-                                    color: isActive ? "#002B44" : "white",
-                                    backgroundColor: isActive ? "white" : "transparent",
-                                };
-                            }}
-                            to="/transactions">Transakcje</NavLink>
-
-                        <NavLink
-                            style={({isActive}) => {
-                                return {
-                                    color: isActive ? "#002B44" : "white",
-                                    backgroundColor: isActive ? "white" : "transparent",
-                                };
-                            }}
-                            to="/users">Użytkownicy</NavLink>
+                    <div className="desktop-menu">
+                        {renderMenuItems()}
                     </div>
                 </div>
 
-                <div className="header-footer">
-                    <div>
-                        <button onClick={handleLogout} className="login-btn">
-                            Wyloguj się
-                        </button>
-                    </div>
+                <div className="desktop-footer" >
+                    {renderLogoutButton()}
                 </div>
             </div>
+
+            <Modal
+                isOpen={isModalOpen}
+                onRequestClose={close}
+                contentLabel={"menu"}
+                className="menu-modal-container"
+                overlayClassName="popup-overlay"
+            >
+                <div onClick={close} className={"menu-modal-box"}>
+                    {renderMenuItems()}
+                    {renderLogoutButton()}
+                </div>
+
+            </Modal>
+
         </header>
+
     );
 };
 

@@ -11,6 +11,8 @@
   padding: 70px 100px;
   border-radius: 20px;
   background-color: $bg-light-gray;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .user-details-box {
@@ -114,3 +116,20 @@
   gap: $gap;
 }
 
+@media (max-width: $mobile) {
+  .user-container {
+    padding: 40px;
+  }
+
+  .first-row, .user-option-container {
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .divider {
+    width: 100%;
+    height: 0.5px;
+  }
+}

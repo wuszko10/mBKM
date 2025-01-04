@@ -17,7 +17,6 @@ const UserDetails = () => {
         loading,
         userDetails,
         wallet,
-        userTickets,
         transactions,
         topUps,
         sessions,

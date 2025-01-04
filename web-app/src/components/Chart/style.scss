@@ -1,0 +1,13 @@
+@import '../../styles/variables';
+
+.chart-box {
+    flex-direction: column;
+    width: auto;
+    background-color: $light-blue;
+    padding: $appPadding;
+    border-radius: $borderRadius;
+}
+
+.chart-box h3 {
+    font-size: $largeTextSize;
+}

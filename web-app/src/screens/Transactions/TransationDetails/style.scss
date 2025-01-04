@@ -24,11 +24,12 @@
   align-items: start;
   margin: 50px auto;
   justify-content: space-between;
-  width: 1000px;
-  max-width: 1200px;
+  width: 100%;
   padding: 70px 100px;
   border-radius: 20px;
   background-color: $bg-light-gray;
+  box-sizing: border-box;
+  flex-wrap: wrap;
 }
 
 .details-box{
@@ -61,4 +62,36 @@ a {
 
 a:hover {
   text-decoration: underline;
+}
+
+@media (max-width: $laptop) {
+  .transaction-box {
+    padding: 30px 60px;
+  }
+}
+
+@media (max-width: $mobile) {
+  .transaction-box {
+    padding: 30px;
+    align-content: center;
+    justify-content: center;
+  }
+
+  .details-box {
+    margin: 0;
+  }
+
+  .ticket-box{
+    flex-direction: column;
+    background-color: $light-blue;
+    padding: 30px;
+    border-radius: $borderRadius;
+    gap: 5px;
+    max-width: auto;
+  }
+
+  .qr-code {
+    width: 250px;
+    height: 250px;
+  }
 }

@@ -26,11 +26,10 @@ const TransactionDetails = () => {
     return (
         <div className="main-box">
             <div className="content-box">
-                <h2>Szczegóły Transakcji</h2>
+                <h2>Szczegóły transakcji</h2>
                 <div className={"transaction-box"}>
                     <div className={"details-box"}>
-                        <h3>Szczegóły transakcji</h3>
-                        <p>Numer transakcji: <strong>{transaction?.number}</strong></p>
+                        <h3>Transakcja nr {transaction?.number}</h3>
                         <p>Numer biletu: <strong>{userTicket?.number}</strong></p>
                         <p>Użytkownik: <Link to={`/user/${user?.id}`}>{user?.firstName} {user?.lastName}</Link></p>
 

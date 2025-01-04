@@ -110,6 +110,10 @@ async function removeById(id) {
   return UserModel.findByIdAndRemove(id);
 }
 
+async function countActiveUsers(){
+  return UserModel.countDocuments({active: true});
+}
+
 export default {
   createNewOrUpdate: createNewOrUpdate,
   getByEmailOrName: getByEmailOrName,
@@ -117,6 +121,7 @@ export default {
   getAndSearch: getAndSearch,
   removeById: removeById,
   getAll: getAll,
+  countActiveUsers,
 
   userRole: userRole,
   model: UserModel

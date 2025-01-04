@@ -65,3 +65,15 @@ div {
   background: lightgray;
   border-radius: 10px;
 }
+
+@media (max-width: $laptop) {
+  .App {
+    flex-direction: column;
+  }
+
+  .menu {
+    flex: 0;
+    height: auto;
+    width: 100%;
+  }
+}

@@ -12,8 +12,19 @@
   justify-content: space-between;
 }
 
-.header-menu {
+.header-items {
+  flex-direction: column;
+  align-items: center;
+}
+
+.header-menu, .desktop-menu {
   width: 85%;
+}
+
+.mobile-menu {
+  visibility: hidden;
+  height: 0;
+  width: 0;
 }
 
 .header-menu a {
@@ -61,29 +72,116 @@
   width: 100%;
 }
 
-.logo {
+.logo-header {
   flex-direction: column;
   align-items: center;
   padding-top: 30px;
   gap: 10px;
 }
 
-.logo img {
+.logo-header img {
   max-height: 50px;
 }
 
-.logo p {
+.logo-header p {
   color: white;
   margin: 0;
   padding: 0;
   font-family: "Montserrat", serif;
 }
 
-.logo-icon {
+.logo-header-icon {
   color: white;
   font-size: 50px;
 }
 
 a, a:hover {
   text-decoration: none;
+}
+
+.menu-modal-container {
+  position: absolute;
+  right: 0;
+  margin-right: 0;
+  height: 100%;
+  width: 80%;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+  box-sizing: border-box;
+  padding: 30px;
+  background-color: $primary-color;
+}
+
+.menu-modal-box {
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 100px;
+}
+
+.menu-modal-container .header-menu {
+  margin: 0;
+  padding: 0;
+  align-items: center;
+}
+
+@media (max-width: $laptop) {
+  .logo-header {
+    flex-direction: row;
+    justify-content: center;
+    padding: 0;
+  }
+
+  .logo-header h1 {
+    font-size: 30px;
+  }
+
+  .logo-header p {
+    color: white;
+    margin: 0;
+    padding: 0;
+    font-family: "Montserrat", serif;
+    font-size: 20px;
+  }
+
+  .logo-header-icon {
+    color: white;
+    font-size: 40px;
+  }
+
+  .header-box {
+    padding: 0;
+    width: 100%;
+  }
+
+  .header-content {
+    flex-direction: row;
+    height: auto;
+    padding: 20px;
+    align-items: center;
+  }
+
+  .header-items {
+    flex: 1;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .desktop-menu, .desktop-footer, .logo-header p {
+    visibility: hidden;
+    display: none;
+    height: 0;
+    width: 0;
+    padding: 0;
+    margin: 0;
+  }
+
+  .mobile-menu {
+    visibility: visible;
+    width: 40px;
+    height: 40px;
+    justify-content: center;
+    align-items: center;
+  }
 }
