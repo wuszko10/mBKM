@@ -12,12 +12,16 @@ import { storage } from "../../../App.tsx";
 import { getUserTicket } from "../../services/ticket.service.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { ToastAndroid } from "react-native";
+import { useNavigation } from "@react-navigation/native";
+import { NavigationProp } from "../../types/navigation.tsx";
 
 export const useTicketDetailsLogic = (userTicketId: string) => {
 
     const [isLoading, setIsLoading] = useState(true);
 
+    const navigation = useNavigation<NavigationProp>();
     const { token } = useAuth();
+
     const [userTicket, setUserTicket] = useState<UserTicket>();
     const [transaction, setTransaction] = useState<TicketOrderTransaction>();
     const [status, setStatus] = useState<MetadataType>()
@@ -77,6 +81,13 @@ export const useTicketDetailsLogic = (userTicketId: string) => {
             getUserTicketData(token);
     }, [isLoading]);
 
+    const handleValidateTicket = () => {
+        if (userTicket)
+            navigation.navigate("ValidateTicket", {
+                userTicketId: userTicket.id,
+            })
+    }
+
     return {
         userTicket,
         transaction,
@@ -86,5 +97,6 @@ export const useTicketDetailsLogic = (userTicketId: string) => {
         relief,
         line,
         isLoading,
+        handleValidateTicket,
     };
 }

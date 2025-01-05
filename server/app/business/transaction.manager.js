@@ -7,7 +7,7 @@ import UserTicketDAO from "../DAO/user/userTicketDAO";
 import ReliefDAO from "../DAO/reliefDAO";
 import LineDAO from "../DAO/lineDAO";
 
-function create(context) {
+function create() {
 
 
     async function createNewTransaction(transactionData, ticketData) {

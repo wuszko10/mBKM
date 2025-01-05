@@ -34,16 +34,9 @@
     font-size: $smallTextSize;
     text-align: center;
 }
-//
-//@media (max-width: 1400px) {
-//    .chart-box {
-//        height: 500px;
-//    }
-//}
-//
-//@media (max-width: $mobile) {
-//    .chart-box {
-//        flex: 0 0;
-//        height: 550px;
-//    }
-//}
+
+@media (max-width: 1400px) {
+    .chart-box {
+        flex: none;
+    }
+}

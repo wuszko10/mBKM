@@ -1,15 +1,17 @@
 import React from "react";
-import { Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";
+import { Line,Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";
 import stylesApp from "../../style/stylesApp.js";
 import { FlatList,Text,TouchableOpacity,View } from "react-native";
 import { style as localStyles } from "../../screens/Home/style.tsx";
 import Foundation from "react-native-vector-icons/Foundation";
 import { colors } from "../../style/styleValues.js";
+import { ALL_LINES } from "../../../variables.tsx";
 
 type ComponentProps = {
     toValidateTickets: UserTicket[] | undefined;
     tickets: Ticket[] | undefined;
     reliefs: Relief[] | undefined;
+    lines: Line[] | undefined;
     handleTicketDetails: (id: string) => void;
     handleValidateTicket: (id: string) => void;
     setForValidation: (forValidation: boolean) => void;
@@ -19,7 +21,9 @@ const ToValidateTicketComponent: React.FC<ComponentProps> = (props) => {
     const renderItem= ({item} : {item: UserTicket}) => {
 
         const ticketType = props.tickets && (props.tickets.find(type => type._id === item.ticketId));
-        const reliefType = props.reliefs && (props.reliefs.find(r => r._id === item.reliefId))
+        const reliefType = props.reliefs && (props.reliefs.find(r => r._id === item.reliefId));
+        const line = (props.lines) && (props.lines.find(l => l.id === item.lineId));
+
         return (
             <View style={{marginHorizontal: 5, marginVertical: 10}}>
                 <TouchableOpacity onPress={() => props.handleTicketDetails(item.id)}>
@@ -32,7 +36,7 @@ const ToValidateTicketComponent: React.FC<ComponentProps> = (props) => {
                         <Text style={localStyles.itemText}>
                             Bilet {ticketType?.typeLabel}{"\n"}
                             <Text style={stylesApp.boldText}>{reliefType?.name}</Text>{"\n"}
-                            na {ticketType?.lineLabel}
+                            {ticketType?.lineLabel}{line?.number !== ALL_LINES && (" – " + line?.name)}
                         </Text>
 
                     </View>

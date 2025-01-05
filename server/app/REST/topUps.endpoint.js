@@ -35,8 +35,6 @@ const TopUpEndpoint = (router) => {
     });
 
     router.post('/api/top-up/create', authToken, async (req, res) => {
-
-        console.log("Tutaj " + req.body);
         try {
             const topUp = await business.getTopUpManager().createNewOrUpdateTopUp(req.body);
             res.status(201).json(topUp);

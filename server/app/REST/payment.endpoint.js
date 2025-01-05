@@ -17,7 +17,6 @@ const PaymentEndpoint = (router) => {
     })
 
     router.post('/api/pay/card', authToken, async (req, res) => {
-        console.log("Body content:", req.body);
         const { amount, transactionId, cardNumber, expiryDate, cvv, userTicketId } = req.body;
         try {
             const payment = await business.getPaymentManager().cardPaymentTransaction(amount, transactionId, cardNumber, expiryDate, cvv, userTicketId);

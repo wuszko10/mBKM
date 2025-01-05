@@ -1,7 +1,7 @@
 import applicationException from '../service/applicationException';
 import BusStopDAO from "../DAO/BusStopDAO";
 
-function create(context) {
+function create() {
 
 
   async function createNewOrUpdate(data) {

@@ -2,14 +2,13 @@ import business from '../business/business.container';
 import applicationException from '../service/applicationException';
 import admin from '../middleware/admin';
 import authToken from '../middleware/authToken';
-import authUserRole from "../middleware/authUserRole";
 
 const ReliefEndpoint = (router) => {
 
     router.get('/api/reliefs', authToken, async (req, res) => {
         const cache = req.app.locals.cache;
         try {
-            let reliefs = await business.getReliefManager(req).getAllReliefs(cache);
+            let reliefs = await business.getReliefManager().getAllReliefs(cache);
             res.status(200).json(reliefs);
         } catch (error) {
             applicationException.errorHandler(error, res);
@@ -18,7 +17,7 @@ const ReliefEndpoint = (router) => {
 
     router.get('/api/relief/:id', authToken, async (req, res) => {
         try {
-            const relief = await business.getReliefManager(req).getReliefById(req.params.id);
+            const relief = await business.getReliefManager().getReliefById(req.params.id);
             res.status(200).json(relief);
         } catch (error) {
             applicationException.errorHandler(error, res);

@@ -105,6 +105,9 @@ async function removeById(id) {
     return TopUpModel.findByIdAndRemove(id);
 }
 
+async function deleteInvalidTopUps() {
+    return TopUpModel.deleteMany({ status: "progress" });
+}
 
 export default {
     createNewOrUpdateTopUp: createNewOrUpdate,
@@ -113,6 +116,7 @@ export default {
     getTopUpById: getById,
     removeTopUpById: removeById,
     countTopUpsByUserId: countByUserId,
+    deleteInvalidTopUps,
 
     model: TopUpModel,
 };

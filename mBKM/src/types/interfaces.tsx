@@ -49,6 +49,7 @@ export interface UserTicket {
     userId: string;
     ticketId: string;
     reliefId: string;
+    lineId: string;
     price: number;
     purchaseDate: Date;
     ticketStartDate: Date;

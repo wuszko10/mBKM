@@ -2,9 +2,8 @@ import applicationException from '../service/applicationException';
 import ReliefDAO from "../DAO/reliefDAO";
 import {getReliefTypesNames, reliefMappingIdsToNames} from "../service/reliefManager.service";
 import UserTicketDAO from "../DAO/user/userTicketDAO";
-import LineDAO from "../DAO/lineDAO";
 
-function create(context) {
+function create() {
 
 
     async function createNewOrUpdateRelief(reliefData) {

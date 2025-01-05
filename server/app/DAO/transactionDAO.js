@@ -54,8 +54,6 @@ function createNewOrUpdate(transaction) {
         }
     }).catch(error => {
 
-        console.log(error);
-
         if ('ValidationError' === error.number) {
             error = error.errors[Object.keys(error.errors)[0]];
             throw applicationException.new(applicationException.BAD_REQUEST, error.message);
@@ -125,7 +123,9 @@ async function getLastTransaction(days) {
     }
 }
 
-
+async function deleteInvalidTransactions() {
+    return TransactionModel.deleteMany({ status: "progress" });
+}
 
 
 export default {
@@ -136,6 +136,7 @@ export default {
     removeTransactionById: removeById,
     countTransactionsByUserId: countByUserId,
     getLastTransaction,
+    deleteInvalidTransactions,
 
     model: TransactionModel,
 };

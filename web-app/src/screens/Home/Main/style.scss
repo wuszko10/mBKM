@@ -85,32 +85,39 @@
 .link-box a {
   font-weight: normal;
 }
-//
-//@media (max-width: 1400px) {
-//  .chart-container {
-//    width: 100%;
-//    flex-direction: column;
-//  }
-//
-//  .lastTickets-box {
-//    height: fit-content;
-//    max-height: 500px;
-//  }
-//}
-//
-//@media (max-width: $mobile) {
-//  .home-row-stats-box {
-//    flex-direction: column;
-//  }
-//
-//  .lastTickets-box {
-//    height: 400px;
-//  }
-//
-//  .link-box {
-//    align-items: center;
-//  }
-//}
+
+.horizontal-div {
+  justify-content: center;
+  align-items: center;
+  width: auto;
+  flex: 1;
+}
+
+@media (max-width: 1400px) {
+  .chart-container {
+    width: 100%;
+    flex-direction: column;
+  }
+
+  .lastTickets-box {
+    height: fit-content;
+    max-height: 500px;
+  }
+}
+
+@media (max-width: $mobile) {
+  .home-row-stats-box {
+    flex-direction: column;
+  }
+
+  .lastTickets-box {
+    height: 400px;
+  }
+
+  .link-box {
+    align-items: center;
+  }
+}
 
 
 .lastTickets-box ol::-webkit-scrollbar {

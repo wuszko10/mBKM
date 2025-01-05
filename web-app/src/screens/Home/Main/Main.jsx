@@ -75,7 +75,7 @@ const Main = () => {
                             <p>Liczba aktywnych sesji użytkowników: <strong>{activeUsers.toString()}</strong></p>
                         </div>
                     </div>
-                    <div className={"header-with-button-row-div"}>
+                    <div className={"horizontal-div"}>
                         <p>Dane z ostatnich {days} dni</p>
                         <div className={"horizontal-divider"} />
                     </div>

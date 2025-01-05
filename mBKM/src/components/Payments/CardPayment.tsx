@@ -20,15 +20,18 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
 
     const {
         cardNumber,
-        setCardNumber,
         expiryDate,
-        setExpiryDate,
         cvv,
-        setCvv,
-        handleCardPayment,
+        cardNumberError,
+        expiryDateError,
+        cvvError,
         showPopup,
         isProcessing,
-        popupText
+        popupText,
+        handleExpiryDateChange,
+        handleCardNumberChange,
+        validCVV,
+        handleCardPayment,
     } = useCardPaymentLogic(props, wallet, setWallet, token);
 
     return (
@@ -37,36 +40,39 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
 
                 <View style={localStyle.inputBox}>
                     <Text style={localStyle.text}>Numer karty</Text>
-                    <TextInput style={[stylesApp.input, localStyle.inputText]}
+                    <TextInput style={[stylesApp.input, localStyle.inputText, { borderColor: cardNumberError ? 'red' : 'transparent', borderWidth: 1 }]}
                                placeholder="1234 5678 9012 3456"
                                value={cardNumber}
-                               onChangeText={setCardNumber}
+                               onChangeText={handleCardNumberChange}
                                keyboardType="numeric"
                                autoCapitalize="none"
+                               maxLength={19}
                                placeholderTextColor={colors.darkGray}
                     />
                 </View>
 
                 <View style={localStyle.inputBox}>
                     <Text style={localStyle.text}>Data{"\n"}ważności</Text>
-                    <TextInput style={[stylesApp.input, localStyle.inputText]}
+                    <TextInput style={[stylesApp.input, localStyle.inputText, { borderColor: expiryDateError ? 'red' : 'transparent', borderWidth: 1 }]}
                                placeholder="01/29"
                                value={expiryDate}
-                               onChangeText={setExpiryDate}
+                               onChangeText={handleExpiryDateChange}
                                keyboardType="numeric"
                                autoCapitalize="none"
+                               maxLength={5}
                                placeholderTextColor={colors.darkGray}
                     />
                 </View>
 
                 <View style={localStyle.inputBox}>
                     <Text style={localStyle.text}>Podaj kod</Text>
-                    <TextInput style={[stylesApp.input, localStyle.inputText]}
+                    <TextInput style={[stylesApp.input, localStyle.inputText, { borderColor: cvvError ? 'red' : 'transparent', borderWidth: 1 }]}
                                placeholder="XXX"
                                value={cvv}
-                               onChangeText={setCvv}
+                               onChangeText={validCVV}
                                keyboardType="numeric"
                                autoCapitalize="none"
+                               maxLength={3}
                                placeholderTextColor={colors.darkGray}
                     />
                 </View>

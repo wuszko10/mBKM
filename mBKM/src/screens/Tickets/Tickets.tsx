@@ -8,6 +8,7 @@ import Header from "../../components/Global/Header.tsx";
 import Entypo from "react-native-vector-icons/Entypo";
 import {NavigationProp} from "../../types/navigation.tsx";
 import { useTicketLogic } from "../../hooks/Ticket/useTicketLogic.tsx";
+import { ALL_LINES } from "../../../variables.tsx";
 
 const Tickets = () => {
 
@@ -17,6 +18,7 @@ const Tickets = () => {
         tickets,
         statusTypes,
         reliefs,
+        lines,
         isLoading,
         handleTicketDetails
     } = useTicketLogic();
@@ -26,7 +28,8 @@ const Tickets = () => {
 
         const ticketType = tickets && (tickets.find(type => type._id === item.ticketId));
         const statusType = statusTypes && (statusTypes.find(s => s.id === item.statusId));
-        const reliefType = reliefs && (reliefs.find(r => r._id === item.reliefId))
+        const reliefType = reliefs && (reliefs.find(r => r._id === item.reliefId));
+        const line = (lines) && (lines.find(r => r.id === item.lineId));
 
         return (
             <TouchableOpacity onPress={() => handleTicketDetails(item)}>
@@ -35,8 +38,9 @@ const Tickets = () => {
                         Bilet {ticketType?.typeLabel} {ticketType?.periodLabel}
                     </Text>
                     <Text style={stylesApp.itemText}>Typ: <Text style={stylesApp.boldText}>{reliefType?.name}</Text></Text>
-                    <Text style={stylesApp.itemText}>Linie: <Text style={stylesApp.boldText}>{ticketType?.lineLabel}</Text></Text>
+                    <Text style={stylesApp.itemText}>Linia: <Text style={stylesApp.boldText}>{ticketType?.lineLabel}{line?.number !== ALL_LINES && (" – " + line?.name)}</Text></Text>
                     <Text style={stylesApp.itemText}>Status: <Text style={stylesApp.boldText}>{statusType?.label}</Text></Text>
+                    <Text style={stylesApp.itemText}>Data zakupu: <Text style={stylesApp.boldText}>{(new Date(item?.purchaseDate)).toLocaleString()}</Text></Text>
                 </View>
             </TouchableOpacity>
         )

@@ -1,5 +1,5 @@
 import { useEffect,useState } from "react";
-import { Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";
+import { Line,Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";
 import {
     fetchDashboardUserTicket
 } from "../../services/ticket.service.tsx";
@@ -21,6 +21,7 @@ export const useHomeLogic = (token: string | null, userId: string) => {
     const [validateTickets, setValidateTickets] = useState<UserTicket[]>();
     const [reliefs, setReliefs] = useState<Relief[]>();
     const [tickets, setTickets] = useState<Ticket[]>();
+    const [lines, setLines] = useState<Line[]>();
 
     function handleTicketDetails(id: string) {
         navigation.navigate('TicketDetails', {userTicketId: id});
@@ -38,9 +39,11 @@ export const useHomeLogic = (token: string | null, userId: string) => {
 
         const ticketStr = storage.getString('tickets');
         const reliefTypesStr = storage.getString('reliefs');
-        if (ticketStr && reliefTypesStr) {
+        const linesStr = storage.getString('lines');
+        if (ticketStr && reliefTypesStr && linesStr) {
             setTickets(JSON.parse(ticketStr));
             setReliefs(JSON.parse(reliefTypesStr));
+            setLines(JSON.parse(linesStr));
         }
 
         fetchDashboardUserTicket(userId, token)
@@ -82,6 +85,7 @@ export const useHomeLogic = (token: string | null, userId: string) => {
         validateTickets,
         reliefs,
         tickets,
+        lines,
         handleTicketDetails,
         handleValidateTicket,
         isLoading,

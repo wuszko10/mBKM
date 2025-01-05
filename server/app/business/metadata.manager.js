@@ -4,7 +4,7 @@ import WalletDAO from "../DAO/user/walletDAO";
 import UserDAO from "../DAO/user/userDAO";
 import applicationException from "../service/applicationException";
 
-function create(context) {
+function create() {
 
     async function getDashboardStats(days){
 

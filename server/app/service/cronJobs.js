@@ -1,8 +1,10 @@
-import TokenDAO from "../DAO/user/tokenDAO";
+import TopUpDAO from "../DAO/topUpDAO";
+
 const cron = require('node-cron');
 import TicketStatusTypeDAO from "../DAO/metadata/ticketStatusTypeDAO";
 import UserTicketDAO from '../DAO/user/userTicketDAO'
-
+import TransactionDAO from "../DAO/transactionDAO";
+import TokenDAO from "../DAO/user/tokenDAO";
 
 async function updateTicketStatuses() {
     const now = new Date();
@@ -17,12 +19,19 @@ async function deleteExpiredTokens() {
     await TokenDAO.deleteExpiredTokens();
 }
 
+
+async function deleteInvalidTransactionsAndTopUps() {
+    await TransactionDAO.deleteInvalidTransactions();
+    await TopUpDAO.deleteInvalidTopUps();
+}
+
 // Cron tasks
 function startCronJobs() {
 
     console.info("Running updateTicketStatuses at server start...");
-    updateTicketStatuses();
-    deleteExpiredTokens();
+    updateTicketStatuses().then();
+    deleteExpiredTokens().then();
+    deleteInvalidTransactionsAndTopUps().then();
 
     cron.schedule('*/15 6-9,13-16 * * *', updateTicketStatuses);
 
@@ -31,6 +40,7 @@ function startCronJobs() {
     cron.schedule('0 23-5 * * *', updateTicketStatuses);
 
     cron.schedule('0 * * * *', deleteExpiredTokens);
+    cron.schedule('0 * * * *', deleteInvalidTransactionsAndTopUps);
 
     console.info("Cron jobs started");
 }

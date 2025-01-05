@@ -1,16 +1,18 @@
 import stylesApp from "../../style/stylesApp.js";
 import { FlatList,Text,TouchableOpacity,View } from "react-native";
 import React,{ Dispatch,SetStateAction } from "react";
-import { Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";
+import { Line,Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";
 import { style as localStyles } from "../../screens/Home/style.tsx";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../../style/styleValues.js";
 import Timer from "../Global/Timer.tsx";
+import { ALL_LINES } from "../../../variables.tsx";
 
 type ComponentProps = {
     validateTickets: UserTicket[] | undefined;
     tickets: Ticket[] | undefined;
     reliefs: Relief[] | undefined;
+    lines: Line[] | undefined;
     handleTicketDetails: (id: string) => void;
     setActiveTickets: Dispatch<SetStateAction<boolean>>;
 }
@@ -23,8 +25,9 @@ const ActiveTicketsComponent: React.FC<ComponentProps> = (props) => {
 
     const renderActiveTicketItem = ( {item} : {item: UserTicket} ) => {
 
-        const ticketType = props.tickets && (props.tickets.find(type => type.id === item.ticketId));
+        const ticketType = props.tickets && (props.tickets.find(type => type._id === item.ticketId));
         const reliefType = props.reliefs && (props.reliefs.find(r => r._id === item.reliefId))
+        const line = (props.lines) && (props.lines.find(l => l.id === item.lineId));
 
         return (
             <TouchableOpacity onPress={() => props.handleTicketDetails(item.id)} style={{marginBottom: 10}}>
@@ -34,7 +37,7 @@ const ActiveTicketsComponent: React.FC<ComponentProps> = (props) => {
 
                         <Text style={localStyles.activeItemText}>
                             <Text style={stylesApp.boldText}>Bilet {ticketType?.typeLabel} {reliefType?.name}</Text>{"\n"}
-                            na {ticketType?.lineLabel}
+                            {ticketType?.lineLabel}{line?.number !== ALL_LINES && (" – " + line?.name)}
                         </Text>
 
                     </View>

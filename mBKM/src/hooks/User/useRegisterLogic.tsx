@@ -22,6 +22,9 @@ export const useRegisterLogic = () => {
     const [emailError,setEmailError] = useState(false);
     const [confirmPasswordError,setConfirmPasswordError] = useState(false);
 
+    const PESEL_REGEX = /^[0-9]{2}((0[1-9]|1[0-2])|(2[1-9]|3[0-2]))(0[1-9]|1[0-9]|2[0-9]|3[01])[0-9]{5}$/gm;
+    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
     function togglePassword() {
         setShowPassword(!showPassword);
     }
@@ -76,9 +79,8 @@ export const useRegisterLogic = () => {
     }
 
     function validatePesel(input: string) {
-        const peselRegex = /^[0-9]{2}((0[1-9]|1[0-2])|(2[1-9]|3[0-2]))(0[1-9]|1[0-9]|2[0-9]|3[01])[0-9]{5}$/gm;
 
-        if (peselRegex.test(input)) {
+        if (PESEL_REGEX.test(input)) {
             setPesel(input);
             setPeselError(false);
         } else {
@@ -88,9 +90,8 @@ export const useRegisterLogic = () => {
     }
 
     function validateEmail(input: string) {
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-        if (emailRegex.test(input)) {
+        if (EMAIL_REGEX.test(input)) {
             setEmail(input);
             setEmailError(false);
         } else {

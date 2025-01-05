@@ -2,7 +2,7 @@ import applicationException from '../service/applicationException';
 import LineDAO from "../DAO/lineDAO";
 import UserTicketDAO from "../DAO/user/userTicketDAO";
 
-function create(context) {
+function create() {
 
 
   async function createNewOrUpdate(data) {

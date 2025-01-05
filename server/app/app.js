@@ -7,11 +7,9 @@ import morgan from 'morgan';
 import routes from './REST/routes';
 import {loadMetadataMiddleware} from "./middleware/cacheUpdater";
 import NodeCache from "node-cache";
-import cron from 'node-cron';
 import {startCronJobs} from "./service/cronJobs";
 
-// const cache = new NodeCache({ stdTTL: 86400 });
-const cache = new NodeCache({ stdTTL: 300 });
+const cache = new NodeCache({ stdTTL: 86400 });
 
 const app = express();
 
@@ -29,7 +27,6 @@ app.locals.cache = cache;
 
 app.use(loadMetadataMiddleware);
 
-
 mongoose
     .connect(config.databaseUrl, {
         useNewUrlParser: true
@@ -37,25 +34,24 @@ mongoose
     .then(() => console.info('Connect with database established'))
     .catch(error => console.error('Database connection error:', error));
 
-process.on('SIGINT', () => {
-    mongoose.connection.close(function () {
-        console.error('Mongoose default connection disconnected through app termination');
-        process.exit(0);
-    });
+app.get('/*', function (req, res) {
+    res.sendFile(__dirname + '/public/index.html');
+});
+
+app.listen(config.port, function () {
+    console.info(`Server is running at ${config.port}`)
+    startCronJobs();
 });
 
 routes(app);
 
-
-app.get('/*', function (req, res) {
-  res.sendFile(__dirname + '/public/index.html');
+process.on('SIGINT', async () => {
+    try {
+        await mongoose.connection.close();
+        console.info('Mongoose default connection disconnected through app termination');
+        process.exit(0);
+    } catch (error) {
+        console.error('Błąd podczas zamykania połączenia z MongoDB:', error);
+        process.exit(1);
+    }
 });
-
-
-app.listen(config.port, function () {
-  console.info(`Server is running at ${config.port}`)
-
-    startCronJobs();
-});
-
-

@@ -15,17 +15,20 @@ type RouteParams = {
 
 const TicketDetails = () => {
 
-    const navigation = useNavigation<NavigationProp>();
     const route = useRoute();
     const { userTicketId} = route.params as RouteParams;
-    const { userTicket, transaction, ticket, status, method, relief, line, isLoading} = useTicketDetailsLogic(userTicketId);
+    const {
+        userTicket,
+        transaction,
+        ticket,
+        status,
+        method,
+        relief,
+        line,
+        isLoading,
+        handleValidateTicket
+    } = useTicketDetailsLogic(userTicketId);
 
-    const handleValidateTicket = () => {
-        if (userTicket)
-            navigation.navigate("ValidateTicket", {
-                userTicketId: userTicket.id,
-            })
-    }
 
     if (isLoading) {
         return (
@@ -45,7 +48,7 @@ const TicketDetails = () => {
                 <View style={stylesApp.smallGapContainer}>
                     <Text style={stylesApp.ticketTypeText}>Bilet {ticket?.typeLabel} {ticket?.periodLabel}</Text>
                     <Text style={stylesApp.itemText}>Typ: <Text style={stylesApp.boldText}>{relief?.name}</Text></Text>
-                    <Text style={stylesApp.itemText}>Linie: <Text style={stylesApp.boldText}>{ticket?.lineLabel}{line?.number !== ALL_LINES ? (": " + line?.name) : ''}</Text></Text>
+                    <Text style={stylesApp.itemText}>Linia: <Text style={stylesApp.boldText}>{ticket?.lineLabel}{line?.number !== ALL_LINES ? (" – " + line?.name) : ''}</Text></Text>
                     <Text style={stylesApp.itemText}>Cena: <Text style={stylesApp.boldText}>{transaction?.finalPrice.toFixed(2)} zł</Text></Text>
                     <Text style={stylesApp.itemText}>Status: <Text style={stylesApp.boldText}>{status?.label}</Text></Text>
                 </View>

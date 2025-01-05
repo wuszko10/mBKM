@@ -26,6 +26,7 @@ const Home = () => {
         validateTickets,
         reliefs,
         tickets ,
+        lines,
         handleTicketDetails,
         handleValidateTicket,
         isLoading
@@ -53,6 +54,7 @@ const Home = () => {
                         validateTickets={validateTickets}
                         tickets={tickets}
                         reliefs={reliefs}
+                        lines={lines}
                         handleTicketDetails={handleTicketDetails}
                         setActiveTickets={setActiveTickets}
                     />
@@ -86,6 +88,7 @@ const Home = () => {
                         toValidateTickets={toValidateTickets}
                         tickets={tickets}
                         reliefs={reliefs}
+                        lines={lines}
                         handleTicketDetails={handleTicketDetails}
                         handleValidateTicket={handleValidateTicket}
                         setForValidation={setForValidation}

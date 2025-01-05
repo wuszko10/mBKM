@@ -2,9 +2,8 @@ import UserDAO from '../DAO/user/userDAO';
 import applicationException from '../service/applicationException';
 import TopUpDAO from "../DAO/topUpDAO";
 import {getTopUpUserNames, topUpsMappingIdsToNames} from "../service/topUpManager.service";
-import TransactionDAO from "../DAO/transactionDAO";
 
-function create(context) {
+function create() {
 
 
     async function createNewOrUpdateTopUp(data) {

@@ -3,13 +3,12 @@ import TokenDAO from '../DAO/user/tokenDAO';
 import UserDAO from '../DAO/user/userDAO';
 import applicationException from '../service/applicationException';
 import sha1 from 'sha1';
-import BusStopDAO from "../DAO/BusStopDAO";
 import WalletDAO from "../DAO/user/walletDAO";
 import UserTicketDAO from "../DAO/user/userTicketDAO";
 import TransactionDAO from "../DAO/transactionDAO";
 import TopUpDAO from "../DAO/topUpDAO";
 
-function create(context) {
+function create() {
 
     function hashString(data) {
         return sha1(data);
@@ -48,8 +47,6 @@ function create(context) {
     }
 
     async function createNewOrUpdate(userData) {
-
-        console.log(userData);
 
         if (!userData.id) {
             let wallet;

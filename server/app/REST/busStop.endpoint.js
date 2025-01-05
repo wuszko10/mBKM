@@ -2,7 +2,6 @@ import business from '../business/business.container';
 import applicationException from '../service/applicationException';
 import admin from '../middleware/admin';
 import authToken from '../middleware/authToken';
-import authUserRole from "../middleware/authUserRole";
 
 const BusStopEndpoint = (router) => {
 

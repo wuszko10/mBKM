@@ -4,7 +4,6 @@ import Promise from 'bluebird';
 import applicationException from '../../service/applicationException';
 import mongoConverter from '../../service/mongoConverter';
 import uniqueValidator from 'mongoose-unique-validator';
-import sha1 from "sha1";
 
 
 const userRole = {

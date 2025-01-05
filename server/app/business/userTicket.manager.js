@@ -5,7 +5,7 @@ import TicketPeriodDAO from "../DAO/metadata/ticketPeriodDAO";
 import TransactionDAO from "../DAO/transactionDAO";
 import {addTime} from "../service/userTicket.service";
 
-function create(context) {
+function create() {
 
     async function createNewOrUpdateUserTicket(data) {
         try {
@@ -75,8 +75,6 @@ function create(context) {
         userTicket.statusId = '675c1ca31c33663091557e95';
         userTicket.ticketStartDate = new Date(startTime).toISOString();
         userTicket.ticketEndDate = new Date(endTime).toISOString();
-
-        console.log(userTicket);
 
         return await UserTicketDAO.createNewOrUpdateUserTicket(userTicket);
     }

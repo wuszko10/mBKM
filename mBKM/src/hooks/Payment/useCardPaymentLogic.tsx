@@ -4,6 +4,7 @@ import { payCard,topUpCard } from "../../services/payment.service.tsx";
 import { storage } from "../../../App.tsx";
 import { CardPaymentProps } from "../../components/Payments/CardPayment.tsx";
 import { WalletDAO } from "../../types/interfaces.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useCardPaymentLogic = (props: CardPaymentProps, wallet: WalletDAO | null, setWallet: (wallet: (WalletDAO | null)) => void, token: string | null) => {
 
@@ -13,6 +14,14 @@ export const useCardPaymentLogic = (props: CardPaymentProps, wallet: WalletDAO |
     const [showPopup, setShowPopup] = useState(false);
     const [isProcessing, setIsProcessing] = useState(false);
     const [popupText, setPopupText] = useState("");
+
+    const [cardNumberError, setCardNumberError] = useState(false);
+    const [expiryDateError, setExpiryDateError] = useState(false);
+    const [cvvError, setCvvError] = useState(false);
+
+    const CARD_NUMBER_REGEX = /^(?:\d{4} ?){3}\d{4}$/;
+    const EXPIRY_DATE_REGEX = /^(0[1-9]|1[0-2])\/\d{2}$/;
+    const CVV_REGEX = /^\d{3,4}$/;
 
     const processCardPayment = async (cardNumber: string, expiryDate: string, cvv: string) => {
 
@@ -49,24 +58,76 @@ export const useCardPaymentLogic = (props: CardPaymentProps, wallet: WalletDAO |
         }
     };
 
-    const handleCardPayment = () => {
-        if (props.transactionAmount && cardNumber && expiryDate && cvv) {
-            processCardPayment(cardNumber,expiryDate,cvv).then();
+    const formatCardNumber = (text: string) => {
+        const cleaned = text.replace(/\D+/g, '');
+        return cleaned.replace(/(\d{4})(?=\d)/g, '$1 ').trim();
+    };
+
+    const formatExpiryDate = (text: string) => {
+        const cleaned = text.replace(/\D+/g, '');
+        return cleaned.replace(/(\d{2})(\d{1,2})?/, (match, p1, p2) => (p2 ? `${p1}/${p2}` : p1));
+
+    };
+
+    const handleCardNumberChange = (input: string) => {
+        const formatted = formatCardNumber(input);
+
+        if (CARD_NUMBER_REGEX.test(formatted)) {
+            setCardNumber(formatted);
+            setCardNumberError(false);
         } else {
-            console.log('Proszę wprowadzić poprawne dane karty.');
+            setCardNumber(formatted);
+            setCardNumberError(true);
+        }
+    };
+
+    const handleExpiryDateChange = (input: string) => {
+        const formatted = formatExpiryDate(input);
+
+        if (EXPIRY_DATE_REGEX.test(formatted)) {
+            setExpiryDate(formatted);
+            setExpiryDateError(false);
+        } else {
+            setExpiryDate(formatted);
+            setExpiryDateError(true);
+        }
+    };
+
+
+    const validCVV = (input: string) => {
+        if (CVV_REGEX.test(input)) {
+            setCvv(input);
+            setCvvError(false);
+        } else {
+            setCvv(input);
+            setCvvError(true);
+        }
+    }
+
+    const removeSpaces = (text: string) => text.replace(/\s+/g, '');
+
+    const handleCardPayment = () => {
+        if (props.transactionAmount && (cardNumber && !cardNumberError) && (expiryDate && !expiryDateError) && (cvv && !cvvError)) {
+            const cn = removeSpaces(cardNumber);
+            processCardPayment(cn,expiryDate,cvv).then();
+        } else {
+            ToastAndroid.show('Proszę wprowadzić poprawne dane karty.', ToastAndroid.SHORT);
         }
     };
 
     return {
         cardNumber,
-        setCardNumber,
         expiryDate,
-        setExpiryDate,
         cvv,
-        setCvv,
-        handleCardPayment,
+        cardNumberError,
+        expiryDateError,
+        cvvError,
         showPopup,
         isProcessing,
-        popupText
+        popupText,
+        handleExpiryDateChange,
+        handleCardNumberChange,
+        validCVV,
+        handleCardPayment,
     };
 }

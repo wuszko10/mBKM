@@ -5,6 +5,7 @@ import { colors } from "../../style/styleValues.js";
 import Header from "../../components/Global/Header.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
+import { getBirthDateFromPesel } from "../../utils/getBirthDate.tsx";
 
 const Profile = () => {
 
@@ -25,15 +26,16 @@ const Profile = () => {
             <Text style={[stylesApp.normalH3,{ fontSize: 18 }]}>Dane konta</Text>
 
             <View style={stylesApp.flatlistItem}>
-                <Text style={stylesApp.blackText}>{user?.firstName} {user?.lastName}</Text>
-                <Text style={stylesApp.blackText}>{user?.email}</Text>
+                <Text style={[stylesApp.blackText, stylesApp.boldText]}>{user?.firstName} {user?.lastName}</Text>
+                <Text style={[stylesApp.blackText, stylesApp.boldText]}>{user?.email}</Text>
 
                 {moreInfo && (
                     <View style={{ marginTop: 10 }}>
-                        <Text style={stylesApp.blackText}>PESEL: {user?.pesel ? (user.pesel.slice(0, -5) + '*****') : 'Brak nr PESEL'}</Text>
-                        <Text style={stylesApp.blackText}>Numer telefonu: –––</Text>
-                        <Text style={stylesApp.blackText}>Ulica: –––</Text>
-                        <Text style={stylesApp.blackText}>Poczta: –––</Text>
+                        <Text style={stylesApp.blackText}>Data urodzenia: <Text style={stylesApp.boldText}>{user?.pesel ? getBirthDateFromPesel(user.pesel).toLocaleDateString() : '–––'}</Text></Text>
+                        <Text style={stylesApp.blackText}>PESEL: <Text style={stylesApp.boldText}>{user?.pesel ? (user.pesel.slice(0, -5) + '*****') : 'Brak nr PESEL'}</Text></Text>
+                        <Text style={stylesApp.blackText}>Numer telefonu: <Text style={stylesApp.boldText}>–––</Text></Text>
+                        <Text style={stylesApp.blackText}>Ulica: <Text style={stylesApp.boldText}>–––</Text></Text>
+                        <Text style={stylesApp.blackText}>Poczta: <Text style={stylesApp.boldText}>–––</Text></Text>
                     </View>
                 )}
 

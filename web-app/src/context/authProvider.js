@@ -10,7 +10,7 @@ export const AuthProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [token, setToken] = useState(null);
 
-    const loadToken = () => {
+    const loadToken = useCallback(() => {
         if (!loading) return;
 
         const savedToken = localStorage.getItem('token');
@@ -26,11 +26,11 @@ export const AuthProvider = ({ children }) => {
         }
 
         setLoading(false);
-    };
+    }, [loading]);
 
     useEffect(() => {
         loadToken();
-    }, []);
+    }, [loadToken]);
 
     const logout = useCallback(async () => {
         const response = await userLogout(user.id, token);

@@ -1,11 +1,8 @@
 import applicationException from '../service/applicationException';
-import ReliefDAO from "../DAO/reliefDAO";
 import WalletDAO from "../DAO/user/walletDAO";
 import TransactionDAO from "../DAO/transactionDAO";
 import TopUpDAO from "../DAO/topUpDAO";
-import TicketDAO from "../DAO/ticketDAO";
 import UserTicketDAO from "../DAO/user/userTicketDAO";
-import * as _ from "lodash";
 import mongoConverter from "../service/mongoConverter";
 
 
@@ -39,7 +36,7 @@ const creditCards = [
     }
 ];
 
-function create(context) {
+function create() {
 
     function generateReferenceId() {
         const timestamp = Date.now().toString(36);
@@ -63,20 +60,10 @@ function create(context) {
         );
     }
 
-    async function transactionInvalidError(transaction, userTicketId) {
+    async function transactionInvalidError(transactionId, userTicketId) {
         const ticket = await UserTicketDAO.getUserTicketById(userTicketId);
         await UserTicketDAO.removeTicketById(ticket._id);
-
-        transaction.referenceId = generateReferenceId();
-        transaction.status = 'invalid';
-        await TransactionDAO.createNewOrUpdateTransaction(transaction);
-    }
-
-    async function topUpInvalidError(topUp) {
-
-        topUp.referenceId = generateReferenceId();
-        topUp.status = 'invalid';
-        await TopUpDAO.createNewOrUpdateTopUp(topUp);
+        await TransactionDAO.removeTransactionById(transactionId);
     }
 
     async function walletPayment(amount, transactionId, walletId, userTicketId) {
@@ -93,7 +80,7 @@ function create(context) {
 
         if (wallet.amount < amount) {
 
-            await transactionInvalidError(transaction, userTicketId);
+            await transactionInvalidError(transactionId, userTicketId);
 
             throw applicationException.new(applicationException.FORBIDDEN, 'Insufficient funds');
         }
@@ -123,16 +110,14 @@ function create(context) {
         }
 
         if (!card) {
-            const ticket = await UserTicketDAO.getUserTicketById(userTicketId);
-            await UserTicketDAO.removeTicketById(ticket._id);
-            await TransactionDAO.removeTransactionById(transaction._id);
+            await transactionInvalidError(transactionId, userTicketId);
 
             throw applicationException.new(applicationException.NOT_FOUND, 'Card does not exist');
         }
 
         if (card.status !== "completed") {
 
-            await transactionInvalidError(transaction, userTicketId);
+            await transactionInvalidError(transactionId, userTicketId);
 
             throw applicationException.new(applicationException.VALIDATION_FAILURE, 'Card is not validate');
         }
@@ -154,14 +139,13 @@ function create(context) {
 
         if (!card) {
 
-            await TopUpDAO.removeTopUpById(topUp._id);
-
+            await TopUpDAO.removeTopUpById(topUpId);
             throw applicationException.new(applicationException.NOT_FOUND, 'Card does not exist');
         }
 
         if (card.status !== "completed") {
 
-            await topUpInvalidError(topUp)
+            await TopUpDAO.removeTopUpById(topUpId);
 
             throw applicationException.new(applicationException.VALIDATION_FAILURE, 'Card is not validate');
         }
@@ -186,7 +170,7 @@ function create(context) {
 
         if (!authCode) {
 
-            await transactionInvalidError(transaction, userTicketId);
+            await transactionInvalidError(transactionId, userTicketId);
 
             throw applicationException.new(applicationException.VALIDATION_FAILURE, "Invalid code");
         }
@@ -207,7 +191,7 @@ function create(context) {
 
         if (!authCode) {
 
-            await topUpInvalidError(topUp);
+            await TopUpDAO.removeTopUpById(topUpId);
 
             throw applicationException.new(applicationException.BAD_REQUEST, "Invalid code details provided.");
         }

@@ -5,7 +5,7 @@ import {
   mappingIdsToNames
 } from "../service/ticketManager.service";
 
-function create(context) {
+function create() {
 
   async function createNewOrUpdateTicket(ticketData) {
     try {

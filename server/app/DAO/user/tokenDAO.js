@@ -67,10 +67,6 @@ async function remove(userId, token) {
     throw applicationException.new(applicationException.UNAUTHORIZED, 'Token not found');
 }
 
-async function getByUserId(id) {
-    return TokenModel.countDocuments({userId: id});
-}
-
 async function deleteExpiredTokens() {
     const now = Math.floor(Date.now() / 1000);
 
@@ -99,7 +95,6 @@ export default {
     create: create,
     get: get,
     remove: remove,
-    getByUserId,
     deleteExpiredTokens,
     countTokensByUserId: countByUserId,
 

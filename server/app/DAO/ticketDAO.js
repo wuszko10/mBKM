@@ -67,8 +67,6 @@ async function createNewOrUpdateTicket(ticket) {
             })
         } else {
 
-            console.log(ticket);
-
             const overlappingTickets = await TicketModel.find({
                 $and: [
                     { type: ticket.type },
@@ -80,9 +78,7 @@ async function createNewOrUpdateTicket(ticket) {
             });
 
 
-
             const ticketsArray = Array.isArray(overlappingTickets) ? mongoConverter(overlappingTickets) : [];
-            console.log(ticketsArray);
             if (ticketsArray.length > 0) {
                 const isOverlap = checkForDateOverlap(ticket, ticketsArray);
                 if (isOverlap.length > 0) {
