@@ -8,8 +8,9 @@ import * as _ from "lodash";
 const userAddressSchema = new mongoose.Schema({
     userId: { type: mongoose.Schema.Types.ObjectId, ref: 'user', required: true, unique: true},
     fullAddress: { type: String, required: true, trim: true },
+    town: { type: String, required: false, trim: true },
     postalCode: { type: String, required: true },
-    town: { type: String, required: true, trim: true },
+    postal: {type: String, required: true, trim: true },
 }, {
     collection: 'userAddress'
 });
@@ -40,7 +41,7 @@ async function createNewOrUpdate(address) {
 }
 
 async function getById(id) {
-    const result = await UserAddressModel.findOne({_id: id});
+    const result = await UserAddressModel.findOne({userId: id});
     if (result) {
         return mongoConverter(result);
     }
@@ -53,7 +54,7 @@ async function removeById(id) {
 
 export default {
     createNewOrUpdateAddress: createNewOrUpdate,
-    getAddressById:getById,
+    getAddressByUserId:getById,
     removeAddressById:removeById,
     model: UserAddressModel,
 }

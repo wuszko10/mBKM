@@ -15,21 +15,30 @@ const Register = () => {
         pesel,
         password,
         confirmPassword,
+        fullAddress,
+        town,
+        postalCode,
+        postal,
         showPassword,
         showConfirmPassword,
         peselError,
         emailError,
         confirmPasswordError,
+        postalCodeError,
         setFirstName,
         setLastName,
         setPassword,
+        setFullAddress,
+        setTown,
+        setPostal,
         togglePassword,
         toggleConfirmPassword,
         handleRegister,
         handleLogin,
         validatePesel,
         validateEmail,
-        validateConfirmPassword
+        validateConfirmPassword,
+        validPostalCode,
     } = useRegisterLogic();
 
     return (
@@ -70,6 +79,40 @@ const Register = () => {
                                    placeholderTextColor={colors.darkGray}
                         />
                     </View>
+
+                    <Text style={stylesApp.h3}>Dane adresowe</Text>
+
+                    <TextInput style={stylesApp.input}
+                               placeholder="np. Tarnowska 5/12 lub np. Błonie 33"
+                               value={fullAddress}
+                               onChangeText={setFullAddress}
+                               autoCapitalize="none"
+                               placeholderTextColor={colors.darkGray}
+                    />
+
+                    <TextInput style={stylesApp.input}
+                               placeholder="Tarnów (nieobowiązkowe)"
+                               value={town}
+                               onChangeText={setTown}
+                               autoCapitalize="none"
+                               placeholderTextColor={colors.darkGray}
+                    />
+
+                    <TextInput style={[stylesApp.input, { borderColor: postalCodeError ? 'red' : 'transparent', borderWidth: 1 }]}
+                               placeholder="33-100"
+                               value={postalCode}
+                               onChangeText={validPostalCode}
+                               autoCapitalize="none"
+                               placeholderTextColor={colors.darkGray}
+                    />
+
+                    <TextInput style={stylesApp.input}
+                               placeholder="Tarnów"
+                               value={postal}
+                               onChangeText={setPostal}
+                               autoCapitalize="none"
+                               placeholderTextColor={colors.darkGray}
+                    />
 
 
                     <Text style={stylesApp.h3}>Dane logowania</Text>

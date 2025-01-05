@@ -15,7 +15,7 @@ export const useLoginLogic = () => {
     const [showPassword,setShowPassword] = useState(true);
 
 
-    const { setToken, setUser, setUserId, setWallet } = useAuth();
+    const { setToken, setUser, setUserId, setWallet, setAddress } = useAuth();
 
     function handleChangeRoute() {
         navigation.dispatch(CommonActions.reset({
@@ -40,10 +40,12 @@ export const useLoginLogic = () => {
             setUser(response.user);
             setUserId(String(response.user.id));
             setWallet(response.wallet);
+            setAddress(response.address);
 
             storage.set('token', JSON.stringify(response.token));
             storage.set('user', JSON.stringify(response.user));
             storage.set('wallet', JSON.stringify(response.wallet));
+            storage.set('address', JSON.stringify(response.address));
 
             handleChangeRoute();
         } catch (error) {

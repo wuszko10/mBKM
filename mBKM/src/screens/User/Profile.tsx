@@ -6,6 +6,7 @@ import Header from "../../components/Global/Header.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
 import { getBirthDateFromPesel } from "../../utils/getBirthDate.tsx";
+import UpdateAddressPopupForm from "../../components/User/UpdateAddressPopupForm.tsx";
 
 const Profile = () => {
 
@@ -13,7 +14,7 @@ const Profile = () => {
     const [changeData,setChangeData] = useState(false);
     const [changePassword,setChangePassword] = useState(false);
 
-    const { user , logout } = useAuth();
+    const { user , address, logout } = useAuth();
 
     async function handleLogout() {
         logout();
@@ -33,9 +34,8 @@ const Profile = () => {
                     <View style={{ marginTop: 10 }}>
                         <Text style={stylesApp.blackText}>Data urodzenia: <Text style={stylesApp.boldText}>{user?.pesel ? getBirthDateFromPesel(user.pesel).toLocaleDateString() : '–––'}</Text></Text>
                         <Text style={stylesApp.blackText}>PESEL: <Text style={stylesApp.boldText}>{user?.pesel ? (user.pesel.slice(0, -5) + '*****') : 'Brak nr PESEL'}</Text></Text>
-                        <Text style={stylesApp.blackText}>Numer telefonu: <Text style={stylesApp.boldText}>–––</Text></Text>
-                        <Text style={stylesApp.blackText}>Ulica: <Text style={stylesApp.boldText}>–––</Text></Text>
-                        <Text style={stylesApp.blackText}>Poczta: <Text style={stylesApp.boldText}>–––</Text></Text>
+                        <Text style={stylesApp.blackText}>Ulica: <Text style={stylesApp.boldText}>{ address ? address.fullAddress + " " + address.town : '–––'}</Text></Text>
+                        <Text style={stylesApp.blackText}>Poczta: <Text style={stylesApp.boldText}>{ address ? address.postalCode + " " + address.postal : '–––' }</Text></Text>
                     </View>
                 )}
 
@@ -65,6 +65,14 @@ const Profile = () => {
             <TouchableOpacity onPress={handleLogout} style={stylesApp.mainButton}>
                 <Text style={stylesApp.whiteBoldCenterText}>Wyloguj się</Text>
             </TouchableOpacity>
+
+            { changeData && (
+                <UpdateAddressPopupForm
+                    showPopup={changeData}
+                    setShowPopup={setChangeData}
+                />
+            )}
+
         </SafeAreaView>
     );
 };

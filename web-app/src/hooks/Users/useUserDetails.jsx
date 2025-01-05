@@ -12,6 +12,7 @@ export const useUserDetails = (id) => {
     const [wallet, setWallet] = useState();
     const [userTickets, setUserTickets] = useState();
     const [transactions, setTransactions] = useState();
+    const [address, setAddress] = useState();
     const [topUps, setTopUps] = useState();
     const [sessions, setSessions] = useState();
 
@@ -22,6 +23,7 @@ export const useUserDetails = (id) => {
                 setWallet(data.wallet);
                 setUserTickets(data.userTickets);
                 setTransactions(data.transactions);
+                setAddress(data.address);
                 setTopUps(data.topUps);
                 setSessions(data.sessions);
             })
@@ -52,6 +54,7 @@ export const useUserDetails = (id) => {
         wallet,
         userTickets,
         transactions,
+        address,
         topUps,
         sessions,
         changeStatus

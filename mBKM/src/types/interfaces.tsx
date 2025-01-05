@@ -15,6 +15,15 @@ export interface User {
     password: string;
 }
 
+export interface UserAddress {
+    id: string;
+    userId: string;
+    fullAddress: string;
+    town: string;
+    postalCode: string;
+    postal: string;
+}
+
 export interface WalletDAO {
     id: string;
     userId: string;

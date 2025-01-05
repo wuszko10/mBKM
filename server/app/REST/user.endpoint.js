@@ -33,8 +33,18 @@ const userEndpoint = (router) => {
     });
 
     router.post('/api/user/create', async (request, response) => {
+        const {userData, addressData} = request.body;
         try {
-            const result = await business.getUserManager().createNewOrUpdate(request.body);
+            const result = await business.getUserManager().createNewOrUpdate(userData, addressData);
+            response.status(200).send(result);
+        } catch (error) {
+            applicationException.errorHandler(error, response);
+        }
+    });
+
+    router.post('/api/user/address/update', async (request, response) => {
+        try {
+            const result = await business.getUserManager().updateAddress(request.body);
             response.status(200).send(result);
         } catch (error) {
             applicationException.errorHandler(error, response);

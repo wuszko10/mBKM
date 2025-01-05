@@ -4,6 +4,7 @@ import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "../../types/navigation.tsx";
 import checkInternetConnection from "../../utils/network.tsx";
 import { ToastAndroid } from "react-native";
+import {EMAIL_REGEX, formatPostalCode, PESEL_REGEX, POSTAL_CODE_REGEX} from "../../utils/validForms.tsx";
 
 export const useRegisterLogic = () => {
     const navigation = useNavigation<NavigationProp>();
@@ -13,6 +14,11 @@ export const useRegisterLogic = () => {
     const [email,setEmail] = useState("");
     const [pesel,setPesel] = useState("");
 
+    const [fullAddress, setFullAddress] = useState('');
+    const [town, setTown] = useState('');
+    const [postalCode, setPostalCode] = useState('');
+    const [postal, setPostal] = useState('');
+
     const [password,setPassword] = useState("");
     const [showPassword,setShowPassword] = useState(true);
     const [confirmPassword,setConfirmPassword] = useState("");
@@ -21,9 +27,7 @@ export const useRegisterLogic = () => {
     const [peselError,setPeselError] = useState(false);
     const [emailError,setEmailError] = useState(false);
     const [confirmPasswordError,setConfirmPasswordError] = useState(false);
-
-    const PESEL_REGEX = /^[0-9]{2}((0[1-9]|1[0-2])|(2[1-9]|3[0-2]))(0[1-9]|1[0-9]|2[0-9]|3[01])[0-9]{5}$/gm;
-    const EMAIL_REGEX = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    const [postalCodeError,setPostalCodeError] = useState(false);
 
     function togglePassword() {
         setShowPassword(!showPassword);
@@ -39,7 +43,7 @@ export const useRegisterLogic = () => {
 
     async function handleRegister() {
 
-        if (!firstName || !lastName || (!pesel && !peselError) || (!email && !emailError) || !password || (!confirmPassword && !confirmPasswordError)) {
+        if (!firstName || !lastName || (!pesel && !peselError) || (!email && !emailError) || !password || (!confirmPassword && !confirmPasswordError) || !fullAddress || !postalCode || !postal) {
             ToastAndroid.show('Uzupełnij wszystkie pola', ToastAndroid.SHORT);
             return;
         }
@@ -48,7 +52,7 @@ export const useRegisterLogic = () => {
 
         try {
 
-            const response = await userRegister(firstName,lastName,pesel,email,password);
+            const response = await userRegister(firstName,lastName,pesel,email,password,fullAddress,town,postalCode,postal);
 
             if (response) {
                 handleChangeRoute();
@@ -110,6 +114,18 @@ export const useRegisterLogic = () => {
         }
     }
 
+    const validPostalCode = (input: string) => {
+        const formatted = formatPostalCode(input);
+
+        if (POSTAL_CODE_REGEX.test(formatted)) {
+            setPostalCode(formatted);
+            setPostalCodeError(false);
+        } else {
+            setPostalCode(formatted);
+            setPostalCodeError(true);
+        }
+    }
+
     return {
         firstName,
         lastName,
@@ -117,22 +133,22 @@ export const useRegisterLogic = () => {
         pesel,
         password,
         confirmPassword,
+        fullAddress,
+        town,
+        postalCode,
+        postal,
         showPassword,
         showConfirmPassword,
         peselError,
         emailError,
         confirmPasswordError,
+        postalCodeError,
         setFirstName,
         setLastName,
-        setEmail,
-        setPesel,
         setPassword,
-        setConfirmPassword,
-        setShowPassword,
-        setShowConfirmPassword,
-        setPeselError,
-        setEmailError,
-        setConfirmPasswordError,
+        setFullAddress,
+        setTown,
+        setPostal,
         togglePassword,
         toggleConfirmPassword,
         handleRegister,
@@ -140,5 +156,6 @@ export const useRegisterLogic = () => {
         validatePesel,
         validateEmail,
         validateConfirmPassword,
+        validPostalCode,
     };
 }

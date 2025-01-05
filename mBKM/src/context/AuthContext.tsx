@@ -1,7 +1,7 @@
 import React,{ createContext,ReactNode,useContext,useEffect,useState } from "react";
 import { storage } from "../../App.tsx";
 import { decodeToken } from "react-jwt";
-import { Token,User,WalletDAO } from "../types/interfaces.tsx";
+import {Token, User, UserAddress, WalletDAO} from "../types/interfaces.tsx";
 import axios from "axios";
 import { SERVER_URL } from "../../variables.tsx";
 import { userLogout } from "../services/user.service.tsx";
@@ -16,6 +16,8 @@ interface AuthContextType {
     setUser: (user: User | null) => void;
     wallet: WalletDAO | null;
     setWallet: (wallet: WalletDAO | null) => void;
+    address: UserAddress | null;
+    setAddress: (address: UserAddress | null) => void;
     logout: () => void;
 }
 
@@ -25,22 +27,26 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [token, setToken] = useState<string | null>(null);
     const [user, setUser] = useState<User | null>(null);
     const [wallet, setWallet] = useState<WalletDAO | null>(null);
+    const [address, setAddress] = useState<UserAddress | null>(null);
     const [userId, setUserId] = useState<string>('');
 
     const loadToken = () => {
         const savedToken = storage.getString('token');
         const savedUser = storage.getString('user');
         const savedWallet = storage.getString('wallet');
+        const savedAddress = storage.getString('address');
 
-        if (savedToken && savedUser && savedWallet) {
+        if (savedToken && savedUser && savedWallet && savedAddress) {
 
             const parseToken: Token = JSON.parse(savedToken);
             const parseUser: User = JSON.parse(savedUser);
             const parseWallet: WalletDAO = JSON.parse(savedWallet);
+            const parseAddress: UserAddress = JSON.parse(savedAddress);
 
             setToken(parseToken.token);
             setUser(parseUser);
             setWallet(parseWallet);
+            setAddress(parseAddress);
             setUserId(parseUser.id);
         }
     };
@@ -82,7 +88,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
     }, [token]);
 
     return (
-        <AuthContext.Provider value={{ token, setToken, userId, setUserId, user, setUser, wallet, setWallet, logout }}>
+        <AuthContext.Provider value={{ token, setToken, userId, setUserId, user, setUser, wallet, setWallet, address, setAddress, logout }}>
             {children}
         </AuthContext.Provider>
     );
