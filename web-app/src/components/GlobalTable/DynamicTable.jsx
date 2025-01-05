@@ -28,6 +28,7 @@ const DynamicTable = ({
     return (
         <div className="content-box-table">
             <input
+                name="search-input"
                 type="text"
                 placeholder="Wyszukaj w tabeli"
                 value={filter}
@@ -84,7 +85,7 @@ const DynamicTable = ({
                 <button onClick={() => onPageChange(pageIndex + 1)} disabled={pageIndex + 1 >= totalPages}>
                     Następna
                 </button>
-                <select value={pageSize} onChange={(e) => onPageSizeChange(Number(e.target.value))}>
+                <select name="select-size" value={pageSize} onChange={(e) => onPageSizeChange(Number(e.target.value))}>
                     <option value={5}>5</option>
                     <option value={10}>10</option>
                     <option value={20}>20</option>

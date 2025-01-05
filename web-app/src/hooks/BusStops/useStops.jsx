@@ -86,13 +86,16 @@ export const useStops = () => {
 
     async function handleToggle(id, newState) {
 
-        let busStop = stops.find(busStop => busStop._id === id);
+        const isConfirmed = window.confirm("Czy chcesz dezaktywować przystanek?");
 
-        busStop.isActive = Boolean(newState);
+        if (isConfirmed) {
+            let busStop = stops.find(busStop => busStop._id === id);
+            busStop.isActive = Boolean(newState);
 
-        if (busStop){
-            await editBusStop(id, busStop, token)
-            await refreshStops();
+            if (busStop) {
+                await editBusStop(id, busStop, token)
+                await refreshStops();
+            }
         }
 
     }

@@ -118,3 +118,13 @@ table tr:last-child td:first-child {
 table tr:last-child td:last-child {
     border-bottom-right-radius: $borderRadius;
 }*/
+
+@media (max-width: $laptop) {
+  table {
+    min-width: 800px;
+  }
+
+  .pagination {
+    flex-wrap: wrap;
+  }
+}

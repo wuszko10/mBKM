@@ -39,6 +39,7 @@ div {
   position: sticky;
   top: 0;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  z-index: 1;
 }
 
 .content {
@@ -69,11 +70,16 @@ div {
 @media (max-width: $laptop) {
   .App {
     flex-direction: column;
+    gap: 0;
   }
 
   .menu {
     flex: 0;
     height: auto;
     width: 100%;
+  }
+
+  .content {
+    overflow-y: unset;
   }
 }

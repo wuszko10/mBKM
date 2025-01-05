@@ -52,33 +52,38 @@ const DataChart = ({transactions, days, title}) => {
 
     return (
         <div className={"chart-box"}>
-            <h3>Wykres {title} z ostatnich {days} dni</h3>
-            <Line
-                data={chartData}
-                options={{
-                    responsive: true,
-                    plugins: {
-                        legend: { display: true },
-                    },
-                    scales: {
-                        x: {
-                            title: { display: true, text: `Data ${title}` },
-                            ticks: {
-                                autoSkip: true,
-                                maxTicksLimit: Number(days*0.2).toFixed(0),
-                            }
+            <h3>Wykres {title}</h3>
+            <div className={'chart'}>
+                <Line
+                    data={chartData}
+                    options={{
+                        responsive: true,
+                        maintainAspectRatio: false,
+                        plugins: {
+                            legend: { display: false },
                         },
-                        y: {
-                            title: { display: true, text: `Liczba ${title}` },
-                            min: 0,
-                            max: yMax,
-                            ticks: {
-                                stepSize: 1,
+                        scales: {
+                            x: {
+                                title: {
+                                    display: false,
+                                },
+                                ticks: {
+                                    autoSkip: true,
+                                    maxTicksLimit: window.innerWidth <= 768 ? 3 : Number(days*0.2).toFixed(0),
+                                },
+                            },
+                            y: {
+                                title: { display: true, text: `Liczba ${title}` },
+                                min: 0,
+                                max: yMax,
+                                ticks: {
+                                    stepSize: 1,
+                                },
                             },
                         },
-                    },
-                }}
-            />
+                    }}
+                />
+            </div>
         </div>
     )
 }

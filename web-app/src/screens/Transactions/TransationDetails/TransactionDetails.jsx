@@ -26,7 +26,9 @@ const TransactionDetails = () => {
     return (
         <div className="main-box">
             <div className="content-box">
-                <h2>Szczegóły transakcji</h2>
+                <div className="header-with-button">
+                    <h2>Szczegóły transakcji</h2>
+                </div>
                 <div className={"transaction-box"}>
                     <div className={"details-box"}>
                         <h3>Transakcja nr {transaction?.number}</h3>

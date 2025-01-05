@@ -14,11 +14,6 @@ function create(context) {
             const usersTotalAmount = await WalletDAO.walletTotalAmount();
             const activeUsers = await UserDAO.countActiveUsers();
 
-            console.log(transactions);
-            console.log(userTickets);
-            console.log(usersTotalAmount);
-            console.log(activeUsers);
-
             return {
                 transactions: transactions,
                 userTickets: userTickets,

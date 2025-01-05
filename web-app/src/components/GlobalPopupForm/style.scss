@@ -67,7 +67,7 @@
 }
 
 .popup-overlay {
-  background-color: rgba(0, 0, 0, 0.8);
+  background-color: rgba(0, 0, 0, 0.5);
   position: fixed;
   top: 0;
   left: 0;
@@ -122,5 +122,18 @@
     font-size: 20px;
     text-align: center;
     width: auto;
+  }
+
+  .popup-container{
+    padding: 20px;
+
+    margin-top: -15px;
+  }
+
+  .close-icon {
+    margin-top: 10px;
+    margin-right: 10px;
+    font-size: 30px;
+    color: $primary-color;
   }
 }

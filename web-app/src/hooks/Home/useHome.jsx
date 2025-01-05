@@ -9,10 +9,11 @@ export const useHome = () => {
 
     const [loading, setLoading] = useState(true);
     const [days, setDays] = useState(30);
-    const [transactions, setTransactions] = useState();
-    const [userTickets, setUserTickets] = useState();
-    const [usersTotalAmount, setUsersTotalAmount] = useState();
-    const [activeUsers, setActiveUsers] = useState();
+    const [transactions, setTransactions] = useState([]);
+    const [userTickets, setUserTickets] = useState([]);
+    const [usersTotalAmount, setUsersTotalAmount] = useState(0);
+    const [activeUsers, setActiveUsers] = useState(0);
+    const [totalAmount, setTotalAmount] = useState(0);
 
 
     const refreshData = useCallback( () => {
@@ -22,6 +23,7 @@ export const useHome = () => {
                 setUserTickets(data.userTickets);
                 setUsersTotalAmount(data.usersTotalAmount);
                 setActiveUsers(data.activeUsers);
+                setTotalAmount(data.transactions.reduce((sum, transaction) => sum + transaction.finalPrice, 0));
             })
             .catch(() => {
                 toast.warn('Błąd odświeżania danych', {
@@ -45,6 +47,7 @@ export const useHome = () => {
         userTickets,
         usersTotalAmount,
         activeUsers,
+        totalAmount,
         setDays,
     }
 

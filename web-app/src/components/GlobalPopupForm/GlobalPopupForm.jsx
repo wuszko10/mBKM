@@ -34,7 +34,7 @@ const GlobalPopupForm = ({
                                 switch (field.type) {
                                     case "select":
                                         return (
-                                            <label key={field.name} htmlFor={field.name}>
+                                            <label key={field.name} htmlFor={field.name} >
                                                 {field.label}
                                                 <select
                                                     id={field.name}
@@ -72,7 +72,7 @@ const GlobalPopupForm = ({
                                                     }
                                                     disabled={field.disabled}
                                                 />
-                                                <label>
+                                                <label key={field.name} htmlFor={field.name} >
                                                     {field.label}
                                                 </label>
                                             </div>

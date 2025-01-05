@@ -1,13 +1,49 @@
 @import '../../styles/variables';
 
 .chart-box {
+    flex: 1;
+    position: relative;
     flex-direction: column;
     width: auto;
+    min-width: 70%;
+    height: 450px;
     background-color: $light-blue;
-    padding: $appPadding;
+    align-items: stretch;
+    justify-content: space-between;
+    padding: 30px;
     border-radius: $borderRadius;
+    box-sizing: border-box;
+}
+
+.chart-box canvas {
+    margin: 0;
+}
+
+.chart{
+    flex: 1;
+    margin: 10px 0 0;
+    box-sizing: border-box;
 }
 
 .chart-box h3 {
     font-size: $largeTextSize;
+    text-align: center;
 }
+
+.chart-box p {
+    font-size: $smallTextSize;
+    text-align: center;
+}
+//
+//@media (max-width: 1400px) {
+//    .chart-box {
+//        height: 500px;
+//    }
+//}
+//
+//@media (max-width: $mobile) {
+//    .chart-box {
+//        flex: 0 0;
+//        height: 550px;
+//    }
+//}

@@ -115,7 +115,7 @@ async function getLastTransaction(days) {
     try {
         const orders = await TransactionModel.find({
             paymentDate: { $gte: startDate},
-        });
+        }).sort({ _id: -1 });
 
         if (orders) {
             return mongoConverter(orders);

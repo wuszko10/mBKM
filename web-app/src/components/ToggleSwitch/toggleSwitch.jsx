@@ -8,6 +8,7 @@ const ToggleSwitch = ({ isActive, onToggle, argument }) => {
             onToggle(argument, !isActive)
         }} className="switch">
             <input
+                name="toggle"
                 type="checkbox"
                 checked={isActive}
                 readOnly

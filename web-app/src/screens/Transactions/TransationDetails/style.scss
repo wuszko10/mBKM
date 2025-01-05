@@ -79,6 +79,9 @@ a:hover {
 
   .details-box {
     margin: 0;
+    width: 100%;
+    padding-left: 10px;
+    justify-content: flex-start;
   }
 
   .ticket-box{
@@ -87,7 +90,10 @@ a:hover {
     padding: 30px;
     border-radius: $borderRadius;
     gap: 5px;
-    max-width: auto;
+  }
+
+  .transaction-box{
+    margin: 20px 0 0;
   }
 
   .qr-code {

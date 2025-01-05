@@ -171,7 +171,7 @@ async function getLastUserTickets(days) {
     try {
         const orders = await UserTicketModel.find({
             purchaseDate: { $gte: startDate},
-        });
+        }).sort({ _id: -1 });
 
         if (orders) {
             return mongoConverter(orders);

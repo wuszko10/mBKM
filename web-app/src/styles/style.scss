@@ -71,6 +71,11 @@ a {
     justify-content: space-between;
 }
 
+.header-with-button div {
+    align-items: center;
+    gap: 10px;
+}
+
 .global-button {
     display: flex;
     flex-direction: row;
@@ -110,6 +115,7 @@ a {
 .form-checkbox-container {
     flex-direction: row;
     justify-content: flex-start;
+    align-items: center;
     width: 420px;
 }
 
@@ -186,9 +192,15 @@ select:disabled {
 
 
 @media (max-width: $laptop) {
+
+    .main-box {
+        padding: 0 0 $appPadding;
+    }
+
     .header-with-button {
         flex-direction: column;
-        gap: 25px
+        gap: 25px;
+        margin-top: $appPadding;
     }
 
     .header-with-button div {
@@ -204,13 +216,19 @@ select:disabled {
         padding: 0;
     }
 
-    .form-global input {
-        width: auto;
+    .form-global input, .form-global select {
+        width: 100%;
         box-sizing: border-box;
     }
 
-    .form-global select {
+
+    .form-global label, .popup-label {
+        text-align: left;
+        padding-bottom: 5px;
+        width: 100%;
+    }
+
+    .form-checkbox-container{
         width: auto;
-        box-sizing: border-box;
     }
 }

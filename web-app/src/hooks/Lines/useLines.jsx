@@ -1,8 +1,7 @@
 import React, {useEffect, useCallback} from 'react';
 import {toast} from "react-toastify";
-import {deleteLine, fetchLines} from "../../services/Lines/line.service";
+import {deleteLine, editLine, fetchLines} from "../../services/Lines/line.service";
 import useReusableState from "../useReusableState";
-import {editBusStop} from "../../services/BusStops/stop.service";
 import {getLinesColumns} from "../../utils/TableColumns";
 
 export const useLines = () => {
@@ -88,13 +87,16 @@ export const useLines = () => {
 
     async function handleToggle(id, newState) {
 
-        let data = lines.find(l => l._id === id);
+        const isConfirmed = window.confirm("Czy chcesz dezaktywować linię?");
 
-        data.isActive = Boolean(newState);
+        if (isConfirmed) {
+            let data = lines.find(l => l._id === id);
+            data.isActive = Boolean(newState);
 
-        if (data){
-            await editBusStop(id, data, token)
-            await refreshLines();
+            if (data) {
+                await editLine(id, data, token)
+                await refreshLines();
+            }
         }
 
     }

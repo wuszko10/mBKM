@@ -268,6 +268,9 @@ export const getTransactionColumns = (navigate) => [
     {
         accessorKey: 'number',
         header: 'Numer transakcji',
+        cell: ({row} ) => {
+            return <button onClick={() => navigate(`/transaction/${row.original._id}`)}>{row.original.number}</button>
+        }
     },
     {
         accessorKey: 'userEmail',

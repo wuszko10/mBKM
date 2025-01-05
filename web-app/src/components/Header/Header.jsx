@@ -127,7 +127,7 @@ const Header = () => {
                 onRequestClose={close}
                 contentLabel={"menu"}
                 className="menu-modal-container"
-                overlayClassName="popup-overlay"
+                overlayClassName="menu-modal-popup-overlay"
             >
                 <div onClick={close} className={"menu-modal-box"}>
                     {renderMenuItems()}
