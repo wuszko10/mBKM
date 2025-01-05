@@ -1,6 +1,5 @@
 import authToken from '../middleware/authToken';
 import business from '../business/business.container';
-import authUserRole from "../middleware/authUserRole";
 import admin from "../middleware/admin";
 import applicationException from "../service/applicationException";
 const TicketEndpoint = (router) => {
