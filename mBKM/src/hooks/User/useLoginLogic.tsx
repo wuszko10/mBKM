@@ -63,6 +63,10 @@ export const useLoginLogic = () => {
         navigation.navigate('Register');
     }
 
+    function handleReset() {
+        navigation.navigate('ResetPassword');
+    }
+
     return {
         username,
         setUsername,
@@ -71,7 +75,8 @@ export const useLoginLogic = () => {
         setPassword,
         togglePassword,
         handleLogin,
-        handleRegister
+        handleRegister,
+        handleReset
     };
 
 }

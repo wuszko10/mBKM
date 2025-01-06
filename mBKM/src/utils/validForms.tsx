@@ -8,7 +8,7 @@ export const POSTAL_CODE_REGEX = /^\d{2}-\d{3}$/;
 
 export const formatPostalCode = (text: string) => {
     const cleaned = text.replace(/\D+/g, '');
-    return cleaned.replace(/(\d{2})(\d{3})/, '$1-$2').trim();
+    return cleaned.replace(/(\d{2})(\d{3})/, '$1-$2');
 };
 
 export const formatCardNumber = (text: string) => {

@@ -2,8 +2,6 @@ import React,{ createContext,ReactNode,useContext,useEffect,useState } from "rea
 import { storage } from "../../App.tsx";
 import { decodeToken } from "react-jwt";
 import {Token, User, UserAddress, WalletDAO} from "../types/interfaces.tsx";
-import axios from "axios";
-import { SERVER_URL } from "../../variables.tsx";
 import { userLogout } from "../services/user.service.tsx";
 import { ToastAndroid } from "react-native";
 

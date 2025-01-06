@@ -2,6 +2,7 @@ import { Modal,Text,TouchableOpacity,View } from "react-native";
 import React from "react";
 import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
+import style from "./style.tsx";
 
 type PopupProps = {
     showPopup: boolean;
@@ -27,16 +28,16 @@ const Popup: React.FC<PopupProps> = (
             animationType="fade"
             visible={showPopup}
         >
-            <View style={stylesApp.popupContainer}>
-                <Text style={stylesApp.popupText}>{message}</Text>
-                <View style={stylesApp.rowContainer}>
-                    <TouchableOpacity onPress={cancelAction} style={stylesApp.popupBtn}>
-                        <Text style={[stylesApp.popupText,{ color: colors.appFirstColor }]}>{cancelText}</Text>
+            <View style={stylesApp.fullBlueContainer}>
+                <Text style={style.popupText}>{message}</Text>
+                <View style={stylesApp.separator}/>
+                <View style={style.buttonsContainer}>
+                    <TouchableOpacity onPress={confirmationAction} style={style.popupBtn}>
+                        <Text style={[stylesApp.whiteButtonText,{ color: colors.appFirstColor }]}>{confirmationText}</Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={confirmationAction} style={stylesApp.popupBtn}>
-                        <Text style={[stylesApp.popupText,{ color: colors.appFirstColor }]}>{confirmationText}</Text>
+                    <TouchableOpacity onPress={cancelAction} style={style.secPopupBtn}>
+                        <Text style={stylesApp.whiteButtonText}>{cancelText}</Text>
                     </TouchableOpacity>
-
                 </View>
 
             </View>

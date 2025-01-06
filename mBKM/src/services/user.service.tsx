@@ -16,6 +16,34 @@ export const userLogin = async (username: string, password: string) => {
     return response.data;
 };
 
+export const UserResetPasswordCheck = async (email: string,checkPesel: string) => {
+
+    const response = await axios.post(SERVER_URL+'user/reset/check', {
+        email: email,
+        checkPesel: checkPesel
+    });
+    return response.data;
+};
+
+export const UserResetPassword = async (email: string, oldPassword: string, newPassword: string) => {
+
+    const response = await axios.post(SERVER_URL+'user/reset', {
+        email: email,
+        oldPassword: oldPassword,
+        newPassword: newPassword,
+    });
+    return response.data;
+};
+
+export const UserRestorePassword = async (email: string, newPassword: string) => {
+
+    const response = await axios.post(SERVER_URL+'user/restore', {
+        email: email,
+        newPassword: newPassword,
+    });
+    return response.data;
+};
+
 export const updateAddress = async (id: string, userId: string, fullAddress: string, town: string, postalCode: string, postal: string)=> {
 
     const response = await axios.post(SERVER_URL+'user/address/update', {

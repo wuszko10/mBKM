@@ -2,6 +2,7 @@ import { StyleSheet } from "react-native";
 import { colors,dimensions } from "../../style/styleValues.js";
 
 export const style = StyleSheet.create({
+
     headerItems: {
         flexDirection: 'row',
         alignItems: 'center',

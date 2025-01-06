@@ -1,11 +1,12 @@
 import React from "react";
 import { View,Text,TouchableOpacity,ActivityIndicator } from "react-native";
-import Popup from "../Global/Popup.tsx";
+import Popup from "../Popups/Popup.tsx";
 import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
-import ProcessingPopup from "../Global/ProcessingPopup.tsx";
+import ProcessingPopup from "../Popups/ProcessingPopup.tsx";
 import { useWalletPaymentLogic } from "../../hooks/Payment/useWalletPaymentLogic.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
+import style from "./style.tsx";
 
 export interface WalletPaymentProps {
     transactionId: string;
@@ -42,11 +43,11 @@ const WalletPayment: React.FC<WalletPaymentProps> = (props) => {
     }
 
     return (
-        <View style={stylesApp.paymentBox}>
+        <View style={style.paymentBox}>
             <Text style={stylesApp.whiteNormalCenterText}>Stan konta: <Text style={stylesApp.boldText}>{wallet?.amount.toFixed(2)} złotych</Text></Text>
             <View style={stylesApp.separator}/>
             <TouchableOpacity onPress={handleWalletPayment} style={stylesApp.whiteButton}>
-                <Text style={[stylesApp.popupText,{ color: colors.appFirstColor }]}>Zapłać z portfela</Text>
+                <Text style={[stylesApp.whiteButtonText,{ color: colors.appFirstColor }]}>Zapłać z portfela</Text>
             </TouchableOpacity>
 
             {showPopup && (

@@ -87,7 +87,6 @@ export const useCardPaymentLogic = (props: CardPaymentProps, wallet: WalletDAO |
         }
     };
 
-
     const validCVV = (input: string) => {
         if (CVV_REGEX.test(input)) {
             setCvv(input);
@@ -97,8 +96,6 @@ export const useCardPaymentLogic = (props: CardPaymentProps, wallet: WalletDAO |
             setCvvError(true);
         }
     }
-
-
 
     const removeSpaces = (text: string) => text.replace(/\s+/g, '');
 

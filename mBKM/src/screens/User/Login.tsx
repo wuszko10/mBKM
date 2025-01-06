@@ -1,10 +1,10 @@
 import React from "react";
 import { Text,TextInput,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
+import style from './style.tsx'
 import Icon from "react-native-vector-icons/FontAwesome";
 import tw from "twrnc";
 import { colors } from "../../style/styleValues.js";
-import { useAuth } from "../../context/AuthContext.tsx";
 import { useLoginLogic } from "../../hooks/User/useLoginLogic.tsx";
 
 const Login = () => {
@@ -19,17 +19,18 @@ const Login = () => {
         setPassword,
         togglePassword,
         handleLogin,
-        handleRegister
+        handleRegister,
+        handleReset
     } = useLoginLogic();
 
 
     return (
-        <View style={stylesApp.loginRegisterContainer}>
-            <Text style={stylesApp.h2}>Zaloguj się</Text>
+        <View style={style.loginRegisterContainer}>
+            <Text style={style.h2}>Zaloguj się</Text>
 
             <View style={stylesApp.separator}/>
 
-            <View style={stylesApp.gapContainer}>
+            <View style={style.gapContainer}>
                 <TextInput style={stylesApp.input}
                            placeholder="Login"
                            value={username}
@@ -58,17 +59,22 @@ const Login = () => {
                     </TouchableOpacity>
                 </View>
 
+                <TouchableOpacity onPress={handleReset} >
+                    <Text style={style.grayText}>Resetuj hasło</Text>
+                </TouchableOpacity>
+
+
             </View>
 
-            <View style={stylesApp.gapContainer}>
+            <View style={style.gapContainer}>
                 <TouchableOpacity onPress={handleLogin} style={stylesApp.mainButton}>
                     <Text style={stylesApp.whiteBoldCenterText}>Zaloguj się</Text>
                 </TouchableOpacity>
 
                 <TouchableOpacity onPress={handleRegister}>
-                    <Text style={stylesApp.lr_bottomText}>
+                    <Text style={style.lr_bottomText}>
                         Nie masz konta w serwisie
-                        <Text style={stylesApp.highlightText}> mBKM</Text>
+                        <Text style={style.highlightText}> mBKM</Text>
                         ?
                         <Text style={stylesApp.boldText}> Załóż konto</Text>
                     </Text>

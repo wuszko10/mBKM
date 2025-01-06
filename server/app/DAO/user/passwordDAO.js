@@ -32,9 +32,27 @@ async function authorize(userId, password) {
   throw applicationException.new(applicationException.UNAUTHORIZED, 'User and password does not match');
 }
 
+async function resetPassword(userId, password){
+  const result = await PasswordModel.findOne({ userId: userId, password: password });
+  if (result && mongoConverter(result)) {
+    return mongoConverter(result);
+  }
+  throw applicationException.new(applicationException.UNAUTHORIZED, 'User and password does not match');
+}
+
+async function restorePassword(userId){
+  const result = await PasswordModel.findOne({ userId: userId});
+  if (result && mongoConverter(result)) {
+    return mongoConverter(result);
+  }
+  throw applicationException.new(applicationException.UNAUTHORIZED, 'User and password does not match');
+}
+
 export default {
   createOrUpdate: createOrUpdate,
   authorize: authorize,
+  resetPassword,
+  restorePassword,
 
   model: PasswordModel
 };

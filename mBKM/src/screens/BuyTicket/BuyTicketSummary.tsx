@@ -1,18 +1,18 @@
 import React from "react";
 import { ActivityIndicator,SafeAreaView,Text,TouchableOpacity,View } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { Relief,Ticket } from "../../../types/interfaces.tsx";
-import stylesApp from "../../../style/stylesApp.js";
-import Header from "../../../components/Global/Header.tsx";
-import { colors } from "../../../style/styleValues.js";
-import PaymentSelector from "../../../components/Payments/PaymentSelector.tsx";
-import { useBuyTicketSummaryLogic } from "../../../hooks/BuyTicket/useBuyTicketSummaryLogic.tsx";
-import { style as localStyle } from "./style.tsx";
-import { useAuth } from "../../../context/AuthContext.tsx";
+import { Line,Relief,Ticket } from "../../types/interfaces.tsx";
+import stylesApp from "../../style/stylesApp.js";
+import Header from "../../components/Global/Header/Header.tsx";
+import { colors } from "../../style/styleValues.js";
+import PaymentSelector from "../../components/Payments/PaymentSelector.tsx";
+import { useBuyTicketSummaryLogic } from "../../hooks/BuyTicket/useBuyTicketSummaryLogic.tsx";
+import style from "./style.tsx";
+import { useAuth } from "../../context/AuthContext.tsx";
 
 type RouteParams = {
     selectedTicket: Ticket,
-    selectedLines: string | null,
+    selectedLines: Line | null,
     selectedRelief: Relief | null,
     finalPrice: number,
     selectedDate?: string,
@@ -49,20 +49,20 @@ const BuyTicketSummary = () => {
 
             <Text style={stylesApp.normalH3}>Wybrany bilet</Text>
 
-            <View style={localStyle.ticketBox}>
-                <View style={localStyle.leftBox}>
-                    <Text style={localStyle.textRight}>Rozdzaj:</Text>
-                    <Text style={localStyle.textRight}>Typ:</Text>
-                    <Text style={localStyle.textRight}>Linia:</Text>
-                    <Text style={localStyle.textRight}>Rodzaj:</Text>
-                    <Text style={localStyle.textRight}>Ważny od:</Text>
+            <View style={style.ticketBoxSummary}>
+                <View style={style.leftBox}>
+                    <Text style={style.textRight}>Rozdzaj:</Text>
+                    <Text style={style.textRight}>Typ:</Text>
+                    <Text style={style.textRight}>Linia:</Text>
+                    <Text style={style.textRight}>Rodzaj:</Text>
+                    <Text style={style.textRight}>Ważny od:</Text>
                 </View>
-                <View style={localStyle.rightBox}>
-                    <Text style={localStyle.textLeft}>Bilet {selectedTicket.typeLabel}</Text>
-                    <Text style={localStyle.textLeft}>{ selectedRelief?.name }</Text>
-                    <Text style={localStyle.textLeft}>{ line?.name }</Text>
-                    <Text style={localStyle.textLeft}>{selectedTicket.periodLabel || '—'}</Text>
-                    <Text style={localStyle.textLeft}>{parsedDate ? parsedDate.toLocaleDateString() : '-'}</Text>
+                <View style={style.rightBox}>
+                    <Text style={style.textLeft}>Bilet {selectedTicket.typeLabel}</Text>
+                    <Text style={style.textLeft}>{ selectedRelief?.name }</Text>
+                    <Text style={style.textLeft}>{ line?.name }</Text>
+                    <Text style={style.textLeft}>{selectedTicket.periodLabel || '—'}</Text>
+                    <Text style={style.textLeft}>{parsedDate ? parsedDate.toLocaleDateString() : '-'}</Text>
                 </View>
 
             </View>
@@ -74,8 +74,8 @@ const BuyTicketSummary = () => {
                 setPaymentMethodId={setPaymentMethodId}
                 methods={filteredMethods} />
 
-            <View style={stylesApp.summaryBox}>
-                <Text style={stylesApp.finalPrice}>Do zapłaty: <Text style={stylesApp.boldText}>{finalPrice.toFixed(2)} zł</Text></Text>
+            <View style={style.summaryBox}>
+                <Text style={style.finalPrice}>Do zapłaty: <Text style={stylesApp.boldText}>{finalPrice.toFixed(2)} zł</Text></Text>
                 <TouchableOpacity style={stylesApp.mainButton} onPress={handleBuyTicket}>
                     <Text style={stylesApp.whiteBoldCenterText}>Kupuję bilet</Text>
                 </TouchableOpacity>

@@ -25,8 +25,6 @@ app.use(cors());
 
 app.locals.cache = cache;
 
-app.use(loadMetadataMiddleware);
-
 mongoose
     .connect(config.databaseUrl, {
         useNewUrlParser: true
@@ -34,17 +32,8 @@ mongoose
     .then(() => console.info('Connect with database established'))
     .catch(error => console.error('Database connection error:', error));
 
-app.get('/*', function (req, res) {
-    res.sendFile(__dirname + '/public/index.html');
-});
 
-app.listen(config.port, function () {
-    console.info(`Server is running at ${config.port}`)
-    startCronJobs();
-});
-
-routes(app);
-
+app.use(loadMetadataMiddleware);
 process.on('SIGINT', async () => {
     try {
         await mongoose.connection.close();
@@ -55,3 +44,17 @@ process.on('SIGINT', async () => {
         process.exit(1);
     }
 });
+
+routes(app);
+app.get('/*', function (req, res) {
+    res.sendFile(__dirname + '/public/index.html');
+});
+
+app.listen(config.port, function () {
+    console.info(`Server is running at ${config.port}`)
+    startCronJobs();
+});
+
+
+
+

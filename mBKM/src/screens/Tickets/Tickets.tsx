@@ -1,14 +1,15 @@
 import React from 'react';
-import { ActivityIndicator,FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
+import { ActivityIndicator,FlatList,SafeAreaView,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
 import { UserTicket } from "../../types/interfaces.tsx";
 import { useNavigation } from "@react-navigation/native";
-import Header from "../../components/Global/Header.tsx";
+import Header from "../../components/Global/Header/Header.tsx";
 import Entypo from "react-native-vector-icons/Entypo";
 import {NavigationProp} from "../../types/navigation.tsx";
 import { useTicketLogic } from "../../hooks/Ticket/useTicketLogic.tsx";
 import { ALL_LINES } from "../../../variables.tsx";
+import style from "./style.tsx";
 
 const Tickets = () => {
 
@@ -34,7 +35,7 @@ const Tickets = () => {
         return (
             <TouchableOpacity onPress={() => handleTicketDetails(item)}>
                 <View style={stylesApp.flatlistItem}>
-                    <Text style={stylesApp.ticketTypeText}>
+                    <Text style={style.ticketTypeText}>
                         Bilet {ticketType?.typeLabel} {ticketType?.periodLabel}
                     </Text>
                     <Text style={stylesApp.itemText}>Typ: <Text style={stylesApp.boldText}>{reliefType?.name}</Text></Text>
@@ -59,9 +60,9 @@ const Tickets = () => {
 
             <Header title="Moje bilety" />
 
-            <TouchableOpacity onPress={() => navigation.navigate('BuyTicketSelection')} style={localStyles.addButton}>
-                <Entypo name="plus" size={35} style={localStyles.icon} />
-                <Text style={{color: colors.appFirstColor, fontSize: 14}}>Kup bilet</Text>
+            <TouchableOpacity onPress={() => navigation.navigate('BuyTicketSelection')} style={style.addButton}>
+                <Entypo name="plus" size={35} style={style.icon} />
+                <Text style={style.buyTicketText}>Kup bilet</Text>
             </TouchableOpacity>
 
             { userTickets && userTickets.length > 0 ? (
@@ -82,27 +83,5 @@ const Tickets = () => {
         </SafeAreaView>
     )
 };
-
-const localStyles = StyleSheet.create({
-    addButton: {
-        flexDirection: "row",
-        alignItems: "center",
-        gap: 8,
-        position: "absolute",
-        backgroundColor: '#D6F49D',
-        borderRadius: 100,
-        paddingRight: 15,
-        bottom: 20,
-        right: 20,
-        zIndex: 10,
-    },
-
-    icon: {
-        color: colors.appWhite,
-        backgroundColor: colors.appFirstColor,
-        padding: 5,
-        borderRadius: 100,
-    }
-});
 
 export default Tickets;

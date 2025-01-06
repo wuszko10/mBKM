@@ -3,6 +3,7 @@ import { StyleSheet,Text,TouchableOpacity,View } from "react-native";
 import DateTimePicker,{ DateTimePickerEvent } from "@react-native-community/datetimepicker";
 import { colors,dimensions } from "../../style/styleValues.js";
 import stylesApp from "../../style/stylesApp.js";
+import style from "./style.tsx";
 
 type DateSelectorProps = {
     showDate: boolean;
@@ -35,10 +36,10 @@ const DateSelector: React.FC<DateSelectorProps> = (
     };
 
     return (
-        <View style={stylesApp.inputBox}>
+        <View style={style.inputBox}>
 
 
-            <Text style={stylesApp.labelInputText}>Wybierz datę</Text>
+            <Text style={style.labelInputText}>Wybierz datę</Text>
 
             <TouchableOpacity onPress={() => showMode('date')} style={localStyle.dateButton}>
                 { showDate ? (

@@ -1,10 +1,11 @@
 import React from "react";
-import { View,TextInput,Text,TouchableOpacity,StyleSheet } from "react-native";
-import ProcessingPopup from "../Global/ProcessingPopup.tsx";
+import { View,TextInput,Text,TouchableOpacity } from "react-native";
+import ProcessingPopup from "../Popups/ProcessingPopup.tsx";
 import stylesApp from "../../style/stylesApp.js";
-import { colors,dimensions } from "../../style/styleValues.js";
+import { colors } from "../../style/styleValues.js";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { useCardPaymentLogic } from "../../hooks/Payment/useCardPaymentLogic.tsx";
+import style from "./style.tsx";
 
 export type CardPaymentProps = {
     transactionId: string,
@@ -35,12 +36,12 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
     } = useCardPaymentLogic(props, wallet, setWallet, token);
 
     return (
-        <View style={stylesApp.paymentBox}>
+        <View style={style.paymentBox}>
 
 
-                <View style={localStyle.inputBox}>
-                    <Text style={localStyle.text}>Numer karty</Text>
-                    <TextInput style={[stylesApp.input, localStyle.inputText, { borderColor: cardNumberError ? 'red' : 'transparent', borderWidth: 1 }]}
+                <View style={style.inputBox}>
+                    <Text style={style.text}>Numer karty</Text>
+                    <TextInput style={[stylesApp.input, style.inputText, { borderColor: cardNumberError ? 'red' : 'transparent', borderWidth: 1 }]}
                                placeholder="1234 5678 9012 3456"
                                value={cardNumber}
                                onChangeText={handleCardNumberChange}
@@ -51,9 +52,9 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
                     />
                 </View>
 
-                <View style={localStyle.inputBox}>
-                    <Text style={localStyle.text}>Data{"\n"}ważności</Text>
-                    <TextInput style={[stylesApp.input, localStyle.inputText, { borderColor: expiryDateError ? 'red' : 'transparent', borderWidth: 1 }]}
+                <View style={style.inputBox}>
+                    <Text style={style.text}>Data{"\n"}ważności</Text>
+                    <TextInput style={[stylesApp.input, style.inputText, { borderColor: expiryDateError ? 'red' : 'transparent', borderWidth: 1 }]}
                                placeholder="01/29"
                                value={expiryDate}
                                onChangeText={handleExpiryDateChange}
@@ -64,9 +65,9 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
                     />
                 </View>
 
-                <View style={localStyle.inputBox}>
-                    <Text style={localStyle.text}>Podaj kod</Text>
-                    <TextInput style={[stylesApp.input, localStyle.inputText, { borderColor: cvvError ? 'red' : 'transparent', borderWidth: 1 }]}
+                <View style={style.inputBox}>
+                    <Text style={style.text}>Podaj kod</Text>
+                    <TextInput style={[stylesApp.input, style.inputText, { borderColor: cvvError ? 'red' : 'transparent', borderWidth: 1 }]}
                                placeholder="XXX"
                                value={cvv}
                                onChangeText={validCVV}
@@ -81,7 +82,7 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
 
 
             <TouchableOpacity onPress={handleCardPayment} style={stylesApp.whiteButton}>
-                <Text style={[stylesApp.popupText,{ color: colors.appFirstColor}]}>Zapłać kartą</Text>
+                <Text style={[stylesApp.whiteButtonText,{ color: colors.appFirstColor}]}>Zapłać kartą</Text>
             </TouchableOpacity>
 
             { showPopup && (
@@ -95,26 +96,5 @@ const CardPayment: React.FC<CardPaymentProps> = (props) => {
     );
 };
 
-const localStyle = StyleSheet.create({
-
-    inputBox: {
-        flexDirection: "row",
-        justifyContent: "flex-start",
-        alignItems: "center",
-        gap: 15,
-    },
-    inputText: {
-        flex: 1,
-        textAlign: "left",
-        borderRadius: dimensions.radius,
-        paddingLeft: 10,
-    },
-    text: {
-        ...stylesApp.whiteNormalCenterText,
-        width: 56,
-        fontSize: 13,
-        textAlign: "right",
-    }
-})
 
 export default CardPayment;

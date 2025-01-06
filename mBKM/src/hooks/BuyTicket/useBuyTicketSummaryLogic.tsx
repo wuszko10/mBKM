@@ -53,7 +53,7 @@ export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: 
 
             checkInternetConnection().then();
 
-            const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId, selectedDate,selectedRelief ? selectedRelief._id : '', selectedLines ? selectedLines.id : '', token ? token : '');
+            const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId, selectedDate, selectedRelief ? selectedRelief._id : '', selectedLines ? selectedLines.id : '', token ? token : '');
 
             if (data) {
                 navigation.navigate('PaymentScreen', {

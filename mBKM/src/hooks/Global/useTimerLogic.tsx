@@ -1,7 +1,7 @@
 import { useEffect,useRef,useState } from "react";
 import { Animated } from "react-native";
 import { SEASON_TICKET,SINGLE_TICKET } from "../../../variables.tsx";
-import { TimerPropTypes } from "../../components/Global/Timer.tsx";
+import { TimerPropTypes } from "../../components/Global/Timer/Timer.tsx";
 
 export const useTimerLogic = (props: TimerPropTypes) => {
 

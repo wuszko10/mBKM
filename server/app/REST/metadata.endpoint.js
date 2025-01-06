@@ -19,6 +19,7 @@ const MetadataEndpoint = (router) => {
         if (!ticketTypes || !ticketPeriods || !ticketLines || !reliefTypes || !paymentMethods || !statusTypes) {
             return res.status(404).json({ message: 'One or more metadata are not found in cache.' });
         }
+
         res.setHeader('Content-Type', 'application/json');
         res.json({
             ticketTypes,

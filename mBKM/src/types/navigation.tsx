@@ -1,6 +1,5 @@
 import { NavigationProp as BaseNavigationProp } from '@react-navigation/native';
-import { Line,Relief,Ticket,TicketOrderTransaction } from "./interfaces.tsx";
-import BuyTicketSummary from "../screens/BuyTicket/BuyTicketSummary/BuyTicketSummary.tsx";
+import { Line,Relief,Ticket } from "./interfaces.tsx";
 
 export type RootStackParamList = {
 
@@ -35,6 +34,7 @@ export type RootStackParamList = {
     };
     UserPanel: { screen: 'Home' | 'Tickets' | 'Wallet' } | undefined;
     TopUpScreen: undefined;
+    ResetPassword: undefined;
 };
 
 export type NavigationProp = BaseNavigationProp<RootStackParamList>;

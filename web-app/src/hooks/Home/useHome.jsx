@@ -2,6 +2,7 @@ import {useCallback, useEffect, useState} from "react";
 import {toast} from "react-toastify";
 import {useAuth} from "../../context/authProvider";
 import {fetchDashboard} from "../../services/metadata.service";
+import {isExpired} from "react-jwt";
 
 export const useHome = () => {
 
@@ -16,7 +17,7 @@ export const useHome = () => {
     const [totalAmount, setTotalAmount] = useState(0);
 
 
-    const refreshData = useCallback( () => {
+    const refreshData = useCallback( (token) => {
         fetchDashboard(days, token)
             .then((data) => {
                 setTransactions(data.transactions);
@@ -33,12 +34,14 @@ export const useHome = () => {
             }).finally(() => {
             setLoading(false);
         });
-    }, [days, token])
+    }, [days])
 
 
     useEffect(() => {
-        refreshData();
-    }, [refreshData])
+        if (token && !isExpired(token)) {
+            refreshData(token);
+        }
+    }, [refreshData, token])
 
     return {
         loading,

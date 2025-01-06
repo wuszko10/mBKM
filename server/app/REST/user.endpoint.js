@@ -42,6 +42,36 @@ const userEndpoint = (router) => {
         }
     });
 
+    router.post('/api/user/reset/check', async (request, response) => {
+        const {email, checkPesel} = request.body;
+        try {
+            const result = await business.getUserManager().checkResetPasswordByUserEmail(email, checkPesel);
+            response.status(200).send(result);
+        } catch (error) {
+            applicationException.errorHandler(error, response);
+        }
+    });
+
+    router.post('/api/user/reset', async (request, response) => {
+        const {email, oldPassword, newPassword} = request.body;
+        try {
+            const result = await business.getUserManager().resetPassword(email, oldPassword, newPassword);
+            response.status(200).send(result);
+        } catch (error) {
+            applicationException.errorHandler(error, response);
+        }
+    });
+
+    router.post('/api/user/restore', async (request, response) => {
+        const {email, newPassword} = request.body;
+        try {
+            const result = await business.getUserManager().restorePassword(email, newPassword);
+            response.status(200).send(result);
+        } catch (error) {
+            applicationException.errorHandler(error, response);
+        }
+    });
+
     router.post('/api/user/address/update', async (request, response) => {
         try {
             const result = await business.getUserManager().updateAddress(request.body);

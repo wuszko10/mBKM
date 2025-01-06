@@ -1,6 +1,7 @@
 import React from "react";
 import { ScrollView,Text,TextInput,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
+import style from './style.tsx'
 import { colors } from "../../style/styleValues.js";
 import tw from "twrnc";
 import Icon from "react-native-vector-icons/FontAwesome";
@@ -43,20 +44,21 @@ const Register = () => {
 
     return (
         <ScrollView style={{ backgroundColor: colors.lightBlue }}>
-            <View style={stylesApp.loginRegisterContainer}>
-                <Text style={stylesApp.h2}>Zarejestruj się</Text>
+            <View style={style.loginRegisterContainer}>
+                <Text style={style.h2}>Zarejestruj się</Text>
 
                 <View style={stylesApp.separator}/>
 
-                <View style={stylesApp.gapContainer}>
+                <View style={style.gapContainer}>
 
-                    <Text style={stylesApp.h3}>Dane osobowe</Text>
+
+                    <Text style={stylesApp.normalH3}>Dane osobowe</Text>
 
                     <TextInput style={stylesApp.input}
                                placeholder="Imię"
                                value={firstName}
                                onChangeText={setFirstName}
-                               autoCapitalize="none"
+                               autoCapitalize="sentences"
                                placeholderTextColor={colors.darkGray}
                     />
 
@@ -64,7 +66,7 @@ const Register = () => {
                                placeholder="Nazwisko"
                                value={lastName}
                                onChangeText={setLastName}
-                               autoCapitalize="none"
+                               autoCapitalize="sentences"
                                placeholderTextColor={colors.darkGray}
                     />
 
@@ -80,42 +82,44 @@ const Register = () => {
                         />
                     </View>
 
-                    <Text style={stylesApp.h3}>Dane adresowe</Text>
+                    <Text style={[stylesApp.normalH3, {paddingTop: 20}]}>Dane adresowe</Text>
 
                     <TextInput style={stylesApp.input}
-                               placeholder="np. Tarnowska 5/12 lub np. Błonie 33"
+                               placeholder="Ulica np. Tarnowska 5/12"
                                value={fullAddress}
                                onChangeText={setFullAddress}
-                               autoCapitalize="none"
+                               autoCapitalize="sentences"
                                placeholderTextColor={colors.darkGray}
                     />
 
                     <TextInput style={stylesApp.input}
-                               placeholder="Tarnów (nieobowiązkowe)"
+                               placeholder="Miejscowość (nieobowiązkowe)"
                                value={town}
                                onChangeText={setTown}
-                               autoCapitalize="none"
+                               autoCapitalize="sentences"
                                placeholderTextColor={colors.darkGray}
                     />
 
                     <TextInput style={[stylesApp.input, { borderColor: postalCodeError ? 'red' : 'transparent', borderWidth: 1 }]}
-                               placeholder="33-100"
+                               placeholder="Kod pocztowy"
                                value={postalCode}
                                onChangeText={validPostalCode}
+                               maxLength={6}
+                               keyboardType="numeric"
                                autoCapitalize="none"
                                placeholderTextColor={colors.darkGray}
                     />
 
                     <TextInput style={stylesApp.input}
-                               placeholder="Tarnów"
+                               placeholder="Poczta"
                                value={postal}
                                onChangeText={setPostal}
-                               autoCapitalize="none"
+                               autoCapitalize="sentences"
                                placeholderTextColor={colors.darkGray}
                     />
 
 
-                    <Text style={stylesApp.h3}>Dane logowania</Text>
+                    <Text style={[stylesApp.normalH3, {paddingTop: 20}]}>Dane logowania</Text>
 
                     <TextInput style={[stylesApp.input, { borderColor: emailError ? 'red' : 'transparent', borderWidth: 1 }]}
                                placeholder="E-mail"
@@ -171,15 +175,15 @@ const Register = () => {
 
                 </View>
 
-                <View style={stylesApp.gapContainer}>
+                <View style={[style.gapContainer,{ paddingTop: 20}]}>
                     <TouchableOpacity onPress={handleRegister} style={stylesApp.mainButton}>
                         <Text style={stylesApp.whiteBoldCenterText}>Zarejestruj się</Text>
                     </TouchableOpacity>
 
                     <TouchableOpacity onPress={handleLogin}>
-                        <Text style={stylesApp.lr_bottomText}>
+                        <Text style={style.lr_bottomText}>
                             Masz konta w serwisie
-                            <Text style={stylesApp.highlightText}> mBKM</Text>
+                            <Text style={style.highlightText}> mBKM</Text>
                             ?
                             <Text style={stylesApp.boldText}> Zaloguj się</Text>
                         </Text>

@@ -2,9 +2,10 @@ import React from "react";
 import { View,TextInput,Text,TouchableOpacity } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors,dimensions } from "../../style/styleValues.js";
-import ProcessingPopup from "../Global/ProcessingPopup.tsx";
+import ProcessingPopup from "../Popups/ProcessingPopup.tsx";
 import { useOnlinePaymentLogic } from "../../hooks/Payment/useOnlinePaymentLogic.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
+import style from "./style.tsx";
 
 export type OnlinePaymentProps = {
     transactionId: string,
@@ -27,9 +28,9 @@ const OnlinePayment: React.FC<OnlinePaymentProps> = (props) => {
     } = useOnlinePaymentLogic(props, wallet, setWallet, token);
 
     return (
-        <View style={stylesApp.paymentBox}>
+        <View style={style.paymentBox}>
 
-            <View style={[stylesApp.rowContainer, {alignSelf: "center"}]}>
+            <View style={style.rowContainerPayment}>
                 <Text style={stylesApp.whiteNormalCenterText}>Podaj kod</Text>
                 <TextInput style={[stylesApp.input, {width: 120, textAlign: "center", borderRadius: dimensions.radius}]}
                            placeholder="6-cyfrowy kod"
@@ -45,7 +46,7 @@ const OnlinePayment: React.FC<OnlinePaymentProps> = (props) => {
             <View style={stylesApp.separator} />
 
             <TouchableOpacity onPress={handleOnlinePayment} style={stylesApp.whiteButton}>
-                <Text style={[stylesApp.popupText,{ color: colors.appFirstColor}]}>Zapłać</Text>
+                <Text style={[stylesApp.whiteButtonText,{ color: colors.appFirstColor}]}>Zapłać</Text>
             </TouchableOpacity>
 
             { showPopup && (

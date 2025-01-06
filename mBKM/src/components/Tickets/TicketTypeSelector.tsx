@@ -1,8 +1,9 @@
 import React,{ SetStateAction } from "react";
-import { FlatList,SafeAreaView,StyleSheet,Text,TouchableOpacity } from "react-native";
+import { FlatList,SafeAreaView,Text,TouchableOpacity } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { Ticket } from "../../types/interfaces.tsx";
 import {SEASON_TICKET, SINGLE_TICKET} from "../../../variables.tsx";
+import style from "./style.tsx";
 
 type TicketAndReliefTypeSelectorProps = {
     ticketsData: Ticket[];
@@ -36,7 +37,7 @@ const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) =
                 renderItem={({ item }) => (
                     <TouchableOpacity onPress={() => handleTicketSelect(item)} style={[
                         stylesApp.flatlistItem,
-                        props.selectedTicketId === item._id && localStyle.selectedItem
+                        props.selectedTicketId === item._id && style.selectedItem
                     ]}>
                         <Text style={stylesApp.itemText}>Bilet <Text style={stylesApp.boldText}>{item.typeLabel}</Text></Text>
                         <Text style={stylesApp.itemText}>Linie: <Text style={stylesApp.boldText}>{item.lineLabel}</Text></Text>
@@ -49,12 +50,5 @@ const TicketTypeSelector: React.FC<TicketAndReliefTypeSelectorProps> = (props) =
     )
 }
 
-const localStyle = StyleSheet.create({
-    selectedItem: {
-        backgroundColor: '#b0e0ff',
-    },
-
-
-})
 export default TicketTypeSelector
 

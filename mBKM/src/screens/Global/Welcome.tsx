@@ -1,10 +1,9 @@
-import React,{ useEffect } from "react";
-import { Image,StyleSheet,Text,TouchableOpacity,View } from "react-native";
+import React from "react";
+import { Image,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { useNavigation } from "@react-navigation/native";
-import { colors,dimensions } from "../../style/styleValues.js";
 import { NavigationProp } from "../../types/navigation.tsx";
-import SplashScreen from "react-native-splash-screen";
+import style from './style.tsx';
 
 const Welcome = () => {
 
@@ -18,38 +17,28 @@ const Welcome = () => {
     }
 
     return (
-        <View style={localStyles.welcomeContainer}>
+        <View style={style.welcomeContainer}>
             <View style={{justifyContent: 'center', alignItems: 'center'}}>
                 <Image
                     source={require('../../assets/logo.png')}
                     style={{ width: 150, height: 150 }}
                 />
-                <Text style={stylesApp.h1}>mBKM</Text>
+                <Text style={style.h1}>mBKM</Text>
             </View>
 
-            <View style={stylesApp.bigSeparator}/>
+            <View style={style.bigSeparator}/>
 
-            <View style={stylesApp.welcomeButtonContainer}>
+            <View style={style.welcomeButtonContainer}>
                 <TouchableOpacity onPress={handleLogin} style={stylesApp.mainButton}>
                     <Text style={stylesApp.whiteBoldCenterText}>Zaloguj się</Text>
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={handleRegister} style={stylesApp.secondButton}>
-                    <Text style={stylesApp.blueNormalCenterText}>Zarejestruj się</Text>
+                <TouchableOpacity onPress={handleRegister} style={style.secondButton}>
+                    <Text style={style.blueNormalCenterText}>Zarejestruj się</Text>
                 </TouchableOpacity>
             </View>
         </View>
     );
 };
-
-const localStyles = StyleSheet.create({
-    welcomeContainer: {
-        flex: 1,
-        display: 'flex',
-        backgroundColor: colors.appBg,
-        padding: dimensions.appPadding,
-        justifyContent: 'flex-end',
-    },
-});
 
 export default Welcome;

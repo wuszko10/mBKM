@@ -1,4 +1,4 @@
-import React,{ useEffect } from "react";
+import React from "react";
 import { ActivityIndicator,ScrollView,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { useNavigation } from "@react-navigation/native";

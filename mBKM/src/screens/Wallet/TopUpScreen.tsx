@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator,SafeAreaView,Text,TextInput,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
-import Header from "../../components/Global/Header.tsx";
+import Header from "../../components/Global/Header/Header.tsx";
 import PaymentSelector from "../../components/Payments/PaymentSelector.tsx";
 import { colors } from "../../style/styleValues.js";
 import { useAuth } from "../../context/AuthContext.tsx";

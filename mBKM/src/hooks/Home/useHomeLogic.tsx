@@ -8,8 +8,6 @@ import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "../../types/navigation.tsx";
 import { ToastAndroid } from "react-native";
 import checkInternetConnection from "../../utils/network.tsx";
-import SplashScreen from "react-native-splash-screen";
-
 export const useHomeLogic = (token: string | null, userId: string) => {
 
     const [isLoading, setIsLoading] = useState(true);

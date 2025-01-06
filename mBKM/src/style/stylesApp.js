@@ -3,10 +3,7 @@ import { colors, dimensions } from "./styleValues";
 
 export default StyleSheet.create({
 
-    appContainer: {
-        flex: 1,
-        backgroundColor: colors.appWhite,
-    },
+    // global
 
     scrollContainer: {
         backgroundColor: colors.appWhite,
@@ -27,20 +24,26 @@ export default StyleSheet.create({
         gap: dimensions.itemGap,
     },
 
-    rowContainer: {
-        flexDirection: "row",
-        gap: 20,
-        alignItems: "center",
+
+    separator: {
+        height: dimensions.separator,
     },
 
-    loginRegisterContainer: {
-        flex: 1,
-        display: 'flex',
-        backgroundColor: colors.appBg,
-        padding: dimensions.appPadding,
-        justifyContent: 'center',
-        gap: dimensions.itemGapBig,
+    divider: {
+        borderBottomWidth: 0.5,
+        borderColor: colors.gray,
     },
+
+    fullBlueContainer: {
+        flex: 1,
+        justifyContent:"center",
+        alignItems: "stretch",
+        backgroundColor: colors.appFirstColor,
+        gap: 30,
+        paddingHorizontal: dimensions.appPadding,
+    },
+
+    // flatList
 
     emptyFlatListContainer: {
         flex: 1,
@@ -52,70 +55,37 @@ export default StyleSheet.create({
         borderRadius: dimensions.radius
     },
 
-    userTicketContainer: {
-        backgroundColor: colors.lightBlue,
-        paddingTop: 20,
-        paddingLeft: 20,
-        paddingRight: 20,
-        paddingBottom: 20,
-        gap: dimensions.itemGapBig,
+    emptyFlatListText: {
+        color: colors.appFirstColor,
+        textAlign: 'center',
+        fontSize: dimensions.largeTextSize,
+        fontWeight: 'bold',
+    },
+
+    flatlist: {
+        gap: dimensions.itemGap,
+    },
+
+    flatlistItem: {
+        marginLeft: 2,
+        padding: 15,
+        marginVertical: 5,
+        backgroundColor: colors.appThirdColor,
         borderRadius: dimensions.radius,
     },
 
-    separator: {
-        height: dimensions.separator,
-    },
+    // icon
 
-    divider: {
-        borderBottomWidth: 0.5,
-        borderColor: colors.gray,
-    },
 
-    bigSeparator: {
-        height: 200,
-    },
+    icon: {
+        fontSize: dimensions.iconSize,
+        color:colors.darkGray,
 
-    gapContainer: {
-        display: 'flex',
-        gap: dimensions.itemGap,
-    },
-
-    smallGapContainer: {
-        display: 'flex',
-        gap: dimensions.itemGapSmall,
-    },
-
-    tabBarStyle: {
-        minHeight: 60,
-        bottom: 0,
-        left: 0,
-        right: 0,
-        shadowColor: '#000',
-        shadowOpacity: 0.5,
-        shadowRadius: 5,
-        elevation: 5,
-        backgroundColor: colors.appWhite,
-    },
-
-    tabBarItemStyle: {
-        margin: 3,
     },
 
 
-    /*
+    // buttons
 
-
-    DEFINITIONS STYLES FOR BUTTONS
-
-
-     */
-
-    welcomeButtonContainer: {
-        display: 'flex',
-        flexDirection: 'column',
-        paddingBottom: 60,
-        gap: dimensions.itemGap,
-    },
 
     mainButton: {
         backgroundColor: colors.appFirstColor,
@@ -124,49 +94,26 @@ export default StyleSheet.create({
         paddingHorizontal: 50,
     },
 
-    secondButton: {
-        backgroundColor: '#95C5E1' ,
-        borderRadius: dimensions.buttonRadius,
-        padding: dimensions.buttonPadding,
+
+
+    whiteButton: {
+        backgroundColor: colors.appWhite,
+        borderRadius: dimensions.radius,
+        paddingVertical: 10,
+        paddingHorizontal: dimensions.appPadding,
+    },
+
+    whiteButtonText: {
+        textAlign: "center",
+        fontSize: dimensions.largeTextSize,
+        fontWeight: "bold",
+        color: colors.appWhite,
     },
 
 
 
+    // text
 
-    /*
-
-    DEFINITIONS OF TYPES FOR TEXT FIELD STYLES
-
-
-     */
-
-    h1: {
-        color: colors.appFirstColor,
-        textAlign: 'center',
-        fontSize: 80,
-        fontWeight: 'bold',
-    },
-
-    h2: {
-        color: colors.textColorBlack,
-        textAlign: 'left',
-        fontSize: 40,
-        fontWeight: 'bold',
-    },
-
-    h2Header: {
-        color: colors.textColorBlack,
-        textAlign: 'left',
-        fontSize: 30,
-        fontWeight: 'bold',
-    },
-
-    h3: {
-        color: colors.textColorBlack,
-        textAlign: 'left',
-        fontSize: dimensions.hugeTextSize,
-        fontWeight: 'bold',
-    },
 
     normalH3: {
         color: colors.textColorBlack,
@@ -174,6 +121,10 @@ export default StyleSheet.create({
         fontSize: dimensions.largeTextSize,
         fontWeight: '600',
         paddingLeft: 10,
+    },
+
+    boldText: {
+        fontWeight: 'bold',
     },
 
     whiteNormalCenterText: {
@@ -189,74 +140,20 @@ export default StyleSheet.create({
         fontWeight: 'bold',
     },
 
-    blueNormalCenterText: {
-        color: colors.appFirstColor,
-        textAlign: 'center',
-        fontSize: dimensions.normalTextSize,
-    },
-
-    activeTicketText: {
-        color: '#10430a',
-        textAlign: 'center',
-        fontSize: dimensions.smallTextSize,
-    },
-
-    secondButtonText: {
-        color: colors.textColorBlack,
-        textAlign: 'center',
-        fontSize: dimensions.normalTextSize,
-    },
-
-    boldText: {
-        fontWeight: 'bold',
-    },
-
-    ticketTypeText: {
-        color: colors.appFirstColor,
-        fontWeight: "bold",
-        fontSize: 20,
-    },
 
     itemText: {
         fontSize: 16,
         color: colors.textColorBlack,
     },
 
-    inputError: {
-        color: 'red',
-        fontSize: dimensions.smallTextSize,
-        textAlign: 'center',
-        marginTop: 4,
-    },
 
     blackText: {
         color: colors.textColorBlack,
     },
 
-    labelInputText: {
-        color: colors.textColorBlack,
-        paddingLeft: 10,
-        fontSize: dimensions.smallTextSize,
-    },
 
-    emptyFlatListText: {
-        color: colors.appFirstColor,
-        textAlign: 'center',
-        fontSize: dimensions.largeTextSize,
-        fontWeight: 'bold',
-    },
+    // input form
 
-    /*
-
-
-    DEFINITIONS OF TYPES STYLES FOR INPUT FIELDS
-
-
-     */
-
-    inputBox: {
-        gap: 5,
-    },
 
     input: {
         height: dimensions.inputHigh,
@@ -278,124 +175,4 @@ export default StyleSheet.create({
         padding: 0,
     },
 
-
-    /*
-
-
-    OTHER STYLES
-
-
-     */
-
-
-    icon: {
-        fontSize: dimensions.iconSize,
-        color:colors.darkGray,
-
-    },
-
-    lr_bottomText: {
-        color: colors.darkGray,
-        textAlign: 'center',
-        fontSize: dimensions.smallTextSize,
-    },
-
-    highlightText: {
-        color: colors.appFirstColor,
-    },
-
-    flatlist: {
-        gap: dimensions.itemGap,
-    },
-
-    flatlistItem: {
-        marginLeft: 2,
-        padding: 15,
-        marginVertical: 5,
-        backgroundColor: colors.appThirdColor,
-        borderRadius: dimensions.radius,
-    },
-
-
-
-    dropdown: {
-        backgroundColor: colors.appThirdColor,
-        borderWidth: 0,
-        borderRadius: dimensions.radius,
-        zIndex: 10,
-    },
-    dropdownContainer: {
-        backgroundColor: colors.lightBlue,
-        borderWidth: 0,
-        marginTop: 4,
-        padding: 5,
-    },
-    summaryBox:{
-        marginVertical: 45,
-        bottom: 10,
-        alignItems: "center",
-        gap: 12,
-    },
-    finalPrice: {
-        color: colors.textColorBlack,
-        fontSize: dimensions.largeTextSize,
-    },
-    ticketBox: {
-        backgroundColor: colors.appThirdColor,
-        borderRadius: dimensions.radius,
-        gap: dimensions.appNormalPadding+10,
-        flexDirection: "row",
-        alignItems: "center"
-    },
-    ticketIcon: {
-        padding: dimensions.appNormalPadding,
-        color: colors.appWhite,
-        backgroundColor: colors.appFirstColor,
-        borderRadius: dimensions.radius,
-    },
-
-    paymentContainer: {
-        flex: 1,
-        justifyContent:"center",
-        alignItems: "center",
-        paddingHorizontal: dimensions.appPadding,
-        backgroundColor: colors.appWhite,
-        gap: 30,
-    },
-
-    paymentBox: {
-        flexDirection: "column",
-        gap: dimensions.itemGap,
-        alignSelf: "stretch",
-    },
-
-    popupContainer: {
-        flex: 1,
-        justifyContent:"center",
-        alignItems: "center",
-        backgroundColor: colors.appFirstColor,
-        gap: 30,
-        paddingHorizontal: dimensions.appPadding,
-    },
-
-    popupText: {
-        textAlign: "center",
-        fontSize: dimensions.largeTextSize,
-        fontWeight: "bold",
-        color: colors.appWhite,
-    },
-
-    popupBtn: {
-        flex: 1,
-        backgroundColor: colors.appWhite,
-        borderRadius: dimensions.radius,
-        paddingVertical: 10,
-    },
-
-    whiteButton: {
-        backgroundColor: colors.appWhite,
-        borderRadius: dimensions.radius,
-        paddingVertical: 10,
-        paddingHorizontal: dimensions.appPadding,
-    },
 });

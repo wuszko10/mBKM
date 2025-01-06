@@ -40,4 +40,10 @@ export const style = StyleSheet.create({
         paddingHorizontal: 10,
         paddingVertical: 5,
     },
+    h3: {
+        color: colors.textColorBlack,
+        textAlign: 'left',
+        fontSize: dimensions.hugeTextSize,
+        fontWeight: 'bold',
+    },
 });

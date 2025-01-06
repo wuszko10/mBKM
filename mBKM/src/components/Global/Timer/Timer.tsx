@@ -1,10 +1,11 @@
 import React from "react";
 import { View,StyleSheet,Animated,Text } from "react-native";
-import { colors } from "../../style/styleValues.js";
-import { SEASON_TICKET,SINGLE_TICKET } from "../../../variables.tsx";
-import stylesApp from "../../style/stylesApp.js";
-import { formatRemainingTime } from "../../utils/timer.tsx";
-import { useTimerLogic } from "../../hooks/Global/useTimerLogic.tsx";
+import { colors } from "../../../style/styleValues.js";
+import { SEASON_TICKET,SINGLE_TICKET } from "../../../../variables.tsx";
+import stylesApp from "../../../style/stylesApp.js";
+import { formatRemainingTime } from "../../../utils/timer.tsx";
+import { useTimerLogic } from "../../../hooks/Global/useTimerLogic.tsx";
+import style from "./style.tsx";
 
 export type TimerPropTypes = {
     startTime: Date | undefined;
@@ -25,7 +26,7 @@ const Timer: React.FC<TimerPropTypes> = (props) => {
 
 
     return (
-        <View style={stylesApp.gapContainer}>
+        <View style={style.gapTimerContainer}>
             { (props.type === SINGLE_TICKET || (props.type === SEASON_TICKET && duration <= oneDayToEnd)) ?
                 <View style={styles.container}>
                     <Animated.View style={[styles.progressBar, { width }]} />
@@ -33,7 +34,7 @@ const Timer: React.FC<TimerPropTypes> = (props) => {
                 :
                 <View style={[stylesApp.divider, {borderColor: colors.greenText}]} />
             }
-            <Text style={stylesApp.activeTicketText}>{formatRemainingTime(remainingTime)}</Text>
+            <Text style={style.activeTicketText}>{formatRemainingTime(remainingTime)}</Text>
         </View>
 
     );

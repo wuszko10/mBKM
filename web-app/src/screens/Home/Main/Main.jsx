@@ -62,7 +62,7 @@ const Main = () => {
                     <div className={"home-row-stats-box"}>
                         <div className={"home-info-box"}>
                             <TbShoppingCartDollar size={30} />
-                            <p>Suma zgromadzonych środków na kontach użytkowników: <strong>{Number(usersTotalAmount).toFixed(2)} zł</strong></p>
+                            <p>Suma zgromadzonych środków na kontach użytkowników: <strong>{usersTotalAmount ? Number(usersTotalAmount).toFixed(2) : '0.00'} zł</strong></p>
                         </div>
 
                         <div className={"home-info-box"}>
@@ -72,7 +72,7 @@ const Main = () => {
 
                         <div className={"home-info-box"}>
                             <MdSyncLock size={30} />
-                            <p>Liczba aktywnych sesji użytkowników: <strong>{activeUsers.toString()}</strong></p>
+                            <p>Liczba aktywnych sesji użytkowników: <strong>{activeUsers ? activeUsers.toString() : '0'}</strong></p>
                         </div>
                     </div>
                     <div className={"horizontal-div"}>

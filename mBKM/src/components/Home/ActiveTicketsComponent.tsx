@@ -5,7 +5,7 @@ import { Line,Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";
 import { style as localStyles } from "../../screens/Home/style.tsx";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
 import { colors } from "../../style/styleValues.js";
-import Timer from "../Global/Timer.tsx";
+import Timer from "../Global/Timer/Timer.tsx";
 import { ALL_LINES } from "../../../variables.tsx";
 
 type ComponentProps = {

@@ -2,8 +2,8 @@ import React from "react";
 import { ActivityIndicator,SafeAreaView,Text,View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import stylesApp from "../../style/stylesApp.js";
-import Popup from "../../components/Global/Popup.tsx";
-import ProcessingPopup from "../../components/Global/ProcessingPopup.tsx";
+import Popup from "../../components/Popups/Popup.tsx";
+import ProcessingPopup from "../../components/Popups/ProcessingPopup.tsx";
 import { colors } from "../../style/styleValues.js";
 import { useValidateTicketLogic } from "../../hooks/Ticket/useValidateTicketLogic.tsx";
 
@@ -33,14 +33,14 @@ const ValidateTicket = () => {
 
     if (loading) {
         return (
-            <View style={stylesApp.popupContainer}>
+            <View style={stylesApp.fullBlueContainer}>
                 <ActivityIndicator size="large" color={colors.appWhite} />
                 <Text style={{color: colors.gray}}>Lokalizowanie...</Text>
             </View>
         )
     }
     return (
-        <SafeAreaView style={stylesApp.popupContainer}>
+        <SafeAreaView style={stylesApp.fullBlueContainer}>
             <ProcessingPopup
                 showPopup={showPaymentPopup}
                 isProcessing={isProcessing}

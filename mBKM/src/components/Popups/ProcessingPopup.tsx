@@ -2,7 +2,7 @@ import { ActivityIndicator,Modal,Text,TouchableOpacity,View } from "react-native
 import React from "react";
 import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
-import { NavigationProp } from "@react-navigation/native";
+import style from "./style.tsx";
 
 type PaymentPopupProps = {
     showPopup: boolean;
@@ -18,17 +18,18 @@ const ProcessingPopup: React.FC<PaymentPopupProps>  = (props) => {
             animationType="fade"
             visible={props.showPopup}
         >
-            <View style={stylesApp.popupContainer}>
+            <View style={stylesApp.fullBlueContainer}>
                 { props.isProcessing ? (
                     <View>
                         <ActivityIndicator size="large" color="white" />
-                        <Text style={stylesApp.whiteNormalCenterText}>Przetwarzanie...</Text>
+                        <Text style={style.popupText}>Przetwarzanie...</Text>
                     </View>
                 ) : (
                     <View style={{gap: 20}}>
-                        <Text style={[stylesApp.popupText,{ color: colors.appWhite}]}>{props.cancelText}</Text>
+                        <Text style={style.popupText}>{props.cancelText}</Text>
+                        <View style={stylesApp.separator}/>
                         <TouchableOpacity onPress={props.cancelAction} style={stylesApp.whiteButton}>
-                            <Text style={[stylesApp.popupText,{ color: colors.appFirstColor }]}>Zakończ</Text>
+                            <Text style={[stylesApp.whiteButtonText,{ color: colors.appFirstColor }]}>Zakończ</Text>
                         </TouchableOpacity>
                     </View>
                 )}

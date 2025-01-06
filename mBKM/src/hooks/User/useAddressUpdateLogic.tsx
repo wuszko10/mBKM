@@ -61,6 +61,7 @@ export const useAddressUpdateLogic = (setShowPopup: (showPopup: boolean) => void
             const response = await updateAddress( address ? address.id : '',userId,fullAddress,town,postalCode,postal);
 
             if (response) {
+                setAddress(response);
                 cancelAction();
             }
 

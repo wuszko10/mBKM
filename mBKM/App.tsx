@@ -1,5 +1,4 @@
 import React,{ useEffect } from "react";
-import styles from "./src/style/stylesApp";
 import {
     SafeAreaView
 } from "react-native";
@@ -15,14 +14,13 @@ import Login from "./src/screens/User/Login.tsx";
 import Welcome from "./src/screens/Global/Welcome.tsx";
 import Register from "./src/screens/User/Register.tsx";
 import { AuthProvider,useAuth } from "./src/context/AuthContext.tsx";
-import BuyTicketSummary from "./src/screens/BuyTicket/BuyTicketSummary/BuyTicketSummary.tsx";
+import BuyTicketSummary from "./src/screens/BuyTicket/BuyTicketSummary.tsx";
 import TicketDetails from "./src/screens/Tickets/TicketDetails.tsx";
 import TopUpScreen from "./src/screens/Wallet/TopUpScreen.tsx";
 import Entypo from 'react-native-vector-icons/Entypo';
 import Icon from 'react-native-vector-icons/FontAwesome';
 import Mci from 'react-native-vector-icons/MaterialCommunityIcons';
 import { colors } from "./src/style/styleValues.js";
-import stylesApp from "./src/style/stylesApp";
 import BuyTicketSelection from "./src/screens/BuyTicket/BuyTicketSelection.tsx";
 import BuyTicketConfiguration from "./src/screens/BuyTicket/BuyTicketConfiguration.tsx";
 import PaymentScreen from "./src/screens/Global/PaymentScreen.tsx";
@@ -31,6 +29,8 @@ import {useAppData} from "./src/hooks/GlobalData/useAppData.tsx";
 import {isExpired} from "react-jwt";
 import { MMKV } from "react-native-mmkv";
 import SplashScreen from 'react-native-splash-screen';
+import ResetPassword from "./src/screens/User/ResetPassword.tsx";
+import style from "./style.tsx";
 
 const Tab = createBottomTabNavigator();
 const Stack = createStackNavigator();
@@ -54,16 +54,18 @@ function UserPanel() {
     return (
         <Tab.Navigator
             screenOptions={()=> ({
-            tabBarStyle: stylesApp.tabBarStyle,
-            tabBarItemStyle: stylesApp.tabBarItemStyle,
-        })}>
+            tabBarStyle: style.tabBarStyle,
+            tabBarItemStyle: style.tabBarItemStyle,
+        })}
+        initialRouteName={"Home"}
+        >
             <Tab.Screen name="Home" component={Home} options={{ headerShown: false,tabBarLabel: "Start", tabBarIcon: renderHomeBarIcon }} />
             <Tab.Screen name="Wallet" component={Wallet}
-                        options={{ headerShown: false,tabBarLabel: "Wallet", tabBarIcon: renderWalletBarIcon }} />
+                        options={{ headerShown: false,tabBarLabel: "Portfel", tabBarIcon: renderWalletBarIcon }} />
             <Tab.Screen name="Tickets" component={Tickets}
-                        options={{ headerShown: false,tabBarLabel: "Tickets", tabBarIcon:renderTicketBarIcon }} />
+                        options={{ headerShown: false,tabBarLabel: "Bilety", tabBarIcon:renderTicketBarIcon }} />
             <Tab.Screen name="Profile" component={Profile}
-                        options={{ headerShown: false,tabBarLabel: "Profile", tabBarIcon: renderUserBarIcon }} />
+                        options={{ headerShown: false,tabBarLabel: "Konto", tabBarIcon: renderUserBarIcon }} />
         </Tab.Navigator>
     );
 }
@@ -87,6 +89,7 @@ function MainApp() {
                         <Stack.Screen name="Welcome" component={Welcome} options={{ headerShown: false }} />
                         <Stack.Screen name="Login" component={Login} options={{ headerShown: false }} />
                         <Stack.Screen name="Register" component={Register} options={{ headerShown: false }} />
+                        <Stack.Screen name="ResetPassword" component={ResetPassword} options={{ headerShown: false }} />
                     </>
                 ):(
                     <>
@@ -116,7 +119,7 @@ function App(): React.JSX.Element {
     }, []);
 
     return (
-        <SafeAreaView style={styles.appContainer}>
+        <SafeAreaView style={style.appContainer}>
             <AuthProvider>
                 <MainApp />
             </AuthProvider>

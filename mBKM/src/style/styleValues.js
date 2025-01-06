@@ -29,16 +29,18 @@ export const dimensions = {
   separator: 25,
   smallSeparator: 15,
 
+  inputGap: 15,
+
   iconSize: 20,
 
 };
 
 export const colors = {
-  appBg: '#E0E9F2',
-  appFirstColor: '#002B44',  // dark grey     | buttonsInactive
-  appSecColor: '#FFA515',    // pink          | buttonsActive, highlights
-  appThirdColor: '#F0F2F4',  // light grey    | inputOutlines
-  appWhite: '#FFFFFF',       // white
+  appBg: '#CDE1F5',
+  appFirstColor: '#002B44',
+  appSecColor: '#FFA515',
+  appThirdColor: '#F0F2F4',
+  appWhite: '#FFFFFF',
   textColorWhite: 'white',
   textColorBlack: 'black',
   darkGray: '#6E6F70',

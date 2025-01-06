@@ -38,7 +38,6 @@ export const payCard = async (amount: number, transactionId: string, cardNumber:
 
 export const payBlik = async (amount: number, transactionId: string, code: string, userTicketId: string, token: string) => {
 
-    console.log("Transaction " + transactionId);
     const response = await axios.post(SERVER_URL + 'pay/blik', {
         amount: amount,
         transactionId: transactionId,

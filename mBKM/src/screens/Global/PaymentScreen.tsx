@@ -34,15 +34,15 @@ const PaymentScreen = () => {
 
     if (isLoading) {
         return (
-            <View style={stylesApp.popupContainer}>
+            <View style={stylesApp.fullBlueContainer}>
                 <ActivityIndicator size="large" color={colors.appFirstColor} />
             </View>
         )
     }
 
     return (
-        <SafeAreaView style={stylesApp.popupContainer}>
-            <Text style={stylesApp.popupText}>Transakcja nr: {transactionNumber}</Text>
+        <SafeAreaView style={stylesApp.fullBlueContainer}>
+            <Text style={stylesApp.whiteButtonText}>Transakcja nr: {transactionNumber}</Text>
 
             <View style={{gap: 5}}>
                 <Text style={stylesApp.whiteNormalCenterText}>Kwota transakcji: <Text style={stylesApp.boldText}>{transactionAmount.toFixed(2)} zł</Text></Text>

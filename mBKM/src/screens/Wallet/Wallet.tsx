@@ -4,12 +4,12 @@ import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
 import { TopUpTransaction } from "../../types/interfaces.tsx";
 import { useNavigation } from "@react-navigation/native";
-import Header from "../../components/Global/Header.tsx";
+import Header from "../../components/Global/Header/Header.tsx";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { NavigationProp } from "../../types/navigation.tsx";
 import { useWalletLogic } from "../../hooks/Wallet/useWalletLogic.tsx";
-import { style as localStyles } from './style.tsx';
+import { style,style as localStyles } from "./style.tsx";
 
 const Wallet = () => {
 
@@ -55,7 +55,7 @@ const Wallet = () => {
             </View>
 
             <View style={localStyles.transactionContainer}>
-                <Text style={stylesApp.h3}>Wpłaty</Text>
+                <Text style={style.h3}>Wpłaty</Text>
             </View>
 
             { topUps && topUps.length > 0? (

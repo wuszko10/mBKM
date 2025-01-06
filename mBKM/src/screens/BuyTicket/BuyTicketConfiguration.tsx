@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityIndicator,SafeAreaView,Text,TouchableOpacity,View } from "react-native";
-import Header from "../../components/Global/Header.tsx";
+import Header from "../../components/Global/Header/Header.tsx";
 import stylesApp from "../../style/stylesApp.js";
 import DateSelector from "../../components/Tickets/DateSelector.tsx";
 import DropdownSelector from "../../components/Tickets/DropdownSelector.tsx";
@@ -10,6 +10,7 @@ import Mci from "react-native-vector-icons/MaterialCommunityIcons";
 import {ONE_LINE, SEASON_TICKET} from "../../../variables.tsx";
 import {useBuyTicketConfigurationLogic} from "../../hooks/BuyTicket/useBuyTicketConfigurationLogic.tsx";
 import { colors } from "../../style/styleValues.js";
+import style from "./style.tsx";
 
 type RouteParams = {
     selectedTicket: Ticket;
@@ -44,8 +45,8 @@ const BuyTicketConfiguration = () => {
             <Header title="Koszyk" />
 
             <Text style={stylesApp.normalH3}>Wybrany bilet</Text>
-            <View style={stylesApp.ticketBox}>
-                <Mci name={"bus-stop"} size={50} style={stylesApp.ticketIcon}/>
+            <View style={style.ticketBoxConfiguration}>
+                <Mci name={"bus-stop"} size={50} style={style.ticketIcon}/>
                 <View>
                     <Text style={stylesApp.itemText}>Bilet {selectedTicket.typeLabel}</Text>
                     <Text style={stylesApp.itemText}>{ selectedTicket.period ? ( `${selectedTicket.periodLabel}, ` ) : ( "Na " )} { selectedTicket.lineLabel } </Text>
@@ -91,8 +92,8 @@ const BuyTicketConfiguration = () => {
             </View>
 
 
-            <View style={stylesApp.summaryBox}>
-                <Text style={stylesApp.finalPrice}>Cena biletu: <Text
+            <View style={style.summaryBox}>
+                <Text style={style.finalPrice}>Cena biletu: <Text
                     style={stylesApp.boldText}>{finalPrice.toFixed(2)} zł</Text></Text>
 
                 <TouchableOpacity onPress={handleSummaryPurchase} style={stylesApp.mainButton}>

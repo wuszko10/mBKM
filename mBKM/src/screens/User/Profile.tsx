@@ -1,12 +1,14 @@
 import React,{ useState } from "react";
-import { SafeAreaView,StyleSheet,Text,TouchableOpacity,View } from "react-native";
+import { SafeAreaView,Text,TouchableOpacity,View } from "react-native";
 import stylesApp from "../../style/stylesApp.js";
 import { colors } from "../../style/styleValues.js";
-import Header from "../../components/Global/Header.tsx";
+import Header from "../../components/Global/Header/Header.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
 import Mci from "react-native-vector-icons/MaterialCommunityIcons";
 import { getBirthDateFromPesel } from "../../utils/getBirthDate.tsx";
-import UpdateAddressPopupForm from "../../components/User/UpdateAddressPopupForm.tsx";
+import UpdateAddressPopupForm from "../../components/Popups/UpdateAddressPopupForm.tsx";
+import ResetPasswordPopup from "../../components/Popups/ResetPasswordPopup.tsx";
+import style from "./style.tsx";
 
 const Profile = () => {
 
@@ -49,12 +51,12 @@ const Profile = () => {
             <Text style={[stylesApp.normalH3,{ fontSize: 18 }]}>Ustawienia konta</Text>
 
             <View>
-                <TouchableOpacity onPress={() => setChangeData(!changeData)} style={localStyle.changeButton}>
+                <TouchableOpacity onPress={() => setChangeData(!changeData)} style={style.changeButton}>
                     <Text style={stylesApp.blackText}>Zmień dane</Text>
                     <Mci name="chevron-right" size={24} />
                 </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => setChangePassword(!changePassword)} style={localStyle.changeButton}>
+                <TouchableOpacity onPress={() => setChangePassword(!changePassword)} style={style.changeButton}>
                     <Text style={stylesApp.blackText}>Zmień hasło</Text>
                     <Mci name="chevron-right" size={24} />
                 </TouchableOpacity>
@@ -73,17 +75,17 @@ const Profile = () => {
                 />
             )}
 
+            { (changePassword && user) && (
+                <ResetPasswordPopup
+                    showPopup={changePassword}
+                    userEmail={user.email}
+                    setShowPopup={setChangePassword}
+                    isLogin={true}
+                />
+            )}
+
         </SafeAreaView>
     );
 };
-
-const localStyle = StyleSheet.create({
-    changeButton: {
-        ...stylesApp.flatlistItem,
-        flexDirection: "row",
-        alignItems: "center",
-        justifyContent: "space-between"
-    }
-});
 
 export default Profile;

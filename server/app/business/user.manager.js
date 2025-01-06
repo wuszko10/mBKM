@@ -21,7 +21,7 @@ function create() {
         const user = await UserDAO.getByEmailOrName(name);
 
         if (!user || !user.active) {
-            throw applicationException.new(applicationException.UNAUTHORIZED, 'User with that email does not exist');
+            throw applicationException.new(applicationException.BAD_REQUEST, 'User with that email does not exist');
         }
 
         userData = await user;
@@ -110,6 +110,63 @@ function create() {
         throw applicationException.new(applicationException.NOT_FOUND, `User address with ID ${addressData.id} not found`);
     }
 
+    async function checkResetPasswordByUserEmail(email, checkPesel) {
+
+        const user = await UserDAO.getByEmailOrName(email);
+
+        if (!user || !user.active) {
+            throw applicationException.new(applicationException.BAD_REQUEST, 'User with that email does not exist');
+        }
+
+        let pesel = user.pesel;
+        pesel = pesel.slice(-5);
+
+        if (pesel === checkPesel) {
+            return user;
+        }
+        throw applicationException.new(applicationException.VALIDATION_FAILURE, `PESEL for user with ID ${user.id} not found`);
+    }
+
+    async function resetPassword(email, oldPassword, newPassword) {
+
+        const user = await UserDAO.getByEmailOrName(email);
+
+        if (!user || !user.active) {
+            throw applicationException.new(applicationException.BAD_REQUEST, 'User with that email does not exist');
+        }
+
+        const passwordData = await PasswordDAO.resetPassword(user.id, hashString(oldPassword));
+
+        if (!passwordData) {
+            throw applicationException.new(applicationException.VALIDATION_FAILURE, 'User with that email does not exist');
+        }
+
+        passwordData.password = hashString(newPassword);
+
+        console.log(JSON.stringify(passwordData));
+
+        return await PasswordDAO.createOrUpdate(passwordData);
+    }
+
+    async function restorePassword(email, newPassword) {
+
+        const user = await UserDAO.getByEmailOrName(email);
+
+        if (!user || !user.active) {
+            throw applicationException.new(applicationException.BAD_REQUEST, 'User with that email does not exist');
+        }
+
+        const passwordData = await PasswordDAO.restorePassword(user.id);
+
+        if (!passwordData) {
+            throw applicationException.new(applicationException.VALIDATION_FAILURE, 'User with that email does not exist');
+        }
+
+        passwordData.password = hashString(newPassword);
+
+        return await PasswordDAO.createOrUpdate(passwordData);
+    }
+
     async function deactivateUser(id) {
         const result = await UserDAO.get(id);
 
@@ -129,6 +186,9 @@ function create() {
         getUserById: getUserById,
         updateAddress,
         deactivateUser,
+        checkResetPasswordByUserEmail,
+        resetPassword,
+        restorePassword,
     };
 }
 

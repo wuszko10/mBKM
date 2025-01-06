@@ -4,6 +4,7 @@ import { storage } from "../../../App.tsx";
 import { OnlinePaymentProps } from "../../components/Payments/OnlinePayment.tsx";
 import { WalletDAO } from "../../types/interfaces.tsx";
 import checkInternetConnection from "../../utils/network.tsx";
+import { ToastAndroid } from "react-native";
 
 export const useOnlinePaymentLogic = (props: OnlinePaymentProps, wallet: WalletDAO | null, setWallet: (wallet: (WalletDAO | null)) => void, token: string | null) => {
     const [code, setCode] = useState<string>()
@@ -50,7 +51,7 @@ export const useOnlinePaymentLogic = (props: OnlinePaymentProps, wallet: WalletD
         if (props.transactionAmount && code && code.length === 6) {
             processTransactionPayment(code).then();
         } else {
-            console.log('Proszę wprowadzić poprawne dane transakcji.');
+            ToastAndroid.show('Proszę wprowadzić poprawne dane transakcji.', ToastAndroid.SHORT);
         }
     };
 
