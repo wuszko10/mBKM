@@ -41,13 +41,22 @@ const Login = () => {
             const response = await userLogin(formData.login, formData.password)
 
             if(response) {
-                setToken(response.token.token);
-                setUser(response.user);
 
-                localStorage.setItem('token', JSON.stringify(response.token.token));
-                localStorage.setItem('user', JSON.stringify(response.user));
+                if (response.isAdmin === true) {
+                    setToken(response.token.token);
+                    setUser(response.user);
 
-                handleChangeRoute();
+                    localStorage.setItem('token', JSON.stringify(response.token.token));
+                    localStorage.setItem('user', JSON.stringify(response.user));
+
+                    handleChangeRoute();
+                } else {
+                    toast.error('Błąd logowania', {
+                        position: 'top-right',
+                        theme: "colored",
+                    });
+                }
+
             }
         } catch {
             toast.error('Błąd logowania', {
