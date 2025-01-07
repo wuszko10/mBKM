@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityIndicator,SafeAreaView,Text,View } from "react-native";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { useRoute } from "@react-navigation/native";
 import WalletPayment from "../../components/Payments/WalletPayment.tsx";
 import CardPayment from "../../components/Payments/CardPayment.tsx";

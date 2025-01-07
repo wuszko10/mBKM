@@ -1,6 +1,6 @@
 import {Modal, Text, TextInput, TouchableOpacity, View} from "react-native";
 import React from "react";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { colors } from "../../style/styleValues.js";
 import tw from "twrnc";
 import Icon from "react-native-vector-icons/FontAwesome";

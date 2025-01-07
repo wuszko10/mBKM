@@ -1,6 +1,6 @@
 import React from "react";
 import { ScrollView,Text,TextInput,TouchableOpacity,View } from "react-native";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import style from './style.tsx'
 import { colors } from "../../style/styleValues.js";
 import tw from "twrnc";

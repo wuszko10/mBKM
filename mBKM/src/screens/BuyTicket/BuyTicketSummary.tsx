@@ -2,7 +2,7 @@ import React from "react";
 import { ActivityIndicator,SafeAreaView,Text,TouchableOpacity,View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { Line,Relief,Ticket } from "../../types/interfaces.tsx";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import Header from "../../components/Global/Header/Header.tsx";
 import { colors } from "../../style/styleValues.js";
 import PaymentSelector from "../../components/Payments/PaymentSelector.tsx";

@@ -1,6 +1,6 @@
 import React from "react";
 import { ActivityIndicator,ScrollView,Text,TouchableOpacity,View } from "react-native";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { useNavigation } from "@react-navigation/native";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { colors } from "../../style/styleValues.js";

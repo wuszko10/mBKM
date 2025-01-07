@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 import { colors, dimensions } from "../../style/styleValues";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 
 export default StyleSheet.create({
 

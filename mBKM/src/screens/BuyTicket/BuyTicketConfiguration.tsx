@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator,SafeAreaView,Text,TouchableOpacity,View } from "react-native";
 import Header from "../../components/Global/Header/Header.tsx";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import DateSelector from "../../components/Tickets/DateSelector.tsx";
 import DropdownSelector from "../../components/Tickets/DropdownSelector.tsx";
 import { Ticket } from "../../types/interfaces.tsx";

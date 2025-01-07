@@ -26,10 +26,10 @@ div {
 
 .LoginRegister {
   height: 100vh;
-  justify-content: center;
-  align-items: center;
+  background-color: $primary-color;
   margin: 0;
-  padding: 0;
+  padding: 50px 30px;
+  box-sizing: border-box;
 }
 
 .menu {
@@ -47,6 +47,7 @@ div {
   flex-direction: column;
   padding: $appPadding;
   overflow-y: auto;
+  overflow-x: hidden;
 }
 
 ::-webkit-scrollbar {
@@ -81,5 +82,10 @@ div {
 
   .content {
     overflow-y: unset;
+  }
+
+  .LoginRegister {
+    flex-direction: column;
+    height: auto;
   }
 }

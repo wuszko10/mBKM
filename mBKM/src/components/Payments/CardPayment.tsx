@@ -1,7 +1,7 @@
 import React from "react";
 import { View,TextInput,Text,TouchableOpacity } from "react-native";
 import ProcessingPopup from "../Popups/ProcessingPopup.tsx";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { colors } from "../../style/styleValues.js";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { useCardPaymentLogic } from "../../hooks/Payment/useCardPaymentLogic.tsx";

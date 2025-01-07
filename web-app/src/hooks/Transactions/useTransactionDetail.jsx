@@ -47,13 +47,9 @@ export const useTransactionDetail = (id) => {
 
         const metadataTypes = localStorage.getItem("metadata");
 
-        console.log(transaction);
-
         if (metadataTypes) {
 
             const parseMetadata = JSON.parse(metadataTypes);
-
-            console.log("fff " + parseMetadata);
 
             const ticketType = parseMetadata.ticketTypes.find(tt => tt.id === ticket?.type.toString());
             const lines = parseMetadata.ticketLines.find(tl => tl.id === ticket?.lines.toString());

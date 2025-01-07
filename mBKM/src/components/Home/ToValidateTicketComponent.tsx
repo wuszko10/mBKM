@@ -1,6 +1,6 @@
 import React from "react";
 import { Line,Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { FlatList,Text,TouchableOpacity,View } from "react-native";
 import { style as localStyles } from "../../screens/Home/style.tsx";
 import Foundation from "react-native-vector-icons/Foundation";

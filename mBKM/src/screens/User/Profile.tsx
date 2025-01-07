@@ -1,6 +1,6 @@
 import React,{ useState } from "react";
 import { SafeAreaView,Text,TouchableOpacity,View } from "react-native";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { colors } from "../../style/styleValues.js";
 import Header from "../../components/Global/Header/Header.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";

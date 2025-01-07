@@ -1,6 +1,6 @@
 import React from "react";
 import { Text,TextInput,TouchableOpacity,View } from "react-native";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import style from './style.tsx'
 import Icon from "react-native-vector-icons/FontAwesome";
 import tw from "twrnc";

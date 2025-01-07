@@ -1,6 +1,6 @@
 import React from 'react';
 import { ActivityIndicator,FlatList,SafeAreaView,Text,TouchableOpacity,View } from "react-native";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { colors } from "../../style/styleValues.js";
 import { TopUpTransaction } from "../../types/interfaces.tsx";
 import { useNavigation } from "@react-navigation/native";

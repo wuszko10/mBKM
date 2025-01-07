@@ -1,6 +1,6 @@
 import React,{ SetStateAction } from "react";
 import { FlatList,SafeAreaView,Text,TouchableOpacity } from "react-native";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { Ticket } from "../../types/interfaces.tsx";
 import {SEASON_TICKET, SINGLE_TICKET} from "../../../variables.tsx";
 import style from "./style.tsx";

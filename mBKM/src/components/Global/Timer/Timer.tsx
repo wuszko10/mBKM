@@ -2,7 +2,7 @@ import React from "react";
 import { View,StyleSheet,Animated,Text } from "react-native";
 import { colors } from "../../../style/styleValues.js";
 import { SEASON_TICKET,SINGLE_TICKET } from "../../../../variables.tsx";
-import stylesApp from "../../../style/stylesApp.js";
+import stylesApp from "../../../style/appStyle.js";
 import { formatRemainingTime } from "../../../utils/timer.tsx";
 import { useTimerLogic } from "../../../hooks/Global/useTimerLogic.tsx";
 import style from "./style.tsx";

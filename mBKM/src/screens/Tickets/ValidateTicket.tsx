@@ -1,7 +1,7 @@
 import React from "react";
 import { ActivityIndicator,SafeAreaView,Text,View } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import Popup from "../../components/Popups/Popup.tsx";
 import ProcessingPopup from "../../components/Popups/ProcessingPopup.tsx";
 import { colors } from "../../style/styleValues.js";

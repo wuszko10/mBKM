@@ -1,6 +1,6 @@
 import { ActivityIndicator,Modal,Text,TouchableOpacity,View } from "react-native";
 import React from "react";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { colors } from "../../style/styleValues.js";
 import style from "./style.tsx";
 

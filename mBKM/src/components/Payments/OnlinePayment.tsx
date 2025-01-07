@@ -1,6 +1,6 @@
 import React from "react";
 import { View,TextInput,Text,TouchableOpacity } from "react-native";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { colors,dimensions } from "../../style/styleValues.js";
 import ProcessingPopup from "../Popups/ProcessingPopup.tsx";
 import { useOnlinePaymentLogic } from "../../hooks/Payment/useOnlinePaymentLogic.tsx";

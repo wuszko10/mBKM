@@ -1,4 +1,4 @@
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { FlatList,Text,TouchableOpacity,View } from "react-native";
 import React,{ Dispatch,SetStateAction } from "react";
 import { Line,Relief,Ticket,UserTicket } from "../../types/interfaces.tsx";

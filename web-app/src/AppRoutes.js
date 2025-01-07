@@ -1,6 +1,6 @@
 import {isExpired} from "react-jwt";
 import {Navigate, Route, Routes} from "react-router-dom";
-import UserLayout from "./components/Layout/UserLayout";
+import UserLayout from "./Layout/UserLayout";
 import Main from "./screens/Home/Main/Main";
 import Tickets from "./screens/Tickets/Tickets";
 import Reliefs from "./screens/Reliefs/Reliefs";
@@ -9,7 +9,7 @@ import UserDetails from "./screens/Users/UserDetails/UserDetails";
 import Transactions from "./screens/Transactions/Transactions";
 import Users from "./screens/Users/Users";
 import NotFound from "./screens/Home/NotFound/NotFound";
-import PublicLayout from "./components/Layout/PublicLayot";
+import PublicLayout from "./Layout/PublicLayot";
 import Login from "./screens/Home/Login/Login";
 import TopUps from "./screens/Transactions/TopUps";
 import {useEffect} from "react";

@@ -2,7 +2,7 @@ import React from "react";
 import { ActivityIndicator,Image,SafeAreaView,ScrollView,Text,TouchableOpacity,View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Header from "../../components/Global/Header/Header.tsx";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { useTicketDetailsLogic } from "../../hooks/Ticket/useTicketDetailsLogic.tsx";
 import { ALL_LINES,DEFAULT_TICKET_STATUS,SINGLE_TICKET } from "../../../variables.tsx";
 import { colors,dimensions } from "../../style/styleValues.js";

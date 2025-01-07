@@ -1,7 +1,7 @@
 import React from "react";
 import { SafeAreaView,ScrollView,Text,TouchableOpacity,View } from "react-native";
 import Header from "../../components/Global/Header/Header.tsx";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import TicketSelector from "../../components/Tickets/TicketSelector.tsx";
 import TicketTypeSelector from "../../components/Tickets/TicketTypeSelector.tsx";
 import {useBuyTicketSelectionLogic} from "../../hooks/BuyTicket/useBuyTicketSelectionLogic.tsx";

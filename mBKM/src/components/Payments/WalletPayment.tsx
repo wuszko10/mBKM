@@ -1,7 +1,7 @@
 import React from "react";
 import { View,Text,TouchableOpacity,ActivityIndicator } from "react-native";
 import Popup from "../Popups/Popup.tsx";
-import stylesApp from "../../style/stylesApp.js";
+import stylesApp from "../../style/appStyle.js";
 import { colors } from "../../style/styleValues.js";
 import ProcessingPopup from "../Popups/ProcessingPopup.tsx";
 import { useWalletPaymentLogic } from "../../hooks/Payment/useWalletPaymentLogic.tsx";
