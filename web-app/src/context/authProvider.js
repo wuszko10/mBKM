@@ -3,7 +3,7 @@ import {userLogout} from "../services/Users/user.service";
 import {toast} from "react-toastify";
 import {decodeToken} from "react-jwt";
 
-const AuthContext = createContext();
+const AuthContext = createContext(undefined);
 
 export const AuthProvider = ({ children }) => {
     const [loading, setLoading] = useState(true);
@@ -53,20 +53,18 @@ export const AuthProvider = ({ children }) => {
     useEffect(() => {
 
         if (token) {
-            const decodedToken = decodeToken(token);
-            // @ts-ignore
+            const decodedToken = decodeToken(String(token));
             const expirationTime = decodedToken && (decodedToken.exp);
             const currentTime = Date.now();
             const timeUntilExpiration = expirationTime && ((expirationTime * 1000) - currentTime);
 
             if ( timeUntilExpiration && (timeUntilExpiration > 0)) {
-                const timeoutId = setTimeout(logout, timeUntilExpiration);
+                const timeoutId = setTimeout(logout, Number(timeUntilExpiration));
                 return () => clearTimeout(timeoutId);
             } else {
                 logout().then();
             }
         }
-        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [token]);
 
 

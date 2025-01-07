@@ -35,7 +35,7 @@ const ValidateTicket = () => {
         return (
             <View style={stylesApp.fullBlueContainer}>
                 <ActivityIndicator size="large" color={colors.appWhite} />
-                <Text style={{color: colors.gray}}>Lokalizowanie...</Text>
+                <Text style={stylesApp.whiteNormalCenterText}>Lokalizowanie...</Text>
             </View>
         )
     }

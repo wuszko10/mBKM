@@ -1,4 +1,4 @@
-export const SERVER_URL = 'http://192.168.7.115:3001/api/';
+export const SERVER_URL = 'http://192.168.7.119:3001/api/';
 // export const SERVER_URL = 'http://10.0.2.2:3001/api/';
 export const LOCATION_TIMEOUT = 15000;
 
