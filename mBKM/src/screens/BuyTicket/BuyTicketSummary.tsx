@@ -9,6 +9,7 @@ import PaymentSelector from "../../components/Payments/PaymentSelector.tsx";
 import { useBuyTicketSummaryLogic } from "../../hooks/BuyTicket/useBuyTicketSummaryLogic.tsx";
 import style from "./style.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
+import {Loading} from "../../components/Global/Loading/Loading.tsx";
 
 type RouteParams = {
     selectedTicket: Ticket,
@@ -36,9 +37,7 @@ const BuyTicketSummary = () => {
 
     if (isLoading) {
         return (
-            <View style={stylesApp.container}>
-                <ActivityIndicator size="large" color={colors.appFirstColor} />
-            </View>
+            <Loading />
         )
     }
 

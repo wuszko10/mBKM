@@ -10,6 +10,7 @@ import {NavigationProp} from "../../types/navigation.tsx";
 import { useTicketLogic } from "../../hooks/Ticket/useTicketLogic.tsx";
 import { ALL_LINES } from "../../../variables.tsx";
 import style from "./style.tsx";
+import {Loading} from "../../components/Global/Loading/Loading.tsx";
 
 const Tickets = () => {
 
@@ -49,9 +50,7 @@ const Tickets = () => {
 
     if (isLoading) {
         return (
-            <View style={stylesApp.container}>
-                <ActivityIndicator size="large" color={colors.appFirstColor} />
-            </View>
+            <Loading />
         )
     }
 

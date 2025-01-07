@@ -7,6 +7,7 @@ import { useTicketDetailsLogic } from "../../hooks/Ticket/useTicketDetailsLogic.
 import { ALL_LINES,DEFAULT_TICKET_STATUS,SINGLE_TICKET } from "../../../variables.tsx";
 import { colors,dimensions } from "../../style/styleValues.js";
 import style from './style.tsx';
+import {Loading} from "../../components/Global/Loading/Loading.tsx";
 
 
 type RouteParams = {
@@ -32,9 +33,7 @@ const TicketDetails = () => {
 
     if (isLoading) {
         return (
-            <View style={stylesApp.container}>
-                <ActivityIndicator size="large" color={colors.appFirstColor} />
-            </View>
+            <Loading />
         )
     }
 

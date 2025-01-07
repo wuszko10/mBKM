@@ -10,6 +10,7 @@ import { useAuth } from "../../context/AuthContext.tsx";
 import { NavigationProp } from "../../types/navigation.tsx";
 import { useWalletLogic } from "../../hooks/Wallet/useWalletLogic.tsx";
 import { style,style as localStyles } from "./style.tsx";
+import {Loading} from "../../components/Global/Loading/Loading.tsx";
 
 const Wallet = () => {
 
@@ -30,9 +31,7 @@ const Wallet = () => {
 
     if (isLoading) {
         return (
-            <View style={stylesApp.container}>
-                <ActivityIndicator size="large" color={colors.appFirstColor} />
-            </View>
+            <Loading />
         )
     }
 

@@ -6,6 +6,7 @@ import PaymentSelector from "../../components/Payments/PaymentSelector.tsx";
 import { colors } from "../../style/styleValues.js";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { useTopUpLogic } from "../../hooks/Wallet/useTopUpLogic.tsx";
+import {Loading} from "../../components/Global/Loading/Loading.tsx";
 
 const TopUpScreen = () => {
 
@@ -24,9 +25,7 @@ const TopUpScreen = () => {
 
     if (isLoading) {
         return (
-            <View style={stylesApp.container}>
-                <ActivityIndicator size="large" color={colors.appFirstColor} />
-            </View>
+            <Loading />
         )
     }
 

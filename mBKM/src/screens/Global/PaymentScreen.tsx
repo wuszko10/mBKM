@@ -9,6 +9,7 @@ import { usePaymentLogic } from "../../hooks/Payment/usePaymentLogic.tsx";
 import { colors } from "../../style/styleValues.js";
 import { BLIK_PAYMENT,CARD_PAYMENT,WALLET_PAYMENT } from "../../../variables.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
+import {Loading} from "../../components/Global/Loading/Loading.tsx";
 
 type RouteParams = {
     transactionId: string,
@@ -34,9 +35,7 @@ const PaymentScreen = () => {
 
     if (isLoading) {
         return (
-            <View style={stylesApp.fullBlueContainer}>
-                <ActivityIndicator size="large" color={colors.appFirstColor} />
-            </View>
+            <Loading />
         )
     }
 

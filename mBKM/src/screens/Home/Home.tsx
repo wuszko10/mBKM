@@ -11,6 +11,7 @@ import { NavigationProp } from "../../types/navigation.tsx";
 import { style as localStyles } from "./style.tsx";
 import ActiveTicketsComponent from "../../components/Home/ActiveTicketsComponent.tsx";
 import ToValidateTicketComponent from "../../components/Home/ToValidateTicketComponent.tsx";
+import {Loading} from "../../components/Global/Loading/Loading.tsx";
 
 const Home = () => {
 
@@ -34,9 +35,7 @@ const Home = () => {
 
     if (isLoading) {
         return (
-            <View style={stylesApp.container}>
-                <ActivityIndicator size="large" color={colors.appFirstColor} />
-            </View>
+            <Loading />
         )
     }
 
