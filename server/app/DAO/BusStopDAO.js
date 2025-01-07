@@ -44,9 +44,7 @@ async function getAndSearch(page, pageSize, searchQuery) {
     const searchCriteria = searchQuery
         ? {
             $or: [
-                { name: { $regex: searchQuery, $options: 'i' } },
-                { longitude: { $regex: searchQuery, $options: 'i' } },
-                { latitude: { $regex: searchQuery, $options: 'i' }},
+                { name: { $regex: searchQuery.toLowerCase(), $options: 'i' } },
             ],
         }
         : {};
