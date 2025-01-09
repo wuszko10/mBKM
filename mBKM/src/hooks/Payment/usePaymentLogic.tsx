@@ -22,9 +22,13 @@ export const usePaymentLogic = (transactionId: string, paymentMethodId: string, 
                 return;
             }
 
-            checkInternetConnection().then();
+            const isConnected = await checkInternetConnection();
+            if (!isConnected) {
+                return;
+            }
 
             if (userTicketId) {
+
                 await rollbackTransaction(transactionId,userTicketId,token?token:"");
 
                 if (!walletPayment) {

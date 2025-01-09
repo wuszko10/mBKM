@@ -45,7 +45,10 @@ export const useValidateTicketLogic = (userTicketId: string, walletTransaction: 
 
         setShowPaymentPopup(true);
 
-        checkInternetConnection().then();
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            return;
+        }
 
         if (!location) {
             setCancelPopupText("Błąd. Lokalizacja jest wymagana, aby skasować bilet.");

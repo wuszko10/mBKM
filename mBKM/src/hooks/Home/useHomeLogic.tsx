@@ -33,7 +33,10 @@ export const useHomeLogic = (token: string | null, userId: string) => {
 
         if(!isLoading) return;
 
-        checkInternetConnection().then();
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            return;
+        }
 
         const ticketStr = storage.getString('tickets');
         const reliefTypesStr = storage.getString('reliefs');

@@ -28,16 +28,19 @@ export const useCardPaymentLogic = (props: CardPaymentProps, wallet: WalletDAO |
 
     const processCardPayment = async (cardNumber: string, expiryDate: string, cvv: string) => {
 
-        checkInternetConnection().then();
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            return;
+        }
 
         props.setStopPayment(false);
         setIsProcessing(true);
         let data;
         try {
             if (props.userTicketId) {
-                data = await payCard(props.transactionAmount, props.transactionId, cardNumber, expiryDate, cvv, props.userTicketId, token ? token : '');
+                data = await payCard(props.transactionAmount, props.transactionId, cardNumber, expiryDate, cvv, props.userTicketId, token || '');
             } else {
-                data = await topUpCard(props.transactionAmount, props.transactionId, cardNumber, expiryDate, cvv, wallet ? wallet?.id : '', token ? token : '');
+                data = await topUpCard(props.transactionAmount, props.transactionId, cardNumber, expiryDate, cvv, wallet?.id || '', token || '');
                 if (data) {
                     setWallet(data);
                     storage.set('wallet', JSON.stringify(data));

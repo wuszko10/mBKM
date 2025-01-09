@@ -3,7 +3,7 @@ import {POSTAL_CODE_REGEX} from "../../utils/validForms.tsx";
 import {useAuth} from "../../context/AuthContext.tsx";
 import {ToastAndroid} from "react-native";
 import checkInternetConnection from "../../utils/network.tsx";
-import {updateAddress, userRegister} from "../../services/user.service.tsx";
+import {updateAddress} from "../../services/user.service.tsx";
 
 export const useAddressUpdateLogic = (setShowPopup: (showPopup: boolean) => void) => {
     const { userId, address, setAddress} = useAuth();
@@ -54,7 +54,10 @@ export const useAddressUpdateLogic = (setShowPopup: (showPopup: boolean) => void
             return;
         }
 
-        checkInternetConnection().then();
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            return;
+        }
 
         try {
 

@@ -31,7 +31,10 @@ export const useLoginLogic = () => {
             return;
         }
 
-        checkInternetConnection().then();
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            return;
+        }
 
         try {
             const response = await userLogin(username, password);

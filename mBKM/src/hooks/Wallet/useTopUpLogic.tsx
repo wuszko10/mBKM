@@ -43,7 +43,10 @@ export const useTopUpLogic = (userId: string, token: string | null) => {
             return;
         }
 
-        checkInternetConnection().then();
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            return;
+        }
 
         const data = await addTopUp(Number(amount), paymentMethodId, userId, token ? token : '');
 

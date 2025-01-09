@@ -13,7 +13,10 @@ export const useOnlinePaymentLogic = (props: OnlinePaymentProps, wallet: WalletD
     const [popupText, setPopupText] = useState("");
     const processTransactionPayment = async (code: string) => {
 
-        checkInternetConnection().then();
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            return;
+        }
 
         props.setStopPayment(false);
         setIsProcessing(true);
@@ -22,12 +25,12 @@ export const useOnlinePaymentLogic = (props: OnlinePaymentProps, wallet: WalletD
 
         try {
             if (props.userTicketId) {
-                data = await payBlik(props.transactionAmount, props.transactionId, code, props.userTicketId, token ? token : '');
+                data = await payBlik(props.transactionAmount, props.transactionId, code, props.userTicketId, token || '');
                 if (data) {
                     setPopupText("Transakcja zakończona pomyślnie!");
                 }
             } else {
-                data = await topUpBlik(props.transactionAmount, props.transactionId, code, wallet ? wallet?.id : '', token ? token : '');
+                data = await topUpBlik(props.transactionAmount, props.transactionId, code, wallet?.id || '', token || '');
                 if (data) {
                     setWallet(data);
                     storage.set('wallet', JSON.stringify(data));

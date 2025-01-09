@@ -51,7 +51,10 @@ export const useBuyTicketSummaryLogic = (selectedTicket: Ticket, selectedLines: 
     const handleBuyTicket = async () => {
         if (paymentMethodId) {
 
-            checkInternetConnection().then();
+            const isConnected = await checkInternetConnection();
+            if (!isConnected) {
+                return;
+            }
 
             const data = await addTransaction(selectedTicket._id, finalPrice, paymentMethodId, userId, statusId, selectedDate, selectedRelief ? selectedRelief._id : '', selectedLines ? selectedLines.id : '', token ? token : '');
 

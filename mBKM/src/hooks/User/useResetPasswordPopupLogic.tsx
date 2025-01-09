@@ -54,7 +54,10 @@ export const useResetPasswordPopupLogic = (userEmail: string, setShowPopup: (sho
             return;
         }
 
-        checkInternetConnection().then();
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            return;
+        }
 
         try {
 

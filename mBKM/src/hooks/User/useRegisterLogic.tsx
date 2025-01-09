@@ -48,7 +48,10 @@ export const useRegisterLogic = () => {
             return;
         }
 
-        checkInternetConnection().then();
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            return;
+        }
 
         try {
 

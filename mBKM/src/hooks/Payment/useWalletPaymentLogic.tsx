@@ -40,7 +40,10 @@ export const useWalletPaymentLogic = (props: WalletPaymentProps, wallet: WalletD
 
     const processWalletPayment = async () => {
 
-        checkInternetConnection().then();
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            return;
+        }
 
         let inRange;
         let data;
@@ -50,16 +53,21 @@ export const useWalletPaymentLogic = (props: WalletPaymentProps, wallet: WalletD
         setShowPaymentPopup(true);
 
         try {
-            data = await payWallet(props.transactionAmount, props.transactionId, wallet ? wallet?.id : '', props.userTicketId, token ? token : '');
-            if (data) {
 
+            if (!props.transactionId || !token || !wallet?.id) {
+                setPaymentPopupText("Brak wymaganych danych do przetworzenia płatności.");
+                return;
+            }
+
+            data = await payWallet(props.transactionAmount, props.transactionId, wallet.id, props.userTicketId, token);
+
+            if (data) {
                 setWallet(data);
                 storage.set('wallet', JSON.stringify(data));
 
-                let retries = 0;
-                while (!stops && retries < 10) {
+                for (let retries = 0; retries < 10; retries++) {
+                    if (stops) break;
                     await new Promise(resolve => setTimeout(resolve, 100));
-                    retries++;
                 }
 
                 if (stops) {
@@ -77,15 +85,12 @@ export const useWalletPaymentLogic = (props: WalletPaymentProps, wallet: WalletD
                         setPaymentPopupText("Transakcja zakończona pomyślnie!");
                     }
                 }
-
-
             }
         } catch (error) {
             setPaymentPopupText("Wystąpił błąd podczas przetwarzania płatności.");
         } finally {
             setIsProcessing(false);
         }
-
     };
 
     const handleWalletPayment = () => {

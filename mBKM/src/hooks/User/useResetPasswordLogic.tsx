@@ -23,7 +23,10 @@ export const useResetPasswordLogic = () => {
             return;
         }
 
-        checkInternetConnection().then();
+        const isConnected = await checkInternetConnection();
+        if (!isConnected) {
+            return;
+        }
 
         try {
             const response = await UserResetPasswordCheck(username, checkPesel);
