@@ -29,19 +29,16 @@ export const useLoginLogic = () => {
     const handleLogin = async (event) => {
         event.preventDefault();
 
-        if (!formData.login || !formData.password) {
+        if (!formData.login || !formData.password)
             return;
-        }
 
         try {
             const response = await userLogin(formData.login, formData.password)
-
             if(response) {
-
                 if (response.user.isAdmin === true) {
+
                     setToken(response.token.token);
                     setUser(response.user);
-
                     localStorage.setItem('token', JSON.stringify(response.token.token));
                     localStorage.setItem('user', JSON.stringify(response.user));
 
@@ -52,7 +49,6 @@ export const useLoginLogic = () => {
                         theme: "colored",
                     });
                 }
-
             }
         } catch {
             toast.error('Błąd logowania', {

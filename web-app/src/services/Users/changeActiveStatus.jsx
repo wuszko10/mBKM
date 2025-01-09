@@ -15,5 +15,4 @@ export const changeActiveStatus = async (id, token, refreshData) => {
             });
         }
     }
-
 }

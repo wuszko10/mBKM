@@ -172,8 +172,6 @@ function create() {
 
     async function activateOrDeactivate(id) {
 
-        console.log(id);
-
         const result = await UserDAO.get(id);
 
         if(!result){
@@ -181,8 +179,6 @@ function create() {
         }
 
         result.active = !result.active;
-
-        console.log(result);
         return await UserDAO.createNewOrUpdate(result);
     }
 
