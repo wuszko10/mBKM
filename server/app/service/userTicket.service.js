@@ -10,7 +10,6 @@ export function addTime(currentTimestamp, dateString) {
             date.setMonth(date.getMonth() + number);
             return date.getTime();
         }
-
         return match;
     });
 

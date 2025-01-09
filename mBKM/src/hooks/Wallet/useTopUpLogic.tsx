@@ -48,7 +48,12 @@ export const useTopUpLogic = (userId: string, token: string | null) => {
             return;
         }
 
-        const data = await addTopUp(Number(amount), paymentMethodId, userId, token ? token : '');
+        if (!token) {
+            ToastAndroid.show("Błąd wewntęrzny.", ToastAndroid.SHORT);
+            return;
+        }
+
+        const data = await addTopUp(Number(amount), paymentMethodId, userId, token);
 
         if (data) {
             navigation.navigate('PaymentScreen', {
@@ -58,7 +63,6 @@ export const useTopUpLogic = (userId: string, token: string | null) => {
                 transactionAmount: Number(amount),
             });
         }
-
     };
 
     return {

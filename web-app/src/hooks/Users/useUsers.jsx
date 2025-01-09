@@ -59,11 +59,7 @@ export const useUsers = () => {
 
     const handleToggle = async (id) => {
 
-        const data = users.find(u => u._id === id);
-
-        console.log(data);
-
-        await changeActiveStatus(id, data, token, refreshUsers);
+        await changeActiveStatus(id, token, refreshUsers);
 
     }
 

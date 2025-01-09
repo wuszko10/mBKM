@@ -1,12 +1,19 @@
-import {editUser} from "./user.service";
+import {deactivateUser} from "./user.service";
+import {toast} from "react-toastify";
 
-export const changeActiveStatus = async (id, data, token, refreshData) => {
+export const changeActiveStatus = async (id, token, refreshData) => {
     const isConfirmed = window.confirm("Czy chcesz dezaktywować użytkownika?");
 
     if (isConfirmed) {
-        data.active = !data.active;
-
-        await editUser(id, data, token)
-        await refreshData();
+        try {
+            await deactivateUser(id, token)
+            await refreshData();
+        } catch (error) {
+            toast.warn('Błąd operacji', {
+                position: 'top-right',
+                theme: "colored",
+            });
+        }
     }
+
 }

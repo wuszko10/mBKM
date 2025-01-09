@@ -103,3 +103,15 @@ export const userLogin = async (username, password) => {
     return response.data;
 };
 
+
+export const deactivateUser = async (id, token) => {
+
+    const response = await axios.post(URI+'user/deactivate', {
+        id: id,
+    }, {
+        headers: {
+            'authorization': `Bearer ${token}`,
+        }
+    });
+    return response.data;
+};

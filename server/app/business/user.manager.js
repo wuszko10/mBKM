@@ -17,25 +17,28 @@ function create() {
     }
 
     async function authenticate(name, password) {
-        let userData;
         const user = await UserDAO.getByEmailOrName(name);
-
         if (!user || !user.active) {
             throw applicationException.new(applicationException.BAD_REQUEST, 'User with that email does not exist');
         }
 
-        userData = await user;
+        const isAuthorized = await PasswordDAO.authorize(user.id, hashString(password));
+        if (!isAuthorized) {
+            throw applicationException.new(applicationException.BAD_REQUEST, 'Invalid password');
+        }
 
-        await PasswordDAO.authorize(user.id, hashString(password));
-        const wallet = await WalletDAO.getWalletByUserId(user.id);
-        const token = await TokenDAO.create(userData);
-        const address = await UserAddressDAO.getAddressByUserId(user.id);
+        const [wallet, token, address] = await Promise.all([
+            WalletDAO.getWalletByUserId(user.id),
+            TokenDAO.create(user),
+            UserAddressDAO.getAddressByUserId(user.id)
+        ]);
+
         return {
             token: getToken(token),
-            user: user,
-            wallet: wallet,
-            address: address,
-        }
+            user,
+            wallet,
+            address,
+        };
     }
 
     async function getAllUsers(page, pageSize, searchQuery) {
@@ -167,14 +170,19 @@ function create() {
         return await PasswordDAO.createOrUpdate(passwordData);
     }
 
-    async function deactivateUser(id) {
+    async function activateOrDeactivate(id) {
+
+        console.log(id);
+
         const result = await UserDAO.get(id);
 
         if(!result){
             throw applicationException.new(applicationException.NOT_FOUND, `User with ID ${id} not found`);
         }
 
-        result.active = false;
+        result.active = !result.active;
+
+        console.log(result);
         return await UserDAO.createNewOrUpdate(result);
     }
 
@@ -185,7 +193,7 @@ function create() {
         removeHashSession: removeHashSession,
         getUserById: getUserById,
         updateAddress,
-        deactivateUser,
+        activateOrDeactivateUser: activateOrDeactivate,
         checkResetPasswordByUserEmail,
         resetPassword,
         restorePassword,

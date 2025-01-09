@@ -59,7 +59,13 @@ export const useWalletPaymentLogic = (props: WalletPaymentProps, wallet: WalletD
                 return;
             }
 
-            data = await payWallet(props.transactionAmount, props.transactionId, wallet.id, props.userTicketId, token);
+            data = await payWallet(
+                props.transactionAmount,
+                props.transactionId,
+                wallet.id,
+                props.userTicketId,
+                token
+            );
 
             if (data) {
                 setWallet(data);

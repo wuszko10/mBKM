@@ -36,13 +36,11 @@ export const useValidateTicketLogic = (userTicketId: string, walletTransaction: 
     useEffect(() => {
         if (walletTransaction && location) {
             setLoading(false);
-            confirmationPopupAction().then();
+            handleValidate();
         }
     }, [walletTransaction, location])
 
-    const confirmationPopupAction = async () => {
-
-
+    const handleValidate = async () => {
         setShowPaymentPopup(true);
 
         const isConnected = await checkInternetConnection();
@@ -56,10 +54,15 @@ export const useValidateTicketLogic = (userTicketId: string, walletTransaction: 
             return;
         }
 
+        if (!token) {
+            setCancelPopupText("Błąd wewntęrzny.");
+            return;
+        }
+
         try {
             setIsProcessing(true);
 
-            const data = await validateTicket(userTicketId, token ? token : '');
+            const data = await validateTicket(userTicketId, token);
 
             if (data) {
                 setRefreshData(true);
@@ -141,7 +144,7 @@ export const useValidateTicketLogic = (userTicketId: string, walletTransaction: 
         cancelPopupText,
         cancelPopupAction,
         showPopup,
-        confirmationPopupAction,
+        confirmationPopupAction: handleValidate,
         showBadPopupRequest,
         badPopupText,
         refreshLocation,

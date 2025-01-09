@@ -5,7 +5,7 @@ import Header from "../../components/Global/Header/Header.tsx";
 import stylesApp from "../../style/appStyle.js";
 import { useTicketDetailsLogic } from "../../hooks/Ticket/useTicketDetailsLogic.tsx";
 import { ALL_LINES,DEFAULT_TICKET_STATUS,SINGLE_TICKET } from "../../../variables.tsx";
-import { colors,dimensions } from "../../style/styleValues.js";
+import { dimensions } from "../../style/styleValues.js";
 import style from './style.tsx';
 import {Loading} from "../../components/Global/Loading/Loading.tsx";
 

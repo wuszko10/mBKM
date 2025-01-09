@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useState} from "react";
+import {useCallback, useState} from "react";
 import {getTicketFormFields} from "../../utils/PopupFields";
 import {useAuth} from "../../context/authProvider";
 import {isFormValid, isValidDate} from "../../utils/Tickets/validations";

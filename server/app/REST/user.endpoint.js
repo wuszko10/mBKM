@@ -83,7 +83,7 @@ const userEndpoint = (router) => {
 
     router.post('/api/user/deactivate', admin, async (request, response) => {
         try {
-            const result = await business.getUserManager().deactivateUser(request.query.id);
+            const result = await business.getUserManager().activateOrDeactivateUser(request.body.id);
             response.status(200).send(result);
         } catch (error) {
             applicationException.errorHandler(error, response);

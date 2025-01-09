@@ -72,7 +72,7 @@ const Main = () => {
 
                         <div className={"home-info-box"}>
                             <MdSyncLock size={30} />
-                            <p>Liczba aktywnych sesji użytkowników: <strong>{activeUsers ? activeUsers.toString() : '0'}</strong></p>
+                            <p>Liczba aktywnych użytkowników: <strong>{activeUsers ? activeUsers.toString() : '0'}</strong></p>
                         </div>
                     </div>
                     <div className={"horizontal-div"}>

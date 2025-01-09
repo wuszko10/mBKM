@@ -63,6 +63,11 @@
   gap: $gap;
 }
 
+.home-info-box p{
+  flex: 1;
+  width: auto;
+}
+
 .home-row-stats-box {
   flex-direction: row;
   align-items: stretch;

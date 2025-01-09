@@ -44,7 +44,7 @@ export const useUserDetails = (id) => {
 
     const changeStatus = async () => {
 
-        await changeActiveStatus(user.id, user, token, refreshUser);
+        await changeActiveStatus(user.id, token, refreshUser);
     }
 
 

@@ -50,7 +50,6 @@ async function createNewOrUpdateTicket(ticket) {
                 ],
             });
 
-
             const ticketsArray = Array.isArray(overlappingTickets) ? mongoConverter(overlappingTickets) : [];
 
             if (ticketsArray.length > 0) {

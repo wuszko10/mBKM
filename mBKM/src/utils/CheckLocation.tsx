@@ -17,7 +17,6 @@ const checkIfInRange = (userLocation: Location, stops: BusStop[]) => {
     });
 };
 export function checkLocation (stops: BusStop[]) {
-
     return GetLocation.getCurrentPosition({
             enableHighAccuracy: true,
             timeout: LOCATION_TIMEOUT,
@@ -28,5 +27,4 @@ export function checkLocation (stops: BusStop[]) {
             .catch((err) => {
                 throw new Error(err);
             });
-
 }
