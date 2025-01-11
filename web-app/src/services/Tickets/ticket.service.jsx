@@ -26,12 +26,13 @@ export const addTicket = async (ticketData, token) => {
     }
 };
 
-export const fetchTickets = async (page, pageSize, searchQuery, token) => {
+export const fetchTickets = async (page, pageSize, searchQuery, token, removeDuplicates = true) => {
 
     const params = new URLSearchParams({
         page: page,
         pageSize: pageSize,
         searchQuery: searchQuery,
+        removeDuplicates: removeDuplicates,
     });
 
     const response = await axios.get(URI + `tickets/table?${params.toString()}`, {

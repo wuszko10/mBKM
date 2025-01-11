@@ -99,15 +99,45 @@ async function createNewOrUpdateTicket(ticket) {
     })
 }
 
-async function getAndSearchTicket(page, pageSize, searchCriteria) {
+async function getAndSearchTicket(page, pageSize, searchCriteria, removeDuplicates) {
+
+    let totalRecords;
+    let tickets;
 
     try {
-        const totalRecords = await TicketModel.countDocuments(searchCriteria);
+        const isRemoveDuplicates = removeDuplicates === 'true';
+        if (isRemoveDuplicates) {
 
-        const tickets = await TicketModel.find(searchCriteria)
-            .skip((page - 1) * pageSize)
-            .limit(pageSize)
-            .sort({ _id: -1 });
+            tickets = await TicketModel.aggregate([
+                {$match: searchCriteria},
+                {
+                    $group: {
+                        _id: {
+                            type: "$type",
+                            lines: "$lines",
+                            period: "$period"
+                        },
+                        ticket: {$first: "$$ROOT"}
+                    }
+                },
+                {$replaceRoot: {newRoot: "$ticket"}},
+                {$sort: {type: 1, period: -1, _id: -1}},
+                {$skip: (page - 1) * pageSize},
+                {$limit: Number(pageSize)}
+            ]);
+
+            totalRecords = tickets.length;
+        } else {
+
+            tickets = await TicketModel.aggregate([
+                {$match: searchCriteria},
+                {$addFields: {isIndefinite: {$cond: {if: {$eq: ["$offerEndDate", null]}, then: 1, else: 0}}}},
+                {$sort: {isIndefinite: -1, offerEndDate: -1, offerStartDate: -1, _id: -1}},
+                {$skip: (page - 1) * pageSize},
+                {$limit: Number(pageSize)}
+            ]);
+            totalRecords = tickets.length;
+        }
 
         return {
             data: tickets,

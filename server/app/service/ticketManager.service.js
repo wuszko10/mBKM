@@ -1,8 +1,10 @@
+import mongoose from "mongoose";
+
 export function getMetadataNames (tickets, ticketTypes, ticketPeriods, ticketLines) {
     const ticketsArray = Array.isArray(tickets) ? tickets : [];
 
     return ticketsArray.map(ticket => {
-        const ticketObj = ticket.toObject();
+        const ticketObj = { ...ticket };
 
         const type = ticketTypes.find(t => t.id.toString() === ticket.type.toString());
         const period = ticketPeriods.find(p => p.id.toString() === ticket.period.toString());
@@ -26,21 +28,54 @@ export function mappingIdsToNames (ticketTypes, ticketPeriods, ticketLines, sear
     let periodIds = [];
     let lineIds = [];
 
+    let isMultipleWords = false;
+
     if (searchQuery) {
         const lowerCaseSearchQuery = searchQuery.toLowerCase();
 
-        typeIds = ticketTypes.filter(t => t.label.toLowerCase().includes(lowerCaseSearchQuery)).map(t => t.id);
-        periodIds = ticketPeriods.filter(p => p.label.toLowerCase().includes(lowerCaseSearchQuery)).map(p => p.id);
-        lineIds = ticketLines.filter(l => l.label.toLowerCase().includes(lowerCaseSearchQuery)).map(l => l.id);
+        const queryWords = lowerCaseSearchQuery.split(' ');
+        isMultipleWords = queryWords.length > 1;
+
+        if (isMultipleWords) {
+
+            queryWords.forEach(word => {
+                if (['jednorazowy', 'okresowy'].some(type => word.includes(type))) {
+                    typeIds = ticketTypes.filter(t => t.label.toLowerCase().includes(word)).map(t => t.id);
+                }
+
+                if (/^\d+-(minutowy|miesięczny)$/.test(word)) {
+                    periodIds = ticketPeriods.filter(p => p.label.toLowerCase().includes(word)).map(p => p.id);
+                }
+            });
+
+            if (lowerCaseSearchQuery.includes('wszystkie linie') || lowerCaseSearchQuery.includes('wszystkie')) {
+                lineIds = ticketLines.filter(l => l.label.toLowerCase().includes('wszystkie')).map(l => l.id);
+            } else if (lowerCaseSearchQuery.includes('jedna linia') || lowerCaseSearchQuery.includes('jedna')){
+                lineIds = ticketLines.filter(l => l.label.toLowerCase().includes('jedna')).map(l => l.id);
+            }
+
+        } else {
+            typeIds = ticketTypes.filter(t => t.label.toLowerCase().includes(lowerCaseSearchQuery)).map(t => t.id);
+            periodIds = ticketPeriods.filter(p => p.label.toLowerCase().includes(lowerCaseSearchQuery)).map(p => p.id);
+            lineIds = ticketLines.filter(l => l.label.toLowerCase().includes(lowerCaseSearchQuery)).map(l => l.id);
+        }
     }
 
     return searchQuery
-        ? {
-            $or: [
-                {type: {$in: typeIds}},
-                {lines: {$in: lineIds}},
-                {period: {$in: periodIds}},
-            ],
-        }
-        : {}
+        ? isMultipleWords
+            ? {
+                $and: [
+                    { type: { $in: typeIds.map(id => new mongoose.Types.ObjectId(id)) } },
+                    { lines: { $in: lineIds.map(id => new mongoose.Types.ObjectId(id)) } },
+                    { period: { $in: periodIds.map(id => new mongoose.Types.ObjectId(id)) } },
+                ]
+            }
+            : {
+                $or: [
+                    { type: { $in: typeIds.map(id => new mongoose.Types.ObjectId(id)) } },
+                    { lines: { $in: lineIds.map(id => new mongoose.Types.ObjectId(id)) } },
+                    { period: { $in: periodIds.map(id => new mongoose.Types.ObjectId(id)) } },
+                ]
+            }
+        : {};
 }

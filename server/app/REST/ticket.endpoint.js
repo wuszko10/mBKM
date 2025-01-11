@@ -15,10 +15,10 @@ const TicketEndpoint = (router) => {
     })
 
     router.get('/api/tickets/table', authToken, async (req, res) => {
-        const { page = 1, pageSize = 10, searchQuery } = req.query;
+        const { page = 1, pageSize = 10, searchQuery, removeDuplicates } = req.query;
         const cache = req.app.locals.cache;
         try {
-            const tickets = await business.getTicketManager().getAndSearchTicket(page, pageSize, searchQuery, cache);
+            const tickets = await business.getTicketManager().getAndSearchTicket(page, pageSize, searchQuery, cache, removeDuplicates);
             res.status(200).json(tickets);
         } catch (error) {
             applicationException.errorHandler(error, res);

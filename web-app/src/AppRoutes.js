@@ -18,6 +18,7 @@ import {useAuth} from "./context/authProvider";
 import {fetchMetadata} from "./services/metadata.service";
 import TransactionDetails from "./screens/Transactions/TransationDetails/TransactionDetails";
 import Loading from "./components/Loading/Loading";
+import TicketsDetails from "./screens/Tickets/TicketsDetails";
 
 const AppRoutes = () => {
     const { token, loading } = useAuth();
@@ -40,6 +41,7 @@ const AppRoutes = () => {
                 <Route path="/" element={<UserLayout />}>
                     <Route index element={<Main />} />
                     <Route path="tickets" element={<Tickets />} />
+                    <Route path="ticket/:type/:period/:lines" element={<TicketsDetails />} />
                     <Route path="reliefs" element={<Reliefs />} />
                     <Route path="stops" element={<BusStops />} />
                     <Route path="lines" element={<Lines />} />

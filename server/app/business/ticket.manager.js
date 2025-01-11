@@ -33,7 +33,7 @@ function create() {
     }
   }
 
-  async function getAndSearchTicket(queryPage, queryPageSize, searchQuery, cache) {
+  async function getAndSearchTicket(queryPage, queryPageSize, searchQuery, cache, removeDuplicates) {
 
     const ticketTypes = cache.get("ticketTypes");
     const ticketPeriods = cache.get("ticketPeriods");
@@ -42,14 +42,13 @@ function create() {
     const searchCriteria = mappingIdsToNames(ticketTypes, ticketPeriods, ticketLines, searchQuery);
 
     try {
-
       const {
         data,
           page,
           pageSize,
           totalPages,
           totalRecords,
-      } = await TicketDAO.getAndSearchTicket(queryPage, queryPageSize, searchCriteria)
+      } = await TicketDAO.getAndSearchTicket(queryPage, queryPageSize, searchCriteria, removeDuplicates)
 
       const tickets = getMetadataNames(data, ticketTypes, ticketPeriods, ticketLines);
 

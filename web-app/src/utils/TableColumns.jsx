@@ -7,7 +7,7 @@ import {FaExternalLinkSquareAlt} from "react-icons/fa";
 import {FiExternalLink} from "react-icons/fi";
 import ToggleSwitch from "../components/ToggleSwitch/toggleSwitch";
 
-export const getTicketsTableColumns = (handleEdit, handleRemove, handleDuplicate, handleCancel) => [
+export const getTicketsTableColumns = (navigate) => [
     {
         accessorKey: 'id',
         header: 'ID',
@@ -26,9 +26,26 @@ export const getTicketsTableColumns = (handleEdit, handleRemove, handleDuplicate
         header: 'Ilość linii',
     },
     {
-        accessorKey: 'price',
-        header: 'Cena [zł]',
-        cell: (info) => (info.getValue().toFixed(2) + " zł"),
+        header: ' ',
+        cell: ({ row }) => (
+            <div className="row-div">
+                <Button
+                    handleFunction={navigate}
+                    argument={`/ticket/${row.original.typeLabel}/${row.original.periodLabel}/${row.original.lineLabel}`}
+                    defaultIcon={<FaExternalLinkSquareAlt  className={'defaultTableIcon'} />}
+                    hoverIcon={<FiExternalLink className={'hoverTableIcon'} />}
+                    title={'Szczegóły biletu'}
+                />
+            </div>
+        ),
+    },
+];
+
+export const getTicketsDetailsTableColumns = (handleEdit, handleRemove, handleDuplicate, handleCancel) => [
+    {
+        accessorKey: 'id',
+        header: 'ID',
+        cell: (info) => info.row.index + 1,
     },
     {
         accessorKey: 'offerStartDate',
@@ -45,6 +62,11 @@ export const getTicketsTableColumns = (handleEdit, handleRemove, handleDuplicate
             const dateValue = info.getValue();
             return dateValue ? new Date(dateValue).toLocaleString() : 'Brak';
         },
+    },
+    {
+        accessorKey: 'price',
+        header: 'Cena [zł]',
+        cell: (info) => (info.getValue().toFixed(2) + " zł"),
     },
     {
         header: ' ',
@@ -81,23 +103,25 @@ export const getTicketsTableColumns = (handleEdit, handleRemove, handleDuplicate
                             hoverIcon={<RiEdit2Fill className={'hoverTableIcon'}/>}
                             title={'Edytuj datę zakończenia oferty'}
                         />
-                        {!row.original.offerEndDate ? (
+                        {!row.original.offerEndDate && (
+                                <Button
+                                    handleFunction={handleCancel}
+                                    argument={row.original._id}
+                                    defaultIcon={<MdOutlineCancel className={'defaultTableIcon'}/>}
+                                    hoverIcon={<MdCancel className={'hoverTableIcon'}/>}
+                                    title={'Zakończ ofertę'}
+                                />)}
+
+                        { (row.original.offerEndDate && row.original.isLast) &&(
                             <Button
-                                handleFunction={handleCancel}
-                                argument={row.original._id}
-                                defaultIcon={<MdOutlineCancel className={'defaultTableIcon'}/>}
-                                hoverIcon={<MdCancel className={'hoverTableIcon'}/>}
-                                title={'Zakończ ofertę'}
-                            />)
-                            :
-                            (<Button
                                 handleFunction={handleDuplicate}
                                 argument={row.original._id}
                                 defaultIcon={<TbCopyPlus className={'defaultTableIcon'}/>}
                                 hoverIcon={<TbCopyPlusFilled className={'hoverTableIcon'}/>}
                                 title={'Skopiuj, aby ustalić nową cenę'}
-                            />)
-                        }
+                            />
+                        )}
+
                     </div>)
                 }
             </div>)

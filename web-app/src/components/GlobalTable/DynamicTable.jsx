@@ -16,6 +16,7 @@ const DynamicTable = ({
                           onPageChange,
                           onPageSizeChange,
                           loading,
+                          isInput = true,
                       }) => {
 
     const {
@@ -27,14 +28,16 @@ const DynamicTable = ({
 
     return (
         <div className="content-box-table">
-            <input
-                name="search-input"
-                type="text"
-                placeholder="Wyszukaj w tabeli"
-                value={filter}
-                className="search-input"
-                onChange={handleChange}
-            />
+            {isInput && (
+                <input
+                    name="search-input"
+                    type="text"
+                    placeholder="Wyszukaj w tabeli"
+                    value={filter}
+                    className="search-input"
+                    onChange={handleChange}
+                />
+            )}
             <div className="content-table">
                 {!loading ? (
                     <table>
