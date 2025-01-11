@@ -23,8 +23,8 @@ export const isValidDate = (formData, oldTicket, editMode, duplicateMode, cancel
     if (editMode || cancelMode) {
 
         if (duplicateMode) {
-            console.log("tuttt");
             const endDateCheck = new Date(oldTicket.offerEndDate);
+            console.log("ddd " + endDateCheck);
             if (offerStartDate.toISOString() <= endDateCheck.toISOString()) {
                 alert(`Data musi być późniejsza niż obowiązująca oferta.\n\nAktualnie oferta ważna jest do: ${endDateCheck.toLocaleString()}\nWybrana data: ${offerStartDate.toLocaleString()}`);
                 return false;

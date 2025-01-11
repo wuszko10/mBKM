@@ -113,7 +113,6 @@ export const useTicketsDetails = (type: string, lines: string, period: string) =
         delete newTicket._id;
 
         setSelectedTicket(newTicket);
-        setOldTicket({});
         setTitle('Ustal nową cenę biletu');
         setButtonText("Zmień cenę");
         setEditMode(true);
@@ -149,6 +148,7 @@ export const useTicketsDetails = (type: string, lines: string, period: string) =
         const newTicket = { ...ticket };
         newTicket.offerStartDate = latestOfferEndDate;
 
+        setOldTicket({});
         duplicateForm(newTicket);
 
     };
@@ -208,6 +208,7 @@ export const useTicketsDetails = (type: string, lines: string, period: string) =
 
         newTicket.offerStartDate = new Date(newStartDate);
 
+        setOldTicket(oldTicket);
         duplicateForm(newTicket);
     }
 
