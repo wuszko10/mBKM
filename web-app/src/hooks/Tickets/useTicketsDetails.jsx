@@ -123,9 +123,11 @@ export const useTicketsDetails = (type: string, lines: string, period: string) =
 
     const handleShowCreateForm = () => {
         const ticket = tickets[0];
+        const currentDate = new Date(Date.now());
+        currentDate.setHours(1,0,0,0);
 
-        const latestOfferEndDate = tickets.reduce((latest, row) => {
-            const offerEndDate = row.offerEndDate && new Date(row.offerEndDate);
+        let latestOfferEndDate = tickets.reduce((latest, row) => {
+            const offerEndDate = row.offerEndDate && new Date(row.offerEndDate); //tutaj dawać aktualną datę, jeśli jest to data wsteczna
             return offerEndDate > latest ? offerEndDate : latest;
         }, new Date(0));
 
@@ -135,9 +137,14 @@ export const useTicketsDetails = (type: string, lines: string, period: string) =
             window.alert('Brak daty zakończenia oferty. Należy zakończyć aktualną ofertę.');
             return;
         }
+        if (latestOfferEndDate)
 
         latestOfferEndDate.setDate(latestOfferEndDate.getDate() + 1);
         latestOfferEndDate.setHours(1,0,0,0);
+
+        if (latestOfferEndDate < currentDate) {
+            latestOfferEndDate = currentDate;
+        }
 
         const newTicket = { ...ticket };
         newTicket.offerStartDate = latestOfferEndDate;
