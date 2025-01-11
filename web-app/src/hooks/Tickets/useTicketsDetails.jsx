@@ -194,10 +194,17 @@ export const useTicketsDetails = (type: string, lines: string, period: string) =
         const oldTicket = { ...ticket };
         const newTicket = { ...ticket };
 
-        const currentDate = oldTicket.offerEndDate ? oldTicket.offerEndDate : oldTicket.offerStartDate
-        const newStartDate = new Date(currentDate);
+        const currentDate = new Date(Date.now());
+        currentDate.setHours(1,0,0,0);
+
+        const ticketDate = oldTicket.offerEndDate ? oldTicket.offerEndDate : oldTicket.offerStartDate
+        let newStartDate = new Date(ticketDate);
         newStartDate.setDate(newStartDate.getDate() + 1);
         newStartDate.setHours(1,0,0,0);
+
+        if (newStartDate < currentDate) {
+            newStartDate = currentDate;
+        }
 
         newTicket.offerStartDate = new Date(newStartDate);
 
