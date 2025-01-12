@@ -10,7 +10,7 @@ import ToggleSwitch from "../components/ToggleSwitch/toggleSwitch";
 export const getTicketsTableColumns = (navigate) => [
     {
         accessorKey: 'id',
-        header: 'ID',
+        header: 'Lp.',
         cell: (info) => info.row.index + 1,
     },
     {
@@ -44,7 +44,7 @@ export const getTicketsTableColumns = (navigate) => [
 export const getTicketsDetailsTableColumns = (handleEdit, handleRemove, handleDuplicate, handleCancel) => [
     {
         accessorKey: 'id',
-        header: 'ID',
+        header: 'Lp.',
         cell: (info) => info.row.index + 1,
     },
     {
@@ -132,7 +132,7 @@ export const getTicketsDetailsTableColumns = (handleEdit, handleRemove, handleDu
 export const getReliefColumns = (handleEdit, handleRemove, handleToggle) => [
     {
         accessorKey: 'id',
-        header: 'ID',
+        header: 'Lp.',
         cell: (info) => info.row.index + 1,
     },
     {
@@ -189,7 +189,7 @@ export const getReliefColumns = (handleEdit, handleRemove, handleToggle) => [
 export const getStopsColumns = (handleEdit, handleRemove, handleToggle) => [
     {
         accessorKey: 'id',
-        header: 'ID',
+        header: 'Lp.',
         cell: (info) => info.row.index + 1,
     },
     {
@@ -241,7 +241,7 @@ export const getStopsColumns = (handleEdit, handleRemove, handleToggle) => [
 export const getUsersColumns = (navigate, handleToggle) => [
     {
         accessorKey: 'id',
-        header: 'ID',
+        header: 'Lp.',
         cell: (info) => info.row.index + 1,
     },
     {
@@ -286,7 +286,7 @@ export const getUsersColumns = (navigate, handleToggle) => [
 export const getTransactionColumns = (navigate) => [
     {
         accessorKey: 'id',
-        header: 'ID',
+        header: 'Lp.',
         cell: (info) => info.row.index + 1,
     },
     {
@@ -336,7 +336,7 @@ export const getTransactionColumns = (navigate) => [
 export const getTopUpTransactionColumns = (navigate) => [
     {
         accessorKey: 'id',
-        header: 'ID',
+        header: 'Lp.',
         cell: (info) => info.row.index + 1,
     },
     {
@@ -373,7 +373,7 @@ export const getTopUpTransactionColumns = (navigate) => [
 export const getLinesColumns = (handleEdit, handleRemove, handleToggle) => [
     {
         accessorKey: 'id',
-        header: 'ID',
+        header: 'Lp.',
         cell: (info) => info.row.index + 1,
     },
     {
