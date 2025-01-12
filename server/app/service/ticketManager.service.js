@@ -1,24 +1,38 @@
 import mongoose from "mongoose";
 
+function getNames(ticket, ticketObj, ticketTypes, ticketPeriods, ticketLines) {
+    const type = ticketTypes.find(t => t.id.toString() === ticket.type.toString());
+    const period = ticketPeriods.find(p => p.id.toString() === ticket.period.toString());
+    const line = ticketLines.find(l => l.id.toString() === ticket.lines.toString());
+
+    return {
+        ...ticketObj,
+        typeName: type?.name,
+        typeLabel: type?.label,
+        periodName: period?.name,
+        periodLabel: period?.label,
+        lineName: line?.name,
+        lineLabel: line?.label,
+    };
+}
+
 export function getMetadataNames (tickets, ticketTypes, ticketPeriods, ticketLines) {
+    const ticketsArray = Array.isArray(tickets) ? tickets : [];
+
+    return ticketsArray.map(ticket => {
+        const ticketObj = ticket.toObject();
+
+        return getNames(ticket, ticketObj, ticketTypes, ticketPeriods, ticketLines);
+    });
+}
+
+export function getMetadataNamesAggregation (tickets, ticketTypes, ticketPeriods, ticketLines) {
     const ticketsArray = Array.isArray(tickets) ? tickets : [];
 
     return ticketsArray.map(ticket => {
         const ticketObj = { ...ticket };
 
-        const type = ticketTypes.find(t => t.id.toString() === ticket.type.toString());
-        const period = ticketPeriods.find(p => p.id.toString() === ticket.period.toString());
-        const line = ticketLines.find(l => l.id.toString() === ticket.lines.toString());
-
-        return {
-            ...ticketObj,
-            typeName: type?.name,
-            typeLabel: type?.label,
-            periodName: period?.name,
-            periodLabel: period?.label,
-            lineName: line?.name,
-            lineLabel: line?.label,
-        };
+        return getNames(ticket, ticketObj, ticketTypes, ticketPeriods, ticketLines);
     });
 }
 

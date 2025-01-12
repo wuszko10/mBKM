@@ -153,16 +153,8 @@ async function getAndSearchTicket(page, pageSize, searchCriteria, removeDuplicat
 
 
 async function getAllTickets() {
-    const currentDate = new Date();
 
-    const result = await TicketModel.find({
-        offerStartDate: { $lte: currentDate },
-        $or: [
-            { offerEndDate: { $exists: false } },
-            { offerEndDate: { $gte: currentDate } },
-            { offerEndDate: null},
-        ]
-    }).sort({ _id: -1 });
+    const result = await TicketModel.find().sort({ _id: -1 });
     if (result) {
         return result;
     }

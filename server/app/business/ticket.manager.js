@@ -1,7 +1,7 @@
 import TicketDAO from '../DAO/ticketDAO';
 import applicationException from '../service/applicationException';
 import {
-  getMetadataNames,
+  getMetadataNames, getMetadataNamesAggregation,
   mappingIdsToNames
 } from "../service/ticketManager.service";
 
@@ -50,7 +50,7 @@ function create() {
           totalRecords,
       } = await TicketDAO.getAndSearchTicket(queryPage, queryPageSize, searchCriteria, removeDuplicates)
 
-      const tickets = getMetadataNames(data, ticketTypes, ticketPeriods, ticketLines);
+      const tickets = getMetadataNamesAggregation(data, ticketTypes, ticketPeriods, ticketLines);
 
       return {
         data: tickets,

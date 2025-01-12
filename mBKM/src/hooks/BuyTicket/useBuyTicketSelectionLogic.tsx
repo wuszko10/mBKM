@@ -14,9 +14,18 @@ export const useBuyTicketSelectionLogic = () => {
     const [ticketType, setTicketType] = useState<'single' | 'season' | null>(null);
 
     const getTickets = async () => {
+        const currentDate = new Date().toISOString();
         let ticketStr = storage.getString('tickets');
         if (ticketStr) {
-            setTicketsData(JSON.parse(ticketStr));
+            const data: Ticket[] = JSON.parse(ticketStr);
+            const result = data.filter(ticket => {
+                const { offerStartDate, offerEndDate } = ticket;
+                return (
+                    offerStartDate <= currentDate &&
+                    (!offerEndDate || offerEndDate >= currentDate)
+                );
+            });
+            setTicketsData(result);
         }
     }
 
