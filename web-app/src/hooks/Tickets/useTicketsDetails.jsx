@@ -4,7 +4,7 @@ import {getTicketsDetailsTableColumns} from "../../utils/TableColumns";
 import {toast} from "react-toastify";
 import useReusableState from "../useReusableState";
 
-export const useTicketsDetails = (type: string, lines: string, period: string) => {
+export const useTicketsDetails = (type, lines, period) => {
 
     const {
         show,

@@ -1,10 +1,8 @@
 import React from 'react';
 import '../../styles/style.scss'
-import {Link, useParams} from "react-router-dom";
+import {useParams} from "react-router-dom";
 import DynamicTable from "../../components/GlobalTable/DynamicTable";
-import {FaReceipt} from "react-icons/fa";
 import {LuPlusCircle} from "react-icons/lu";
-import {useTickets} from "../../hooks/Tickets/useTickets";
 import TicketPopupForm from "../../components/Popup/TicketPopupForm";
 import {useTicketsDetails} from "../../hooks/Tickets/useTicketsDetails";
 

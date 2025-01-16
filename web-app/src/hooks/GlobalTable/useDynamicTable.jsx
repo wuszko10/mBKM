@@ -18,12 +18,11 @@ export const useDynamicTable = (data, columns, onFilterChange, pageIndex, pageSi
 
     const [filter, setFilter] = useState('');
 
-    const debouncedSearch = React.useCallback(
-        debounce((value) => {
+    const debouncedSearch = React.useMemo(() => {
+        return debounce((value) => {
             onFilterChange(value);
-        }, 500),
-        [onFilterChange]
-    );
+        }, 500);
+    }, [onFilterChange]);
 
     const handleChange = React.useCallback(
         (e) => {
