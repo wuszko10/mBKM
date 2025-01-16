@@ -4,6 +4,7 @@ import Promise from 'bluebird';
 import applicationException from '../service/applicationException';
 import mongoConverter from '../service/mongoConverter';
 import uniqueValidator from 'mongoose-unique-validator';
+import {checkForDateOverlap} from "../service/ticketManager.service";
 
 
 const ticketSchema = new mongoose.Schema({
@@ -19,23 +20,9 @@ const ticketSchema = new mongoose.Schema({
 
 ticketSchema.plugin(uniqueValidator);
 
-
 const TicketModel = mongoose.model('ticket', ticketSchema);
 
-function checkForDateOverlap(ticket, ticketsArray) {
-    const responseTicketStartDate = new Date(ticket.offerStartDate).toISOString();
-    const responseTicketEndDate = ticket.offerEndDate ? new Date(ticket.offerEndDate).toISOString() : '';
 
-    return ticketsArray.filter(existingTicket => {
-        const filterTicketStartDate = new Date(existingTicket.offerStartDate).toISOString();
-        const filterTicketEndDate = existingTicket.offerEndDate ? new Date(existingTicket.offerEndDate).toISOString() : '';
-
-        const isEndDateValid = filterTicketEndDate === '' || filterTicketEndDate >= responseTicketStartDate;
-        const isStartDateValid = responseTicketEndDate === '' || filterTicketStartDate >= responseTicketEndDate || filterTicketEndDate === '';
-
-        return (isEndDateValid && isStartDateValid);
-    });
-}
 async function createNewOrUpdateTicket(ticket) {
 
     return Promise.resolve().then(async () => {

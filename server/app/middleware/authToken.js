@@ -6,13 +6,13 @@ const authToken = (req, res, next) => {
   if (token && token.startsWith('Bearer ')) {
     token = token.slice(7, token.length);
   }
-  if (!token) return res.status(401).json({ message: 'Access denied. No token provided.' });
+  if (!token) return res.status(401).json({message: 'Access denied. No token provided.'});
 
   try {
     req.user = jwt.verify(token, config.JwtSecret);
     next();
   } catch (ex) {
-    res.status(400).json({ message: 'Invalid token.' });
+    res.status(400).json({message: 'Invalid token.'});
   }
 };
 

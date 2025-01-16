@@ -33,7 +33,7 @@ mongoose
     .catch(error => console.error('Database connection error:', error));
 
 
-app.use(loadMetadataMiddleware);
+// app.use(loadMetadataMiddleware);
 process.on('SIGINT', async () => {
     try {
         await mongoose.connection.close();

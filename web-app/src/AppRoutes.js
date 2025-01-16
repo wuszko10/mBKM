@@ -16,7 +16,7 @@ import {useEffect} from "react";
 import Lines from "./screens/Lines/Lines";
 import {useAuth} from "./context/authProvider";
 import {fetchMetadata} from "./services/metadata.service";
-import TransactionDetails from "./screens/Transactions/TransationDetails/TransactionDetails";
+import TransactionDetails from "./screens/Transactions/TransactionDetails/TransactionDetails";
 import Loading from "./components/Loading/Loading";
 import TicketsDetails from "./screens/Tickets/TicketsDetails";
 

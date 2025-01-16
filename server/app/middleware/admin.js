@@ -2,9 +2,6 @@ import jwt from "jsonwebtoken";
 import config from "../config.js";
 
 const admin = (req, res, next) => {
-  // 401 Unauthorized
-  // 403 Forbidden
-
 
   let token = req.headers['x-access-token'] || req.headers['authorization'];
   if (token.startsWith('Bearer ')) {

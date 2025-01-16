@@ -93,3 +93,24 @@ export function mappingIdsToNames (ticketTypes, ticketPeriods, ticketLines, sear
             }
         : {};
 }
+
+export function checkForDateOverlap(ticket, ticketsArray) {
+    const responseTicketStartDate = new Date(ticket.offerStartDate).toISOString();
+    const responseTicketEndDate = ticket.offerEndDate
+        ? new Date(ticket.offerEndDate).toISOString() : '';
+
+    return ticketsArray.filter(existingTicket => {
+        const filterTicketStartDate = new Date(existingTicket.offerStartDate).toISOString();
+        const filterTicketEndDate =
+            existingTicket.offerEndDate
+                ? new Date(existingTicket.offerEndDate).toISOString() : '';
+
+        const isEndDateValid = filterTicketEndDate === ''
+            || filterTicketEndDate >= responseTicketStartDate;
+        const isStartDateValid = responseTicketEndDate === ''
+            || filterTicketStartDate >= responseTicketEndDate
+            || filterTicketEndDate === '';
+
+        return (isEndDateValid && isStartDateValid);
+    });
+}

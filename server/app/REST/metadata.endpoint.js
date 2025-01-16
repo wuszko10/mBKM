@@ -2,10 +2,11 @@ import authToken from "../middleware/authToken";
 import admin from "../middleware/admin";
 import business from "../business/business.container";
 import applicationException from "../service/applicationException";
+import {loadMetadataMiddleware} from "../middleware/cacheUpdater";
 
 const MetadataEndpoint = (router) => {
 
-    router.get('/api/metadata', authToken, (req, res) => {
+    router.get('/api/metadata', authToken, loadMetadataMiddleware, (req, res) => {
 
         const { cache } = req.app.locals;
 
