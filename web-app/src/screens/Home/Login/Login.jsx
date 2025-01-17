@@ -17,17 +17,17 @@ const Login = () => {
         <div className="login-box">
             <div className="logo logo-login">
                 <PiNavigationArrowFill className="logo-icon-login"/>
-                <h1>mBKM</h1>
+                <h1 data-testid="signup-view">mBKM</h1>
                 <p>Admin</p>
             </div>
             <div className="login-container">
                 <h2>Zaloguj się</h2>
                 <form className="form-global">
-                    <input type="text" id="login" name="login" placeholder="Login" value={formData.email}
+                    <input type="text" id="login" name="login" placeholder="Login" value={formData.email} data-testid="email-input"
                            onChange={handleInputChange}/>
-                    <input type="password" id="password" name="password" placeholder="Hasło" value={formData.email}
+                    <input type="password" id="password" name="password" placeholder="Hasło" value={formData.email} data-testid="password-input"
                            onChange={handleInputChange}/>
-                    <button type="submit" onClick={handleLogin}>Zaloguj się</button>
+                    <button type="submit" onClick={handleLogin} data-testid="submit-button">Zaloguj się</button>
                 </form>
             </div>
         </div>

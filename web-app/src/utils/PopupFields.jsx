@@ -164,6 +164,12 @@ export const getCreateUserFormFields = () => {
             type: "number",
             placeholder: "PESEL",
             disabled: false,
+        },
+        {
+            name: "isActive",
+            label: "Czy aktywować użytkownika?",
+            type: "checkbox",
+            disabled: false,
         }
     ];
 };

@@ -28,6 +28,7 @@ const Header = () => {
                             backgroundColor: isActive ? "white" : "transparent",
                         };
                     }}
+                    data-testid="nav-home"
                     to="/">Start</NavLink>
 
                 <NavLink
@@ -37,6 +38,7 @@ const Header = () => {
                             backgroundColor: isActive ? "white" : "transparent",
                         };
                     }}
+                    data-testid="nav-tickets"
                     to="/tickets">Bilety</NavLink>
 
                 <NavLink
@@ -46,6 +48,7 @@ const Header = () => {
                             backgroundColor: isActive ? "white" : "transparent",
                         };
                     }}
+                    data-testid="nav-stops"
                     to="/stops">Przystanki</NavLink>
 
                 <NavLink
@@ -55,6 +58,7 @@ const Header = () => {
                             backgroundColor: isActive ? "white" : "transparent",
                         };
                     }}
+                    data-testid="nav-lines"
                     to="/lines">Linie</NavLink>
 
                 <NavLink
@@ -64,6 +68,7 @@ const Header = () => {
                             backgroundColor: isActive ? "white" : "transparent",
                         };
                     }}
+                    data-testid="nav-transactions"
                     to="/transactions">Transakcje</NavLink>
 
                 <NavLink
@@ -73,6 +78,7 @@ const Header = () => {
                             backgroundColor: isActive ? "white" : "transparent",
                         };
                     }}
+                    data-testid="nav-users"
                     to="/users">Użytkownicy</NavLink>
             </div>
         )
@@ -102,7 +108,7 @@ const Header = () => {
                 <div className="header-items">
                     <Link to="/">
                         <div className="logo-header">
-                            <PiNavigationArrowFill className="logo-header-icon"/>
+                            <PiNavigationArrowFill data-testid="logo" className="logo-header-icon"/>
                             <h1>mBKM</h1>
                             <p>Admin</p>
                         </div>
@@ -117,7 +123,7 @@ const Header = () => {
                     </div>
                 </div>
 
-                <div className="desktop-footer" >
+                <div className="desktop-footer" data-testid="logout-btn" >
                     {renderLogoutButton()}
                 </div>
             </div>

@@ -3,8 +3,6 @@ import Modal from "react-modal";
 import { IoClose } from "react-icons/io5";
 import '../../styles/style.scss'
 import './style.scss'
-
-Modal.setAppElement('#root');
 const GlobalPopupForm = ({
                        isOpen,
                        onClose,
@@ -23,6 +21,7 @@ const GlobalPopupForm = ({
             contentLabel={title}
             className="modal-container"
             overlayClassName="popup-overlay"
+            ariaHideApp={false}
         >
             <div className="popup-box">
                 <IoClose onClick={onClose} className="close-icon" />
