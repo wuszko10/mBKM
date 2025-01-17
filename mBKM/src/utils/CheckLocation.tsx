@@ -3,7 +3,6 @@ import GetLocation from "react-native-get-location";
 import { calculateDistance } from "./distance.tsx";
 import { DISTANCE,LOCATION_TIMEOUT } from "../../variables.tsx";
 
-const distanceThreshold = DISTANCE;
 const checkIfInRange = (userLocation: Location, stops: BusStop[]) => {
 
     return stops.some((stop:BusStop) => {
@@ -13,7 +12,7 @@ const checkIfInRange = (userLocation: Location, stops: BusStop[]) => {
             stop.latitude,
             stop.longitude
         );
-        return distance <= distanceThreshold;
+        return distance <= DISTANCE;
     });
 };
 export function checkLocation (stops: BusStop[]) {

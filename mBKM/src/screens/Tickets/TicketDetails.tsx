@@ -1,5 +1,5 @@
 import React from "react";
-import { ActivityIndicator,Image,SafeAreaView,ScrollView,Text,TouchableOpacity,View } from "react-native";
+import { Image,SafeAreaView,ScrollView,Text,TouchableOpacity,View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import Header from "../../components/Global/Header/Header.tsx";
 import stylesApp from "../../style/appStyle.js";
