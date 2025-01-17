@@ -1,10 +1,12 @@
 import {useEffect, useState} from "react";
 import {FilterMapListType, Line, Relief, Ticket} from "../../types/interfaces.tsx";
-import { ALL_LINES,DEFAULT_RELIEF,ONE_LINE,SEASON_TICKET,SINGLE_TICKET } from "../../../variables.tsx";
+import { ALL_LINES,DEFAULT_RELIEF,ONE_LINE,SEASON_TICKET } from "../../../variables.tsx";
 import { storage } from "../../../App.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "../../types/navigation.tsx";
 import { ToastAndroid } from "react-native";
+import {calculateFinalPrice} from "../../utils/calculateFinalPrice.ts";
+import {getReliefsAndLines} from "../../utils/getReliefsAndLines.ts";
 
 export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
 
@@ -20,7 +22,7 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
     const [selectedLines, setSelectedLines] = useState<string | null>(null);
     const [selectedDate, setSelectedDate] = useState(new(Date));
     const [finalPrice, setFinalPrice] = useState(0);
-    const getReliefsAndLines = () => {
+  const getReliefsAndLinesData = () => {
 
         if(!isLoading) return;
 
@@ -31,28 +33,7 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
             const parseRelief: Relief[] = JSON.parse(reliefStr);
             const parseLines: Line[] = JSON.parse(lineStr);
 
-            const filteredReliefs = parseRelief
-                .filter(r =>
-                    selectedTicket.typeName === SINGLE_TICKET
-                        ? ((r.ticketTypeName === SINGLE_TICKET || r.ticketTypeName === ALL_LINES) && r.isActive )
-                        : ((r.ticketTypeName === SEASON_TICKET || r.ticketTypeName === ALL_LINES) && r.isActive ))
-                .map(r => ({
-                    label: r.name+" ("+r.percentage+"%)",
-                    value: r._id,
-                    key: r.typeName,
-                }));
-
-            const filteredLines = parseLines
-                .filter(line =>
-                    selectedTicket.lineName === ALL_LINES
-                        ? (line.number === ALL_LINES && line.isActive)
-                        : (line.number !== ALL_LINES && line.isActive)
-                )
-                .map(line => ({
-                    label: line.name,
-                    value: line.id,
-                    key: line.number,
-                }));
+            const {filteredReliefs, filteredLines} = getReliefsAndLines(selectedTicket, parseRelief, parseLines);
 
             setReliefsData(filteredReliefs);
             setLinesData(filteredLines);
@@ -63,7 +44,7 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
     }
 
     useEffect(() => {
-        getReliefsAndLines();
+        getReliefsAndLinesData();
     }, [isLoading]);
 
     useEffect(() => {
@@ -83,12 +64,13 @@ export const useBuyTicketConfigurationLogic = (selectedTicket: Ticket) => {
         }
     }, [reliefsData, linesData]);
 
+
     useEffect(() => {
         if (selectedRelief && reliefs) {
             const selectedReliefData = reliefs.find(r => r._id === selectedRelief);
             if (selectedReliefData) {
-                const discountFactor = selectedReliefData.percentage / 100;
-                setFinalPrice(selectedTicket.price * discountFactor);
+                const finalPrice = calculateFinalPrice(selectedTicket.price, selectedReliefData.percentage);
+                setFinalPrice(finalPrice);
             }
         }
     }, [selectedRelief, reliefs]);

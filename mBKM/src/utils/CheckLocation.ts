@@ -1,9 +1,9 @@
 import { BusStop,Location } from "../types/interfaces.tsx";
 import GetLocation from "react-native-get-location";
-import { calculateDistance } from "./distance.tsx";
+import { calculateDistance } from "./distance.ts";
 import { DISTANCE,LOCATION_TIMEOUT } from "../../variables.tsx";
 
-const checkIfInRange = (userLocation: Location, stops: BusStop[]) => {
+export const checkIfInRange = (userLocation: Location, stops: BusStop[]) => {
 
     return stops.some((stop:BusStop) => {
         const distance = calculateDistance(

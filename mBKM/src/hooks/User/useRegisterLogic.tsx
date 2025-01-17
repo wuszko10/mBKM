@@ -160,5 +160,6 @@ export const useRegisterLogic = () => {
         validateEmail,
         validateConfirmPassword,
         validPostalCode,
+        handleChangeRoute
     };
 }

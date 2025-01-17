@@ -4,7 +4,7 @@ import { NavigationProp } from "../../types/navigation.tsx";
 import { useLocalStops } from "./useLocalStops.tsx";
 import { useAuth } from "../../context/AuthContext.tsx";
 import { BusStop } from "../../types/interfaces.tsx";
-import { checkLocation } from "../../utils/CheckLocation.tsx";
+import { checkLocation } from "../../utils/CheckLocation.ts";
 import { validateTicket } from "../../services/ticket.service.tsx";
 import checkInternetConnection from "../../utils/network.tsx";
 

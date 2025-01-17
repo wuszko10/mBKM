@@ -5,7 +5,7 @@ import { useLocalStops } from "../Ticket/useLocalStops.tsx";
 import checkInternetConnection from "../../utils/network.tsx";
 import { payWallet } from "../../services/payment.service.tsx";
 import { storage } from "../../../App.tsx";
-import { checkLocation } from "../../utils/CheckLocation.tsx";
+import { checkLocation } from "../../utils/CheckLocation.ts";
 import { WalletPaymentProps } from "../../components/Payments/WalletPayment.tsx";
 import { WalletDAO } from "../../types/interfaces.tsx";
 

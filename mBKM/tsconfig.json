@@ -1,6 +1,23 @@
 {
   "extends": "@react-native/typescript-config/tsconfig.json",
+  //  "compilerOptions": {
+  //    "useUnknownInCatchVariables": false,
+  //    "types": [
+  //      "jest"
+  //    ]
+  //  },
   "compilerOptions": {
-    "useUnknownInCatchVariables": false
-  }
+    "useUnknownInCatchVariables": false,
+    "target": "esnext",
+    "module": "commonjs",
+    "moduleResolution": "node",
+    "jsx": "react-native",
+    "esModuleInterop": true,
+    "forceConsistentCasingInFileNames": true,
+    "strict": true,
+    "noEmit": true,
+    "skipLibCheck": true,
+    "types": ["react", "react-native", "node", "jest"] // dodaj "jest" do typów
+  },
+  "include": ["src/**/*", "__tests__/**/*"]
 }
