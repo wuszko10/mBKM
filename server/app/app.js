@@ -32,8 +32,6 @@ mongoose
     .then(() => console.info('Connect with database established'))
     .catch(error => console.error('Database connection error:', error));
 
-
-// app.use(loadMetadataMiddleware);
 process.on('SIGINT', async () => {
     try {
         await mongoose.connection.close();
