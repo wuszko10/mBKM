@@ -104,7 +104,6 @@ describe('register - test', () => {
 
         expect(ToastAndroid.show).toHaveBeenCalledWith('Błąd podczas rejestracji. Spróbuj ponownie', ToastAndroid.SHORT);
 
-        // Sprawdzamy, czy pola zostały wyczyszczone
         expect(result.current.firstName).toBe('');
         expect(result.current.lastName).toBe('');
         expect(result.current.pesel).toBe('');
