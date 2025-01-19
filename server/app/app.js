@@ -5,13 +5,16 @@ import express from 'express';
 import mongoose from 'mongoose';
 import morgan from 'morgan';
 import routes from './REST/routes';
-import {loadMetadataMiddleware} from "./middleware/cacheUpdater";
 import NodeCache from "node-cache";
 import {startCronJobs} from "./service/cronJobs";
+import {swaggerDocs, swaggerUi} from "./swagger";
+import {loadMetadataMiddleware} from "./middleware/cacheUpdater";
 
 const cache = new NodeCache({ stdTTL: 86400 });
 
 const app = express();
+
+app.use("/api-docs", swaggerUi.serve, swaggerUi.setup(swaggerDocs));
 
 app.use(express.static(__dirname + '/public'));
 
@@ -24,7 +27,7 @@ app.use(express.static('public'));
 app.use(cors());
 
 app.locals.cache = cache;
-
+app.use(loadMetadataMiddleware);
 mongoose
     .connect(config.databaseUrl, {
         useNewUrlParser: true

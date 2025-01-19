@@ -1,0 +1,765 @@
+/api/user/auth:
+  post:
+    summary: Logowanie użytkownika
+    tags: [Users]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: Adres e-mail użytkownika
+                example: user@example.com
+              password:
+                type: string
+                description: Hasło użytkownika
+                example: MyStrongPassword123!
+    responses:
+      200:
+        description: Zwraca dane
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                token:
+                  type: string
+                  description: Token JWT dla użytkownika
+                user:
+                  type: object
+                  description: Szczegóły użytkownika
+                  properties:
+                    id:
+                      type: string
+                      description: ID użytkownika
+                      example: "64aef23456789abcd1234567"
+                    firstName:
+                      type: string
+                      description: Imię
+                      example: "Jan"
+                    lastName:
+                      type: string
+                      description: Nazwisko
+                      example: "Kowalski"
+                    email:
+                      type: string
+                      description: Adres e-mail
+                      example: "user@example.com"
+                    pesel:
+                      type: number
+                      description: PESEL
+                      example: 98123048291
+                    role:
+                      type: string
+                      description: Rola użytkownika
+                      example: "user"
+                    active:
+                      type: boolean
+                      description: Status aktywności użytkownika
+                      example: true
+                    isAdmin:
+                      type: boolean
+                      description: Określa, czy użytkownik jest administratorem
+                      example: false
+                wallet:
+                  type: object
+                  description: Szczegóły portfela użytkownika
+                  properties:
+                    id:
+                      type: string
+                      description: ID portfela
+                      example: "64aef234514362bcd1234567"
+                    amount:
+                      type: number
+                      description: Kwota w portfelu użytkownika
+                      example: 150
+                    userId:
+                      type: string
+                      description: ID użytkownika
+                      example: "64aef23456789abcd1234567"
+                address:
+                  type: object
+                  description: Adres użytkownika
+                  properties:
+                    id:
+                      type: string
+                      description: ID
+                      example: "64aef23456789abcd1234567"
+                    userId:
+                      type: string
+                      description: ID
+                      example: "64aef23456789abcd1234567"
+                    fullAddress:
+                      type: string
+                      description: Adres
+                      example: "Miła 10"
+                    town:
+                      type: string
+                      description: Miejscowość
+                      example: "Zgłobice"
+                    postalCode:
+                      type: string
+                      description: Kod pocztowy
+                      example: "33-113"
+                    postal:
+                      type: string
+                      description: Poczta
+                      example: "Zgłobice"
+      401:
+        description: Błąd uwierzytelnienia - nieprawidłowy e-mail lub hasło
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user/create:
+  post:
+    summary: Rejestracja nowego użytkownika
+    tags: [Users]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userData:
+                type: object
+                description: Szczegóły użytkownika
+                properties:
+                  firstName:
+                    type: string
+                    description: Imię
+                    example: "Jan"
+                  lastName:
+                    type: string
+                    description: Nazwisko
+                    example: "Kowalski"
+                  email:
+                    type: string
+                    description: Adres e-mail
+                    example: "user@example.com"
+                  pesel:
+                    type: number
+                    description: PESEL
+                    example: 98123048291
+                  registrationDate:
+                    type: date
+                    description: Data rejestracji (format ISO)
+                    example: 2025-01-19T00:00:00Z
+                  password:
+                    type: string
+                    description: Hasło
+                    example: "MyStrongPassword123!"
+              addressData:
+                type: object
+                description: Adres użytkownika
+                properties:
+                  userId:
+                    type: string
+                    description: ID (przy tworzeniu jako pusty string)
+                    example: ""
+                  fullAddress:
+                    type: string
+                    description: Adres
+                    example: "Miła 10"
+                  town:
+                    type: string
+                    description: Miejscowość
+                    example: "Zgłobice"
+                  postalCode:
+                    type: string
+                    description: Kod pocztowy
+                    example: "33-113"
+                  postal:
+                    type: string
+                    description: Poczta
+                    example: "Zgłobice"
+    responses:
+      200:
+        description: Zwraca dane
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  description: zahashowane hasło
+                  example: "d3d5f6e836fa1b0abdf2f22a01c7e2686b1dc7c9"
+                userId:
+                  type: string
+                  description: ID użytkownika
+                  example: "64aef23456789abcd1234567"
+
+      400:
+        description: Nieprawidłowe dane wejściowe
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user/restore/check:
+  post:
+    summary: Odzyskiwanie hasła użytkownika - krok 1 (walidacja)
+    tags: [Users]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: Adres e-mail użytkownika
+                example: user@example.com
+              checkPesel:
+                type: string
+                description: 5 ostatnich cyfr PESEL
+                example: 12345
+    responses:
+      200:
+        description: Zwraca dane
+        content:
+          application/json:
+            schema:
+              type: object
+              description: Szczegóły użytkownika
+              properties:
+                id:
+                  type: string
+                  description: ID użytkownika
+                  example: "64aef23456789abcd1234567"
+                firstName:
+                  type: string
+                  description: Imię
+                  example: "Jan"
+                lastName:
+                  type: string
+                  description: Nazwisko
+                  example: "Kowalski"
+                email:
+                  type: string
+                  description: Adres e-mail
+                  example: "user@example.com"
+                pesel:
+                  type: number
+                  description: PESEL
+                  example: 98123048291
+                role:
+                  type: string
+                  description: Rola użytkownika
+                  example: "user"
+                active:
+                  type: boolean
+                  description: Status aktywności użytkownika
+                  example: true
+                isAdmin:
+                  type: boolean
+                  description: Określa, czy użytkownik jest administratorem
+                  example: false
+
+      400:
+        description: Użytkownik nie istnieje
+      404:
+        description: Nie odpowiada
+      406:
+        description: Błędny PESEL
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user/restore:
+  post:
+    summary: Odzyskiwanie hasła użytkownika - krok 2 (zmiana hasła)
+    tags: [Users]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: Adres e-mail użytkownika
+                example: user@example.com
+              newPassword:
+                type: string
+                description: Nowe hasło
+                example: MyPasswordStrong321!
+    responses:
+      200:
+        description: Zwraca dane
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  description: zahashowane hasło
+                  example: "d3d5f6e836fa1b0abdf2f22a01c7e2686b1dc7c9"
+                userId:
+                  type: string
+                  description: ID użytkownika
+                  example: "64aef23456789abcd1234567"
+      400:
+        description: Użytkownik nie istnieje
+      404:
+        description: Nie odpowiada
+      406:
+        description: Błędny PESEL
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user/reset:
+  post:
+    summary: Zmiana hasła (zalogowany użytkownik)
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Users]
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              email:
+                type: string
+                description: Adres e-mail użytkownika
+                example: user@example.com
+              oldPassword:
+                type: string
+                description: 5 ostatnich cyfr PESEL
+                example: MyStrongPassword123!
+              newPassword:
+                type: string
+                description: 5 ostatnich cyfr PESEL
+                example: MyPasswordStrong321!
+    responses:
+      200:
+        description: Zwraca dane
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  description: zahashowane hasło
+                  example: "d3d5f6e836fa1b0abdf2f22a01c7e2686b1dc7c9"
+                userId:
+                  type: string
+                  description: ID użytkownika
+                  example: "64aef23456789abcd1234567"
+
+      400:
+        description: Użytkownik nie istnieje
+      401:
+        description: Brak dostępu
+      404:
+        description: Nie odpowiada
+      406:
+        description: Błędne stare hasło
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user/address/update:
+  post:
+    summary: Aktualizacja adresu (zalogowany użytkownik)
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Users]
+    security:
+      - bearerAuth: [ ]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              id:
+                type: string
+                description: ID (przy tworzeniu jako pusty string)
+                example: "64aef2345678973451234567"
+              userId:
+                type: string
+                description: ID (przy tworzeniu jako pusty string)
+                example: "64aef23456789abcd1234567"
+              fullAddress:
+                type: string
+                description: Adres
+                example: "Miła 10"
+              town:
+                type: string
+                description: Miejscowość
+                example: "Zgłobice"
+              postalCode:
+                type: string
+                description: Kod pocztowy
+                example: "33-113"
+              postal:
+                type: string
+                description: Poczta
+                example: "Zgłobice"
+    responses:
+      200:
+        description: Zwraca dane
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: ID (przy tworzeniu jako pusty string)
+                  example: "64aef2345678973451234567"
+                userId:
+                  type: string
+                  description: ID (przy tworzeniu jako pusty string)
+                  example: "64aef23456789abcd1234567"
+                fullAddress:
+                  type: string
+                  description: Adres
+                  example: "Miła 10"
+                town:
+                  type: string
+                  description: Miejscowość
+                  example: "Zgłobice"
+                postalCode:
+                  type: string
+                  description: Kod pocztowy
+                  example: "33-113"
+                postal:
+                  type: string
+                  description: Poczta
+                  example: "Zgłobice"
+      401:
+        description: Brak dostępu
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user/deactivate:
+  post:
+    summary: Aktywana/dezaktywacja użytkownika (admin)
+    description: Wymagany token w nagłówku, uprawnienia - administrator.
+    tags: [Users]
+    security:
+      - bearerAuth: [ ]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: id użytkownika
+                example: 64aef23456789abcd1234567
+    responses:
+      200:
+        description: Zwraca dane
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  description: id użytkownika
+                  example: 64aef23456789abcd1234567
+                firstName:
+                  type: string
+                  description: Imię
+                  example: "Jan"
+                lastName:
+                  type: string
+                  description: Nazwisko
+                  example: "Kowalski"
+                email:
+                  type: string
+                  description: Adres e-mail
+                  example: "user@example.com"
+                pesel:
+                  type: number
+                  description: PESEL
+                  example: 98123048291
+                registrationDate:
+                  type: date
+                  description: Data rejestracji (format ISO)
+                  example: 2025-01-19T00:00:00Z
+                role:
+                  type: string
+                  description: rola (user lub admin)
+                  example: "user"
+                active:
+                  type: boolean
+                  description: czy aktywny?
+                  example: true
+                isAdmin:
+                  type: boolean
+                  description: administrator
+                  example: false
+      401:
+        description: Brak dostępu
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user:
+  get:
+    summary: Szczegóły użytkownika (admin)
+    description: Wymagany token w nagłówku, uprawnienia - administrator.
+    tags: [Users]
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: id
+        required: true
+        schema:
+          type: string
+        description: ID użytkownika
+    responses:
+      200:
+        description: Zwraca dane
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  description: Szczegóły użytkownika
+                  properties:
+                    id:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    firstName:
+                      type: string
+                      example: "Jan"
+                    lastName:
+                      type: string
+                      example: "Kowalski"
+                    email:
+                      type: string
+                      example: "user@example.com"
+                    pesel:
+                      type: number
+                      example: 98123048291
+                    role:
+                      type: string
+                      example: "user"
+                    active:
+                      type: boolean
+                      example: true
+                    isAdmin:
+                      type: boolean
+                      example: false
+                userTickets:
+                  type: number
+                  description: Liczba posiadanych biletów użytkownika
+                transactions:
+                  type: number
+                  description: Liczba transakcji użytkownika
+                wallet:
+                  type: object
+                  description: Szczegóły portfela użytkownika
+                  properties:
+                    id:
+                      type: string
+                      description: ID portfela
+                      example: "64aef234514362bcd1234567"
+                    amount:
+                      type: number
+                      description: Kwota w portfelu użytkownika
+                      example: 150
+                    userId:
+                      type: string
+                      description: ID użytkownika
+                      example: "64aef23456789abcd1234567"
+                address:
+                  type: object
+                  description: Adres użytkownika
+                  properties:
+                    id:
+                      type: string
+                      description: ID
+                      example: "64aef23456789abcd1234567"
+                    userId:
+                      type: string
+                      description: ID
+                      example: "64aef23456789abcd1234567"
+                    fullAddress:
+                      type: string
+                      description: Adres
+                      example: "Miła 10"
+                    town:
+                      type: string
+                      description: Miejscowość
+                      example: "Zgłobice"
+                    postalCode:
+                      type: string
+                      description: Kod pocztowy
+                      example: "33-113"
+                    postal:
+                      type: string
+                      description: Poczta
+                      example: "Zgłobice"
+                topUps:
+                  type: number
+                  description: Liczba doładowań portfela użytkownika
+                sessions:
+                  type: number
+                  description: Liczba aktywnych sesji użytkownika
+      401:
+        description: Brak dostępu
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/users:
+  get:
+    summary: Pobieranie listy użytkowników - filtracja + paginacja (admin)
+    description: Wymagany token w nagłówku, uprawnienia - administrator.
+    tags: [Users]
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: page
+        schema:
+          type: integer
+          default: 1
+        description: Numer strony (domyślnie 1)
+      - in: query
+        name: pageSize
+        schema:
+          type: integer
+          default: 10
+        description: Liczba elementów na stronę (domyślnie 10)
+      - in: query
+        name: searchQuery
+        schema:
+          type: string
+        description: Fraza do wyszukiwania użytkowników
+    responses:
+      200:
+        description: Lista użytkowników
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  description: Lista użytkowników
+                  items:
+                    type: object
+                    properties:
+                      firstName:
+                        type: string
+                        description: Imię użytkownika
+                        example: Jan
+                      lastName:
+                        type: string
+                        description: Nazwisko użytkownika
+                        example: Kowalski
+                      email:
+                        type: string
+                        description: Adres e-mail użytkownika
+                        example: jan.kowalski@example.com
+                      pesel:
+                        type: string
+                        description: PESEL użytkownika
+                        example: 89010112345
+                      registrationDate:
+                        type: string
+                        format: date-time
+                        description: Data rejestracji użytkownika
+                        example: 2025-01-19T15:30:00Z
+                      role:
+                        type: string
+                        description: Rola użytkownika
+                        example: user
+                      active:
+                        type: boolean
+                        description: Status aktywności użytkownika
+                        example: true
+                      isAdmin:
+                        type: boolean
+                        description: Czy użytkownik jest administratorem
+                        example: false
+                page:
+                  type: integer
+                  description: Aktualna strona
+                  example: 1
+                pageSize:
+                  type: integer
+                  description: Liczba elementów na stronie
+                  example: 10
+                totalPages:
+                  type: integer
+                  description: Łączna liczba stron
+                  example: 5
+                totalRecords:
+                  type: integer
+                  description: Łączna liczba rekordów
+                  example: 50
+      401:
+        description: Brak dostępu
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user/logout:
+  delete:
+    summary: Wylogowanie
+    tags: [Users]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userId:
+                type: string
+                description: id użytkownika
+                example: 64aef23456789abcd1234567
+              token:
+                type: string
+                description: token
+                example: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiI2NGFlZjIzNDU2Nzg5YWJjZDEyMzQ1NjciLCJlbWFpbCI6InVzZXJAZXhhbXBsZS5jb20iLCJyb2xlIjoidXNlciIsImV4cCI6MTczNzMwNjI1MX0.LDtHy7JaTbUlxKepnNr0XAx4rGsuoyuPIqtttfmGEeI
+    responses:
+      200:
+        description: Zwraca dane
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                password:
+                  type: string
+                  description: zahashowane hasło
+                  example: "d3d5f6e836fa1b0abdf2f22a01c7e2686b1dc7c9"
+                userId:
+                  type: string
+                  description: ID użytkownika
+                  example: "64aef23456789abcd1234567"
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera

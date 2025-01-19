@@ -1,6 +1,7 @@
 import business from '../business/business.container';
 import applicationException from '../service/applicationException';
 import admin from '../middleware/admin';
+import authToken from "../middleware/authToken";
 
 const userEndpoint = (router) => {
 
@@ -42,7 +43,7 @@ const userEndpoint = (router) => {
         }
     });
 
-    router.post('/api/user/reset/check', async (request, response) => {
+    router.post('/api/user/restore/check', async (request, response) => {
         const {email, checkPesel} = request.body;
         try {
             const result = await business.getUserManager().checkResetPasswordByUserEmail(email, checkPesel);
@@ -52,7 +53,7 @@ const userEndpoint = (router) => {
         }
     });
 
-    router.post('/api/user/reset', async (request, response) => {
+    router.post('/api/user/reset', authToken, async (request, response) => {
         const {email, oldPassword, newPassword} = request.body;
         try {
             const result = await business.getUserManager().resetPassword(email, oldPassword, newPassword);
@@ -72,7 +73,7 @@ const userEndpoint = (router) => {
         }
     });
 
-    router.post('/api/user/address/update', async (request, response) => {
+    router.post('/api/user/address/update', authToken, async (request, response) => {
         try {
             const result = await business.getUserManager().updateAddress(request.body);
             response.status(200).send(result);

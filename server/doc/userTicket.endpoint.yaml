@@ -1,0 +1,499 @@
+/api/user-ticket/create:
+  post:
+    summary: Tworzenie lub aktualizowanie biletu użytkownika
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [User Ticket]
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              number:
+                type: string
+                description: numer jest generowany przez serwer, należy przesłać pusty string
+                example: ""
+              transactionId:
+                type: string
+                example: "64aef23456789abcd1234567"
+              userId:
+                type: string
+                example: "64aef23456789abcd1234567"
+              ticketId:
+                type: string
+                example: "64aef23456789abcd1234567"
+              reliefId:
+                type: string
+                example: "64aef23456789abcd1234567"
+              lineId:
+                type: string
+                example: "64aef23456789abcd1234567"
+              price:
+                type: number
+                example: 50.00
+              purchaseDate:
+                type: string
+                format: date-time
+                example: "2025-01-19T12:00:00Z"
+              ticketStartDate:
+                type: string
+                format: date-time
+                example: "2025-01-19T12:00:00Z"
+              ticketEndDate:
+                type: string
+                format: date-time
+                example: "2025-02-19T12:00:00Z"
+              QRCode:
+                type: string
+                example: "QR1234567890"
+              statusId:
+                type: string
+                example: "64aef23456789abcd1234567"
+    responses:
+      201:
+        description: Bilet użytkownika został pomyślnie utworzony lub zaktualizowany
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                number:
+                  type: string
+                  example: "TICKET12345"
+                transactionId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                userId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                ticketId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                reliefId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                lineId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                price:
+                  type: number
+                  example: 50.00
+                purchaseDate:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+                ticketStartDate:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+                ticketEndDate:
+                  type: string
+                  format: date-time
+                  example: "2025-02-19T12:00:00Z"
+                QRCode:
+                  type: string
+                  example: "QR1234567890"
+                statusId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+      400:
+        description: Zły format danych lub brak wymaganych pól
+      401:
+        description: Brak lub nieprawidłowy token
+      404:
+          description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user-ticket/validate:
+  post:
+    summary: Walidacja biletu użytkownika
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [User Ticket]
+    security:
+      - bearerAuth: []
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              userTicketId:
+                type: string
+                description: ID biletu użytkownika do walidacji
+                example: "64aef23456789abcd1234567"
+    responses:
+      201:
+        description: Zwalidowany bilet użytkownika
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                number:
+                  type: string
+                  example: "TICKET12345"
+                transactionId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                userId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                ticketId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                reliefId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                lineId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                price:
+                  type: number
+                  example: 50.00
+                purchaseDate:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+                ticketStartDate:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+                ticketEndDate:
+                  type: string
+                  format: date-time
+                  example: "2025-02-19T12:00:00Z"
+                QRCode:
+                  type: string
+                  example: "QR1234567890"
+                statusId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+      400:
+        description: Zły format danych lub brak wymaganych pól
+      401:
+        description: Brak lub nieprawidłowy token
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user-ticket/{id}:
+  get:
+    summary: Pobierz szczegóły biletu użytkownika
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [User Ticket]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: id
+        in: path
+        required: true
+        description: ID biletu użytkownika
+        schema:
+          type: string
+          example: "64aef23456789abcd1234567"
+    responses:
+      200:
+        description: Szczegóły biletu użytkownika oraz transakcji
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                userTicket:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    number:
+                      type: string
+                      example: "TICKET12345"
+                    transactionId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    userId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    ticketId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    reliefId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    lineId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    price:
+                      type: number
+                      example: 50.00
+                    purchaseDate:
+                      type: string
+                      format: date-time
+                      example: "2025-01-19T12:00:00Z"
+                    ticketStartDate:
+                      type: string
+                      format: date-time
+                      example: "2025-01-19T12:00:00Z"
+                    ticketEndDate:
+                      type: string
+                      format: date-time
+                      example: "2025-02-19T12:00:00Z"
+                    QRCode:
+                      type: string
+                      example: "QR1234567890"
+                    statusId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                transaction:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    number:
+                      type: string
+                      example: "TRANSACTION12345"
+                    userId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    finalPrice:
+                      type: number
+                      example: 50.00
+                    currency:
+                      type: string
+                      example: "PLN"
+                    paymentDate:
+                      type: string
+                      format: date-time
+                      example: "2025-01-19T12:00:00Z"
+                    referenceId:
+                      type: string
+                      example: "REF123456789"
+                    methodId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    status:
+                      type: string
+                      example: "progress"
+      400:
+        description: Zły format danych lub brak wymaganych pól
+      401:
+        description: Brak lub nieprawidłowy token
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user-ticket/user/{userId}:
+  get:
+    summary: Pobierz bilety użytkownika
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [User Ticket]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: ID użytkownika
+        schema:
+          type: string
+          example: "64aef23456789abcd1234567"
+    responses:
+      200:
+        description: Lista biletów użytkownika
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  number:
+                    type: string
+                    example: "TICKET12345"
+                  transactionId:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  userId:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  ticketId:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  reliefId:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  lineId:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  price:
+                    type: number
+                    example: 50.00
+                  purchaseDate:
+                    type: string
+                    format: date-time
+                    example: "2025-01-19T12:00:00Z"
+                  ticketStartDate:
+                    type: string
+                    format: date-time
+                    example: "2025-01-19T12:00:00Z"
+                  ticketEndDate:
+                    type: string
+                    format: date-time
+                    example: "2025-02-19T12:00:00Z"
+                  QRCode:
+                    type: string
+                    example: "QR1234567890"
+                  statusId:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+      400:
+        description: Zły format danych lub brak wymaganych pól
+      401:
+        description: Brak lub nieprawidłowy token
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/user-ticket/dashboard/user/{userId}:
+  get:
+    summary: Pobierz dane dashboardu biletu użytkownika
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [User Ticket]
+    security:
+      - bearerAuth: []
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: ID użytkownika, dla którego pobierane są dane dashboardu
+        schema:
+          type: string
+          example: "64aef23456789abcd1234567"
+    responses:
+      200:
+        description: Dane dashboardu użytkownika
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                active:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      number:
+                        type: string
+                        example: "TICKET12345"
+                      transactionId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      userId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      ticketId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      reliefId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      lineId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      price:
+                        type: number
+                        example: 50.00
+                      purchaseDate:
+                        type: string
+                        format: date-time
+                        example: "2025-01-19T12:00:00Z"
+                      ticketStartDate:
+                        type: string
+                        format: date-time
+                        example: "2025-01-19T12:00:00Z"
+                      ticketEndDate:
+                        type: string
+                        format: date-time
+                        example: "2025-02-19T12:00:00Z"
+                      QRCode:
+                        type: string
+                        example: "QR1234567890"
+                      statusId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                toValidate:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      number:
+                        type: string
+                        example: "TICKET67890"
+                      transactionId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      userId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      ticketId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      reliefId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      lineId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      price:
+                        type: number
+                        example: 50.00
+                      purchaseDate:
+                        type: string
+                        format: date-time
+                        example: "2025-01-19T12:00:00Z"
+                      ticketStartDate:
+                        type: string
+                        format: date-time
+                        example: "2025-01-19T12:00:00Z"
+                      ticketEndDate:
+                        type: string
+                        format: date-time
+                        example: "2025-02-19T12:00:00Z"
+                      QRCode:
+                        type: string
+                        example: "QR9876543210"
+                      statusId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+      400:
+        description: Zły format danych lub brak wymaganych pól
+      401:
+        description: Brak lub nieprawidłowy token
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera

@@ -73,12 +73,12 @@ async function getAndSearch(page, pageSize, searchQuery) {
   try {
     const totalRecords = await UserModel.countDocuments(searchCriteria);
 
-    const stops = await UserModel.find(searchCriteria)
+    const users = await UserModel.find(searchCriteria)
         .skip((page - 1) * pageSize)
         .limit(pageSize);
 
     return {
-      data: stops,
+      data: users,
       page,
       pageSize,
       totalPages: Math.ceil(totalRecords / pageSize),

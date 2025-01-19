@@ -1,0 +1,326 @@
+/api/top-up/create:
+  post:
+    summary: Tworzenie lub aktualizowanie doładowania
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [TopUps]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              number:
+                type: string
+                description: "przysłamy pusty string"
+                example: ""
+              userId:
+                type: string
+                example: "64aef23456789abcd1234567"
+              amount:
+                type: number
+                example: 100.00
+              paymentDate:
+                type: string
+                format: date-time
+                example: "2025-01-19T12:00:00Z"
+              referenceId:
+                type: string
+                description: "przysłamy pusty string"
+                example: ""
+              methodId:
+                type: string
+                example: "609f65f1e7b0b5c9d7c15e71"
+    security:
+      - bearerAuth: []
+    responses:
+      201:
+        description: Doładowanie zostało pomyślnie utworzone lub zaktualizowane
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                number:
+                  type: string
+                  example: "TX123456"
+                userId:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                amount:
+                  type: number
+                  example: 100.00
+                currency:
+                  type: string
+                  example: "PLN"
+                paymentDate:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+                referenceId:
+                  type: string
+                  example: "REF123456"
+                methodId:
+                  type: string
+                  example: "609f65f1e7b0b5c9d7c15e71"
+                status:
+                  type: string
+                  example: "progress"
+      400:
+        description: Błędne dane zapytania
+      401:
+        description: Brak uprawnień
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/top-ups/all/{userId}:
+  get:
+    summary: Pobierz wszystkie doładowania użytkownika
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [TopUps]
+    parameters:
+      - in: path
+        name: userId
+        required: true
+        description: ID użytkownika, którego doładowania mają zostać pobrane
+        schema:
+          type: string
+          example: "64aef23456789abcd1234567"
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Pomyślnie pobrano doładowania użytkownika
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  number:
+                    type: string
+                    example: "TX123456"
+                  userId:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  amount:
+                    type: number
+                    example: 100.00
+                  currency:
+                    type: string
+                    example: "PLN"
+                  paymentDate:
+                    type: string
+                    format: date-time
+                    example: "2025-01-19T12:00:00Z"
+                  referenceId:
+                    type: string
+                    example: "REF123456"
+                  methodId:
+                    type: string
+                    example: "609f65f1e7b0b5c9d7c15e71"
+                  status:
+                    type: string
+                    example: "progress"
+      400:
+        description: Błędne dane zapytania
+      401:
+        description: Brak lub nieprawidłowy token
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/top-up/{id}:
+  get:
+    summary: Pobierz szczegóły doładowania po ID
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [ TopUps ]
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: ID doładowania
+    responses:
+      200:
+        description: Szczegóły doładowania
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8b"
+                number:
+                  type: string
+                  example: "123456789"
+                userId:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8a"
+                amount:
+                  type: number
+                  example: 100.00
+                currency:
+                  type: string
+                  example: "PLN"
+                paymentDate:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+                referenceId:
+                  type: string
+                  example: "ref12345"
+                methodId:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8c"
+                status:
+                  type: string
+                  example: "progress"
+      400:
+        description: Niepoprawne ID
+      401:
+        description: Brak autoryzacji
+      404:
+        description: Doładowanie nie znalezione
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/top-ups:
+  get:
+    summary: Pobierz listę doładowań z paginacją
+    description: Wymagany token w nagłówku, uprawnienia - administrator.
+    tags: [TopUps]
+    parameters:
+      - in: query
+        name: page
+        required: false
+        description: Numer strony (domyślnie 1)
+        schema:
+          type: integer
+          example: 1
+      - in: query
+        name: pageSize
+        required: false
+        description: Liczba elementów na stronie (domyślnie 10)
+        schema:
+          type: integer
+          example: 10
+      - in: query
+        name: searchQuery
+        required: false
+        description: Zapytanie do wyszukiwania w doładowaniach
+        schema:
+          type: string
+          example: "TX123456"
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Pomyślnie pobrano listę doładowań
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      number:
+                        type: string
+                        example: "TX123456"
+                      userId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      amount:
+                        type: number
+                        example: 100.00
+                      currency:
+                        type: string
+                        example: "PLN"
+                      paymentDate:
+                        type: string
+                        format: date-time
+                        example: "2025-01-19T12:00:00Z"
+                      referenceId:
+                        type: string
+                        example: "REF123456"
+                      methodId:
+                        type: string
+                        example: "609f65f1e7b0b5c9d7c15e71"
+                      method:
+                        type: string
+                        example: "Credit Card"
+                      status:
+                        type: string
+                        example: "progress"
+                      userEmail:
+                        type: string
+                        example: "user@example.com"
+                page:
+                  type: integer
+                  example: 1
+                pageSize:
+                  type: integer
+                  example: 10
+                totalPages:
+                  type: integer
+                  example: 5
+                totalRecords:
+                  type: integer
+                  example: 50
+      400:
+        description: Błędne dane zapytania
+      401:
+        description: Brak lub nieprawidłowy token
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/top-up/rollback:
+  delete:
+    summary: Cofnięcie doładowania
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [TopUps]
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: query
+        name: topUpId
+        required: true
+        description: ID doładowania, które należy cofnąć
+        schema:
+          type: string
+          example: "64aef23456789abcd1234567"
+    responses:
+      200:
+        description: Potwierdzenie sukcesu operacji rollback
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "TopUp with ID 64aef23456789abcd1234567 successfully rollback"
+      400:
+        description: Nieprawidłowe dane wejściowe
+      401:
+        description: Brak dostępu
+      404:
+        description: Transakcja nie istnieje
+      500:
+        description: Wewnętrzny błąd serwera

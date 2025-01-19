@@ -1,0 +1,338 @@
+/api/ticket:
+  post:
+    summary: Tworzenie lub aktualizowanie biletu
+    description: Wymagany token w nagłówku, uprawnienia - administrator.
+    tags: [Ticket]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              type:
+                type: string
+                description: Typ biletu
+                example: "64aef23456789abcd1234567"
+              lines:
+                type: string
+                description: Liczba linii biletu
+                example: "64aef23456789abcd1234567"
+              period:
+                type: string
+                description: Okres biletu (opcjonalne)
+                example: "64aef23456789abcd1234567"
+              price:
+                type: number
+                description: Cena biletu
+                example: 50.00
+              offerStartDate:
+                type: string
+                format: date-time
+                description: Data rozpoczęcia oferty
+                example: "2025-01-19T12:00:00Z"
+              offerEndDate:
+                type: string
+                format: date-time
+                description: Data zakończenia oferty (opcjonalne)
+                example: "2025-02-19T12:00:00Z"
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Pomyślnie utworzono lub zaktualizowano bilet
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                type:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                lines:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                period:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                price:
+                  type: number
+                  example: 50.00
+                offerStartDate:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+                offerEndDate:
+                  type: string
+                  format: date-time
+                  example: "2025-02-19T12:00:00Z"
+      400:
+        description: Błędne dane w ciele zapytania
+      401:
+        description: Brak lub nieprawidłowy token
+      409:
+        description: Konflikt podczas tworzenia/aktualizowania biletu
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/tickets:
+  get:
+    summary: Pobierz wszystkie bilety
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Ticket]
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Pomyślnie pobrano listę biletów
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  type:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  lines:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  period:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  price:
+                    type: number
+                    example: 50.00
+                  offerStartDate:
+                    type: string
+                    format: date-time
+                    example: "2025-01-19T12:00:00Z"
+                  offerEndDate:
+                    type: string
+                    format: date-time
+                    example: "2025-02-19T12:00:00Z"
+                  typeName:
+                    type: string
+                    example: "Standard"
+                  typeLabel:
+                    type: string
+                    example: "Standard Ticket"
+                  periodName:
+                    type: string
+                    example: "Monthly"
+                  periodLabel:
+                    type: string
+                    example: "30 days"
+                  lineName:
+                    type: string
+                    example: "Line 1"
+                  lineLabel:
+                    type: string
+                    example: "Main Route"
+      400:
+        description: Nieprawidłowe dane wejściowe
+      401:
+        description: Brak lub nieprawidłowy token
+      404:
+        description: Nieodpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/tickets/table:
+  get:
+    summary: Pobierz bilety z tabeli z paginacją i wyszukiwaniem
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Ticket]
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: query
+        name: page
+        required: false
+        schema:
+          type: integer
+          default: 1
+        description: Numer strony (domyślnie 1).
+      - in: query
+        name: pageSize
+        required: false
+        schema:
+          type: integer
+          default: 10
+        description: Liczba elementów na stronie (domyślnie 10).
+      - in: query
+        name: searchQuery
+        required: false
+        schema:
+          type: string
+        description: Zapytanie do wyszukiwania biletów.
+      - in: query
+        name: removeDuplicates
+        required: false
+        schema:
+          type: boolean
+        description: Flaga do usuwania duplikatów.
+    responses:
+      200:
+        description: Pomyślnie pobrano bilety z tabeli
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                data:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      type:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      lines:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      period:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      price:
+                        type: number
+                        example: 50.00
+                      offerStartDate:
+                        type: string
+                        format: date-time
+                        example: "2025-01-19T12:00:00Z"
+                      offerEndDate:
+                        type: string
+                        format: date-time
+                        example: "2025-02-19T12:00:00Z"
+                      typeName:
+                        type: string
+                        example: "Standard"
+                      typeLabel:
+                        type: string
+                        example: "Standard Ticket"
+                      periodName:
+                        type: string
+                        example: "Monthly"
+                      periodLabel:
+                        type: string
+                        example: "30 days"
+                      lineName:
+                        type: string
+                        example: "Line 1"
+                      lineLabel:
+                        type: string
+                        example: "Main Route"
+                page:
+                  type: integer
+                  example: 1
+                pageSize:
+                  type: integer
+                  example: 10
+                totalPages:
+                  type: integer
+                  example: 5
+                totalRecords:
+                  type: integer
+                  example: 50
+      400:
+        description: Nieprawidłowe dane wejściowe
+      401:
+        description: Brak lub nieprawidłowy token
+      404:
+        description: Nieodpowiada
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/ticket/{id}:
+  get:
+    summary: Pobierz szczegóły biletu
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Ticket]
+    security:
+      - bearerAuth: []
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Identyfikator biletu, który ma zostać pobrany.
+    responses:
+      200:
+        description: Pomyślnie pobrano szczegóły biletu
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                type:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                lines:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                period:
+                  type: string
+                  example: "64aef23456789abcd1234567"
+                price:
+                  type: number
+                  example: 50.00
+                offerStartDate:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+                offerEndDate:
+                  type: string
+                  format: date-time
+                  example: "2025-02-19T12:00:00Z"
+      401:
+        description: Brak lub nieprawidłowy token
+      404:
+        description: Bilet o podanym identyfikatorze nie został znaleziony
+      500:
+        description: Wewnętrzny błąd serwera
+  delete:
+    summary: Usuń bilet
+    description: Endpoint do usuwania biletu na podstawie jego identyfikatora.
+    tags: [ Ticket ]
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: path
+        name: id
+        required: true
+        schema:
+          type: string
+        description: Identyfikator biletu, który ma zostać usunięty.
+    responses:
+      200:
+        description: Pomyślnie usunięto bilet
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Ticket with ID 64aef23456789abcd1234567 successfully removed"
+      401:
+        description: Brak lub nieprawidłowy token
+      404:
+        description: Bilet o podanym identyfikatorze nie został znaleziony
+      500:
+        description: Wewnętrzny błąd serwera
+

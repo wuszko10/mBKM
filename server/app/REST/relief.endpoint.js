@@ -37,7 +37,7 @@ const ReliefEndpoint = (router) => {
 
     router.get('/api/relief/:name', authToken, async (req, res) => {
         try {
-            const relief = await business.getReliefManager().getReliefById(req.params.name);
+            const relief = await business.getReliefManager().getReliefByName(req.params.name);
             res.status(200).json(relief);
         } catch (error) {
             applicationException.errorHandler(error, res);

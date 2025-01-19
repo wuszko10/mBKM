@@ -1,10 +1,11 @@
 import TopUpDAO from "../DAO/topUpDAO";
-
-const cron = require('node-cron');
+import businessContainer from "../business/business.container";
 import TicketStatusTypeDAO from "../DAO/metadata/ticketStatusTypeDAO";
 import UserTicketDAO from '../DAO/user/userTicketDAO'
 import TransactionDAO from "../DAO/transactionDAO";
 import TokenDAO from "../DAO/user/tokenDAO";
+
+const cron = require('node-cron');
 
 async function updateTicketStatuses() {
     const now = new Date();

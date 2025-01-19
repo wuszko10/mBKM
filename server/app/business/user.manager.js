@@ -141,12 +141,10 @@ function create() {
         const passwordData = await PasswordDAO.resetPassword(user.id, hashString(oldPassword));
 
         if (!passwordData) {
-            throw applicationException.new(applicationException.VALIDATION_FAILURE, 'User with that email does not exist');
+            throw applicationException.new(applicationException.VALIDATION_FAILURE, 'User with that password does not exist');
         }
 
         passwordData.password = hashString(newPassword);
-
-        console.log(JSON.stringify(passwordData));
 
         return await PasswordDAO.createOrUpdate(passwordData);
     }

@@ -51,7 +51,7 @@ function create() {
 
         } catch (err) {
             console.error('Error loading metadata:', err);
-            throw applicationException.new(applicationException.INTERNAL_SERVER_ERROR, 'Error loading metadata.');
+            throw applicationException.new(applicationException.NOT_FOUND, 'Error loading metadata.');
         }
     }
 

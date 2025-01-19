@@ -74,7 +74,6 @@ function create() {
 
   async function removeById(ticketId) {
 
-    console.log("id: " + ticketId)
     try {
       await TicketDAO.removeTicketById(ticketId);
       return { message: `Ticket with ID ${ticketId} successfully removed` };

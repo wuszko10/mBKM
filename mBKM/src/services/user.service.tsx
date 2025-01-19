@@ -18,19 +18,23 @@ export const userLogin = async (username: string, password: string) => {
 
 export const UserResetPasswordCheck = async (email: string,checkPesel: string) => {
 
-    const response = await axios.post(SERVER_URL+'user/reset/check', {
+    const response = await axios.post(SERVER_URL+'user/restore/check', {
         email: email,
         checkPesel: checkPesel
     });
     return response.data;
 };
 
-export const UserResetPassword = async (email: string, oldPassword: string, newPassword: string) => {
+export const UserResetPassword = async (email: string, oldPassword: string, newPassword: string, token: string) => {
 
     const response = await axios.post(SERVER_URL+'user/reset', {
         email: email,
         oldPassword: oldPassword,
         newPassword: newPassword,
+    }, {
+        headers: {
+            'authorization': `Bearer ${token}`,
+        }
     });
     return response.data;
 };
@@ -44,7 +48,7 @@ export const UserRestorePassword = async (email: string, newPassword: string) =>
     return response.data;
 };
 
-export const updateAddress = async (id: string, userId: string, fullAddress: string, town: string, postalCode: string, postal: string)=> {
+export const updateAddress = async (id: string, userId: string, fullAddress: string, town: string, postalCode: string, postal: string, token: string)=> {
 
     const response = await axios.post(SERVER_URL+'user/address/update', {
         id: id,
@@ -53,6 +57,10 @@ export const updateAddress = async (id: string, userId: string, fullAddress: str
         town: town,
         postalCode: postalCode,
         postal: postal,
+    }, {
+        headers: {
+            'authorization': `Bearer ${token}`,
+        }
     });
     return response.data;
 

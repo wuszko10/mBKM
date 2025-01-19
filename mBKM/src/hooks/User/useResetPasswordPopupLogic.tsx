@@ -4,10 +4,13 @@ import checkInternetConnection from "../../utils/network.tsx";
 import { UserResetPassword,UserRestorePassword } from "../../services/user.service.tsx";
 import { useNavigation } from "@react-navigation/native";
 import { NavigationProp } from "../../types/navigation.tsx";
+import { useAuth } from "../../context/AuthContext.tsx";
 
 export const useResetPasswordPopupLogic = (userEmail: string, setShowPopup: (show: boolean) => void, isLogin: boolean) => {
 
     const navigation = useNavigation<NavigationProp>();
+
+    const { token } = useAuth();
 
     const [oldPassword,setOldPassword] = useState("");
     const [showOldPassword,setOldShowPassword] = useState(true);
@@ -62,7 +65,7 @@ export const useResetPasswordPopupLogic = (userEmail: string, setShowPopup: (sho
         try {
 
             if (isLogin) {
-                const response = await UserResetPassword(userEmail, oldPassword, password);
+                const response = await UserResetPassword(userEmail, oldPassword, password, token ? token : '');
 
                 if (response) {
                     cancelAction();

@@ -6,7 +6,7 @@ import checkInternetConnection from "../../utils/network.tsx";
 import {updateAddress} from "../../services/user.service.tsx";
 
 export const useAddressUpdateLogic = (setShowPopup: (showPopup: boolean) => void) => {
-    const { userId, address, setAddress} = useAuth();
+    const { userId, address, token, setAddress} = useAuth();
 
     const [fullAddress, setFullAddress] = useState('');
     const [town, setTown] = useState('');
@@ -61,7 +61,7 @@ export const useAddressUpdateLogic = (setShowPopup: (showPopup: boolean) => void
 
         try {
 
-            const response = await updateAddress( address ? address.id : '',userId,fullAddress,town,postalCode,postal);
+            const response = await updateAddress( address ? address.id : '',userId,fullAddress,town,postalCode,postal, token ? token : '');
 
             if (response) {
                 setAddress(response);
