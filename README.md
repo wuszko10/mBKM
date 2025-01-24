@@ -1,7 +1,5 @@
 # Projekt i implementacja systemu sprzedaży biletów komunikacji miejskiej
 
-Autor: **Wiktor Uszko**
-
 System zawiera aplikację mobilną do zakupu i kasowania biletów komunikacji miejskiej oraz aplikację webową przeznaczoną dla administratora systemu. Zakup biletu jest niezależny od jego kasowania, a sam proces walidacji obywa się na podstawie lokalizacji użytkownika - pasażer musi znajdować się w strefie przystanku. Dzięki temu można zakupić kilka biletów wcześniej i kasować je w dogodnym momencie. Za pomocą aplikacji webowej adminitrator zarządza taryfą przewozową - ustala ceny biletów i okres obowiązywania oferty oraz zarządza dostępem użytkowników. Serwer nie stanowi przedmiotu opracowania, służy jedynie celom obsługowym umożliwiającym sprawdzenie działania systemu.
 
 # Uruchomienie projektu
