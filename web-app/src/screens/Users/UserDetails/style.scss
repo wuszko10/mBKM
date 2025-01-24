@@ -1,0 +1,142 @@
+@import '../../../styles/variables';
+
+
+.user-container {
+  flex-direction: column;
+  gap: 40px;
+  align-items: stretch;
+  margin: 50px auto;
+  justify-content: space-between;
+  padding: 70px 100px;
+  border-radius: 20px;
+  background-color: $bg-light-gray;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.user-details-box {
+  flex-direction: column;
+  width: 50%;
+  align-items: start;
+  gap: 40px;
+}
+
+.user-option-container {
+  width: 40%;
+  flex-direction: column;
+  gap: $bigGap;
+  align-items: start;
+  justify-content: center;
+
+}
+
+.first-row {
+  flex-direction: row;
+  gap: 50px;
+}
+
+.divider {
+  width: 0.5px;
+  height: inherit;
+  background-color: $gray;
+}
+
+.horizontal-divider {
+  flex: 1;
+  width: auto;
+  height: 0.5px;
+  background-color: $gray;
+}
+
+.user-option-container button {
+  background-color: $primary-color;
+  color: #fff;
+  font-size: 13px;
+  font-family: "Montserrat", serif;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 12px 40px;
+  border-width: 0;
+  border-radius: $borderRadius;
+  cursor: pointer;
+  margin-top: 10px;
+}
+
+.user-option-container button:hover {
+  background-color: $hoverButton;
+  color: #fff;
+}
+
+.user-details-box p {
+  margin: 0;
+  padding: 0;
+}
+
+.user-box {
+  gap: 20px;
+  align-items: center;
+}
+
+.name-box {
+  flex-direction: column;
+}
+
+.name-box p {
+  font-family: "Montserrat Bold", serif;
+  font-size: $largeTextSize;
+}
+
+.ud-details-box {
+  flex-direction: column;
+  justify-content: start;
+  gap: 10px;
+}
+
+.stats-container {
+  flex-direction: column;
+  gap: 20px;
+  width: 100%;
+  align-items: stretch;
+  padding: 0 10px;
+  box-sizing: border-box;
+}
+
+.info-box {
+  flex-direction: column;
+  align-items: center;
+  background-color: $light-blue;
+  border-radius: $borderRadius;
+  padding: 20px 35px;
+  gap: $gap;
+}
+
+.row-stats-box{
+  flex-direction: row;
+  align-items: start;
+  flex-wrap: wrap;
+  gap: $gap;
+}
+
+@media (max-width: $mobile) {
+  .user-container {
+    padding: 40px;
+
+    margin: 20px 0 0;
+  }
+
+  .first-row, .user-option-container {
+    width: 100%;
+    flex-direction: column;
+    justify-content: center;
+    align-content: center;
+  }
+
+  .divider {
+    width: 100%;
+    height: 0.5px;
+  }
+
+  .info-box {
+    width: 100%;
+  }
+}

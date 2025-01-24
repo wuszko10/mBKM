@@ -1,0 +1,507 @@
+/api/transaction/create:
+  post:
+    summary: Tworzenie nowej transakcji
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Transactions]
+    security:
+      - bearerAuth: [ ]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              transactionData:
+                type: object
+                description: Dane transakcji
+                properties:
+                  number:
+                    type: string
+                    description: id (pusty string)
+                    example: ""
+                  userId:
+                    type: string
+                    description: id użytkownika
+                    example: "64aef23456789abcd1234567"
+                  finalPrice:
+                    type: number
+                    description: ostateczna cena
+                    example: 29.9
+                  paymentDate:
+                    type: string
+                    description: Data transakcji (ISO String)
+                    example: "2025-01-15T14:30:00Z"
+                  referenceId:
+                    type: string
+                    description: id (pusty string)
+                    example: ""
+                  methodId:
+                    type: string
+                    description: id metody płatności
+                    example: "64ae552251789abfdd123467"
+              userTicketData:
+                type: object
+                description: Dane użytkownika związane z biletem
+                properties:
+                  number:
+                    type: string
+                    description: numer transakcji (pusty string)
+                    example: ""
+                  transactionId:
+                    type: string
+                    description: id transakcji(pusty string)
+                    example: ""
+                  reliefId:
+                    type: string
+                    description: ID biletu
+                    example: "75ae0345bd45678cde987654"
+                  lineId:
+                    type: string
+                    description: ID biletu
+                    example: "75ae0345bd45678cde987654"
+                  price:
+                    type: number
+                    description: cena
+                    example: 29.9
+                  paymentDate:
+                    type: string
+                    description: Data zakupu (ISO String)
+                    example: "2025-01-15T14:30:00Z"
+                  userId:
+                    type: string
+                    description: id użytkownika
+                    example: "64aef23456789abcd1234567"
+                  ticketId:
+                    type: string
+                    description: ID biletu
+                    example: "75ae0345bd45678cde987654"
+                  statusId:
+                    type: string
+                    description: ID biletu
+                    example: "75ae0345bd45678cde987654"
+                  startDate:
+                    type: string
+                    description: data rozpoczęcia (gdy jest bilet jednorazowy przesłać pusty string)
+                    example: "2025-01-15T14:30:00Z"
+    responses:
+      201:
+        description: Transakcja została pomyślnie utworzona
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transactionId:
+                  type: string
+                  description: ID nowej transakcji
+                  example: "87af45678cde1234567aef90"
+                paymentMethodId:
+                  type: string
+                  description: Numer nowej transakcji transakcji
+                  example: TX3521
+                methodId:
+                  type: string
+                  description: id metody płatności
+                  example: "64ae552251789abfdd123467"
+                transactionAmount:
+                  type: number
+                  description: cena
+                  example: 29.9
+                userTicketId:
+                  type: string
+                  description: ID nowego biletu
+                  example: "64aef23456789abcd1234567"
+      400:
+        description: Nieprawidłowe dane wejściowe
+      401:
+        description: Brak dostępu
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/transactions/user/{userId}:
+  get:
+    summary: Pobierz transakcje użytkownika (zalogowany użytkownik)
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Transactions]
+    parameters:
+      - name: userId
+        in: path
+        required: true
+        description: ID użytkownika, którego transakcje chcesz pobrać
+        schema:
+          type: string
+          example: "64aef23456789abcd1234567"
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Zwraca listę transakcji użytkownika
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  number:
+                    type: string
+                    example: "TX123456789"
+                  userId:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  finalPrice:
+                    type: number
+                    example: 150.00
+                  currency:
+                    type: string
+                    example: "PLN"
+                  paymentDate:
+                    type: string
+                    format: date-time
+                    example: "2025-01-19T12:00:00Z"
+                  referenceId:
+                    type: string
+                    example: "REF123456"
+                  methodId:
+                    type: string
+                    example: "609f65f1e7b0b5c9d7c15e71"
+                  status:
+                    type: string
+                    example: "progress"
+      401:
+        description: Brak tokenu lub nieprawidłowy token
+      404:
+        description: Nie znaleziono transakcji dla podanego użytkownika
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/transaction:
+  get:
+    summary: Pobierz transakcję po ID
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Transactions]
+    parameters:
+      - name: id
+        in: query
+        required: true
+        description: ID transakcji, którą chcesz pobrać
+        schema:
+          type: string
+          example: "TX123456789"
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Zwraca transakcję z powiązanymi danymi
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transaction:
+                  type: object
+                  description: Szczegóły transakcji
+                  properties:
+                    _id:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    number:
+                      type: string
+                      example: "TX123456789"
+                    userId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    finalPrice:
+                      type: number
+                      example: 150.00
+                    currency:
+                      type: string
+                      example: "PLN"
+                    paymentDate:
+                      type: string
+                      format: date-time
+                      example: "2025-01-19T12:00:00Z"
+                    referenceId:
+                      type: string
+                      example: "REF123456"
+                    methodId:
+                      type: string
+                      example: "609f65f1e7b0b5c9d7c15e71"
+                    status:
+                      type: string
+                      example: "progress"
+                userTicket:
+                  type: object
+                  description: Szczegóły biletu użytkownika
+                  properties:
+                    id:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    number:
+                      type: string
+                      example: "TK123456789"
+                    transactionId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    userId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    ticketId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    reliefId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    lineId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    price:
+                      type: number
+                      example: 150.00
+                    purchaseDate:
+                      type: string
+                      format: date-time
+                      example: "2025-01-19T12:00:00Z"
+                    ticketStartDate:
+                      type: string
+                      format: date-time
+                      example: "2025-02-01T00:00:00Z"
+                    ticketEndDate:
+                      type: string
+                      format: date-time
+                      example: "2025-02-28T23:59:59Z"
+                    QRCode:
+                      type: string
+                      example: "QRCode string"
+                    statusId:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                ticket:
+                  type: object
+                  description: Szczegóły biletu
+                  properties:
+                    _id:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    type:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    lines:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    period:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    price:
+                      type: number
+                      example: 150.00
+                    ticketStartDate:
+                      type: string
+                      format: date-time
+                      description: czas rozpoczęcia oferty
+                      example: "2025-02-01T00:00:00Z"
+                    ticketEndDate:
+                      type: string
+                      format: date-time
+                      description: czas zakończenia oferty (pole nieobowiązkowe)
+                      example: "2025-02-28T23:59:59Z"
+                relief:
+                  type: object
+                  description: Szczegóły ulgi
+                  properties:
+                    _id:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    name:
+                      type: string
+                      example: "Student"
+                    type:
+                      type: string
+                      description: Typ ulgi
+                      example: "64aef23456789abcd1234567"
+                    ticketType:
+                      type: string
+                      description: Typ biletu
+                      example: "64aef23456789abcd1234567"
+                    percentage:
+                      type: number
+                      description: odpłatność
+                      example: 50
+                    isActive:
+                      type: boolean
+                      example: true
+                line:
+                  type: object
+                  description: Szczegóły linii
+                  properties:
+                    id:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    number:
+                      type: string
+                      example: "100"
+                    name:
+                      type: string
+                      example: "Main Line"
+                    isActive:
+                      type: boolean
+                      example: true
+                user:
+                  type: object
+                  description: Szczegóły użytkownika
+                  properties:
+                    id:
+                      type: string
+                      example: "64aef23456789abcd1234567"
+                    firstName:
+                      type: string
+                      example: "Jan"
+                    lastName:
+                      type: string
+                      example: "Kowalski"
+                    email:
+                      type: string
+                      example: "user@example.com"
+                    pesel:
+                      type: number
+                      example: 98123048291
+                    role:
+                      type: string
+                      example: "user"
+                    active:
+                      type: boolean
+                      example: true
+                    isAdmin:
+                      type: boolean
+                      example: false
+      400:
+        description: Niepoprawne ID transakcji
+      401:
+        description: Brak tokenu lub nieprawidłowy token
+      404:
+        description: Nie znaleziono transakcji o podanym ID
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/transactions:
+  get:
+    summary: Pobierz listę transakcji
+    description: Wymagany token w nagłówku, uprawnienia - administrator.
+    tags: [Transactions]
+    parameters:
+      - name: page
+        in: query
+        required: false
+        description: Numer strony (domyślnie 1)
+        schema:
+          type: integer
+          example: 1
+      - name: pageSize
+        in: query
+        required: false
+        description: Liczba wyników na stronie (domyślnie 10)
+        schema:
+          type: integer
+          example: 10
+      - name: searchQuery
+        in: query
+        required: false
+        description: Zapytanie do wyszukiwania w transakcjach
+        schema:
+          type: string
+          example: "student"
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Lista transakcji
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  id:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  number:
+                    type: string
+                    example: "TX123456789"
+                  userId:
+                    type: string
+                    example: "64aef23456789abcd1234567"
+                  finalPrice:
+                    type: number
+                    example: 150.00
+                  currency:
+                    type: string
+                    example: "PLN"
+                  paymentDate:
+                    type: string
+                    format: date-time
+                    example: "2025-01-19T12:00:00Z"
+                  referenceId:
+                    type: string
+                    example: "REF123456"
+                  methodId:
+                    type: string
+                    example: "609f65f1e7b0b5c9d7c15e71"
+                  status:
+                    type: string
+                    example: "progress"
+                  userEmail:
+                    type: string
+                    example: "user@example.com"
+                  ticketNumber:
+                    type: string
+                    example: "123456"
+      400:
+        description: Błędne dane zapytania
+      401:
+        description: Brak lub nieprawidłowy token
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/transaction/rollback:
+  delete:
+    summary: Cofnięcie transakcji
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Transactions]
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - in: query
+        name: transactionId
+        required: true
+        description: ID transakcji, którą należy cofnąć
+        schema:
+          type: string
+          example: "64aef23456789abcd1234567"
+      - in: query
+        name: ticketId
+        required: true
+        description: ID biletu, związanego z transakcją
+        schema:
+          type: string
+          example: "64aef23456789abcd1234568"
+    responses:
+      200:
+        description: Potwierdzenie sukcesu operacji rollback
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Transaction with ID 64aef23456789abcd1234567 successfully rollback"
+      400:
+        description: Nieprawidłowe dane wejściowe
+      401:
+        description: Brak dostępu
+      404:
+        description: Transakcja lub bilet nie istnieje
+      500:
+        description: Wewnętrzny błąd serwera

@@ -1,0 +1,197 @@
+/api/metadata:
+  get:
+    summary: Pobierz metadane związane z biletami i płatnościami
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Metadata]
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Metadane biletów i płatności
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                ticketTypes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      name:
+                        type: string
+                        example: "Standard"
+                      label:
+                        type: string
+                        example: "Standard Ticket"
+                ticketPeriods:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      name:
+                        type: string
+                        example: "Monthly"
+                      label:
+                        type: string
+                        example: "Monthly Ticket"
+                      period:
+                        type: string
+                        example: "30 days"
+                ticketLines:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      name:
+                        type: string
+                        example: "Line 1"
+                      label:
+                        type: string
+                        example: "Line 1"
+                reliefTypes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      name:
+                        type: string
+                        example: "Senior"
+                      label:
+                        type: string
+                        example: "Senior Relief"
+                paymentMethods:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      name:
+                        type: string
+                        example: "Credit Card"
+                      label:
+                        type: string
+                        example: "Credit Card"
+                      entypoIcon:
+                        type: string
+                        example: "credit-card"
+                statusTypes:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      name:
+                        type: string
+                        example: "Active"
+                      label:
+                        type: string
+                        example: "Active Ticket"
+      404:
+        description: Jedno lub więcej metadanych nie zostało znalezionych w cache
+      401:
+        description: Brak lub nieprawidłowy token
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/admin/dashboard/{days}:
+  get:
+    summary: Pobierz statystyki dashboardu administratora
+    description:  Wymagany token w nagłówku, uprawnienia - administrator.
+    parameters:
+      - in: path
+        name: days
+        required: true
+        description: Liczba dni, na podstawie której mają zostać wyciągnięte statystyki
+        schema:
+          type: integer
+          example: 7
+    tags: [Metadata]
+    security:
+      - bearerAuth: []
+    responses:
+      200:
+        description: Statystyki dashboardu administratora
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                transactions:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      number:
+                        type: string
+                        example: "TX123456"
+                      userId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      finalPrice:
+                        type: number
+                        example: 25.50
+                      currency:
+                        type: string
+                        example: "PLN"
+                      paymentDate:
+                        type: string
+                        format: date-time
+                        example: "2025-01-18T12:00:00Z"
+                      status:
+                        type: string
+                        example: "Completed"
+                userTickets:
+                  type: array
+                  items:
+                    type: object
+                    properties:
+                      _id:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      userId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      ticketId:
+                        type: string
+                        example: "64aef23456789abcd1234567"
+                      ticketStatus:
+                        type: string
+                        example: "Active"
+                      purchaseDate:
+                        type: string
+                        format: date-time
+                        example: "2025-01-18T12:00:00Z"
+                usersTotalAmount:
+                  type: number
+                  example: 1000
+                activeUsers:
+                  type: number
+                  example: 150
+      400:
+        description: Zły format danych wejściowych
+      401:
+        description: Brak lub nieprawidłowy token
+      404:
+        description: Nie odpowiada
+      500:
+        description: Wewnętrzny błąd serwera

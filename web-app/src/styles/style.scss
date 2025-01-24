@@ -1,0 +1,242 @@
+@import '../styles/variables';
+
+h1 {
+    font-family: "Montserrat ExtraBold", serif;
+    font-size: 50px;
+    margin: 0;
+    color: white;
+    text-decoration: none;
+}
+
+h2 {
+    font-family: "Montserrat Bold", serif;
+    font-size: 40px;
+    margin: 0;
+    color: black;
+}
+
+h3 {
+    font-family: "Montserrat Bold", serif;
+    font-size: 25px;
+    margin: 0;
+    color: black;
+}
+
+p {
+    margin: 0;
+    padding: 0;
+}
+
+a {
+    text-decoration: none;
+}
+
+.column-div {
+    flex-direction: column;
+    align-items: center;
+}
+
+.row-div {
+    flex-direction: row;
+    align-items: end;
+    justify-content: end;
+    gap: 0;
+}
+
+.main-box {
+    display: block;
+    width: 100%;
+    padding: 30px 0;
+    margin: 0 auto;
+    flex: 1;
+}
+
+
+.content-box {
+    flex-direction: column;
+    justify-content: center;
+    align-items: stretch;
+    gap: $gap;
+    flex: 1;
+    padding: 0 40px;
+    box-sizing: border-box;
+    width: 100%;
+    max-width: 1300px;
+    margin: 0 auto;
+}
+
+.header-with-button {
+    flex: 1;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.header-with-button div {
+    align-items: center;
+    gap: 10px;
+}
+
+.horizontal-div {
+    gap: 10px;
+}
+
+.global-button {
+    display: flex;
+    flex-direction: row;
+    background-color: transparent;
+    color: gray;
+    font-size: 15px;
+    font-family: "Montserrat SemiBold", serif;
+    text-decoration: none;
+    padding: 10px 14px;
+    border-width: 0;
+    border-radius: 5px;
+    cursor: pointer;
+    justify-content: center;
+    gap: 5px;
+}
+
+
+/* ########### Form styles ############# */
+
+.form-global {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: $bigGap;
+}
+
+.form-global input, .form-global select {
+    background-color: #fff;
+    color: black;
+    font-size: 17px;
+    font-family: 'Lato Regular', serif;
+    outline: none;
+    border: none;
+    border-radius: $borderRadius;
+}
+
+.form-checkbox-container {
+    flex-direction: row;
+    justify-content: flex-start;
+    align-items: center;
+    width: 420px;
+}
+
+.form-global .form-checkbox-container input{
+    width: 20px;
+}
+
+input:disabled,
+select:disabled {
+    background-color: #f0f0f0;
+    color: gray;
+    cursor: not-allowed;
+}
+
+.form-global input {
+    width: 400px;
+    padding: 15px 17px;
+}
+
+.form-global select {
+    width: 435px;
+    padding: 15px 20px;
+}
+
+.form-global label {
+    display: flex;
+    align-items: start;
+    flex-direction: column;
+    gap: 3px;
+}
+
+
+.form-global input::placeholder {
+    color: $dark-gray;
+}
+
+.form-global button {
+    background-color: $primary-color;
+    color: #fff;
+    font-size: 15px;
+    font-family: "Montserrat", serif;
+    text-transform: uppercase;
+    text-decoration: none;
+    padding: 17px 50px;
+    border-width: 0;
+    border-radius: $borderRadius;
+    cursor: pointer;
+    margin-top: 20px;
+}
+
+.form-global button:hover {
+    background-color: #fff;
+    color: $primary-color;
+    font-family: "Montserrat SemiBold", serif;
+}
+
+.form-global textarea{
+    min-width: 350px;
+    color: $dark-gray;
+    margin-bottom: -2px;
+    font-size: 15px;
+    padding: 9px 13px;
+    font-family: 'Lato Regular', serif;
+    outline: none;
+    border: #ffffff80 1px solid;
+    border-radius: 5px;
+}
+
+
+.form-global option {
+    color: #222B31;
+    background-color: #e5e5e5;
+}
+
+
+@media (max-width: $laptop) {
+
+    .main-box {
+        padding: 0 0 $appPadding;
+    }
+
+    .header-with-button {
+        flex-direction: column;
+        gap: 25px;
+        margin-top: $appPadding;
+    }
+
+    .header-with-button div {
+        flex-direction: column;
+    }
+
+    .header-with-button h2 {
+        font-size: 30px;
+        text-align: center;
+    }
+
+    .header-with-button h3{
+        text-align: center;
+    }
+
+    .content-box {
+        padding: 0;
+    }
+
+    .form-global input, .form-global select {
+        width: 100%;
+        box-sizing: border-box;
+    }
+
+
+    .form-global label, .popup-label {
+        text-align: left;
+        padding-bottom: 5px;
+        width: 100%;
+    }
+
+    .form-checkbox-container{
+        width: auto;
+    }
+}

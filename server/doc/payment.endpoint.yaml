@@ -1,0 +1,343 @@
+/api/pay/wallet:
+  post:
+    summary: Dokonaj płatności z portfela
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Payment]
+    security:
+      - bearerAuth: [ ]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+                description: Kwota do zapłaty
+                example: 50.00
+              transactionId:
+                type: string
+                description: Identyfikator transakcji
+                example: "tx12345"
+              walletId:
+                type: string
+                description: Identyfikator portfela
+                example: "wallet123"
+              userTicketId:
+                type: string
+                description: Identyfikator biletu użytkownika
+                example: "ticket123"
+    responses:
+      200:
+        description: Udana płatność
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "payment123"
+                amount:
+                  type: number
+                  example: 50.00
+                userId:
+                  type: string
+                  example: "user123"
+      400:
+        description: Zły format danych wejściowych
+      401:
+        description: Brak lub nieprawidłowy token
+      403:
+        description: Niedozwolony dostęp
+      404:
+        description: Nie znaleziono zasobu
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/pay/card:
+  post:
+    summary: Dokonaj płatności kartą
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Payment]
+    security:
+      - bearerAuth: [ ]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+                description: Kwota do zapłaty
+                example: 100.00
+              transactionId:
+                type: string
+                description: Identyfikator transakcji
+                example: "tx12345"
+              cardNumber:
+                type: string
+                description: Numer karty kredytowej
+                example: "4111111111111111"
+              expiryDate:
+                type: string
+                description: Data ważności karty w formacie MM/YY
+                example: "12/25"
+              cvv:
+                type: string
+                description: Kod CVV karty
+                example: "123"
+              userTicketId:
+                type: string
+                description: Identyfikator biletu użytkownika
+                example: "ticket123"
+    responses:
+      200:
+        description: Udana płatność kartą
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "payment123"
+                number:
+                  type: string
+                  example: "tx12345"
+                userId:
+                  type: string
+                  example: "user123"
+                finalPrice:
+                  type: number
+                  example: 100.00
+                currency:
+                  type: string
+                  example: "PLN"
+                paymentDate:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+                referenceId:
+                  type: string
+                  example: "ref123"
+                methodId:
+                  type: string
+                  example: "method123"
+                status:
+                  type: string
+                  example: "progress"
+      400:
+        description: Zły format danych wejściowych
+      401:
+        description: Brak autoryzacji
+      404:
+        description: Nie znaleziono zasobu
+      406:
+        description: Nieakceptowalny typ danych
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/pay/blik:
+  post:
+    summary: Dokonaj płatności Blik
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Payment]
+    security:
+      - bearerAuth: [ ]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+                description: Kwota do zapłaty
+                example: 100.00
+              transactionId:
+                type: string
+                description: Identyfikator transakcji
+                example: "tx12345"
+              code:
+                type: string
+                description: kod blik
+                example: "tx12345"
+              userTicketId:
+                type: string
+                description: Identyfikator biletu użytkownika
+                example: "ticket123"
+    responses:
+      200:
+        description: Udana płatność Blik
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "payment123"
+                number:
+                  type: string
+                  example: "tx12345"
+                userId:
+                  type: string
+                  example: "user123"
+                finalPrice:
+                  type: number
+                  example: 100.00
+                currency:
+                  type: string
+                  example: "PLN"
+                paymentDate:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+                referenceId:
+                  type: string
+                  example: "ref123"
+                methodId:
+                  type: string
+                  example: "method123"
+                status:
+                  type: string
+                  example: "progress"
+      400:
+        description: Zły format danych wejściowych
+      401:
+        description: Brak autoryzacji
+      404:
+        description: Nie znaleziono zasobu
+      406:
+        description: Nieakceptowalny typ danych
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/top-up/card:
+  post:
+    summary: Doładuj portfel za pomocą karty
+    description:  Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Payment]
+    security:
+      - bearerAuth: [ ]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+                example: 100.00
+              topUpId:
+                type: string
+                example: "5f8d0a4a8b1e1a5b5e7b8d8f"
+              cardNumber:
+                type: string
+                example: "1234567812345678"
+              expiryDate:
+                type: string
+                example: "12/25"
+              cvv:
+                type: string
+                example: "123"
+              walletId:
+                type: string
+                example: "5f8d0a4a8b1e1a5b5e7b8d8a"
+    responses:
+      200:
+        description: Udane doładowanie portfela
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8a"
+                userId:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8b"
+                balance:
+                  type: number
+                  example: 150.00
+                currency:
+                  type: string
+                  example: "PLN"
+                updatedAt:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+      400:
+        description: Zły format danych wejściowych
+      401:
+        description: Brak autoryzacji
+      404:
+        description: Nie znaleziono zasobu
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/top-up/blik:
+  post:
+    summary: Doładuj portfel za pomocą BLIK
+    description:  Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [Payment]
+    security:
+      - bearerAuth: [ ]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              amount:
+                type: number
+                example: 100.00
+              topUpId:
+                type: string
+                example: "5f8d0a4a8b1e1a5b5e7b8d8f"
+              code:
+                type: string
+                example: "tx12345"
+              walletId:
+                type: string
+                example: "5f8d0a4a8b1e1a5b5e7b8d8a"
+    responses:
+      200:
+        description: Udane doładowanie portfela
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8a"
+                userId:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8b"
+                balance:
+                  type: number
+                  example: 150.00
+                currency:
+                  type: string
+                  example: "PLN"
+                updatedAt:
+                  type: string
+                  format: date-time
+                  example: "2025-01-19T12:00:00Z"
+      400:
+        description: Zły format danych wejściowych
+      401:
+        description: Brak autoryzacji
+      404:
+        description: Nie znaleziono zasobu
+      500:
+        description: Wewnętrzny błąd serwera

@@ -1,0 +1,308 @@
+/api/relief:
+  post:
+    summary: Utwórz lub zaktualizuj ulgę
+    description: Wymagany token w nagłówku, uprawnienia - administrator.
+    tags: [ Relief ]
+    security:
+      - bearerAuth: [ ]
+    requestBody:
+      required: true
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              name:
+                type: string
+                example: "Ulga studencka"
+              type:
+                type: string
+                example: "5f8d0a4a8b1e1a5b5e7b8d8f"
+              ticketType:
+                type: string
+                example: "5f8d0a4a8b1e1a5b5e7b8d8a"
+              percentage:
+                type: number
+                example: 10.0
+              isActive:
+                type: boolean
+                example: true
+    responses:
+      201:
+        description: Sukces - utworzono lub zaktualizowano ulgę
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8b"
+                name:
+                  type: string
+                  example: "Ulga studencka"
+                type:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8f"
+                ticketType:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8a"
+                percentage:
+                  type: number
+                  example: 10.0
+                isActive:
+                  type: boolean
+                  example: true
+      400:
+        description: Zły format danych wejściowych
+      401:
+        description: Brak autoryzacji
+      404:
+        description: Nie znaleziono zasobu
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/reliefs:
+  get:
+    summary: Pobierz wszystkie ulgi
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [ Relief ]
+    security:
+      - bearerAuth: [ ]
+    responses:
+      200:
+        description: Sukces - lista ulg
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: "5f8d0a4a8b1e1a5b5e7b8d8b"
+                  name:
+                    type: string
+                    example: "Ulga studencka"
+                  type:
+                    type: string
+                    example: "5f8d0a4a8b1e1a5b5e7b8d8f"
+                  ticketType:
+                    type: string
+                    example: "5f8d0a4a8b1e1a5b5e7b8d8a"
+                  percentage:
+                    type: number
+                    example: 10.0
+                  isActive:
+                    type: boolean
+                    example: true
+      401:
+        description: Brak autoryzacji
+      404:
+        description: Ulga nie znaleziona
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/relief/{name}:
+  get:
+    summary: Pobierz ulgę po nazwie
+    description:  Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [ Relief ]
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - name: name
+        in: path
+        description: Nazwa ulgi
+        required: true
+        schema:
+          type: string
+          example: "Ulga studencka"
+    responses:
+      200:
+        description: Sukces - szczegóły ulgi
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8b"
+                name:
+                  type: string
+                  example: "Ulga studencka"
+                type:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8f"
+                ticketType:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8a"
+                percentage:
+                  type: number
+                  example: 10.0
+                isActive:
+                  type: boolean
+                  example: true
+      401:
+        description: Brak autoryzacji
+      404:
+        description: Ulga nie znaleziona
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/reliefs/table:
+  get:
+    summary: Pobierz ulgi z paginacją i opcją wyszukiwania
+    description: Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [ Relief ]
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - name: page
+        in: query
+        description: Numer strony (domyślnie 1)
+        required: false
+        schema:
+          type: integer
+          example: 1
+      - name: pageSize
+        in: query
+        description: Liczba wyników na stronie (domyślnie 10)
+        required: false
+        schema:
+          type: integer
+          example: 10
+      - name: searchQuery
+        in: query
+        description: Zapytanie do wyszukiwania
+        required: false
+        schema:
+          type: string
+          example: "studencka"
+    responses:
+      200:
+        description: Sukces - lista ulg
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                    example: "5f8d0a4a8b1e1a5b5e7b8d8b"
+                  name:
+                    type: string
+                    example: "Ulga studencka"
+                  type:
+                    type: string
+                    example: "5f8d0a4a8b1e1a5b5e7b8d8f"
+                  ticketType:
+                    type: string
+                    example: "5f8d0a4a8b1e1a5b5e7b8d8a"
+                  percentage:
+                    type: number
+                    example: 10.0
+                  isActive:
+                    type: boolean
+                    example: true
+                  typeName:
+                    type: string
+                    example: "Studencka"
+                  typeLabel:
+                    type: string
+                    example: "Ulga dla studentów"
+                  ticketTypeName:
+                    type: string
+                    example: "Bilet jednorazowy"
+                  ticketTypeLabel:
+                    type: string
+                    example: "Bilet normalny"
+      401:
+        description: Brak autoryzacji
+      404:
+        description: Ulga nie znaleziona
+      500:
+        description: Wewnętrzny błąd serwera
+
+/api/relief/{id}:
+  get:
+    summary: Pobierz ulgę po ID
+    description:  Wymagany token w nagłówku, uprawnienia - wszyscy użytkownicy.
+    tags: [ Relief ]
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - name: id
+        in: path
+        description: ID ulgi
+        required: true
+        schema:
+          type: string
+          example: "5f8d0a4a8b1e1a5b5e7b8d8b"
+    responses:
+      200:
+        description: Sukces - szczegóły ulgi
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                _id:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8b"
+                name:
+                  type: string
+                  example: "Ulga studencka"
+                type:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8f"
+                ticketType:
+                  type: string
+                  example: "5f8d0a4a8b1e1a5b5e7b8d8a"
+                percentage:
+                  type: number
+                  example: 10.0
+                isActive:
+                  type: boolean
+                  example: true
+      401:
+        description: Brak autoryzacji
+      404:
+        description: Ulga nie znaleziona
+      500:
+        description: Wewnętrzny błąd serwera
+  delete:
+    summary: Usuń ulgę po ID
+    description:   Wymagany token w nagłówku, uprawnienia - administrator.
+    tags: [ Relief ]
+    security:
+      - bearerAuth: [ ]
+    parameters:
+      - name: id
+        in: path
+        description: ID ulgi do usunięcia
+        required: true
+        schema:
+          type: string
+          example: "5f8d0a4a8b1e1a5b5e7b8d8b"
+    responses:
+      200:
+        description: Sukces - ulga została usunięta
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                message:
+                  type: string
+                  example: "Relief with ID 5f8d0a4a8b1e1a5b5e7b8d8b successfully removed"
+      401:
+        description: Brak autoryzacji
+      404:
+        description: Ulga nie została znaleziona
+      500:
+        description: Wewnętrzny błąd serwera
