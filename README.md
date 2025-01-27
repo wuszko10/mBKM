@@ -12,7 +12,7 @@ W celu uruchomienia aplikacji mobilnej mBKM należy w terminalu wskazać lokaliz
 
 W celu uruchomienia aplikacji webowej należy w terminalu wskazać lokalizację dla katalogu `web-app`, następnie zainstalować niezbędne zależności z wykorzystaniem komendy `npm install`. Uruchomienie aplikacja odbywa się przez wpisanie komendy `npm start`, a uruchomienie testów za pomocą `npm test`. W pliku .env należy określić adres IP serwera.
 
-## Dokumentacja serwera API
+## Serwer
 
 W celu uruchomienia serwera należy w terminalu wskazać lokalizację dla katalogu `server`, następnie zainstalować niezbędne zależności z wykorzystaniem komendy `npm install`, a następnie uruchomić go za pomocą komendy `npm start`. Należy również poprawnie skonfigurować plik .env oraz .env.local, które zawierają dane dostępu do bazy danych, klucz JWT oraz PORT na którym działa serwer.
 
