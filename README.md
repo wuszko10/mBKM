@@ -1,20 +1,136 @@
-# Projekt i implementacja systemu sprzedaży biletów komunikacji miejskiej
+# mBKM – System sprzedaży biletów komunikacji miejskiej
 
-System zawiera aplikację mobilną do zakupu i kasowania biletów komunikacji miejskiej oraz aplikację webową przeznaczoną dla administratora systemu. Zakup biletu jest niezależny od jego kasowania, a sam proces walidacji obywa się na podstawie lokalizacji użytkownika - pasażer musi znajdować się w strefie przystanku. Dzięki temu można zakupić kilka biletów wcześniej i kasować je w dogodnym momencie. Za pomocą aplikacji webowej adminitrator zarządza taryfą przewozową - ustala ceny biletów i okres obowiązywania oferty oraz zarządza dostępem użytkowników. Serwer nie stanowi przedmiotu opracowania, służy jedynie celom obsługowym umożliwiającym sprawdzenie działania systemu.
+System stworzony jako projekt inżynierski. Składa się z trzech głównych komponentów:
 
-# Uruchomienie projektu
+- Aplikacji mobilnej do zakupu i kasowania biletów komunikacji miejskiej (React Native),
+- Aplikacji webowej dla administratora systemu (React),
+- Serwera obsługującego logikę biznesową i komunikację poprzez REST API (Express.js, MongoDB).
 
-Poniżej prezentowane są kroki niezbędne do uruchomienia systemu w trybie deweloperskim.
+Celem projektu było stworzenie nowoczesnego systemu biletowego, który wykorzystuje lokalizację GPS użytkownika do kasowania biletów jednorazowych. Dzięki temu możliwy jest wcześniejszy zakup biletu bez konieczności jego natychmiastowego skasowania.
 
-## Aplikacje użytkownika
+## 📅 Funkcjonalności systemu
 
-W celu uruchomienia aplikacji mobilnej mBKM należy w terminalu wskazać lokalizację dla katalogu `mBKM`, następnie zainstalować niezbędne zależności z wykorzystaniem komendy `npm install`. Uruchomienie aplikacja odbywa się przez wpisanie komendy `npm start`, a uruchomienie testów za pomocą `npm test`. W pliku variables.tsx należy określić adres IP serwera.
+### Aplikacja mobilna (użytkownik):
 
-W celu uruchomienia aplikacji webowej należy w terminalu wskazać lokalizację dla katalogu `web-app`, następnie zainstalować niezbędne zależności z wykorzystaniem komendy `npm install`. Uruchomienie aplikacja odbywa się przez wpisanie komendy `npm start`, a uruchomienie testów za pomocą `npm test`. W pliku .env należy określić adres IP serwera.
+- Rejestracja, logowanie, odzyskiwanie hasła,
+- Zarządzanie danymi konta (adres, hasło),
+- Zakup biletów jednorazowych i okresowych,
+- Kasowanie biletu jednorazowego tylko w strefach przystankowych,
+- Podgląd aktywnych i nieaktywnych biletów,
+- Historia transakcji z danymi szczegółowymi.
 
-## Serwer
+#### Widok główny:
 
-W celu uruchomienia serwera należy w terminalu wskazać lokalizację dla katalogu `server`, następnie zainstalować niezbędne zależności z wykorzystaniem komendy `npm install`, a następnie uruchomić go za pomocą komendy `npm start`. Należy również poprawnie skonfigurować plik .env oraz .env.local, które zawierają dane dostępu do bazy danych, klucz JWT oraz PORT na którym działa serwer.
+![Widok główny](./screens/main-mobile-app.png)
 
-W celu uruchomienia dokumentacji serwera należy przejść do folderu `serwer/doc/web`. W folderze `web` należy uruchomić plik `documentation.html`. Dokumentacja uruchomi się w domyślnej przeglądarce. Są w niej prezentowane wszystkie dostępne endpointy wraz z przykładowymi strukturami danych.
+#### Widok transakcji:
 
+![Widok transackji](./screens/tickets-mobile-app.png)
+
+#### Zakup biletu:
+
+![Zakup biletu jednorazowego](./screens/single-ticket-purchase-form-mobile-app.png)
+
+![Widok biletu okresowego](./screens/season-ticket-purchase-form-mobile-app.png)
+
+### Aplikacja webowa (administrator):
+
+- Logowanie,
+- Konfiguracja taryfy przewozowej (typy biletów, ceny, ulgi, daty ważności),
+- Zarządzanie siatką połączeń (linie i przystanki),
+- Podgląd statystyk,
+- Zarządzanie użytkownikami,
+- Przegląd i filtrowanie transakcji.
+
+#### Panel główny:
+
+![Widok główny](./screens/main-admin-app.png)
+
+#### Tabele danych:
+
+![Tabela z taryfą przewozową](./screens/tickets-table-admin-app.png)
+![Tabela z użytkownikami](./screens/users-table-admin-app.png)
+
+Aplikacja webowa jest w pełni responsywna i dostosowana do urządzeń mobilnych.
+
+#### Widok mobilny
+
+![Widok mobilny](./screens/main-mobile-admin-app.png)
+
+## ⚙️ Technologie
+
+- React Native
+- React
+- Express.js
+- MongoDB (Atlas)
+- REST API
+- JWT (uwierzytelnianie)
+
+## ⚡ Uruchomienie projektu (tryb deweloperski)
+
+### Wymagania:
+
+- Node.js
+- Baza danych MongoDB (lokalnie lub np. MongoDB Atlas)
+
+### 1. Aplikacja mobilna:
+```
+cd mBKM
+npm install
+npm start
+```
+Plik `variables.tsx`: wpisz adres IP serwera.
+
+### 2. Aplikacja webowa (administrator):
+```
+cd web-app
+npm install
+npm start
+```
+Plik `.env`: wpisz adres IP serwera.
+
+### 3. Serwer API:
+```
+cd server
+npm install
+npm start
+```
+#### Wymagana konfiguracja:
+
+**plik `.env`:**
+- `PORT` – port serwera
+
+**plik `.env.local`:**
+- `MONGO_URI` – adres bazy danych,
+- `JWT_SECRET` – tajny klucz JWT,
+
+### 4. Dokumentacja API:
+
+Otwórz plik `server/doc/web/documentation.html` w przeglądarce, aby zapoznać się z dokumentacją dostępnych endpointów i przykładowymi danymi wejściowymi / wyjściowymi.
+
+## 🌐 Struktura projektu
+```
+mBKM/
+├── mBKM/               # Aplikacja mobilna (React Native)
+├── server/             # Backend + API (Node.js, Express)
+    ├── doc/            # Dokumentacja API         
+├── web-app/            # Aplikacja administratora (React)
+└── README.md
+```
+## 🚀 Pomysły na rozwój
+
+- Podpięcie systemu płatności,
+- System kontroli bileów - skanowanie QR kodów dla kontroli biletów,
+- Notyfikacje push z propozycjami zakupu przebywając w strefie kasowania biletu,
+- Wersja offline
+- Dashboard użytkownika w wersji webowej.
+
+## Czytaj więcej
+
+Aby dowiedzieć się więcej o React Native, React czy MongoDB, zapoznaj się z następującymi zasobami:
+
+- [React Native Website](https://reactnative.dev) - dowiedz się więcej o React Native.
+- [React](https://react.dev/) - dowiedz się więcej o React
+- [MongoDB](https://www.mongodb.com/) - dowiedz się więcej o MongoDB
+- [Blog React Native](https://reactnative.dev/blog) - przeczytaj najnowsze wpisu na **blogu** React Native
+- [Blog React] - przeczytaj najnowsze wpisu na **blogu** React
